@@ -1,0 +1,85 @@
+name: Actualizar y publicar LGP Chronicle
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: guild-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Localizar histórico
+        id: state
+        shell: bash
+        run: |
+          git ls-remote --heads origin refs/heads/guild-data > "$RUNNER_TEMP/guild-data-ref"
+          if test -s "$RUNNER_TEMP/guild-data-ref"; then
+            echo 'exists=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'exists=false' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.state.outputs.exists == 'true' && 'guild-data' || 'main' }}
+          path: .guild-data
+      - name: Crear rama de datos en la primera ejecución
+        if: steps.state.outputs.exists != 'true'
+        working-directory: .guild-data
+        run: |
+          git checkout --orphan guild-data
+          git rm -rf .
+      - name: Consultar Blizzard y Warcraft Logs
+        id: sync
+        continue-on-error: true
+        run: pnpm sync
+        env:
+          BLIZZARD_CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
+          BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
+          WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
+          WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
+          SYNC_INTERVAL_MINUTES: '10'
+          WARCRAFTLOGS_ZONE_IDS: '1047,1048,1056'
+      - name: Construir con los últimos datos válidos
+        run: pnpm build
+      - name: Conservar histórico
+        working-directory: .guild-data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add guild.sqlite
+          if ! git diff --cached --quiet; then
+            git commit -m 'Actualizar histórico de la guild'
+            git push origin HEAD:guild-data
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-dist
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Avisar de errores de las APIs
+        if: steps.sync.outcome == 'failure'
+        run: |
+          echo 'La web conserva los últimos datos válidos. Revisa el paso de sincronización.'
+          exit 1

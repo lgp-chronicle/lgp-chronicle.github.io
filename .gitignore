@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+node_modules/
+work/
+.guild-data/
+pages-dist/
+public/data/
+*.tsbuildinfo
