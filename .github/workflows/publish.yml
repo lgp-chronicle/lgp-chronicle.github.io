@@ -59,7 +59,7 @@ jobs:
           WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
           WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
           SYNC_INTERVAL_MINUTES: '10'
-          WARCRAFTLOGS_ZONE_IDS: '1047,1048,1056'
+          WARCRAFTLOGS_ZONE_IDS: '1000,1001'
       - name: Construir con los últimos datos válidos
         run: pnpm build
       - name: Conservar histórico

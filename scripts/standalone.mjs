@@ -4,7 +4,7 @@ import {mkdirSync,existsSync,readFileSync} from 'node:fs';
 import {parseEnv} from 'node:util';
 if(existsSync('.env'))for(const [key,value] of Object.entries(parseEnv(readFileSync('.env','utf8'))))if(!process.env[key])process.env[key]=value;
 process.env.SYNC_INTERVAL_MINUTES ||= '10';
-process.env.WARCRAFTLOGS_ZONE_IDS ||= '1047,1048,1056';
+process.env.WARCRAFTLOGS_ZONE_IDS ||= '1000,1001';
 const require=createRequire(import.meta.url);
 const esbuild=require(require.resolve('esbuild',{paths:[require.resolve('drizzle-kit')]}));
 mkdirSync('work',{recursive:true});

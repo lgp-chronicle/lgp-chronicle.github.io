@@ -150,7 +150,7 @@ export function Distribution({ members }: { members: Member[] }) {
   }
   return (
     <section className="panel">
-      <h3>La composición de la compañía</h3>
+      <h3>La composición de la hermandad</h3>
       <div className="toolbar">
         <Pick
           label="Distribución"

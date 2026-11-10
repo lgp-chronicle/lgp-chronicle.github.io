@@ -46,7 +46,7 @@ export function Newspaper({ events }: { events: Activity[] }) {
   return (
     <section className="news-paper">
       <div className="paper-meta">
-        <span>EDICIÓN DE SPINESHATTER</span>
+        <span>EDICIÓN DE LA GANGA</span>
         <span>PRENSA INDEPENDIENTE*</span>
       </div>
       <h2 className="paper-title">El Heraldo de Azeroth</h2>

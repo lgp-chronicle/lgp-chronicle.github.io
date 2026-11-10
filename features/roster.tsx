@@ -58,17 +58,17 @@ export function Roster({ members }: { members: Member[] }) {
     <section className="panel">
       <div className="section-heading">
         <div>
-          <h3>La compañía</h3>
+          <h3>La hermandad</h3>
           <p className="subheading">
             {members.length} nombres. Una cantidad incierta de sentido común.
           </p>
         </div>
-        <span className="badge">CLASSIC ANNIVERSARY / TBC</span>
+        <span className="badge">CLASSIC ERA / FOREVER</span>
       </div>
       <div className="toolbar">
         <input
           aria-label="Buscar personaje"
-          placeholder="Buscar en la compañía…"
+          placeholder="Buscar en la hermandad…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -119,7 +119,7 @@ export function Roster({ members }: { members: Member[] }) {
                   {key === "name" ? (
                     <a
                       href={siteHref(
-                        `/tbc/character/${encodeURIComponent(m.id)}`,
+                        `/character/${encodeURIComponent(m.id)}`,
                       )}
                       className="name-cell"
                       style={{ color: color(m) }}

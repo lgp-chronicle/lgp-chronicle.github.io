@@ -1,8 +1,9 @@
 import { readGuild } from "./guild";
 import { overtakeEvents } from "../features/observations";
-import { characters, characterId, campaigns } from "../config/characters";
+import { characterId, campaigns, rosterEntry } from "../config/characters";
+import type { CharacterConfig } from "../config/characters";
 import { database, settings } from "../db/client";
-import { blizzard } from "../providers/blizzard";
+import { blizzard, fetchGuildRoster } from "../providers/blizzard";
 import { warcraftLogs } from "../providers/warcraft-logs";
 import { ProviderError } from "../providers/http";
 import { changedEvents } from "../features/analytics";
@@ -78,6 +79,35 @@ export async function sync(force = false) {
           .bind(id, c.name, c.active ? 1 : 0),
       ),
     );
+
+    // Discover characters from guild roster instead of hardcoded list
+    let characters: CharacterConfig[] = [];
+    try {
+      if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
+      const roster = await fetchGuildRoster(s);
+      characters = roster.map((m) => rosterEntry(m.name, m.realm));
+      console.log(`Guild roster: ${characters.length} members discovered.`);
+    } catch (e) {
+      if (e instanceof ProviderError && e.code === "rate-limited") {
+        blizzardBlocked = true;
+        cooldownSeconds = Math.max(cooldownSeconds, e.retryAfter);
+      }
+      console.error(
+        "Guild roster fetch failed:",
+        e instanceof ProviderError ? e.code : "unknown",
+      );
+      // Fall back to already-known characters from the DB
+      const known = await db
+        .prepare("SELECT name,realm FROM characters WHERE campaign_id=?")
+        .bind("forever")
+        .all<{ name: string; realm: string }>();
+      characters = known.results.map((r) => rosterEntry(r.name, r.realm));
+      if (!characters.length) {
+        return { status: "error", reason: "no-roster-and-no-fallback" };
+      }
+      console.log(`Falling back to ${characters.length} known characters.`);
+    }
+
     for (const c of characters) {
       if (!campaigns[c.campaign].active) continue;
       const id = characterId(c),

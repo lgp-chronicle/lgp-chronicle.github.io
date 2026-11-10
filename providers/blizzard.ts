@@ -1,10 +1,40 @@
 import type { CharacterConfig } from "../config/characters";
+import { guildConfig } from "../config/characters";
 import type { Profile } from "../features/types";
 import { numeric } from "../features/types";
 import { request, token, ProviderError } from "./http";
 type Json = Record<string, any>;
 const name = (v: any): string | undefined =>
   typeof v === "string" ? v : typeof v?.name === "string" ? v.name : undefined;
+
+/** Fetch guild roster from Blizzard API and return member names + realms. */
+export async function fetchGuildRoster(
+  s: Record<string, string | undefined>,
+): Promise<{ name: string; realm: string; level?: number; classId?: number; race?: string }[]> {
+  const auth = await token(
+    "https://oauth.battle.net/token",
+    s.BLIZZARD_CLIENT_ID,
+    s.BLIZZARD_CLIENT_SECRET,
+  );
+  const ns = s.BLIZZARD_NAMESPACE ?? guildConfig.namespace;
+  const guildSlug = guildConfig.name.toLowerCase().replace(/\s+/g, "-");
+  const url = `https://${guildConfig.region}.api.blizzard.com/data/wow/guild/${encodeURIComponent(guildConfig.realm)}/${encodeURIComponent(guildSlug)}/roster?namespace=${encodeURIComponent(ns)}&locale=es_ES`;
+  const r = await request(url, {
+    headers: { Authorization: `Bearer ${auth}` },
+  });
+  const j = (await r.json()) as Json;
+  if (!Array.isArray(j.members)) throw new ProviderError("invalid-roster");
+  return j.members
+    .filter((m: any) => m.character?.name)
+    .map((m: any) => ({
+      name: m.character.name as string,
+      realm: (m.character.realm?.slug ?? guildConfig.realm) as string,
+      level: numeric(m.character.level) ? m.character.level : undefined,
+      classId: m.character.playable_class?.id,
+      race: name(m.character.playable_race),
+    }));
+}
+
 export async function blizzard(
   c: CharacterConfig,
   s: Record<string, string | undefined>,
@@ -22,8 +52,8 @@ export async function blizzard(
   );
   const now = new Date().toISOString();
   const base = `https://${c.region}.api.blizzard.com/profile/wow/character/${encodeURIComponent(c.realm)}/${encodeURIComponent(c.name.toLowerCase())}`;
-  const ns = s.BLIZZARD_NAMESPACE ?? `profile-classicann-${c.region}`;
-  if (!ns.startsWith("profile-classicann-"))
+  const ns = s.BLIZZARD_NAMESPACE ?? guildConfig.namespace;
+  if (!ns.startsWith("profile-classic1x-"))
     throw new ProviderError("wrong-campaign-namespace");
   const read = async (path: string) => {
     const u = new URL(base + path);

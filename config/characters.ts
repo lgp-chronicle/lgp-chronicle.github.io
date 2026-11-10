@@ -2,33 +2,40 @@ export type CharacterConfig = {
   name: string;
   realm: string;
   region: "eu" | "us";
-  campaign: "tbc" | "forever";
+  campaign: "forever";
   armory?: string;
   logsId?: number;
   logsZones?: number[];
 };
-export const characters: CharacterConfig[] = [
-  "Alekdra",
-  "Volkreen",
-  "Hékate",
-  "Bocasusia",
-  "Nimpu",
-  "Killpity",
-  "Joségitano",
-].map((name) => ({
-  name,
-  realm: "spineshatter",
-  region: "eu",
-  campaign: "tbc",
-  armory: `https://worldofwarcraft.blizzard.com/es-es/classicann/eu/armory/character/spineshatter/${encodeURIComponent(name.toLowerCase())}`,
-}));
+
+export const guildConfig = {
+  name: "La Ganga",
+  realm: "lone-wolf",
+  region: "eu" as const,
+  faction: "alliance" as const,
+  namespace: "profile-classic1x-eu",
+} as const;
+
+/** Build a character config from a guild roster member. */
+export function rosterEntry(
+  name: string,
+  realm: string = guildConfig.realm,
+): CharacterConfig {
+  return {
+    name,
+    realm,
+    region: guildConfig.region,
+    campaign: "forever",
+    armory: `https://worldofwarcraft.blizzard.com/es-es/classic/eu/armory/character/${encodeURIComponent(realm)}/${encodeURIComponent(name.toLowerCase())}`,
+  };
+}
+
 export const characterId = (c: CharacterConfig) =>
   `${c.campaign}-${c.region}-${c.realm}-${c.name.toLowerCase()}`;
+
 export const campaigns = {
   forever: {
     name: "WoW Forever",
-    startsAt: null as string | null,
-    active: false,
+    active: true,
   },
-  tbc: { name: "WoW TBC", active: true },
 };

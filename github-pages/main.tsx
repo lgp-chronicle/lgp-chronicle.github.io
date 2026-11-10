@@ -1,6 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import Home from "../app/page";
 import { Shell } from "../components/shell";
 const Dashboard = lazy(() =>
   import("../features/dashboard").then((m) => ({ default: m.Dashboard })),
@@ -27,7 +26,6 @@ function App() {
     return () => window.removeEventListener("hashchange", route);
   }, []);
   useEffect(() => {
-    if (!path.startsWith("/tbc")) return;
     const abort = new AbortController();
     setError(false);
     fetch(apiUrl("/api/guild"), { signal: abort.signal })
@@ -46,28 +44,20 @@ function App() {
     return () => abort.abort();
   }, [path, attempt]);
   useEffect(() => {
-    document.title =
-      path === "/" ? "WoW Forever · LGP Chronicle" : "WoW TBC · LGP Chronicle";
+    document.title = "WoW Forever · La Ganga · LGP Chronicle";
   }, [path]);
-  if (path === "/") return <Home />;
-  if (!path.startsWith("/tbc"))
-    return (
-      <Shell>
-        <main className="page-width panel">
-          <h1>Ese portal no existe</h1>
-          <a href={siteHref("/")}>Volver a Forever</a>
-        </main>
-      </Shell>
-    );
+
   let id = "";
-  try {
-    id = decodeURIComponent(path.slice("/tbc/character/".length)).normalize(
-      "NFC",
-    );
-  } catch {}
+  const charPrefix = "/character/";
+  if (path.startsWith(charPrefix)) {
+    try {
+      id = decodeURIComponent(path.slice(charPrefix.length)).normalize("NFC");
+    } catch {}
+  }
   const member = data?.members.find((m) => m.id === id);
+
   return (
-    <Shell campaign="tbc">
+    <Shell>
       {error && (
         <div className="page-width notice" role="alert">
           No hemos podido consultar el archivo.{" "}
@@ -83,16 +73,16 @@ function App() {
       {!data ? (
         <main className="page-width panel" aria-busy={!error}>
           <h2>{error ? "El archivo no responde" : "Invocando al escriba…"}</h2>
-          <p>Consultando los datos guardados de la compañía.</p>
+          <p>Consultando los datos guardados de la hermandad.</p>
         </main>
-      ) : path === "/tbc" ? (
+      ) : path === "/" || path === "" ? (
         <Dashboard key={data.generatedAt} initial={data} />
       ) : member ? (
         <CharacterDetail member={member} members={data.members} />
       ) : (
         <main className="page-width panel">
           <h2>Personaje no encontrado</h2>
-          <a href={siteHref("/tbc")}>Volver a la compañía</a>
+          <a href={siteHref("/")}>Volver a la hermandad</a>
         </main>
       )}
     </Shell>

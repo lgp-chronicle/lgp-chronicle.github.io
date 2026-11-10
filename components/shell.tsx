@@ -1,11 +1,9 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
-import { ArrowUpRight } from "lucide-react";
+import { guildConfig } from "@/config/characters";
 export function Shell({
   children,
-  campaign = "forever",
 }: {
   children: React.ReactNode;
-  campaign?: string;
 }) {
   return (
     <>
@@ -16,23 +14,14 @@ export function Shell({
             LGP · CHRONICLE<small>NUESTRA HISTORIA EN AZEROTH</small>
           </span>
         </a>
-        <nav aria-label="Campaña" className="campaign-switch">
-          <a
-            className={campaign === "forever" ? "selected" : ""}
-            href={siteHref("/")}
-          >
-            WoW Forever <span>PRÓXIMAMENTE</span>
+        <nav aria-label="Guild" className="campaign-switch">
+          <a className="selected" href={siteHref("/")}>
+            WoW Forever
           </a>
-          <a
-            className={campaign === "tbc" ? "selected" : ""}
-            href={siteHref("/tbc")}
-          >
-            WoW TBC <ArrowUpRight size={15} />
-          </a>
+          <span className="header-note">
+            {guildConfig.name.toUpperCase()} · EU
+          </span>
         </nav>
-        <span className="header-note">
-          {campaign === "tbc" ? "EU / SPINESHATTER" : "REALMLESS"}
-        </span>
       </header>
       {children}
       <footer>
