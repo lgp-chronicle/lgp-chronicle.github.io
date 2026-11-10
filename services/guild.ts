@@ -1,22 +1,13 @@
-import { characters, characterId } from "../config/characters";
+import { characterId } from "../config/characters";
 import { database } from "../db/client";
 import type { GuildData, Member, Activity } from "../features/types";
 export async function readGuild(): Promise<GuildData> {
   const now = new Date().toISOString();
-  const fallback: Member[] = characters
-    .filter((c) => c.campaign === "tbc")
-    .map((c) => ({
-      ...c,
-      id: characterId(c),
-      data: {},
-      history: [],
-      status: "pending",
-    }));
   try {
     const db = database();
     const rows = await db
       .prepare("SELECT * FROM characters WHERE campaign_id = ?")
-      .bind("tbc")
+      .bind("forever")
       .all<Record<string, any>>();
     const snapshots = await db
       .prepare(
@@ -33,24 +24,26 @@ export async function readGuild(): Promise<GuildData> {
     const events = await db
       .prepare("SELECT data FROM activity_events ORDER BY at DESC LIMIT 250")
       .all<{ data: string }>();
+
+    const members: Member[] = rows.results.map((r) => ({
+      id: r.id,
+      name: r.name,
+      realm: r.realm,
+      region: r.region,
+      armory: `https://worldofwarcraft.blizzard.com/es-es/classic/eu/armory/character/${encodeURIComponent(r.realm)}/${encodeURIComponent(r.name.toLowerCase())}`,
+      addedAt: r.added_at,
+      data: JSON.parse(r.profile),
+      logs: r.logs ? JSON.parse(r.logs) : undefined,
+      checkedAt: r.checked_at,
+      status: r.status,
+      errors: JSON.parse(r.errors),
+      history: snapshots.results
+        .filter((x) => x.character_id === r.id)
+        .map((x) => ({ at: x.at, data: JSON.parse(x.data) })),
+    }));
+
     return {
-      members: fallback.map((c) => {
-        const r = rows.results.find((x) => x.id === c.id);
-        return r
-          ? {
-              ...c,
-              addedAt: r.added_at,
-              data: JSON.parse(r.profile),
-              logs: r.logs ? JSON.parse(r.logs) : undefined,
-              checkedAt: r.checked_at,
-              status: r.status,
-              errors: JSON.parse(r.errors),
-              history: snapshots.results
-                .filter((x) => x.character_id === c.id)
-                .map((x) => ({ at: x.at, data: JSON.parse(x.data) })),
-            }
-          : c;
-      }),
+      members,
       events: events.results.map((x) => JSON.parse(x.data) as Activity),
       available: true,
       generatedAt: now,
@@ -61,7 +54,7 @@ export async function readGuild(): Promise<GuildData> {
       e instanceof Error ? e.name : "error",
     );
     return {
-      members: fallback,
+      members: [],
       events: [],
       available: false,
       message:

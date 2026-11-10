@@ -78,9 +78,9 @@ export function Dashboard({ initial }: { initial: GuildData }) {
     <main className="page-width">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">CAPÍTULO ACTIVO · CLASSIC ANNIVERSARY</p>
+          <p className="eyebrow">CAPÍTULO ACTIVO · WOW FOREVER</p>
           <h2 className="section-title">
-            WoW TBC <span style={{ color: "#78a6d4" }}> / </span> La compañía
+            La Ganga <span style={{ color: "#78a6d4" }}> / </span> La hermandad
           </h2>
           <p className="subheading">
             Un vistazo para saber cómo van los tuyos.
@@ -94,7 +94,7 @@ export function Dashboard({ initial }: { initial: GuildData }) {
       {(!data.available || m.every((x) => !x.data.observedAt)) && (
         <div className="notice">
           {data.available
-            ? "La compañía está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
+            ? "La hermandad está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
             : data.message}
         </div>
       )}
@@ -123,7 +123,7 @@ export function Dashboard({ initial }: { initial: GuildData }) {
       <Tabs defaultValue="overview">
         <TabsList className="nav-tabs">
           {[
-            ["overview", "La compañía"],
+            ["overview", "La hermandad"],
             ["race", "Leveling Race"],
             ["history", "Progresión"],
             ["awards", "Salón de la fama"],
@@ -283,7 +283,7 @@ export function Dashboard({ initial }: { initial: GuildData }) {
           <section className="panel">
             <h3>Warcraft Logs · La mesa de raid</h3>
             <p className="subheading">
-              Informes públicos de Anniversary. Cada ficha conserva su fuente y
+              Informes públicos de Classic Era. Cada ficha conserva su fuente y
               fecha.
             </p>
             {m.some((x) => x.logs) ? (

@@ -28,8 +28,8 @@ export function CharacterDetail({
     l = leveling(m);
   return (
     <main className="page-width">
-      <a className="back-link" href={siteHref("/tbc")}>
-        ← Volver a la compañía
+      <a className="back-link" href={siteHref("/")}>
+        ← Volver a la hermandad
       </a>
       <div
         className="character-banner"
@@ -47,7 +47,7 @@ export function CharacterDetail({
         </div>
         <div>
           <p className="eyebrow">
-            {m.region.toUpperCase()} · {m.realm} · TBC ANNIVERSARY
+            {m.region.toUpperCase()} · {m.realm} · WOW FOREVER
           </p>
           <h1 style={{ color: color(m) }}>{m.name}</h1>
           <p className="muted">

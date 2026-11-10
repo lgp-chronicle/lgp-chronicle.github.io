@@ -10,7 +10,7 @@ const config = {
   name: "Hékate",
   realm: "spineshatter",
   region: "eu" as const,
-  campaign: "tbc" as const,
+  campaign: "forever" as const,
 };
 const env = {
   BLIZZARD_CLIENT_ID: "TEST-ONLY",
@@ -54,7 +54,7 @@ test("Blizzard Classic namespace, accented name, advertised resources only and p
       urls.some(
         (u) =>
           u.includes("h%C3%A9kate") &&
-          u.includes("namespace=profile-classicann-eu"),
+        u.includes("namespace=profile-classic1x-eu"),
       ),
     );
     assert.ok(urls.every((u) => !u.includes("/professions")));
@@ -77,38 +77,38 @@ test("Classic talents select only the active group and preserve tied primary tre
   globalThis.fetch = async (input) =>
     String(input).includes("/specializations?")
       ? response({
-          specialization_groups: [
-            {
-              is_active: false,
-              specializations: [
-                { specialization_name: "TEST-INACTIVE", spent_points: 61 },
-              ],
-            },
-            {
-              is_active: true,
-              specializations: [
-                {
-                  specialization_name: "TEST-A",
-                  spent_points: 20,
-                  talents: [
-                    {
-                      talent_rank: 3,
-                      spell_tooltip: { spell: { name: "TEST-TALENT" } },
-                    },
-                  ],
-                },
-                { specialization_name: "TEST-B", spent_points: 20 },
-              ],
-            },
-          ],
-        })
-      : response({
-          name: config.name,
-          realm: { slug: config.realm },
-          specializations: {
-            href: "https://eu.api.blizzard.com/specializations",
+        specialization_groups: [
+          {
+            is_active: false,
+            specializations: [
+              { specialization_name: "TEST-INACTIVE", spent_points: 61 },
+            ],
           },
-        });
+          {
+            is_active: true,
+            specializations: [
+              {
+                specialization_name: "TEST-A",
+                spent_points: 20,
+                talents: [
+                  {
+                    talent_rank: 3,
+                    spell_tooltip: { spell: { name: "TEST-TALENT" } },
+                  },
+                ],
+              },
+              { specialization_name: "TEST-B", spent_points: 20 },
+            ],
+          },
+        ],
+      })
+      : response({
+        name: config.name,
+        realm: { slug: config.realm },
+        specializations: {
+          href: "https://eu.api.blizzard.com/specializations",
+        },
+      });
   try {
     const result = await blizzard(config, env, {});
     assert.equal(result.data.spec, "TEST-A / TEST-B");
