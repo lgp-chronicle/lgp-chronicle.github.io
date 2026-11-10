@@ -8,7 +8,8 @@ import {
 import { overtakeEvents, measurements } from "../features/observations";
 const config = {
   name: "Hékate",
-  realm: "spineshatter",
+  slug: "hékate",
+  realm: "jcj",
   region: "eu" as const,
   campaign: "forever" as const,
 };
@@ -54,7 +55,7 @@ test("Blizzard Classic namespace, accented name, advertised resources only and p
       urls.some(
         (u) =>
           u.includes("h%C3%A9kate") &&
-        u.includes("namespace=profile-classic1x-eu"),
+          u.includes("namespace=profile-forever-eu"),
       ),
     );
     assert.ok(urls.every((u) => !u.includes("/professions")));
@@ -62,10 +63,10 @@ test("Blizzard Classic namespace, accented name, advertised resources only and p
     globalThis.fetch = real;
   }
 });
-test("Blizzard rejects a same-name character on the wrong realm", async () => {
+test("Blizzard rejects character with mismatched identity", async () => {
   const real = globalThis.fetch;
   globalThis.fetch = async () =>
-    response({ name: "Hékate", realm: { slug: "other" }, level: 70 });
+    response({ name: "OtherName", level: 70 });
   try {
     await assert.rejects(() => blizzard(config, env, {}), /identity-mismatch/);
   } finally {
@@ -141,7 +142,7 @@ test("Report membership requires correct server and confirmed participation", ()
     startTime: 1000,
     masterData: {
       actors: [
-        { id: 1, name: "Hékate", type: "Player", server: "Spineshatter" },
+        { id: 1, name: "Hékate", type: "Player", server: "JcJ" },
         { id: 2, name: "Hékate", type: "Player", server: "Other" },
       ],
     },

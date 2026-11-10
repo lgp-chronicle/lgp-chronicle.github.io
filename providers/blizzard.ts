@@ -30,11 +30,12 @@ const RACE_NAMES: Record<number, string> = {
   8: "Trol",
 };
 
-/** Fetch guild roster from Blizzard API and return member names + realms + base profile info. */
+/** Fetch guild roster from Blizzard API for WoW Forever. */
 export async function fetchGuildRoster(
   s: Record<string, string | undefined>,
 ): Promise<{
   name: string;
+  slug: string;
   realm: string;
   level?: number;
   classId?: number;
@@ -50,7 +51,7 @@ export async function fetchGuildRoster(
   );
   const ns = s.BLIZZARD_NAMESPACE ?? guildConfig.namespace;
   const guildSlug = guildConfig.name.toLowerCase().replace(/\s+/g, "-");
-  const url = `https://${guildConfig.region}.api.blizzard.com/data/wow/guild/${encodeURIComponent(guildConfig.realm)}/${encodeURIComponent(guildSlug)}/roster?namespace=${encodeURIComponent(ns)}&locale=es_ES`;
+  const url = `https://${guildConfig.region}.api.blizzard.com/data/wow/guild/${encodeURIComponent(guildSlug)}/roster?namespace=${encodeURIComponent(ns)}&locale=es_ES`;
   const r = await request(url, {
     headers: { Authorization: `Bearer ${auth}` },
   });
@@ -61,14 +62,16 @@ export async function fetchGuildRoster(
     .map((m: any) => {
       const classId = m.character.playable_class?.id;
       const raceId = m.character.playable_race?.id;
+      const slug = m.character.slug ?? m.character.name.toLowerCase();
       return {
         name: m.character.name as string,
-        realm: (m.character.realm?.slug ?? guildConfig.realm) as string,
+        slug,
+        realm: guildConfig.realm,
         level: numeric(m.character.level) ? m.character.level : undefined,
         classId,
         className: classId ? CLASS_NAMES[classId] : undefined,
         raceId,
-        race: raceId ? RACE_NAMES[raceId] : undefined,
+        race: raceId ? (RACE_NAMES[raceId] ?? name(m.character.playable_race)) : undefined,
         faction: m.character.faction?.type === "ALLIANCE" ? "Alianza" : m.character.faction?.type === "HORDE" ? "Horda" : undefined,
       };
     });
@@ -90,10 +93,10 @@ export async function blizzard(
     s.BLIZZARD_CLIENT_SECRET,
   );
   const now = new Date().toISOString();
-  const base = `https://${c.region}.api.blizzard.com/profile/wow/character/${encodeURIComponent(c.realm)}/${encodeURIComponent(c.name.toLowerCase())}`;
   const ns = s.BLIZZARD_NAMESPACE ?? guildConfig.namespace;
-  if (!ns.startsWith("profile-classic1x-"))
-    throw new ProviderError("wrong-campaign-namespace");
+  const characterSlug = c.slug || c.name.toLowerCase();
+  const base = `https://${c.region}.api.blizzard.com/profile/wow/character/${encodeURIComponent(characterSlug)}`;
+  
   const read = async (path: string) => {
     const u = new URL(base + path);
     u.searchParams.set("namespace", ns);
@@ -109,8 +112,7 @@ export async function blizzard(
   const { json: p, modified } = await read("");
   if (
     typeof p.name !== "string" ||
-    p.name.toLowerCase() !== c.name.toLowerCase() ||
-    p.realm?.slug !== c.realm
+    p.name.toLowerCase() !== c.name.toLowerCase()
   )
     throw new ProviderError("identity-mismatch");
   const data: Profile = {
@@ -321,7 +323,6 @@ export async function blizzard(
   ]);
   const errors: string[] = [];
   let retryAfter = 0;
-  // Follow only resources advertised by this Classic profile. Retail parity is not assumed.
   for (const [key, path, normalize] of resources) {
     if (!p[key]?.href) continue;
     try {

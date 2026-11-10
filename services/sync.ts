@@ -80,7 +80,7 @@ export async function sync(force = false) {
       ),
     );
 
-    // Discover characters from guild roster instead of hardcoded list
+    // Discover characters from guild roster
     let characters: (CharacterConfig & {
       initialLevel?: number;
       classId?: number;
@@ -92,7 +92,7 @@ export async function sync(force = false) {
       if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
       const roster = await fetchGuildRoster(s);
       characters = roster.map((m) => ({
-        ...rosterEntry(m.name, m.realm),
+        ...rosterEntry(m.name, m.slug, m.realm),
         initialLevel: m.level,
         classId: m.classId,
         className: m.className,
@@ -114,7 +114,7 @@ export async function sync(force = false) {
         .prepare("SELECT name,realm FROM characters WHERE campaign_id=?")
         .bind("forever")
         .all<{ name: string; realm: string }>();
-      characters = known.results.map((r) => rosterEntry(r.name, r.realm));
+      characters = known.results.map((r) => rosterEntry(r.name, r.name.toLowerCase(), r.realm));
       if (!characters.length) {
         return { status: "error", reason: "no-roster-and-no-fallback" };
       }
@@ -140,7 +140,7 @@ export async function sync(force = false) {
         .bind(id)
         .first<{ profile: string; logs: string | null }>();
       const old: Profile = JSON.parse(row?.profile ?? "{}");
-      
+
       // Seed with roster data if available
       if (c.initialLevel !== undefined && old.level === undefined) {
         old.level = c.initialLevel;

@@ -56,6 +56,7 @@ jobs:
         env:
           BLIZZARD_CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
+          BLIZZARD_NAMESPACE: 'profile-forever-eu'
           WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
           WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
           SYNC_INTERVAL_MINUTES: '10'
