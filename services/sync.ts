@@ -81,11 +81,24 @@ export async function sync(force = false) {
     );
 
     // Discover characters from guild roster instead of hardcoded list
-    let characters: CharacterConfig[] = [];
+    let characters: (CharacterConfig & {
+      initialLevel?: number;
+      classId?: number;
+      className?: string;
+      race?: string;
+      faction?: string;
+    })[] = [];
     try {
       if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
       const roster = await fetchGuildRoster(s);
-      characters = roster.map((m) => rosterEntry(m.name, m.realm));
+      characters = roster.map((m) => ({
+        ...rosterEntry(m.name, m.realm),
+        initialLevel: m.level,
+        classId: m.classId,
+        className: m.className,
+        race: m.race,
+        faction: m.faction,
+      }));
       console.log(`Guild roster: ${characters.length} members discovered.`);
     } catch (e) {
       if (e instanceof ProviderError && e.code === "rate-limited") {
@@ -127,6 +140,27 @@ export async function sync(force = false) {
         .bind(id)
         .first<{ profile: string; logs: string | null }>();
       const old: Profile = JSON.parse(row?.profile ?? "{}");
+      
+      // Seed with roster data if available
+      if (c.initialLevel !== undefined && old.level === undefined) {
+        old.level = c.initialLevel;
+      }
+      if (c.classId !== undefined && old.classId === undefined) {
+        old.classId = c.classId;
+      }
+      if (c.className && !old.className) {
+        old.className = c.className;
+      }
+      if (c.race && !old.race) {
+        old.race = c.race;
+      }
+      if (c.faction && !old.faction) {
+        old.faction = c.faction;
+      }
+      if (!old.observedAt) {
+        old.observedAt = at;
+      }
+
       let profile = old,
         logs: Logs | undefined = row?.logs ? JSON.parse(row.logs) : undefined;
       let profileOk = false,

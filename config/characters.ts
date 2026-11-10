@@ -10,7 +10,7 @@ export type CharacterConfig = {
 
 export const guildConfig = {
   name: "La Ganga",
-  realm: "lone-wolf",
+  realm: "soulseeker",
   region: "eu" as const,
   faction: "alliance" as const,
   namespace: "profile-classic1x-eu",

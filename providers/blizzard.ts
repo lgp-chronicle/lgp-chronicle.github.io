@@ -7,10 +7,42 @@ type Json = Record<string, any>;
 const name = (v: any): string | undefined =>
   typeof v === "string" ? v : typeof v?.name === "string" ? v.name : undefined;
 
-/** Fetch guild roster from Blizzard API and return member names + realms. */
+const CLASS_NAMES: Record<number, string> = {
+  1: "Guerrero",
+  2: "Paladín",
+  3: "Cazador",
+  4: "Pícaro",
+  5: "Sacerdote",
+  7: "Chamán",
+  8: "Mago",
+  9: "Brujo",
+  11: "Druida",
+};
+
+const RACE_NAMES: Record<number, string> = {
+  1: "Humano",
+  2: "Orco",
+  3: "Enano",
+  4: "Elfo de la noche",
+  5: "No-muerto",
+  6: "Tauren",
+  7: "Gnomo",
+  8: "Trol",
+};
+
+/** Fetch guild roster from Blizzard API and return member names + realms + base profile info. */
 export async function fetchGuildRoster(
   s: Record<string, string | undefined>,
-): Promise<{ name: string; realm: string; level?: number; classId?: number; race?: string }[]> {
+): Promise<{
+  name: string;
+  realm: string;
+  level?: number;
+  classId?: number;
+  className?: string;
+  raceId?: number;
+  race?: string;
+  faction?: string;
+}[]> {
   const auth = await token(
     "https://oauth.battle.net/token",
     s.BLIZZARD_CLIENT_ID,
@@ -26,13 +58,20 @@ export async function fetchGuildRoster(
   if (!Array.isArray(j.members)) throw new ProviderError("invalid-roster");
   return j.members
     .filter((m: any) => m.character?.name)
-    .map((m: any) => ({
-      name: m.character.name as string,
-      realm: (m.character.realm?.slug ?? guildConfig.realm) as string,
-      level: numeric(m.character.level) ? m.character.level : undefined,
-      classId: m.character.playable_class?.id,
-      race: name(m.character.playable_race),
-    }));
+    .map((m: any) => {
+      const classId = m.character.playable_class?.id;
+      const raceId = m.character.playable_race?.id;
+      return {
+        name: m.character.name as string,
+        realm: (m.character.realm?.slug ?? guildConfig.realm) as string,
+        level: numeric(m.character.level) ? m.character.level : undefined,
+        classId,
+        className: classId ? CLASS_NAMES[classId] : undefined,
+        raceId,
+        race: raceId ? RACE_NAMES[raceId] : undefined,
+        faction: m.character.faction?.type === "ALLIANCE" ? "Alianza" : m.character.faction?.type === "HORDE" ? "Horda" : undefined,
+      };
+    });
 }
 
 export async function blizzard(
