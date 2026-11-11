@@ -1,5 +1,6 @@
 import catalog from "../config/armory-catalog.json";
-import type { Equipment, Talent } from "./types";
+import tooltipCatalog from "../config/item-tooltips.json";
+import type { Equipment, ItemProperties, Talent } from "./types";
 
 type KnownTalent = {
   tree: string;
@@ -12,6 +13,7 @@ const talents: Record<string, Record<string, KnownTalent>> = catalog.talents;
 const icons: Record<string, string | number> = catalog.items;
 export const characterRenders: Record<string, string> = catalog.renders;
 const effects: Record<string, KnownEffects> = catalog.itemEffects;
+const propertiesByItemLevel: Record<string, ItemProperties> = tooltipCatalog;
 
 export type Entity = "item" | "spell";
 export function wowheadUrl(kind: Entity, id: number | undefined, name: string) {
@@ -40,6 +42,10 @@ export function itemDisplay(item: Equipment) {
     ...details.filter((line) => known?.stats?.includes(line)),
   ];
   return {
+    properties:
+      item.properties ??
+      propertiesByItemLevel[item.id + "-" + item.itemLevel] ??
+      {},
     icon: item.icon ?? catalogIcon(item.id ? icons[item.id] : undefined),
     effects: visibleEffects,
     details: details.filter((line) => !visibleEffects.includes(line)),

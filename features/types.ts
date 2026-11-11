@@ -1,3 +1,15 @@
+export type ItemProperties = {
+  binding?: string;
+  unique?: string;
+  inventoryType?: string;
+  subclass?: string;
+  damage?: string;
+  speed?: string;
+  dps?: string;
+  requirement?: string;
+  durability?: string;
+  setName?: string;
+};
 export type Equipment = {
   slot: string;
   slotType?: string;
@@ -9,6 +21,7 @@ export type Equipment = {
   details?: string[];
   effects?: string[];
   setBonuses?: string[];
+  properties?: ItemProperties;
 };
 export type Talent = {
   name: string;

@@ -15,7 +15,7 @@ import { Pick, Empty } from "@/components/guild-ui";
 import { display, ago } from "./analytics";
 import { type Member } from "./types";
 export function Roster({ members }: { members: Member[] }) {
-  const [layout, setLayout] = useState("cards");
+  const [layout, setLayout] = useState("table");
   const [search, setSearch] = useState(""),
     [cls, setCls] = useState("all"),
     [sort, setSort] = useState("level"),
@@ -91,8 +91,8 @@ export function Roster({ members }: { members: Member[] }) {
       <div className="roster-controls">
         <div className="view-toggle" aria-label="Vista de la hermandad">
           {[
-            ["cards", "Tarjetas"],
             ["table", "Tabla"],
+            ["cards", "Tarjetas"],
           ].map(([key, label]) => (
             <button
               key={key}

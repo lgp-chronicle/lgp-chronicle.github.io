@@ -1112,38 +1112,10 @@ main.page-width.panel {
 .entry-external {
   color: #c1b95b;
 }
-.item-effects,
-.item-details ul,
 .personal-titles {
   padding: 0;
   margin: 0;
   list-style: none;
-}
-.item-effects {
-  margin: 0 11px 9px;
-  border-left: 2px solid #718e5a;
-  padding-left: 9px;
-  color: #b6d79f;
-  font-size: 13px;
-  line-height: 1.45;
-}
-.item-effects li + li,
-.item-details li + li {
-  margin-top: 4px;
-}
-.item-details {
-  font-size: 12px;
-  padding: 0 11px 9px;
-}
-.item-details summary {
-  width: fit-content;
-  padding-block: 3px;
-}
-.item-details ul,
-.item-details strong {
-  display: block;
-  color: #cecca2;
-  margin-top: 5px;
 }
 .talent-trees {
   display: grid;
@@ -1387,10 +1359,6 @@ footer {
   background: linear-gradient(120deg, #394d30, #263823);
 }
 
-.item-effects {
-  color: #b6dc9f;
-  border-color: #80a56b;
-}
 .dossier-heading {
   border-color: #687240;
 }

@@ -138,6 +138,10 @@ test("legacy items and talents recover metadata; current observations take prece
   assert.match(itemDisplay(item).effects.join(" "), /Naturaleza/);
   assert.deepEqual(itemDisplay({ ...item, effects: [] }).effects, []);
   assert.deepEqual(itemDisplay(item).details, item.details);
+  const cloak = { ...item, itemLevel: 22 };
+  assert.equal(itemDisplay(cloak).properties.requirement, "Necesitas ser de nivel 17");
+  assert.deepEqual(itemDisplay({ ...cloak, itemLevel: 99 }).properties, {});
+  assert.deepEqual(itemDisplay({ ...cloak, properties: { durability: "16 / 18" } }).properties, { durability: "16 / 18" });
   const talent = talentDisplay("Baluarte · 3 puntos", 2);
   assert.equal(talent.spellId, 20127);
   assert.equal(talent.rank, 3);
@@ -152,6 +156,7 @@ test("equipment synchronization keeps spells, on-equip stats and conditional set
   globalThis.fetch = async input => String(input).includes("/equipment?")
     ? response({equipped_items: [{
       slot: { name: "Cuello", type: "NECK" }, item: {id: 456}, name: "Test",
+      binding: {name:"Se liga al recogerlo"}, is_subclass_hidden:true, item_subclass:{name:"Misceláneo"},
       stats: [{display:{display_string:"+5 aguante"}}, {is_equip_bonus:true, display:{display_string:"+7 Poder con hechizos"}}],
       spells: [{description:"Equipar: Devuelve daño."},{description:"Usar: Recuperas maná."}],
       set: {effects:[{display_string:"(2) Bonif.: +5 aguante"}]},
@@ -159,6 +164,8 @@ test("equipment synchronization keeps spells, on-equip stats and conditional set
   try {
     const item = (await blizzard(config, env, {})).data.equipment![0];
     assert.equal(item.slotType,"NECK");
+    assert.equal(item.properties?.binding, "Se liga al recogerlo");
+    assert.equal(item.properties?.subclass, undefined);
     assert.deepEqual(item.details,["+5 aguante"]);
     assert.deepEqual(item.effects,["+7 Poder con hechizos","Equipar: Devuelve daño.","Usar: Recuperas maná."]);
     assert.deepEqual(item.setBonuses,["(2) Bonif.: +5 aguante"]);

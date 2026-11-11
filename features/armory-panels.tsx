@@ -14,17 +14,7 @@ import { SlotIcon, slotInfo } from "./slot-icon";
 import type { Equipment, Profile, Member } from "./types";
 
 import { Portrait, fullName } from "./member-portrait";
-
-const quality: Record<string, [string, string]> = {
-  POOR: ["Pobre", "#b7afaa"],
-  COMMON: ["Común", "#ebe2cf"],
-  UNCOMMON: ["Poco común", "#98d778"],
-  RARE: ["Raro", "#8ab7fc"],
-  EPIC: ["Épico", "#c99aff"],
-  LEGENDARY: ["Legendario", "#ffb151"],
-  ARTIFACT: ["Artefacto", "#e5c88a"],
-  HEIRLOOM: ["Reliquia", "#82d6e9"],
-};
+import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
 const iconRequests = new Map<string, Promise<string | undefined>>();
 function lookupIcon(kind: Entity, id: number) {
   const key = kind + "/" + id;
@@ -147,12 +137,16 @@ function ItemSlot({
   label,
   item,
   selected,
-  onSelect,
+  hasPinnedItem,
+  side,
+  onPinChange,
 }: {
   label: string;
   item?: Equipment;
   selected: boolean;
-  onSelect: () => void;
+  hasPinnedItem: boolean;
+  side: "left" | "right" | "top";
+  onPinChange: (open: boolean) => void;
 }) {
   const slot = slotInfo(label, item?.slotType);
   if (!item)
@@ -172,36 +166,40 @@ function ItemSlot({
       </div>
     );
   const { icon } = itemDisplay(item);
-  const tint = quality[item.quality ?? ""]?.[1] ?? "#e7d09b";
+  const [, tint] = itemQuality(item);
   return (
     <div
       className="item-slot equipped"
       data-selected={selected}
       style={{ "--rarity": tint } as CSSProperties}
     >
-      <button
-        type="button"
-        className="select-gear"
-        aria-pressed={selected}
-        aria-controls="equipped-item-detail"
-        onClick={onSelect}
-        aria-label={label + " · " + item.name}
-        title={label + " · " + item.name}
+      <EquipmentTooltip
+        item={item}
+        side={side}
+        pinned={selected}
+        hasPinnedItem={hasPinnedItem}
+        onPinChange={onPinChange}
       >
-        <GameIcon
-          key={item.id + String(icon)}
-          kind="item"
-          id={item.id}
-          src={icon}
-        />
-        <span className="slot-copy">
-          <span className="slot-label">
-            <SlotIcon path={slot.path} />
-            {label}
+        <button
+          type="button"
+          className="select-gear"
+          aria-label={label + " · " + item.name}
+        >
+          <GameIcon
+            key={item.id + String(icon)}
+            kind="item"
+            id={item.id}
+            src={icon}
+          />
+          <span className="slot-copy">
+            <span className="slot-label">
+              <SlotIcon path={slot.path} />
+              {label}
+            </span>
+            <strong>{item.name}</strong>
           </span>
-          <strong>{item.name}</strong>
-        </span>
-      </button>
+        </button>
+      </EquipmentTooltip>
       <a
         className="slot-external"
         href={wowheadUrl("item", item.id, item.name)}
@@ -244,19 +242,25 @@ export function EquipmentPanel({ member }: { member: Member }) {
       bySlot.set(label, i);
     else extra.push(i);
   }
-  const selected =
-    chosen !== undefined && items[chosen]
-      ? chosen
-      : (bySlot.get("Mano principal") ?? 0);
-  const item = items[selected],
-    details = itemDisplay(item);
   const renderSlot = (label: string, index: number | undefined) => (
     <ItemSlot
       key={index ?? label}
       label={label}
       item={index === undefined ? undefined : items[index]}
-      selected={index === selected}
-      onSelect={() => setChosen(index)}
+      selected={index !== undefined && index === chosen}
+      hasPinnedItem={chosen !== undefined}
+      side={
+        leftSlots.includes(label)
+          ? "right"
+          : rightSlots.includes(label)
+            ? "left"
+            : "top"
+      }
+      onPinChange={(open) =>
+        setChosen((current) =>
+          open ? index : current === index ? undefined : current,
+        )
+      }
     />
   );
   return (
@@ -280,67 +284,6 @@ export function EquipmentPanel({ member }: { member: Member }) {
         {weaponSlots.map((label) => renderSlot(label, bySlot.get(label)))}
         {extra.map((i) => renderSlot(items[i].slot, i))}
       </div>
-      <section
-        id="equipped-item-detail"
-        className="inspected-item"
-        aria-label="Pieza seleccionada"
-        aria-live="polite"
-      >
-        <div className="inspect-title">
-          <h3 style={{ color: quality[item.quality ?? ""]?.[1] }}>
-            {item.name}
-          </h3>
-          <p>
-            {[
-              item.slot,
-              quality[item.quality ?? ""]?.[0],
-              item.itemLevel !== undefined &&
-                "Nivel de objeto " + item.itemLevel,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-          <a
-            href={wowheadUrl("item", item.id, item.name)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {item.id ? "Ver en Wowhead" : "Buscar en Wowhead"}{" "}
-            <ExternalLink size={13} aria-hidden="true" />
-          </a>
-        </div>
-        <div>
-          {details.effects.length > 0 && (
-            <ul className="item-effects" aria-label="Efectos del objeto">
-              {details.effects.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          )}
-          {details.details.length > 0 && (
-            <ul className="inspect-stats">
-              {details.details.map((line, i) => (
-                <li key={i}>{line}</li>
-              ))}
-            </ul>
-          )}
-          {details.sets.length > 0 && (
-            <details className="item-details">
-              <summary>Bonificaciones de conjunto</summary>
-              <ul>
-                {details.sets.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-            </details>
-          )}
-          {!details.effects.length &&
-            !details.details.length &&
-            !details.sets.length && (
-              <p className="muted">Sin efectos ni estadísticas registrados.</p>
-            )}
-        </div>
-      </section>
     </section>
   );
 }

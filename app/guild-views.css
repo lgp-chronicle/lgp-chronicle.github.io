@@ -568,40 +568,104 @@
   gap: 6px;
   margin: 9px 0 12px;
 }
-.inspected-item {
-  display: grid;
-  grid-template-columns: minmax(140px, 1fr) 2fr;
-  gap: 20px;
-  padding: 15px;
-  background: #1b2b20;
-  border: 1px solid #6f7148;
+.wow-item-card {
+  position: relative;
+  z-index: 60;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 24px));
+  max-height: min(76dvh, var(--radix-popper-available-height, 76dvh));
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-wrap: anywhere;
+  padding: 10px 13px;
+  border: 2px solid;
+  border-color: #b7b8c2 #737582 #838590 #a3a4af;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #111026fa, #070813fc 55%);
+  box-shadow:
+    inset 0 0 0 1px #37354b,
+    0 0 0 1px #101017,
+    0 4px 14px #000a;
+  color: #f3f2f5;
+  font:
+    14px/1.34 Arial,
+    Helvetica,
+    sans-serif;
+  text-shadow: 1px 1px 1px #000;
 }
-.inspected-item .inspect-title h3 {
-  font-size: 23px;
-}
-.inspect-title p,
-.inspect-stats {
-  font-size: 12px;
-  color: #c9d0b4;
-}
-.inspect-title a {
-  display: inline-flex;
-  gap: 7px;
-  align-items: center;
-  padding-block: 6px;
-  font-size: 13px;
-  color: #f8d777;
-}
-.inspect-stats {
+.wow-item-card p,
+.wow-item-card ul {
   margin: 0;
-  list-style: none;
   padding: 0;
 }
-.inspected-item .item-effects {
-  margin: 0 0 5px;
+.wow-item-card ul {
+  list-style: none;
 }
-.inspected-item .item-details {
-  padding: 4px 0 0;
+.wow-item-card .wow-item-name {
+  color: var(--wow-rarity);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.wow-item-pinned .wow-item-name {
+  padding-right: 25px;
+}
+.wow-item-level,
+.wow-item-set > p {
+  color: #ffd100;
+}
+.wow-item-pair {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+.wow-item-card .wow-item-effects {
+  color: #1eff00;
+  margin-top: 4px;
+}
+.wow-item-card .wow-item-set {
+  margin-top: 7px;
+}
+.wow-item-set ul {
+  padding-left: 7px;
+  color: #c0bec6;
+}
+.wow-item-close {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #c1c1cc;
+  background: transparent;
+  border: 0;
+}
+.wow-item-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #393844;
+  margin-top: 8px;
+  padding-top: 7px;
+  color: #ffd980;
+  font-size: 12px;
+}
+.wow-item-close:hover,
+.wow-item-link:hover {
+  color: #fff;
+}
+@media (pointer: coarse) {
+  .wow-item-close {
+    width: 36px;
+    height: 36px;
+  }
+  .wow-item-link {
+    min-height: 36px;
+  }
 }
 @media (max-width: 1050px) {
   .member-grid {
@@ -753,10 +817,6 @@
   }
   .weapon-rack .slot-copy {
     font-size: 10px;
-  }
-  .inspected-item {
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
   .armory-panel.panel {
     padding-inline: 11px;

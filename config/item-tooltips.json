@@ -1,0 +1,1323 @@
+{
+  "38-1": {
+    "inventoryType": "Camisola"
+  },
+  "45-1": {
+    "inventoryType": "Camisola"
+  },
+  "49-1": {
+    "inventoryType": "Camisola"
+  },
+  "53-1": {
+    "inventoryType": "Camisola"
+  },
+  "148-1": {
+    "inventoryType": "Camisola"
+  },
+  "154-1": {
+    "inventoryType": "Camisola"
+  },
+  "796-10": {
+    "inventoryType": "Pies",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "859-17": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Camisola"
+  },
+  "860-13": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela"
+  },
+  "983-9": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela"
+  },
+  "1076-26": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "1156-22": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "1182-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Mallas"
+  },
+  "1292-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Una mano",
+    "subclass": "Hacha",
+    "damage": "19 - 36 Daño",
+    "speed": "Velocidad 1,70",
+    "dps": "(16,2 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 20"
+  },
+  "1319-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "1360-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Mallas"
+  },
+  "1364-5": {
+    "inventoryType": "Pecho",
+    "subclass": "Cuero"
+  },
+  "1370-4": {
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero"
+  },
+  "1429-6": {
+    "inventoryType": "Espalda"
+  },
+  "1497-14": {
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 9"
+  },
+  "1502-14": {
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 9"
+  },
+  "1561-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela"
+  },
+  "1764-17": {
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "1769-20": {
+    "inventoryType": "Hombro",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "1793-20": {
+    "inventoryType": "Hombro",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "1945-18": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "2033-28": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero"
+  },
+  "2036-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero"
+  },
+  "2041-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero"
+  },
+  "2042-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "36 - 55 Daño",
+    "speed": "Velocidad 3,00",
+    "dps": "(15,2 daño por segundo)"
+  },
+  "2140-11": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Una mano",
+    "subclass": "Daga",
+    "damage": "6 - 13 Daño",
+    "speed": "Velocidad 1,60",
+    "dps": "(5,9 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 6"
+  },
+  "2237-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero"
+  },
+  "2238-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela"
+  },
+  "2280-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "39 - 60 Daño",
+    "speed": "Velocidad 2,80",
+    "dps": "(17,7 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 24"
+  },
+  "2300-12": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 7"
+  },
+  "2302-8": {
+    "inventoryType": "Pies",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 3"
+  },
+  "2303-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "2326-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Tela"
+  },
+  "2575-10": {
+    "inventoryType": "Camisola"
+  },
+  "2645-7": {
+    "inventoryType": "Manos",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 2"
+  },
+  "2690-5": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Mallas"
+  },
+  "2691-5": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas"
+  },
+  "2817-12": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero"
+  },
+  "2848-22": {
+    "inventoryType": "Una mano",
+    "subclass": "Maza",
+    "damage": "20 - 38 Daño",
+    "speed": "Velocidad 2,60",
+    "dps": "(11,2 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "2857-18": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "2905-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "2910-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas"
+  },
+  "2933-31": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo"
+  },
+  "2957-11": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 6"
+  },
+  "2958-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "2962-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "2970-16": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 11"
+  },
+  "2976-15": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 10"
+  },
+  "2977-16": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pecho",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 11"
+  },
+  "2982-20": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "2992-20": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "3160-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano secundaria",
+    "subclass": "Escudo"
+  },
+  "3161-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela"
+  },
+  "3214-9": {
+    "inventoryType": "Muñeca",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 4"
+  },
+  "3217-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela"
+  },
+  "3375-12": {
+    "inventoryType": "Muñeca",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 7"
+  },
+  "3431-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero"
+  },
+  "3469-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 4"
+  },
+  "3480-22": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "3481-25": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 20"
+  },
+  "3493-30": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "A distancia",
+    "subclass": "Arco",
+    "damage": "24 - 46 Daño",
+    "speed": "Velocidad 2,90",
+    "dps": "(12,1 daño por segundo)"
+  },
+  "3562-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero"
+  },
+  "3647-23": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "4237-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "4362-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "A distancia",
+    "subclass": "Arma de fuego",
+    "damage": "6 - 13 Daño",
+    "speed": "Velocidad 2,30",
+    "dps": "(4,1 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "4368-20": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cabeza",
+    "subclass": "Tela"
+  },
+  "4385-30": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cabeza",
+    "subclass": "Tela"
+  },
+  "4566-13": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "20 - 30 Daño",
+    "speed": "Velocidad 2,80",
+    "dps": "(8,9 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 8"
+  },
+  "4699-18": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "4705-27": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "4708-24": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "4711-28": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 23"
+  },
+  "4715-27": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "5069-12": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "A distancia",
+    "subclass": "Varita",
+    "damage": "9 - 17 Fuego Daño",
+    "speed": "Velocidad 1,50",
+    "dps": "(8,7 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 7"
+  },
+  "5107-14": {
+    "inventoryType": "Camisola"
+  },
+  "5191-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Una mano",
+    "subclass": "Espada",
+    "damage": "30 - 57 Daño",
+    "speed": "Velocidad 2,80",
+    "dps": "(15,5 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "5195-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "5202-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "5254-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Hombro",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "5315-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Tela"
+  },
+  "5394-5": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero"
+  },
+  "5591-11": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "5610-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "5812-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela"
+  },
+  "5944-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas"
+  },
+  "6087-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Mallas"
+  },
+  "6092-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero"
+  },
+  "6094-19": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Hacha",
+    "damage": "33 - 50 Daño",
+    "speed": "Velocidad 3,30",
+    "dps": "(12,6 daño por segundo)"
+  },
+  "6096-1": {
+    "inventoryType": "Camisola"
+  },
+  "6097-1": {
+    "inventoryType": "Camisola"
+  },
+  "6148-10": {
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "6256-1": {
+    "inventoryType": "Dos manos",
+    "subclass": "Caña de pescar",
+    "damage": "2 - 4 Daño",
+    "speed": "Velocidad 3,00",
+    "dps": "(1,0 daño por segundo)"
+  },
+  "6319-26": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "6320-26": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano secundaria",
+    "subclass": "Escudo",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "6321-26": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "6337-12": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 7"
+  },
+  "6340-27": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "6378-17": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "6379-17": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "6459-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "6463-24": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "6469-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "A distancia",
+    "subclass": "Arco",
+    "damage": "20 - 38 Daño",
+    "speed": "Velocidad 2,40",
+    "dps": "(12,1 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "6537-15": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 10"
+  },
+  "6539-16": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 11"
+  },
+  "6542-15": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 10"
+  },
+  "6546-17": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "6548-16": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 11"
+  },
+  "6552-19": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 14"
+  },
+  "6554-17": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "6562-21": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "6564-21": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "6568-24": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "6581-21": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "6583-21": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "6587-24": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "6591-27": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "6593-26": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "6601-28": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 23"
+  },
+  "6629-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "6631-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "34 - 51 Daño",
+    "speed": "Velocidad 2,90",
+    "dps": "(14,7 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "6633-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Una mano",
+    "subclass": "Espada",
+    "damage": "30 - 57 Daño",
+    "speed": "Velocidad 2,90",
+    "dps": "(15,0 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "6642-27": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "6743-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "6978-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano principal",
+    "subclass": "Hacha",
+    "damage": "14 - 28 Daño",
+    "speed": "Velocidad 2,70",
+    "dps": "(7,8 daño por segundo)"
+  },
+  "6998-27": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela"
+  },
+  "7000-27": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero"
+  },
+  "7277-9": {
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 4"
+  },
+  "7282-19": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 14"
+  },
+  "7415-29": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 24"
+  },
+  "7506-25": {
+    "binding": "Se liga al equiparlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Alhaja"
+  },
+  "7509-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela"
+  },
+  "7738-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela"
+  },
+  "8186-26": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "A distancia",
+    "subclass": "Varita",
+    "damage": "24 - 45 Sombras Daño",
+    "speed": "Velocidad 1,70",
+    "dps": "(20,3 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "9746-13": {
+    "inventoryType": "Manos",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 8"
+  },
+  "9777-19": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 14"
+  },
+  "9779-18": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "9788-18": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "9794-25": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 20"
+  },
+  "9807-27": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "9824-32": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Hombro",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 27"
+  },
+  "10400-19": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 14",
+    "setName": "Cuero Defias"
+  },
+  "10402-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 15",
+    "setName": "Cuero Defias"
+  },
+  "10403-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 17",
+    "setName": "Cuero Defias"
+  },
+  "10421-10": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pecho",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 2"
+  },
+  "11121-27": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano principal",
+    "subclass": "Espada",
+    "damage": "26 - 49 Daño",
+    "speed": "Velocidad 2,20",
+    "dps": "(17,0 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "11192-5": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela"
+  },
+  "11287-15": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "A distancia",
+    "subclass": "Varita",
+    "damage": "12 - 22 Arcano Daño",
+    "speed": "Velocidad 1,50",
+    "dps": "(11,3 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 5"
+  },
+  "11475-5": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "11982-23": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "12052-21": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "12295-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Tela"
+  },
+  "12522-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero"
+  },
+  "13245-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano secundaria",
+    "subclass": "Escudo",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "14129-20": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "14168-20": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "14367-19": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 14"
+  },
+  "14368-22": {
+    "inventoryType": "Hombro",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "15204-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "A distancia",
+    "subclass": "Varita",
+    "damage": "17 - 32 Arcano Daño",
+    "speed": "Velocidad 1,80",
+    "dps": "(13,6 daño por segundo)"
+  },
+  "15397-14": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "16 - 24 Daño",
+    "speed": "Velocidad 2,80",
+    "dps": "(7,1 daño por segundo)"
+  },
+  "15400-14": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Mallas"
+  },
+  "15501-17": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Espalda",
+    "requirement": "Necesitas ser de nivel 12"
+  },
+  "248005-12": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Maza",
+    "damage": "18 - 27 Daño",
+    "speed": "Velocidad 2,70",
+    "dps": "(8,3 daño por segundo)"
+  },
+  "248008-12": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "11 - 17 Daño",
+    "speed": "Velocidad 2,20",
+    "dps": "(6,4 daño por segundo)"
+  },
+  "250499-30": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cabeza",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 25"
+  },
+  "250530-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cabeza",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 20"
+  },
+  "252425-15": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 10"
+  },
+  "252493-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "263411-16": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Reliquia",
+    "subclass": "Ídolo"
+  },
+  "263412-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Reliquia",
+    "subclass": "Tótem"
+  },
+  "270000-13": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela"
+  },
+  "270013-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Cuero"
+  },
+  "270015-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero"
+  },
+  "270016-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero"
+  },
+  "270029-28": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela"
+  },
+  "270031-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero"
+  },
+  "270032-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Cuero"
+  },
+  "270039-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Hombro",
+    "subclass": "Cuero"
+  },
+  "270050-34": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "270231-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "270260-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "270261-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "271096-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "271098-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 13"
+  },
+  "271203-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "50 - 76 Daño",
+    "speed": "Velocidad 3,60",
+    "dps": "(17,5 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "271205-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 15"
+  },
+  "271208-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "271211-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "271214-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 19",
+    "setName": "Vestiduras de esterilizante"
+  },
+  "271216-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Mano principal",
+    "subclass": "Maza",
+    "damage": "17 - 33 Daño",
+    "speed": "Velocidad 2,60",
+    "dps": "(9,6 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "271655-1": {
+    "inventoryType": "Camisola"
+  },
+  "271670-33": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo"
+  },
+  "271766-33": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Maza",
+    "damage": "73 - 110 Daño",
+    "speed": "Velocidad 3,30",
+    "dps": "(27,7 daño por segundo)"
+  },
+  "271767-33": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dos manos",
+    "subclass": "Bastón",
+    "damage": "43 - 65 Daño",
+    "speed": "Velocidad 2,60",
+    "dps": "(20,8 daño por segundo)"
+  },
+  "273023-31": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 26"
+  },
+  "273088-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cuello",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "273089-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "273293-21": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "273298-23": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Alhaja",
+    "requirement": "Necesitas ser de nivel 18"
+  },
+  "273457-22": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cuello",
+    "requirement": "Necesitas ser de nivel 17"
+  },
+  "273804-26": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Hombro",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "273805-26": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pecho",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "273806-26": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 21"
+  },
+  "273807-29": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero",
+    "requirement": "Necesitas ser de nivel 24"
+  },
+  "273810-30": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Mallas",
+    "requirement": "Necesitas ser de nivel 25"
+  },
+  "273839-27": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Dedo",
+    "requirement": "Necesitas ser de nivel 22"
+  },
+  "273840-29": {
+    "binding": "Se liga al recogerlo",
+    "unique": "Único-Equipado",
+    "inventoryType": "Alhaja",
+    "requirement": "Necesitas ser de nivel 24"
+  },
+  "273843-28": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "A distancia",
+    "subclass": "Arco",
+    "damage": "21 - 40 Daño",
+    "speed": "Velocidad 2,20",
+    "dps": "(13,9 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 23"
+  },
+  "274092-26": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Arma arrojadiza",
+    "subclass": "Arma arrojadiza",
+    "damage": "18 - 35 Daño",
+    "speed": "Velocidad 1,80",
+    "dps": "(14,7 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 19"
+  },
+  "277210-25": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "277234-28": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Pies",
+    "subclass": "Mallas"
+  },
+  "277246-36": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Una mano",
+    "subclass": "Espada",
+    "damage": "38 - 72 Daño",
+    "speed": "Velocidad 2,30",
+    "dps": "(23,9 daño por segundo)"
+  },
+  "279865-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "279867-23": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "279868-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Piernas",
+    "subclass": "Cuero"
+  },
+  "279870-24": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cuello"
+  },
+  "279896-18": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "A distancia",
+    "subclass": "Varita",
+    "damage": "22 - 41 Fuego Daño",
+    "speed": "Velocidad 1,70",
+    "dps": "(18,5 daño por segundo)"
+  },
+  "279897-17": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Cintura",
+    "subclass": "Cuero"
+  },
+  "279899-17": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Espalda"
+  },
+  "280096-17": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela"
+  },
+  "280766-33": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Alhaja"
+  },
+  "281256-20": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Muñeca",
+    "subclass": "Tela"
+  },
+  "285292-21": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Arma arrojadiza",
+    "subclass": "Arma arrojadiza",
+    "damage": "15 - 28 Daño",
+    "speed": "Velocidad 1,70",
+    "dps": "(12,6 daño por segundo)",
+    "requirement": "Necesitas ser de nivel 16"
+  },
+  "286737-8": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Dedo"
+  },
+  "286979-22": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Manos",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17",
+    "setName": "Vestiduras de esterilizante"
+  },
+  "286980-22": {
+    "binding": "Se liga al equiparlo",
+    "inventoryType": "Cintura",
+    "subclass": "Tela",
+    "requirement": "Necesitas ser de nivel 17",
+    "setName": "Vestiduras de esterilizante"
+  },
+  "287059-10": {
+    "binding": "Se liga al recogerlo",
+    "inventoryType": "Arma arrojadiza",
+    "subclass": "Arma arrojadiza",
+    "damage": "6 - 13 Daño",
+    "speed": "Velocidad 2,00",
+    "dps": "(4,8 daño por segundo)"
+  }
+}

@@ -179,6 +179,18 @@ export async function blizzard(
             quality: x.quality?.type,
             itemLevel: x.level?.value,
             id: x.item?.id,
+            properties: {
+              binding: name(x.binding),
+              unique: name(x.unique_equipped),
+              inventoryType: name(x.inventory_type),
+              subclass: x.is_subclass_hidden ? undefined : name(x.item_subclass),
+              damage: x.weapon?.damage?.display_string,
+              speed: x.weapon?.attack_speed?.display_string,
+              dps: x.weapon?.dps?.display_string,
+              durability: x.durability?.display_string,
+              requirement: x.requirements?.level?.display_string,
+              setName: name(x.set?.item_set),
+            },
             details: [
               x.armor?.display?.display_string,
               ...(x.stats ?? []).filter((s: any) => !s.is_equip_bonus).map((s: any) => s.display?.display_string),
