@@ -12,7 +12,7 @@ import {
 import { assetUrl } from "@/lib/public-settings";
 import { ClassFrame } from "./class-frame";
 import { CharacterArt } from "./character-art";
-import { fullName, memberHref } from "./member-portrait";
+import { FittedName, fullName, memberHref } from "./member-portrait";
 import { display, type Award } from "./analytics";
 import { color, type Member } from "./types";
 
@@ -52,12 +52,13 @@ const scenes: Record<string, Scene> = {
   hps: "bota",
 };
 
-function Winner({ member }: { member: Member }) {
+function Winner({ member, shared }: { member: Member; shared: boolean }) {
   const name = fullName(member);
   return (
     <a
       className="laureate"
       href={memberHref(member)}
+      title={name}
       aria-label={"Ver ficha de " + name}
       style={{ "--class-tint": color(member) } as CSSProperties}
     >
@@ -65,13 +66,15 @@ function Winner({ member }: { member: Member }) {
         <CharacterArt member={member} />
       </span>
       <span className="laureate-plaque">
-        <span className="laureate-name">{name}</span>
+        <span className="laureate-name">
+          <FittedName name={name} given={member.name} />
+        </span>
         {member.data.className && (
           <small className="laureate-class">{member.data.className}</small>
         )}
         <ArrowUpRight className="laureate-arrow" size={16} aria-hidden="true" />
       </span>
-      <ClassFrame member={member} />
+      {!shared && <ClassFrame member={member} />}
     </a>
   );
 }
@@ -130,7 +133,7 @@ export function HonorCard({
           style={{ "--seats": Math.min(4, winners.length) } as CSSProperties}
         >
           {winners.slice(0, 4).map((member) => (
-            <Winner key={member.id} member={member} />
+            <Winner key={member.id} member={member} shared={shared} />
           ))}
         </div>
       ) : (
@@ -141,7 +144,7 @@ export function HonorCard({
           <summary>Otros {winners.length - 4} ganadores del empate</summary>
           <div className="honor-extra">
             {winners.slice(4).map((member) => (
-              <Winner key={member.id} member={member} />
+              <Winner key={member.id} member={member} shared />
             ))}
           </div>
         </details>

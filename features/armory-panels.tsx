@@ -10,10 +10,11 @@ import {
   type Entity,
 } from "./armory-data";
 import { SlotIcon, slotInfo } from "./slot-icon";
-import type { Equipment, Profile, Member } from "./types";
+import { color, type Equipment, type Profile, type Member } from "./types";
 
 import { Portrait, fullName } from "./member-portrait";
-import { characterRender } from "./character-art";
+import { useCharacterArt } from "./character-art";
+import { ClassRoom } from "./class-frame";
 import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
 const iconRequests = new Map<string, Promise<string | undefined>>();
 function lookupIcon(kind: Entity, id: number) {
@@ -111,16 +112,15 @@ const weaponSlots = [
 ];
 
 function Model({ member }: { member: Member }) {
-  const src = characterRender(member);
-  const [failed, setFailed] = useState<string>();
+  const { image, avatar, style, onError } = useCharacterArt(member);
   return (
-    <figure className="armory-model">
-      {src && failed !== src ? (
+    <figure className="armory-model" style={style}>
+      {image && !avatar ? (
         <img
           className="full-model"
-          src={src}
+          src={image}
           alt={fullName(member) + " con su equipo"}
-          onError={() => setFailed(src)}
+          onError={onError}
         />
       ) : (
         <div className="model-fallback">
@@ -128,7 +128,9 @@ function Model({ member }: { member: Member }) {
           <small>Sin imagen de cuerpo entero</small>
         </div>
       )}
-      <figcaption>{fullName(member)}</figcaption>
+      <figcaption style={{ color: color(member) }}>
+        {fullName(member)}
+      </figcaption>
     </figure>
   );
 }
@@ -223,10 +225,13 @@ export function EquipmentPanel({ member }: { member: Member }) {
         <div className="dossier-heading">
           <h2>Equipo</h2>
         </div>
-        <Empty
-          title="Sin equipo registrado"
-          text="La armería todavía no ha publicado las piezas de este personaje."
-        />
+        <div className="empty-armory-room">
+          <ClassRoom member={member} large />
+          <Empty
+            title="Sin equipo registrado"
+            text="La armería todavía no ha publicado las piezas de este personaje."
+          />
+        </div>
       </section>
     );
   const bySlot = new Map<string, number>();
@@ -272,6 +277,7 @@ export function EquipmentPanel({ member }: { member: Member }) {
         </p>
       </div>
       <div className="paperdoll">
+        <ClassRoom member={member} large />
         <div className="slot-rail rail-left">
           {leftSlots.map((label) => renderSlot(label, bySlot.get(label)))}
         </div>

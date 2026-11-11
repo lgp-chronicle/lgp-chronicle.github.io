@@ -62,7 +62,12 @@ export function LevelingRace({ members }: { members: Member[] }) {
                   </h3>
                   <div className="banner-lineup podium-winners">
                     {group.map(({ member }) => (
-                      <MemberLink key={member.id} member={member} banner />
+                      <MemberLink
+                        key={member.id}
+                        member={member}
+                        banner
+                        shared={group.length > 1}
+                      />
                     ))}
                   </div>
                   <p>

@@ -14,10 +14,43 @@ const frames: Record<number, [string, string, string]> = {
   11: ["druida", "Druida", "#a0a768"],
 };
 
-export function ClassFrame({ member }: { member: Member }) {
-  const frame =
+function classArt(member: Member) {
+  return (
     frames[member.data.classId ?? 0] ??
-    Object.values(frames).find(([, name]) => name === member.data.className);
+    Object.values(frames).find(([, name]) => name === member.data.className)
+  );
+}
+
+export function ClassRoom({
+  member,
+  large = false,
+}: {
+  member: Member;
+  large?: boolean;
+}) {
+  const art = classArt(member);
+  if (!art) return null;
+  const base = assetUrl("/guild/estancias/" + art[0]);
+  return (
+    <img
+      className="class-room"
+      src={base + (large ? ".webp" : "-tarjeta.webp")}
+      srcSet={base + "-tarjeta.webp 560w, " + base + ".webp 1280w"}
+      sizes={
+        large
+          ? "(max-width: 1280px) 95vw, 1200px"
+          : "(max-width: 600px) 92vw, 420px"
+      }
+      aria-hidden="true"
+      alt=""
+      loading={large ? "eager" : "lazy"}
+      decoding="async"
+    />
+  );
+}
+
+export function ClassFrame({ member }: { member: Member }) {
+  const frame = classArt(member);
   const corner = frame && assetUrl("/guild/marcos/" + frame[0] + ".webp");
   return (
     <span

@@ -1,7 +1,7 @@
 "use client";
 import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
-import { ClassFrame } from "./class-frame";
+import { ClassFrame, ClassRoom } from "./class-frame";
 
 import { useState, type CSSProperties } from "react";
 import {
@@ -150,6 +150,7 @@ export function Roster({ members }: { members: Member[] }) {
                 style={{ "--class-tint": color(m) } as CSSProperties}
               >
                 <div className="roster-card-scene">
+                  <ClassRoom member={m} />
                   <CharacterArt member={m} />
                   <span className="card-level">
                     <small>Nivel</small>
