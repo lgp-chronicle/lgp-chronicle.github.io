@@ -49,6 +49,7 @@ export function CharacterDetail({
         : {
             overview: "a la hermandad",
             news: "al Heraldo",
+            cronicas: "al historial de crónicas",
             awards: "al Salón de la fama",
             race: "a la carrera",
             history: "a Evolución",

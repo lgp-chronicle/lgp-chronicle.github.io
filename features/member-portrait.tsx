@@ -4,20 +4,8 @@ import { color, type Member } from "./types";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
 
-import surnames from "../config/character-surnames.json";
-
-export function fullName(m: Member) {
-  const official = m.data.surname ?? (surnames as Record<string, string>)[m.id];
-  if (official) return m.name + " " + official;
-  const prefix = "forever-" + m.region + "-" + m.name.toLowerCase() + "-";
-  if (!m.id.startsWith(prefix)) return m.name;
-  const surname = m.id
-    .slice(prefix.length)
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  return m.name + " " + surname;
-}
+import { fullName } from "./member-name";
+export { fullName } from "./member-name";
 
 export const memberHref = (member: Member) =>
   siteHref("/character/" + encodeURIComponent(member.id));

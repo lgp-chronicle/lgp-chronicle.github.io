@@ -2,6 +2,7 @@ import {mkdirSync,writeFileSync,renameSync} from 'node:fs';
 import {sqlite} from '../db/client';
 import {sync} from '../services/sync';
 import {readGuild} from '../services/guild';
+import {archiveChronicles} from '../services/illustrated-chronicles';
 const mode=process.argv[2]||'export';
 let failed=false;
 if(mode==='sync'){
@@ -13,6 +14,7 @@ if(mode==='sync'){
 mkdirSync('public/data/editions',{recursive:true});
 const save=(file:string,value:unknown)=>{writeFileSync(file+'.tmp',JSON.stringify(value));renameSync(file+'.tmp',file)};
 const data=await readGuild();if(!data.available)throw Error('Stored guild data unavailable');
+data.chronicles=archiveChronicles(sqlite,data.members);
 save('public/data/guild.json',data);
 const editions=sqlite.prepare('SELECT day,data FROM daily_editions ORDER BY day DESC').all() as {day:string;data:string}[];
 const today=new Date().toISOString().slice(0,10);

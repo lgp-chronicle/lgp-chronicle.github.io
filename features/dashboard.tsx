@@ -15,6 +15,7 @@ import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
+import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
 import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
@@ -105,6 +106,7 @@ export function Dashboard({
     <main className="page-width guild-dashboard">
       {!section && (
         <>
+          <ChronicleFeature story={data.chronicles?.[0]} />
           <div className="section-heading honors-heading">
             <div>
               <h2 className="section-title">Cuadro de honor</h2>
@@ -156,7 +158,7 @@ export function Dashboard({
           <ArmoryRumors members={m} />
         </>
       )}
-      {section !== "gallery" && <SourceNotice members={m} />}
+      {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
       <section
         className="archive"
         ref={archive}
@@ -180,6 +182,7 @@ export function Dashboard({
           </nav>
         )}
         {section === "gallery" && <CoverGallery members={m} />}
+        {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
         {(!section || section === "overview") && (
           <>
             <Roster members={m} />
@@ -310,7 +313,7 @@ export function Dashboard({
           </>
         )}
       </section>
-      {section !== "gallery" && (
+      {section !== "gallery" && section !== "cronicas" && (
         <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
           Los datos pertenecen a la última observación válida de cada fuente. No
           representan necesariamente el estado actual dentro del juego.

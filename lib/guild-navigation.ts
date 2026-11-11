@@ -16,7 +16,13 @@ export const archiveGroups = [
       ["logs", "Warcraft Logs"],
     ],
   },
-  { label: "El Heraldo", sections: [["news", "El Heraldo"]] },
+  {
+    label: "El Heraldo",
+    sections: [
+      ["news", "El Heraldo"],
+      ["cronicas", "Historial de crónicas"],
+    ],
+  },
 ] as const;
 
 export type GuildSection =

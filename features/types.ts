@@ -117,11 +117,30 @@ export type Activity = {
   delta?: number;
 };
 export type GuildData = {
+  chronicles?: IllustratedChronicle[];
   members: Member[];
   events: Activity[];
   available: boolean;
   message?: string;
   generatedAt: string;
+};
+export type ChronicleKind = "pvp" | "chase" | "gear" | "levels" | "finish";
+export type ChronicleRow = {
+  id: string;
+  name: string;
+  given: string;
+  tint: string;
+  before: number;
+  after: number;
+};
+export type IllustratedChronicle = {
+  id: string;
+  kind: ChronicleKind;
+  day: string;
+  from: string;
+  title: string;
+  caption: string;
+  rows: ChronicleRow[];
 };
 export const classColors: Record<number, string> = {
   1: "#c79c6e",

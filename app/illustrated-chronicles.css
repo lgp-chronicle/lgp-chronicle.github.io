@@ -1,0 +1,313 @@
+@font-face {
+  font-family: "Almendra";
+  src: url("./art/Almendra-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+.chronicle-feature {
+  margin-bottom: clamp(28px, 4vw, 54px);
+}
+.chronicle-card {
+  position: relative;
+  container-type: inline-size;
+  min-width: 0;
+  border: 1px solid #97753d;
+  background: #211b15;
+  box-shadow: 0 5px 18px #0d09064d;
+}
+.chronicle-mast,
+.chronicle-archive > header,
+.chronicle-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7px 18px;
+}
+.chronicle-mast {
+  padding: 12px clamp(15px, 2.4cqw, 30px);
+  border-bottom: 1px solid #8a6939;
+  color: #f4dba1;
+  background: linear-gradient(110deg, #352a1e, #241d16);
+}
+.chronicle-mast h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font:
+    700 clamp(21px, 3cqw, 30px) / 1.05 Almendra,
+    Georgia,
+    serif;
+  color: #ffe5a6;
+}
+.chronicle-mast h2 img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+.chronicle-mast a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #ffdb82;
+  font: 600 14px/1.3 var(--interface);
+}
+.chronicle-mast a::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: "";
+}
+.chronicle-card[data-featured]:hover,
+.chronicle-card:focus-within {
+  border-color: #ffd77c;
+}
+.chronicle-mast a:focus-visible::after {
+  outline: 3px solid #ffe49c;
+  outline-offset: 2px;
+}
+.chronicle-scene {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: clamp(255px, 31cqw, 388px);
+  background: #1d1813;
+}
+.chronicle-painting {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.chronicle-painting::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 45%;
+  aspect-ratio: 3/2;
+  min-height: 100%;
+  transform: translateY(-50%);
+  background: url("./art/atlas-honor.webp") var(--atlas, left bottom) / 200%
+    200% no-repeat;
+}
+.chronicle-scene[data-kind="pvp"] {
+  --atlas: right bottom;
+}
+.chronicle-scene[data-kind="gear"] {
+  --atlas: right top;
+}
+.chronicle-scene[data-kind="finish"] {
+  --atlas: left top;
+}
+.chronicle-painting::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #15110ef7,
+    #15110ee6 19%,
+    #15110eb8 33%,
+    transparent 57%
+  );
+}
+.chronicle-original {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.chronicle-figures {
+  position: absolute;
+  inset: 6% 5% 0 47%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.chronicle-figures img {
+  max-width: 52%;
+  min-width: 0;
+  height: 96%;
+  object-fit: contain;
+  object-position: bottom;
+}
+.chronicle-copy {
+  max-width: 43%;
+  padding: 22px clamp(18px, 3cqw, 44px);
+  text-shadow: 0 2px 5px #15100d;
+}
+.chronicle-copy p,
+.chronicle-metric strong,
+.chronicle-column time,
+.chronicle-mast time {
+  margin: 0;
+  color: #e4c080;
+  font: 650 11px/1.3 var(--reading);
+  letter-spacing: 0.095em;
+  text-transform: uppercase;
+}
+.chronicle-copy h3 {
+  margin: 8px 0 12px;
+  font:
+    700 clamp(39px, 5.3cqw, 68px) / 0.98 Almendra,
+    Georgia,
+    serif;
+  color: #ffedb7;
+  text-wrap: balance;
+}
+.chronicle-copy div {
+  color: #f5e8cf;
+  font: 400 clamp(15px, 1.65cqw, 20px) / 1.45 var(--interface);
+}
+.chronicle-ledger {
+  border-top: 1px solid #8a6939;
+  padding: 14px clamp(15px, 2.4cqw, 30px) 18px;
+  background: linear-gradient(120deg, #30271c, #201b16);
+}
+.chronicle-metric {
+  margin-bottom: 9px;
+}
+.chronicle-metric strong {
+  color: #f5d79b;
+}
+.chronicle-metric time,
+.chronicle-archive > header span {
+  color: #d2c2a6;
+  font: 13px/1.3 var(--reading);
+}
+.chronicle-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.6%;
+}
+.chronicle-column + .chronicle-column {
+  padding-left: 5%;
+  border-left: 1px solid #695031;
+}
+.chronicle-column time {
+  display: block;
+  margin-bottom: 5px;
+}
+.chronicle-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(24px, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  color: var(--ink);
+  font: 600 14px/1.15 var(--interface);
+}
+.chronicle-row span {
+  overflow-wrap: anywhere;
+}
+.chronicle-row > i,
+.chronicle-row > i i {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #594937;
+}
+.chronicle-row > i i {
+  background: var(--ink);
+}
+.chronicle-row b {
+  min-width: 3ch;
+  text-align: right;
+  font:
+    700 23px/1 Almendra,
+    Georgia,
+    serif;
+  font-variant-numeric: tabular-nums;
+}
+.chronicle-archive > header {
+  margin: 24px 0 16px;
+}
+.chronicle-shelf {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 26px);
+  align-items: start;
+}
+@container (max-width: 700px) {
+  .chronicle-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .chronicle-painting {
+    position: relative;
+    z-index: 0;
+    height: clamp(135px, 35cqw, 205px);
+  }
+  .chronicle-original {
+    object-position: 75% 50%;
+  }
+  .chronicle-figures {
+    inset: 4% 10% 0;
+  }
+  .chronicle-painting::after {
+    background: linear-gradient(0deg, #1d1813, transparent 20%);
+  }
+  .chronicle-copy {
+    max-width: 100%;
+    padding: 4px 17px 16px;
+  }
+  .chronicle-copy h3 {
+    font-size: clamp(31px, 7.8cqw, 44px);
+    margin: 5px 0 6px;
+  }
+  .chronicle-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 3px;
+    padding: 3px 0 6px;
+  }
+  .chronicle-row > i {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+  .chronicle-row b {
+    min-width: 0;
+  }
+}
+@container (max-width: 420px) {
+  .chronicle-mast {
+    gap: 8px;
+  }
+  .chronicle-mast h2 img {
+    width: 23px;
+    height: 23px;
+  }
+  .chronicle-mast a {
+    margin-left: 33px;
+    font-size: 13px;
+  }
+  .chronicle-ledger {
+    padding-inline: 12px;
+  }
+  .chronicle-row {
+    font-size: 12px;
+    gap: 3px 5px;
+  }
+  .chronicle-row b {
+    font-size: 18px;
+  }
+  .chronicle-row span {
+    grid-column: 1 / -1;
+  }
+  .chronicle-row > i {
+    grid-column: 1;
+  }
+  .chronicle-row b {
+    grid-area: 2 / 2;
+  }
+}
+@media (max-width: 850px) {
+  .chronicle-shelf {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
