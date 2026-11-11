@@ -18,6 +18,7 @@
     "modified": 1794384237000
   },
   "forever-eu-alexion-grandwell": {
+    "entranceIssue": "race-mismatch",
     "url": "https://render.worldofwarcraft.com/forever-eu/character/133/6919813-main-raw.png",
     "frame": {
       "x": 48.4,
@@ -117,6 +118,7 @@
     "modified": 1794355807000
   },
   "forever-eu-loqe-delabahía": {
+    "entranceIssue": "race-mismatch",
     "url": "https://render.worldofwarcraft.com/forever-eu/character/252/2833148-main-raw.png",
     "frame": {
       "x": 48.9,

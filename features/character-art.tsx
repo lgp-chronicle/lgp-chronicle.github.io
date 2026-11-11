@@ -4,13 +4,18 @@ import archive from "../config/character-art.json";
 import type { Member } from "./types";
 
 type Frame = { x: number; top: number; height: number };
-type ArchivedModel = { url: string; modified: number; frame: Frame };
+type ArchivedModel = {
+  url: string;
+  modified: number;
+  frame: Frame;
+  entranceIssue?: string;
+};
 const models: Record<string, ArchivedModel> = archive;
 
-export function hasCharacterArt(member: Member) {
-  return Boolean(
-    models[member.id] || member.data.characterRender || member.data.avatar,
-  );
+export function hasEntrancePortrait(member: Member) {
+  const archived = models[member.id];
+  if (archived?.entranceIssue) return false;
+  return Boolean(archived || member.data.characterRender || member.data.avatar);
 }
 
 export function useCharacterArt(member: Member, entrance = false) {

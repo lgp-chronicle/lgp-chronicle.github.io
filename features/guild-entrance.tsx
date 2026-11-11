@@ -5,10 +5,11 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ReactElement,
 } from "react";
 import { ArrowRight } from "lucide-react";
 import { assetUrl } from "@/lib/public-settings";
-import { hasCharacterArt, useCharacterArt } from "./character-art";
+import { hasEntrancePortrait, useCharacterArt } from "./character-art";
 import { fullName } from "./member-portrait";
 import type { Member } from "./types";
 
@@ -50,31 +51,39 @@ function positions(members: Member[], compact: boolean) {
   const total = members.length;
   const columns = Math.max(
     1,
-    Math.ceil(Math.sqrt(total * (compact ? 0.52 : 2))),
+    Math.ceil(Math.sqrt(Math.ceil(total / 2) * (compact ? 0.52 : 2))),
   );
   const short = members.filter((member) => raceStature(member) < 1).length;
   const ranks = [total - short, short].flatMap((size) => {
-    const rows = Math.ceil(size / columns);
+    const rows = Math.ceil(size / (2 * columns));
     return Array.from(
       { length: rows },
       (_, i) => Math.floor(size / rows) + Number(i < size % rows),
     );
   });
   const slots = [];
+  const wingWidth = compact ? 47.5 : 40;
+  // All short races share the same figure scale, even when they span two steps.
+  const shortRanks = Math.ceil(short / (2 * columns));
+  const shortColumns = shortRanks ? Math.ceil(short / (2 * shortRanks)) : 0;
   for (const [row, count] of ranks.entries()) {
     const depth = ranks.length > 1 ? row / (ranks.length - 1) : 0.7;
+    const shortRank = row >= ranks.length - shortRanks;
+    const scaleDepth = shortRank ? 1 : depth;
+    const scaleColumns = shortRank ? shortColumns : Math.ceil(count / 2);
     for (let col = 0; col < count; col++) {
-      const stagger = count > 2 ? (row % 2 ? 0.22 : -0.15) : 0;
-      const x = 5 + ((col + 0.5 + stagger) * 90) / count;
+      const wingCount = col % 2 ? Math.floor(count / 2) : Math.ceil(count / 2);
+      const stagger = wingCount > 2 ? (row % 2 ? 0.22 : -0.15) : 0;
+      const x = 5 + ((Math.floor(col / 2) + 0.5 + stagger) * 90) / wingCount;
       slots.push({
         x: Math.min(94, x),
         feet: (compact ? 40 : 64) + depth * (compact ? 46 : 24),
-        height: (compact ? 13 : 18) + depth * (compact ? 9 : 10),
+        height: (compact ? 13 : 18) + scaleDepth * (compact ? 9 : 10),
         maxHeight: Math.min(
           compact ? 36 : 23,
-          ((compact ? 46 : 41) / count) * (1.63 + depth * 0.38),
+          (wingWidth / scaleColumns) * (1.3 + scaleDepth * 0.16),
         ),
-        width: Math.min(95, 98 / count),
+        width: Math.min(95, 98 / wingCount),
         depth,
         row,
       });
@@ -131,45 +140,50 @@ function Guest({
   );
 }
 
-function Wing({
+function Formation({
   members,
-  right,
   onMissing,
 }: {
   members: Member[];
-  right: boolean;
   onMissing: MissingPortrait;
 }) {
   const wide = positions(members, false);
   const narrow = positions(members, true);
+  const wings: ReactElement[][] = [[], []];
+  members.forEach((member, i) => {
+    const right = i % 2 === 1;
+    const d = wide[i],
+      m = narrow[i];
+    const vars = {
+      "--x": (right ? 100 - d.x : d.x) + "%",
+      "--mx": (right ? 100 - m.x : m.x) + "%",
+      "--feet": d.feet + "%",
+      "--mfeet": m.feet + "%",
+      "--height": d.height + "dvh",
+      "--mheight": m.height + "dvh",
+      "--cap": d.maxHeight + "vw",
+      "--mcap": m.maxHeight + "vw",
+      "--width": d.width + "%",
+      "--mwidth": m.width + "%",
+      "--rank": d.row + 1,
+      "--mrank": m.row + 1,
+      "--stature": raceStature(member),
+      "--delay": 0.16 + d.depth * 0.65 + "s",
+    } as CSSProperties;
+    wings[i % 2].push(
+      <li key={member.id} style={vars}>
+        <Guest member={member} onMissing={onMissing} />
+      </li>,
+    );
+  });
   return (
-    <ul className="arrival-wing" data-side={right ? "right" : "left"}>
-      {members.map((member, i) => {
-        const d = wide[i],
-          m = narrow[i];
-        const vars = {
-          "--x": (right ? 100 - d.x : d.x) + "%",
-          "--mx": (right ? 100 - m.x : m.x) + "%",
-          "--feet": d.feet + "%",
-          "--mfeet": m.feet + "%",
-          "--height": d.height + "dvh",
-          "--mheight": m.height + "dvh",
-          "--cap": d.maxHeight + "vw",
-          "--mcap": m.maxHeight + "vw",
-          "--width": d.width + "%",
-          "--mwidth": m.width + "%",
-          "--rank": d.row + 1,
-          "--mrank": m.row + 1,
-          "--stature": raceStature(member),
-          "--delay": 0.16 + d.depth * 0.65 + "s",
-        } as CSSProperties;
-        return (
-          <li key={member.id} style={vars}>
-            <Guest member={member} onMissing={onMissing} />
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      {wings.map((seats, i) => (
+        <ul key={i} className="arrival-wing" data-side={i ? "right" : "left"}>
+          {seats}
+        </ul>
+      ))}
+    </>
   );
 }
 
@@ -190,7 +204,7 @@ export function GuildEntrance({
     setMissing((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   }, []);
   const ordered = members
-    .filter((m) => hasCharacterArt(m) && !missing.has(m.id))
+    .filter((m) => hasEntrancePortrait(m) && !missing.has(m.id))
     .sort(
       (a, b) =>
         raceStature(b) - raceStature(a) ||
@@ -305,16 +319,7 @@ export function GuildEntrance({
             />
           ))}
         </div>
-        <Wing
-          members={ordered.filter((_, i) => i % 2 === 0)}
-          right={false}
-          onMissing={onMissing}
-        />
-        <Wing
-          members={ordered.filter((_, i) => i % 2 === 1)}
-          right
-          onMissing={onMissing}
-        />
+        <Formation members={ordered} onMissing={onMissing} />
         <div className="arrival-sigil">
           <div className="arrival-shield">
             <img
