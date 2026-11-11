@@ -4,7 +4,6 @@ import { Empty } from "@/components/guild-ui";
 import { ago } from "./analytics";
 import {
   itemDisplay,
-  characterRenders,
   namedIcon,
   talentDisplay,
   wowheadUrl,
@@ -14,6 +13,7 @@ import { SlotIcon, slotInfo } from "./slot-icon";
 import type { Equipment, Profile, Member } from "./types";
 
 import { Portrait, fullName } from "./member-portrait";
+import { characterRender } from "./character-art";
 import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
 const iconRequests = new Map<string, Promise<string | undefined>>();
 function lookupIcon(kind: Entity, id: number) {
@@ -111,7 +111,7 @@ const weaponSlots = [
 ];
 
 function Model({ member }: { member: Member }) {
-  const src = member.data.characterRender ?? characterRenders[member.id];
+  const src = characterRender(member);
   const [failed, setFailed] = useState<string>();
   return (
     <figure className="armory-model">

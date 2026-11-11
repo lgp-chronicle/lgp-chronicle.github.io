@@ -58,12 +58,13 @@ export function Compare({ members }: { members: Member[] }) {
                   .filter((x) => x.id !== (i ? left : right))
                   .map((x) => ({ value: x.id, label: fullName(x) }))}
               />
-              <h2>
-                <MemberLink member={m} />
+              <h2 className="banner-lineup">
+                <MemberLink
+                  member={m}
+                  banner
+                  subtitle={m.data.className ?? "Clase por descubrir"}
+                />
               </h2>
-              <p className="muted">
-                {m.data.className ?? "Clase por descubrir"}
-              </p>
             </div>
           </div>
         ))}

@@ -42,10 +42,10 @@ const titleIcons: Record<string, LucideIcon> = {
 };
 function AwardWinners({ award, members }: { award: Award; members: Member[] }) {
   return (
-    <span className="award-winners">
+    <span className="banner-lineup award-winners">
       {award.memberIds.map((id) => {
         const winner = members.find((m) => m.id === id);
-        return winner ? <MemberLink key={id} member={winner} /> : null;
+        return winner ? <MemberLink key={id} member={winner} banner /> : null;
       })}
     </span>
   );
@@ -193,21 +193,17 @@ export function Dashboard({
             </div>
             {top ? (
               <>
-                <div
-                  className={
-                    top.winners.length > 1
-                      ? "honor-winners shared"
-                      : "honor-winners"
-                  }
-                >
+                <div className="banner-lineup honor-winners">
                   {top.winners.map((member) => (
-                    <MemberLink key={member.id} member={member} />
+                    <MemberLink key={member.id} member={member} banner />
                   ))}
                 </div>
                 <p className="honor-value">
                   {unit === "nivel"
                     ? "Nivel " + display(top.value)
                     : display(top.value) + " " + unit}
+                  {top.winners.length > 1 &&
+                    " · " + top.winners.length + " ganadores"}
                   {top.partial ? " · cobertura parcial" : ""}
                 </p>
               </>

@@ -60,9 +60,9 @@ export function LevelingRace({ members }: { members: Member[] }) {
                     <Mark aria-hidden="true" size={21} />
                     {rank === 1 ? "En cabeza" : rank + ".º puesto"}
                   </h3>
-                  <div className="podium-winners">
+                  <div className="banner-lineup podium-winners">
                     {group.map(({ member }) => (
-                      <MemberLink key={member.id} member={member} />
+                      <MemberLink key={member.id} member={member} banner />
                     ))}
                   </div>
                   <p>

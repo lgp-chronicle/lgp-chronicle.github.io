@@ -11,7 +11,6 @@ type KnownTalent = {
 type KnownEffects = { spells?: string[]; stats?: string[]; sets?: string[] };
 const talents: Record<string, Record<string, KnownTalent>> = catalog.talents;
 const icons: Record<string, string | number> = catalog.items;
-export const characterRenders: Record<string, string> = catalog.renders;
 const effects: Record<string, KnownEffects> = catalog.itemEffects;
 const propertiesByItemLevel: Record<string, ItemProperties> = tooltipCatalog;
 

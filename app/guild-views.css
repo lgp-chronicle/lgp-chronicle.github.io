@@ -43,23 +43,148 @@
 .member-link:focus-visible .portrait {
   border-color: #ffe199;
 }
+.banner-lineup {
+  --scene-height: 176px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  isolation: isolate;
+  background:
+    linear-gradient(90deg, #14221be0, #20312677 58%, #39412648),
+    linear-gradient(0deg, #19261be8, #29392073 65%, #322c1966),
+    url("./art/fortaleza-movil.webp") var(--vista, 50% 54%) / max(135%, 340px)
+      auto no-repeat;
+}
+.banner-lineup:has(> :nth-child(2)) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.member-link.member-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  min-height: var(--scene-height);
+  width: 100%;
+  padding: 13px 15px;
+  background: radial-gradient(
+    ellipse at 66% 50%,
+    color-mix(in srgb, var(--class-tint) 18%, transparent),
+    transparent 68%
+  );
+}
+.member-banner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0c170ff2, #11201590 17%, transparent 43%);
+}
+.member-banner:focus-visible {
+  outline: 2px solid #ffdf83;
+  outline-offset: -3px;
+}
+.banner-art {
+  position: absolute;
+  z-index: -2;
+  inset: 6px 0 0;
+  pointer-events: none;
+  --figure-center: 67%;
+  --zoom: 1.48;
+}
+.banner-model {
+  position: absolute;
+  top: 0;
+  left: var(--figure-center);
+  width: auto;
+  max-width: none;
+  height: calc(var(--model-height) * var(--zoom));
+  transform: translate(var(--model-x), var(--model-top));
+  filter: brightness(1.13) drop-shadow(0 1px 2px #ccd9a642)
+    drop-shadow(1px 3px 4px #0b130e88);
+}
+.banner-avatar,
+.banner-initial {
+  position: absolute;
+  left: var(--figure-center);
+  top: 0;
+  height: 100%;
+  max-width: 100%;
+  transform: translateX(-50%);
+}
+.banner-avatar {
+  object-fit: contain;
+  mask-image: radial-gradient(ellipse at 50% 42%, #000 28%, transparent 72%);
+}
+.banner-initial {
+  align-content: center;
+  color: color-mix(in srgb, var(--class-tint) 47%, #807347);
+  font: 400 calc(var(--scene-height) * 0.64) / 1 var(--display);
+  text-shadow: 1px 2px #142016;
+}
+.member-banner .member-label {
+  color: var(--class-tint);
+  font: 700 clamp(22px, 2vw, 29px) / 1.02 var(--heading);
+  text-shadow:
+    0 2px 3px #09100c,
+    0 0 8px #09100c;
+}
+.banner-lineup:has(> :nth-child(2)) .member-banner {
+  justify-content: center;
+  padding: 8px 5px;
+  text-align: center;
+}
+.banner-lineup:has(> :nth-child(2)) .banner-art {
+  --figure-center: 50%;
+}
+.banner-lineup:has(> :nth-child(2)) .member-label {
+  font-size: clamp(16px, 1.45vw, 22px);
+}
+.banner-lineup:has(> :nth-child(3)) .member-banner {
+  min-height: max(96px, calc(var(--scene-height) / 2));
+}
+.banner-lineup:has(> :nth-child(3)) .member-label {
+  font-size: 16px;
+}
+.banner-lineup:has(> :nth-child(3)) .banner-art {
+  --zoom: 1.75;
+}
+.banner-lineup:has(> :nth-child(5)) {
+  max-height: 222px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #938854 #213024;
+  grid-auto-rows: 98px;
+}
+.honors .stat:nth-child(1),
+.podium-place[data-rank="1"] {
+  --vista: 7% 45%;
+}
+.honors .stat:nth-child(2),
+.podium-place[data-rank="2"] {
+  --vista: 68% 82%;
+}
+.honors .stat:nth-child(4) {
+  --vista: 100% 29%;
+}
 .honors .stat {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 9px;
-  padding: 14px;
+  gap: 0;
+  padding: 0;
 }
 .honor-caption {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 43px;
+  padding: 6px 13px;
+  border-bottom: 1px solid #99854c65;
 }
 .honor-caption h3 {
-  font:
-    600 12px/1.35 "Segoe UI",
-    sans-serif;
-  color: #dbcda0;
+  font: 700 clamp(16px, 1.4vw, 20px) / 1.1 var(--heading);
+  color: #f2dfaa;
 }
 .honor-caption .honor-illustration {
   width: 28px;
@@ -68,39 +193,34 @@
 }
 .honor-winners {
   flex: 1;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px 9px;
-}
-.honor-winners .portrait {
-  --size: 48px;
-}
-.honor-winners .member-label {
-  font: 700 clamp(20px, 1.9vw, 28px) / 1.05 var(--heading);
-}
-.honor-winners.shared .portrait {
-  --size: 29px;
-}
-.honor-winners.shared .member-link {
-  gap: 4px;
-}
-.honor-winners.shared .member-label {
-  font:
-    600 12px/1.2 "Segoe UI",
-    sans-serif;
 }
 .stat .honor-value {
   color: var(--muted-foreground);
   font-size: 12px;
   border-top: 1px solid #66714377;
-  padding-top: 7px;
+  padding: 8px 14px;
 }
 .award-winners {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 13px;
-  margin-block: 9px;
+  --scene-height: 146px;
+  margin-block: 8px;
+  border-block: 1px solid #8b804655;
+}
+.award-grid .award {
+  padding: 12px 0;
+}
+.award-grid .award > h3 {
+  min-height: 36px;
+  padding: 2px 14px 2px 57px;
+}
+.award-grid .award > svg {
+  top: 9px;
+  left: 13px;
+  width: 31px;
+  height: 35px;
+}
+.award-grid .award > strong,
+.award-grid .award > p:last-child {
+  padding-inline: 15px;
 }
 .award-grid .award a.member-link {
   text-decoration: none;
@@ -186,7 +306,9 @@
 }
 .podium-place {
   --medal: #dec371;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
   border: 1px solid #686c44;
   border-top: 3px solid var(--medal);
   background: radial-gradient(at left top, #53603d88, transparent 70%), #233323;
@@ -203,15 +325,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 9px 13px;
+  border-bottom: 1px solid #8b804655;
 }
 .podium-winners {
-  display: flex;
-  gap: 8px 16px;
-  flex-wrap: wrap;
-  margin: 13px 0;
+  flex: 1;
+  --scene-height: 155px;
 }
-.podium-winners .portrait {
-  --size: 44px;
+.podium-place > p {
+  padding: 7px 13px;
+  border-top: 1px solid #8b804655;
 }
 .podium-place p,
 .race-last {
@@ -252,13 +375,40 @@
   background:
     radial-gradient(ellipse at 50% 28%, #42583a99, transparent 75%), #1b2b20;
   border-top: 2px solid #94884b;
+  min-width: 0;
+  padding: 10px 0 0;
+  align-self: stretch;
+  grid-template-rows: auto 1fr;
 }
-.duel-side h2 .member-link {
-  flex-direction: column;
-  align-items: center;
+.duel-side [data-slot="select-trigger"] {
+  max-width: calc(100% - 16px);
 }
-.duel-side .portrait {
-  --size: 84px;
+.duel-side h2 {
+  --scene-height: clamp(170px, 19vw, 225px);
+  width: 100%;
+  border-top: 1px solid #8b804655;
+  text-align: left;
+}
+.duel-side .banner-art {
+  --figure-center: 55%;
+}
+.member-banner .banner-subtitle {
+  display: block;
+  margin-top: 5px;
+  color: #e4dec3;
+  font:
+    500 12px/1.2 "Segoe UI",
+    sans-serif;
+}
+@media (max-width: 540px) {
+  .stat-grid.honors,
+  .race-panel .race-podium {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .honor-winners,
+  .podium-winners {
+    --scene-height: 138px;
+  }
 }
 .compare-row strong {
   display: flex;
@@ -705,33 +855,23 @@
   .member-grid {
     grid-template-columns: 1fr;
   }
-  .honors .stat {
-    padding: 9px;
-    gap: 6px;
-  }
   .honor-caption {
-    gap: 5px;
-  }
-  .honor-caption h3 {
-    font-size: 11px;
+    min-height: 39px;
+    gap: 7px;
   }
   .honor-caption .honor-illustration {
     width: 22px;
     height: 22px;
   }
-  .honor-winners .portrait {
-    --size: 37px;
+  .duel-side .member-banner {
+    padding: 9px 6px;
+    justify-content: center;
+    text-align: center;
   }
-  .honor-winners.shared .portrait {
-    --size: 24px;
+  .duel-side .member-banner .banner-art {
+    --figure-center: 50%;
   }
-  .honor-winners.shared .member-label {
-    font-size: 11px;
-  }
-  .duel-side .portrait {
-    --size: 60px;
-  }
-  .duel-side h2 {
+  .duel-side .member-label {
     font-size: 20px;
   }
   .chart-party {

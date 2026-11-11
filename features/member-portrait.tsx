@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from "react";
 import { siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
+import { CharacterArt } from "./character-art";
 
 import surnames from "../config/character-surnames.json";
 
@@ -42,18 +43,33 @@ export function Portrait({ member }: { member: Member }) {
   );
 }
 
-export function MemberLink({ member }: { member: Member }) {
+export function MemberLink({
+  member,
+  banner = false,
+  subtitle,
+}: {
+  member: Member;
+  banner?: boolean;
+  subtitle?: string;
+}) {
   const label = fullName(member);
   return (
     <a
-      className="member-link"
+      className={banner ? "member-link member-banner" : "member-link"}
       href={siteHref("/character/" + encodeURIComponent(member.id))}
       title={label}
       aria-label={"Ver ficha de " + label}
       style={{ "--class-tint": color(member) } as CSSProperties}
     >
-      <Portrait member={member} />
-      <span className="member-label">{label}</span>
+      {banner ? (
+        <CharacterArt key={member.id} member={member} />
+      ) : (
+        <Portrait member={member} />
+      )}
+      <span className="member-label">
+        {label}
+        {subtitle && <small className="banner-subtitle">{subtitle}</small>}
+      </span>
     </a>
   );
 }
