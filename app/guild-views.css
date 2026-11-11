@@ -40,10 +40,10 @@
   height: var(--size);
   overflow: hidden;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 30%, #354b34, #17261a);
+  background: radial-gradient(circle at 40% 30%, #4e4236, #26211b);
   border: 2px solid #bd9d55;
   box-shadow:
-    0 0 0 1px #111b13,
+    0 0 0 1px #1c1813,
     inset 0 0 0 3px #eee2a433;
   color: var(--class-tint);
   font: 400 calc(var(--size) * 0.49) / 1 var(--display);
@@ -63,8 +63,8 @@
   grid-template-columns: minmax(0, 1fr);
   isolation: isolate;
   background:
-    linear-gradient(90deg, #101d19f2, #17251a99 59%, #32352680),
-    linear-gradient(0deg, #13231ee8, #22312888 65%, #232a1d99),
+    linear-gradient(90deg, #1e1a15f2, #25201a99 59%, #3a322980),
+    linear-gradient(0deg, #241f19e8, #332c2488 65%, #2d272099),
     url("./art/fortaleza-movil.webp") var(--vista, 50% 54%) / max(135%, 340px)
       auto no-repeat;
 }
@@ -102,7 +102,7 @@
   z-index: -1;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(0deg, #0c170ff2, #11201590 17%, transparent 43%);
+  background: linear-gradient(0deg, #16130ff2, #1f1b1690 17%, transparent 43%);
 }
 .member-banner:focus-visible {
   outline: 2px solid #ffdf83;
@@ -125,7 +125,7 @@
   height: calc(var(--model-height) * var(--zoom));
   transform: translate(var(--model-x), var(--model-top));
   filter: brightness(1.13) drop-shadow(0 1px 2px #ccd9a642)
-    drop-shadow(1px 3px 4px #0b130e88);
+    drop-shadow(1px 3px 4px #14110e88);
 }
 .banner-avatar,
 .banner-initial {
@@ -144,14 +144,14 @@
   align-content: center;
   color: color-mix(in srgb, var(--class-tint) 47%, #807347);
   font: 400 calc(var(--scene-height) * 0.64) / 1 var(--display);
-  text-shadow: 1px 2px #142016;
+  text-shadow: 1px 2px #201c17;
 }
 .member-banner .member-label {
   color: var(--class-tint);
   font: 700 clamp(22px, 2vw, 29px) / 1.02 var(--heading);
   text-shadow:
-    0 2px 3px #09100c,
-    0 0 8px #09100c;
+    0 2px 3px #100e0b,
+    0 0 8px #100e0b;
 }
 .banner-lineup:has(> :nth-child(2)) .member-banner {
   justify-content: center;
@@ -180,7 +180,7 @@
   max-height: 222px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #938854 #213024;
+  scrollbar-color: #938854 #322b23;
   grid-auto-rows: 98px;
 }
 .podium-place[data-rank="1"] {
@@ -203,7 +203,7 @@
 }
 .view-toggle {
   gap: 0;
-  border: 1px solid #63704c;
+  border: 1px solid #796754;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -211,19 +211,19 @@
 .order-direction {
   min-height: 38px;
   padding: 6px 12px;
-  color: #d1d2ad;
-  background: #1c2b20;
-  font-size: 13px;
+  color: #f1dfb5;
+  background: var(--iron-face);
+  font: 600 13px/1.2 var(--interface);
 }
 .view-toggle button[aria-pressed="true"] {
-  background: #405137;
-  color: #ffe38a;
-  box-shadow: inset 0 -2px #e5c15c;
+  background: var(--gold-face);
+  color: #2a1c0d;
+  box-shadow: var(--raised-rim);
 }
 .order-direction {
   display: grid;
   place-items: center;
-  border: 1px solid #63704c;
+  border: 1px solid #796754;
   border-radius: 4px;
 }
 .member-grid {
@@ -233,8 +233,8 @@
 }
 .race-entry {
   padding: 14px;
-  border: 1px solid #4b6042;
-  background: linear-gradient(130deg, #273b29, #1c2b20);
+  border: 1px solid #655646;
+  background: linear-gradient(130deg, #3c332a, #2c261f);
   min-width: 0;
 }
 .roster-card {
@@ -244,8 +244,8 @@
   grid-template-rows: 1fr auto;
   min-width: 0;
   border: 1px solid #88754c;
-  background: #17261e;
-  box-shadow: 0 4px 12px #080e0a55;
+  background: #27221c;
+  box-shadow: 0 4px 12px #0e0c0a55;
 }
 .roster-card:hover,
 .roster-card:focus-visible {
@@ -265,7 +265,7 @@
       color-mix(in srgb, var(--class-tint) 27%, transparent),
       transparent 57%
     ),
-    linear-gradient(80deg, #101b17 0%, #182921e8 41%, #273724a6 79%, #19251fd6),
+    linear-gradient(80deg, #1c1813 0%, #2a241de8 41%, #393128a6 79%, #27221cd6),
     url("./art/fortaleza-movil.webp") 64% 40% / cover;
 }
 .roster-card-scene::after {
@@ -275,8 +275,8 @@
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(0deg, #0d1616df, transparent 74%),
-    linear-gradient(90deg, #11191ad1, #12191945 50%, transparent 73%);
+    linear-gradient(0deg, #171410df, transparent 74%),
+    linear-gradient(90deg, #11191ad1, #1b171345 50%, transparent 73%);
   box-shadow: inset 0 1px #d5b16865;
 }
 .roster-card .banner-art {
@@ -305,8 +305,7 @@
 .card-level small,
 .card-class {
   font:
-    650 10px/1.4 "Segoe UI",
-    sans-serif;
+    650 10px/1.4 var(--reading);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -317,7 +316,7 @@
 .card-identity {
   width: 62%;
   overflow-wrap: anywhere;
-  text-shadow: 0 1px 4px #07110c;
+  text-shadow: 0 1px 4px #100e0b;
 }
 .card-class {
   color: var(--class-tint);
@@ -344,7 +343,7 @@
   gap: 8px;
   padding: 7px 14px;
   border-top: 1px solid #8f794a8c;
-  background: linear-gradient(115deg, #2a382a, #19271e);
+  background: linear-gradient(115deg, #3b3229, #29231c);
   color: #d9bb77;
 }
 .card-foot dl,
@@ -372,7 +371,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 8px 0 0;
   padding-top: 8px;
-  border-top: 1px solid #4d5e3d;
+  border-top: 1px solid #645546;
 }
 .race-metrics dt {
   color: var(--muted-foreground);
@@ -394,9 +393,9 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  border: 1px solid #686c44;
+  border: 1px solid #766553;
   border-top: 3px solid var(--medal);
-  background: radial-gradient(at left top, #53603d88, transparent 70%), #233323;
+  background: radial-gradient(at left top, #66574788, transparent 70%), #342d24;
 }
 .podium-place[data-rank="2"] {
   --medal: #c0cbd0;
@@ -458,7 +457,7 @@
 }
 .duel-side {
   background:
-    radial-gradient(ellipse at 50% 28%, #42583a99, transparent 75%), #1b2b20;
+    radial-gradient(ellipse at 50% 28%, #5c4e4099, transparent 75%), #2c261f;
   border-top: 2px solid #94884b;
   min-width: 0;
   padding: 10px 0 0;
@@ -482,8 +481,7 @@
   margin-top: 5px;
   color: #e4dec3;
   font:
-    500 12px/1.2 "Segoe UI",
-    sans-serif;
+    500 12px/1.2 var(--reading);
 }
 @media (max-width: 540px) {
   .race-panel .race-podium {
@@ -548,8 +546,8 @@
 .history-directory {
   align-self: start;
   min-width: 0;
-  border: 1px solid #495941;
-  background: #132119;
+  border: 1px solid #5f5142;
+  background: #221d17;
 }
 .history-search {
   display: flex;
@@ -557,7 +555,7 @@
   gap: 7px;
   margin: 0 9px;
   padding: 9px 2px;
-  border-bottom: 1px solid #4e5e43;
+  border-bottom: 1px solid #655646;
   color: #ccc695;
 }
 .history-search input {
@@ -572,7 +570,7 @@
   margin: 0;
   max-height: 283px;
   overflow-y: auto;
-  scrollbar-color: #68744c #16231b;
+  scrollbar-color: #7d6b57 #241f19;
   scrollbar-width: thin;
 }
 .history-directory li button {
@@ -601,7 +599,7 @@
 .history-directory
   li
   button:is(:hover, :focus-visible, [aria-pressed="true"]):enabled {
-  background: #2b392a;
+  background: #3c332a;
   border-color: #897b48;
 }
 .history-directory p {
@@ -613,7 +611,7 @@
   gap: 2px;
   padding: 8px 12px;
   border: 1px solid #998456;
-  background: #18261ef5;
+  background: #27221cf5;
   font-size: 12px;
 }
 .history-tooltip strong {
@@ -633,14 +631,14 @@
   font-size: 13px;
 }
 .bar-track {
-  background: #30412c;
+  background: #43392f;
   height: 9px;
 }
 .bar-track i {
   display: block;
   height: 100%;
   background-color: #dfbc64;
-  background-image: linear-gradient(90deg, #26341c42, transparent);
+  background-image: linear-gradient(90deg, #352e2542, transparent);
 }
 .distribution-bars b {
   text-align: right;
@@ -671,12 +669,13 @@
   padding: 5px 9px;
   font-size: 12px;
   font-weight: 650;
-  color: #324127;
+  color: #43392f;
 }
 .news-categories button[aria-pressed="true"] {
   color: #fff1bd;
-  background: #31482e;
-  border-color: #34472b;
+  background: var(--iron-face);
+  box-shadow: var(--inset-rim);
+  border-color: #493e33;
 }
 .news-categories button small {
   font-size: 10px;
@@ -697,7 +696,7 @@
 .story-meta time {
   font-size: 13px;
   font-weight: 650;
-  color: #333a26;
+  color: #3f352c;
 }
 .story-content {
   min-width: 0;
@@ -728,13 +727,13 @@
   stroke-width: 3;
 }
 .move-up {
-  color: #286532;
+  color: #5d4f41;
 }
 .move-down {
   color: #a33226;
 }
 .story-content .member-link {
-  background: #203222;
+  background: #332c24;
   color: #fff6da;
   padding: 2px 8px 2px 2px;
   border-radius: 15px 3px 3px 15px;
@@ -755,8 +754,8 @@
   gap: 3px;
   padding: 4px;
   border: 1px solid #837352;
-  background: #151a17;
-  box-shadow: inset 0 0 0 1px #34352a, 0 4px 12px #080d0b55;
+  background: #1c1813;
+  box-shadow: inset 0 0 0 1px #3b3229, 0 4px 12px #0e0c0a55;
 }
 .empty-armory-room {
   position: relative;
@@ -766,7 +765,7 @@
   min-height: 240px;
 }
 .empty-armory-room:has(.class-room) .empty-state {
-  background: #111b16cf;
+  background: #1c1813cf;
   width: fit-content;
   margin: 12px auto;
 }
@@ -776,15 +775,15 @@
   gap: 1px;
   min-width: 0;
   background: #424135;
-  border: 1px solid #44483c;
+  border: 1px solid #504438;
 }
 .slot-rail .item-slot {
   border: 0;
   padding-inline: 3px;
-  background: linear-gradient(110deg, #242b26, #1b231f);
+  background: linear-gradient(110deg, #302921, #26211b);
 }
 .slot-rail .item-slot.vacant {
-  background: #1c231f;
+  background: #26211b;
   color: #adb5a6;
 }
 .slot-rail .vacant small {
@@ -807,16 +806,16 @@
   color: #a49f86;
 }
 .slot-rail .empty-slot {
-  background: #171f1a;
-  border: 1px solid #475044;
+  background: #221d17;
+  border: 1px solid #584b3e;
   color: #899783;
 }
 .item-slot {
   display: flex;
   min-width: 0;
   align-items: center;
-  border: 1px solid #465a3e;
-  background: linear-gradient(125deg, #273728, #1e2c20);
+  border: 1px solid #5f5142;
+  background: linear-gradient(125deg, #393128, #2d2720);
   min-height: 48px;
 }
 .item-slot[data-selected="true"] {
@@ -833,7 +832,7 @@
   text-align: left;
 }
 .select-gear:hover {
-  background: #667c3d24;
+  background: #806d5924;
 }
 .slot-copy {
   display: grid;
@@ -870,8 +869,8 @@
 .empty-slot {
   display: grid;
   place-items: center;
-  border: 1px dashed #657454;
-  background: #18261c;
+  border: 1px dashed #7d6b57;
+  background: #27221c;
 }
 .empty-slot .slot-mark {
   width: 21px;
@@ -882,8 +881,8 @@
   gap: 8px;
   color: #a0ad8e;
   font-size: 12px;
-  background: #18261b;
-  border-color: #394c35;
+  background: #26211b;
+  border-color: #504438;
 }
 .armory-model {
   min-width: 0;
@@ -891,7 +890,7 @@
   display: grid;
   grid-template-rows: 1fr auto;
   border: 1px solid #796848;
-  background: #172019;
+  background: #221d17;
 }
 .armory-scene {
   --floor-line: 85%;
@@ -904,7 +903,7 @@
   min-height: 285px;
   height: 100%;
   width: 100%;
-  background: #202820 url("./art/fortaleza-movil.webp") center / cover;
+  background: #2b251e url("./art/fortaleza-movil.webp") center / cover;
 }
 .armory-scene .class-room {
   object-position: center 56%;
@@ -916,8 +915,8 @@
   z-index: -2;
   inset: 0;
   background:
-    radial-gradient(ellipse at 52% 55%, transparent 41%, #1012104f 100%),
-    linear-gradient(0deg, #0c11103d, transparent 19%);
+    radial-gradient(ellipse at 52% 55%, transparent 41%, #14110e4f 100%),
+    linear-gradient(0deg, #13100d3d, transparent 19%);
   pointer-events: none;
 }
 .model-shadow {
@@ -963,7 +962,7 @@
   row-gap: 3px;
   padding: 9px clamp(10px, 3%, 24px) 10px;
   border-top: 1px solid #9c8153;
-  background: linear-gradient(110deg, #202923, #18211d 54%, #252a23);
+  background: linear-gradient(110deg, #2c261f, #231e18 54%, #2e2820);
   text-align: center;
 }
 .armory-model figcaption strong {
@@ -974,7 +973,7 @@
 .armory-model figcaption span {
   grid-column: 1 / -1;
   color: #d0c5a8;
-  font: 500 12px/1.25 "Segoe UI", sans-serif;
+  font: 500 12px/1.25 var(--reading);
   letter-spacing: .035em;
 }
 .armory-model figcaption::before,
@@ -998,7 +997,7 @@
   justify-items: center;
   gap: 7px;
   padding: 12px 15px;
-  background: #17221de8;
+  background: #241f19e8;
   border: 1px solid #7d7356;
   color: #ded8bd;
   font-size: 12px;
@@ -1233,9 +1232,9 @@
     padding: 0;
   }
   .slot-rail .empty-slot {
-    background: #1a211dec;
+    background: #241f19ec;
     border-color: #82785e;
-    box-shadow: 0 1px 4px #0b0e0cac;
+    box-shadow: 0 1px 4px #0f0d0bac;
   }
   .slot-rail .item-slot[data-selected="true"] {
     box-shadow: none;
@@ -1268,7 +1267,7 @@
     bottom: 1px;
     font-size: 0;
     gap: 0;
-    background: #17271eee;
+    background: #27221cee;
     border: 1px solid #77824c;
     border-radius: 3px;
     color: #ffe5a3;

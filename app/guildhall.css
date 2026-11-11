@@ -1,115 +1,299 @@
 .guildhall {
-  color: #ffedbf;
-  background: #251f17 url("./art/sala-de-la-ganga.webp") center 49% / cover
-    no-repeat;
-  border-top: 3px solid #a8863b;
-}
-.guildhall-inner {
-  max-width: var(--page);
-  margin: auto;
-  min-height: clamp(130px, 13vw, 230px);
+  --hall-art: url("./art/sala-de-la-ganga.webp");
+  --hall-compact: url("./art/sala-de-la-ganga-movil.webp");
+  --hall-y: 48%;
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
-  padding: 20px var(--gutter);
+  min-height: clamp(168px, 16vw, 440px);
+  background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
+  border-top: 2px solid #a67b29;
 }
-.guildhall[data-home="true"] .guildhall-inner {
-  min-height: clamp(275px, 24vw, 440px);
+.guildhall[data-cover="fragua"] {
+  --hall-art: url("./art/fragua.webp");
+  --hall-compact: url("./art/fragua-movil.webp");
+  --hall-y: 30%;
+}
+.guildhall[data-cover="jardin"] {
+  --hall-art: url("./art/jardin.webp");
+  --hall-compact: url("./art/jardin-movil.webp");
+  --hall-y: 36%;
+}
+.guildhall[data-cover="atalaya"] {
+  --hall-art: url("./art/atalaya.webp");
+  --hall-compact: url("./art/atalaya-movil.webp");
+  --hall-y: 43%;
+}
+.guildhall[data-cover="patio"] {
+  --hall-art: url("./art/patio.webp");
+  --hall-compact: url("./art/patio-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-cover="observatorio"] {
+  --hall-art: url("./art/observatorio.webp");
+  --hall-compact: url("./art/observatorio-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-cover="relojeria"] {
+  --hall-art: url("./art/relojeria.webp");
+  --hall-compact: url("./art/relojeria-movil.webp");
+  --hall-y: 19%;
+}
+.guildhall[data-cover="enfermeria"] {
+  --hall-art: url("./art/enfermeria.webp");
+  --hall-compact: url("./art/enfermeria-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-cover="cripta"] {
+  --hall-art: url("./art/cripta.webp");
+  --hall-compact: url("./art/cripta-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-cover="cocinas"] {
+  --hall-art: url("./art/cocinas.webp");
+  --hall-compact: url("./art/cocinas-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-cover="santuario"] {
+  --hall-art: url("./art/santuario.webp");
+  --hall-compact: url("./art/santuario-movil.webp");
+  --hall-y: 39%;
+}
+.guildhall[data-home="true"] {
+  min-height: clamp(290px, 25vw, 490px);
+}
+.guildhall-caption a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #cfac6470;
+}
+.guildhall-caption a:hover,
+.guildhall-caption a:focus-visible {
+  color: #ffdf8a;
+  text-decoration-color: currentColor;
+}
+.guildhall::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #130f0c60, transparent 37%),
+    linear-gradient(0deg, #110e0bc4, transparent 14%);
+}
+.guildhall-inner {
+  width: clamp(270px, 32vw, 860px);
+  display: grid;
+  justify-items: center;
+  padding: 8px 0 32px;
 }
 .guildhall-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(12px, 1.6vw, 28px);
-  color: #ffdfa0;
-  text-shadow: 0 2px 7px #0c100b;
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  border-radius: 4px;
 }
 .guildhall-brand img {
-  width: clamp(56px, 6vw, 100px);
+  width: clamp(96px, 8vw, 148px);
   height: auto;
-  filter: drop-shadow(0 4px 5px #151208bb);
+  filter: drop-shadow(0 3px 3px #140d07a8);
 }
 .guildhall[data-home="true"] .guildhall-brand img {
-  width: clamp(85px, 10vw, 154px);
-}
-.guildhall-brand :is(h1, strong) {
-  display: block;
-  margin: 2px 0 0;
-  font: 400 clamp(34px, 4.2vw, 70px) / 1.02 var(--display);
-  color: #ffe69d;
-}
-.guildhall[data-home="true"] h1 {
-  font-size: clamp(53px, 6vw, 100px);
+  width: clamp(175px, 17.8vw, 338px);
 }
 .guildhall-brand .eyebrow {
-  color: #f1cc7e;
-  margin: 0;
-  font-size: clamp(8px, 0.72vw, 12px);
+  color: #ffe4a2;
+  font: 600 clamp(10px, 0.76vw, 13px) / 1.3 var(--reading);
+  letter-spacing: 0.15em;
+  text-shadow: 0 1px 4px #160e05;
 }
-.guildhall-legend {
-  font:
-    clamp(14px, 1.2vw, 18px) / 1.3 Georgia,
-    serif;
-  margin: 7px 0 0;
-  max-width: 25ch;
-  color: #ffefc8;
+.guildhall-caption {
+  position: absolute;
+  bottom: 10px;
+  left: clamp(14px, 1.6vw, 36px);
+  max-width: calc(100% - 28px);
+  margin: 0;
+  padding: 2px 8px;
+  border-left: 2px solid #e3ae4d;
+  background: linear-gradient(90deg, #17110cbb, #17110c66);
+  color: #f3e5ce;
+  font: 400 clamp(12px, 0.9vw, 15px) / 1.3 var(--interface);
+  text-shadow: 0 1px 2px #100b06;
 }
 .guildhall-nav {
   position: sticky;
   z-index: 15;
   top: 0;
-  background: linear-gradient(#343a28, #19241c 75%);
-  border-block: 1px solid #ac8f50;
+  border-block: 1px solid #f4d889;
+  border-bottom-color: #77501e;
+  background: linear-gradient(
+    105deg,
+    #ba8b37,
+    #edbd55 21%,
+    #f2ca70 52%,
+    #dfac4b 81%,
+    #b98530
+  );
   box-shadow:
-    inset 0 2px #ead2991c,
-    0 4px 12px #08130e70;
+    inset 0 2px #ffdc80a6,
+    inset 0 -3px #855f288c,
+    0 3px 9px #0b090777;
 }
 .guildhall-nav > div {
   width: min(100%, var(--page));
-  padding: 0 var(--gutter);
+  padding: 5px clamp(10px, 2vw, 32px) 6px;
   margin: auto;
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: center;
+  gap: clamp(2px, 0.35vw, 7px);
 }
 .guildhall-nav a,
 .guild-explore {
+  position: relative;
   display: inline-flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  min-height: 46px;
-  padding: 0 7px;
-  color: #e5d8ae;
-  font: 700 clamp(14px, 1.35vw, 20px) / 1.1 var(--heading);
+  gap: clamp(4px, 0.48vw, 8px);
+  padding: 6px clamp(5px, 0.7vw, 14px);
+  min-height: 44px;
+  color: #38250e;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font: 600 clamp(13px, 1.02vw, 16px) / 1.15 var(--interface);
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
+}
+.guildhall-nav a svg,
+.guild-explore svg,
+.guild-explore-menu a svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.7;
 }
 .guildhall-nav a:hover,
+.guild-explore:hover {
+  background: #ffdf89;
+  border-color: #aa7833;
+}
 .guildhall-nav a[aria-current],
-.guild-explore:hover,
 .guild-explore[data-state="open"] {
-  color: #fff0a4;
-  border-bottom-color: #edc45f;
+  background: var(--iron-face);
+  color: #ffe09a;
+  border-color: #593b19;
+  box-shadow: var(--inset-rim);
+}
+.guildhall-nav :is(a, button):focus-visible {
+  outline: 2px solid #201509;
+  outline-offset: 2px;
+}
+.guildhall-nav a:active,
+.guild-explore:active {
+  box-shadow: inset 0 2px 4px #38250e99;
 }
 .guild-explore {
   display: none;
-  background: none;
   cursor: pointer;
 }
 .guild-explore-menu {
-  min-width: 192px;
-  color: #f5e1ae;
-  background: #17271c;
-  border: 1px solid #96804d;
+  min-width: 210px;
+  padding: 4px;
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid #ad8446;
 }
 .guild-explore-menu a {
-  padding: 9px 12px;
-  display: block;
-  font: 700 17px/1.25 var(--heading);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 12px;
+  font: 500 15px/1.2 var(--interface);
+}
+.guild-explore-menu a svg {
+  color: var(--gold);
+}
+.guild-explore-menu a svg:last-child {
+  margin-left: auto;
 }
 .guild-explore-menu a:is([aria-current], [data-highlighted]) {
-  color: #ffdf84;
-  background: #35422b;
+  background: var(--muted);
+  color: #ffe5a0;
 }
+@media (max-width: 1050px) {
+  .guildhall-nav a[data-quick="false"] {
+    display: none;
+  }
+  .guild-explore {
+    display: inline-flex;
+  }
+  .guild-explore[data-section]:not(
+      [data-section="news"],
+      [data-section="overview"]
+    ) {
+    background: var(--iron-face);
+    color: #ffe09a;
+    box-shadow: var(--inset-rim);
+  }
+}
+@media (max-width: 680px) {
+  .guildhall {
+    min-height: 174px;
+    align-items: flex-end;
+    background-image: var(--hall-compact);
+  }
+  .guildhall[data-home="true"] {
+    min-height: clamp(290px, 72vw, 350px);
+  }
+  .guildhall::before {
+    background:
+      linear-gradient(0deg, #15100ce8, transparent 27%),
+      linear-gradient(65deg, #14100cb3, transparent 36%);
+  }
+  .guildhall-inner {
+    width: auto;
+    padding: 0 0 43px clamp(12px, 3vw, 25px);
+  }
+  .guildhall-brand img {
+    width: 70px;
+  }
+  .guildhall[data-home="true"] .guildhall-brand img {
+    width: clamp(102px, 26vw, 142px);
+  }
+  .guildhall-brand .eyebrow {
+    display: none;
+  }
+  .guildhall-caption {
+    bottom: 6px;
+    font: 13px/1.2 var(--reading);
+  }
+  .guildhall-nav > div {
+    padding-inline: 6px;
+  }
+  .guildhall-nav a,
+  .guild-explore {
+    font-size: 14px;
+  }
+}
+@media (max-width: 520px) {
+  .guildhall-nav a[href$="/news"] {
+    display: none;
+  }
+  .guild-explore[data-section="news"] {
+    background: var(--iron-face);
+    color: #ffe09a;
+    box-shadow: var(--inset-rim);
+  }
+}
+@media (max-width: 355px) {
+  .guildhall-nav a,
+  .guild-explore {
+    gap: 3px;
+    padding-inline: 3px;
+    font-size: 13px;
+  }
+}
+
 .archive,
 [data-story] {
   scroll-margin-top: 62px;
@@ -125,7 +309,7 @@
   padding: 18px clamp(16px, 2.5vw, 34px);
   border: 1px solid #8a7546;
   border-left: 4px solid #c09c49;
-  background: linear-gradient(106deg, #293829, #17271e 67%, #263226);
+  background: linear-gradient(106deg, #3b3229, #27221c 67%, #352e25);
   box-shadow: inset 0 1px #eed79c26;
 }
 .rumor-panel > header,
@@ -168,12 +352,14 @@
   place-items: center;
   cursor: pointer;
   color: #f6d57a;
-  background: #18231b;
+  background: #241f19;
   border: 1px solid #8d814f;
 }
 .rumor-controls button {
   width: 38px;
   height: 38px;
+  background: var(--iron-face);
+  box-shadow: var(--inset-rim);
 }
 .rumor-controls svg {
   width: 17px;
@@ -236,7 +422,7 @@
 .edition-play {
   margin: 16px 0 20px;
   color: #f5e8bf;
-  background: #1a2922;
+  background: #2b251e;
   border: 1px solid #8e7440;
 }
 .play-bill {
@@ -245,7 +431,7 @@
   overflow: hidden;
   min-height: 176px;
   background:
-    linear-gradient(90deg, #101d16 8%, #16231ceb 46%, #1b2b229c 72%, #1e302552),
+    linear-gradient(90deg, #1d1914 8%, #241f19eb 46%, #2c261f9c 72%, #322b2352),
     url("./art/fortaleza.webp") 60% 46% / cover;
 }
 .play-copy {
@@ -322,7 +508,7 @@
 }
 .replay-lead {
   z-index: 1;
-  background: #34422b;
+  background: #463b31;
 }
 .replay-duel {
   margin-left: auto;
@@ -332,61 +518,7 @@
   gap: 6px;
   padding: 6px;
 }
-@media (max-width: 840px) {
-  .guildhall-nav a[data-quick="false"] {
-    display: none;
-  }
-  .guild-explore {
-    display: inline-flex;
-  }
-}
 @media (max-width: 680px) {
-  .guildhall {
-    background-image:
-      linear-gradient(0deg, #111910cc, transparent 65%),
-      url("./art/sala-de-la-ganga-movil.webp");
-    background-position:
-      center,
-      center 42%;
-  }
-  .guildhall-inner {
-    align-items: flex-end;
-    min-height: 134px;
-    padding: 10px var(--gutter);
-  }
-  .guildhall[data-home="true"] {
-    background-image:
-      linear-gradient(0deg, #0e1a14 1%, #0f1914c4 18%, transparent 45%),
-      url("./art/sala-de-la-ganga-movil.webp");
-  }
-  .guildhall[data-home="true"] .guildhall-inner {
-    min-height: clamp(288px, 70vw, 345px);
-  }
-  .guildhall-brand img {
-    width: 46px;
-  }
-  .guildhall[data-home="true"] .guildhall-brand img {
-    width: 65px;
-  }
-  .guildhall-brand :is(h1, strong) {
-    font-size: 32px;
-  }
-  .guildhall[data-home="true"] h1 {
-    font-size: 43px;
-  }
-  .guildhall-legend {
-    max-width: none;
-    font-size: 12px;
-    margin: 1px 0 0;
-  }
-  .guildhall-nav > div {
-    gap: 2px;
-  }
-  .guildhall-nav a,
-  .guild-explore {
-    font-size: 15px;
-    padding: 0 3px;
-  }
   .replay-duel span {
     display: none;
   }
@@ -407,18 +539,5 @@
 @media (prefers-reduced-motion: reduce) {
   .replay-field li {
     transition: none;
-  }
-}
-@media (max-width: 375px) {
-  .guildhall-nav > div {
-    padding-inline: 7px;
-  }
-  .guildhall-nav a,
-  .guild-explore {
-    font-size: 14px;
-    padding-inline: 2px;
-  }
-  .guild-explore svg:first-child {
-    display: none;
   }
 }

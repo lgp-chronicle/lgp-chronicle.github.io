@@ -214,8 +214,7 @@ html:has(.guild-entrance[open]) {
     transparent
   );
   font:
-    650 clamp(10px, 0.85vw, 13px) / 1.4 "Segoe UI",
-    sans-serif;
+    650 clamp(10px, 0.85vw, 13px) / 1.4 var(--reading);
   letter-spacing: 0.09em;
   text-transform: uppercase;
   text-shadow: 0 1px 3px #0a1417;
@@ -237,18 +236,16 @@ html:has(.guild-entrance[open]) {
   min-height: 44px;
   padding: 8px 22px;
   border: 1px solid #bca269;
-  background: linear-gradient(135deg, #293027f5, #101d1bf5);
-  box-shadow:
-    inset 0 0 0 2px #1d241e,
-    0 3px 12px #0a121690;
-  color: #ffe8af;
+  background: var(--gold-face);
+  box-shadow: var(--raised-rim);
+  color: #2a1c0d;
   font: 700 18px/1.15 var(--heading);
   white-space: nowrap;
   cursor: pointer;
 }
 .arrival-enter:hover {
   border-color: #ffe5a6;
-  color: #fff6dc;
+  filter: brightness(1.12);
 }
 .arrival-enter:focus-visible {
   outline: 2px solid #ffdc8b;

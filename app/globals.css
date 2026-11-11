@@ -3,18 +3,15 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "Almendra";
-  src: url("./art/Almendra-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
+  font-family: "Marcellus";
+  src: url("./art/Marcellus-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-display: swap;
 }
-
 @font-face {
-  font-family: "Germania One";
-  src: url("./art/GermaniaOne-Regular.ttf") format("truetype");
+  font-family: "Metamorphous";
+  src: url("./art/Metamorphous-Regular.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
   font-display: swap;
 }
 
@@ -30,7 +27,7 @@
   --color-accent: var(--muted);
   --color-accent-foreground: var(--foreground);
   --color-primary: var(--gold);
-  --color-primary-foreground: #121b0e;
+  --color-primary-foreground: #1b1713;
   --color-ring: var(--gold);
   --color-card: var(--surface);
   --color-card-foreground: var(--foreground);
@@ -38,18 +35,41 @@
 
 :root {
   color-scheme: dark;
-  --background: #101912;
-  --surface: #1d2c20;
-  --foreground: #f5efd9;
-  --muted: #34432b;
-  --muted-foreground: #c1c6aa;
-  --border: #516043;
-  --gold: #f6cb55;
-  --display: "Germania One", "Almendra", Georgia, serif;
-  --heading: "Almendra", Georgia, serif;
+  --background: #191613;
+  --surface: #28231d;
+  --foreground: #f4eddf;
+  --muted: #463823;
+  --muted-foreground: #cdbfa9;
+  --border: #61503b;
+  --gold: #ffd15a;
+  --interface:
+    "Friz Quadrata TT", "Friz Quadrata", "FrizQuadrataStd", Marcellus, Georgia,
+    serif;
+  --display: Morpheus, Metamorphous, Georgia, serif;
+  --heading: var(--interface);
+  --reading: "Arial Narrow", "Segoe UI", Arial, sans-serif;
+  --gold-face: linear-gradient(
+    174deg,
+    #ffe18c,
+    #efbd50 49%,
+    #d8a039 52%,
+    #e7b451
+  );
+  --iron-face: linear-gradient(
+    175deg,
+    #433b30,
+    #302921 48%,
+    #29221b 52%,
+    #30271e
+  );
+  --raised-rim:
+    inset 0 0 0 1px #775024, inset 0 2px 1px #fff3bc, inset 0 -3px 1px #a77831,
+    0 1px 2px #110e0a;
+  --inset-rim:
+    inset 0 0 0 1px #b18d53, inset 0 2px 2px #0f0b07, inset 0 -2px #17130f;
   --page: 1376px;
   --gutter: clamp(16px, 4vw, 64px);
-  --gold-rule: linear-gradient(90deg, #323f1e, #b99a38 43%, #303e20);
+  --gold-rule: linear-gradient(90deg, #41372d, #b99a38 43%, #40362d);
   --finial: linear-gradient(
     135deg,
     #fff1a2 10%,
@@ -65,13 +85,10 @@
 body {
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% 0, #233822 0, transparent 62rem),
+    radial-gradient(ellipse at 50% 0, #383027 0, transparent 62rem),
     var(--background);
   color: var(--foreground);
-  font:
-    15px/1.55 "Segoe UI",
-    Arial,
-    sans-serif;
+  font: 15px/1.55 var(--reading);
 }
 a {
   color: inherit;
@@ -120,9 +137,9 @@ a svg {
   padding-block: 27px 64px;
 }
 .masthead {
-  background: #0e1a14;
+  background: #1b1713;
   border-top: 3px solid #c39530;
-  border-bottom: 1px solid #6e723e;
+  border-bottom: 1px solid #7b6956;
 }
 .masthead-inner {
   min-height: 76px;
@@ -153,9 +170,7 @@ a svg {
   margin-top: 5px;
   color: #c2be6b;
   text-transform: uppercase;
-  font:
-    600 9px/1.1 "Segoe UI",
-    sans-serif;
+  font: 600 9px/1.1 var(--reading);
   letter-spacing: 0.21em;
 }
 .guild-nav {
@@ -205,11 +220,11 @@ a svg {
   align-items: center;
   min-height: clamp(350px, 30vw, 430px);
   border: 1px solid #d8b24f;
-  background: #203021;
+  background: #312a22;
   box-shadow:
-    0 0 0 2px #101b15,
+    0 0 0 2px #1c1813,
     0 0 0 3px #716c37,
-    0 12px 28px #09130c66;
+    0 12px 28px #13100d66;
 }
 .guild-cover::before {
   content: "";
@@ -217,7 +232,7 @@ a svg {
   z-index: -2;
   inset: 0;
   background:
-    linear-gradient(90deg, #0b1c15ed, #0f2019ae 30%, transparent 62%),
+    linear-gradient(90deg, #1b1713ed, #1f1b16ae 30%, transparent 62%),
     url("./art/fortaleza.webp") center 49% / cover no-repeat;
 }
 .guild-cover::after {
@@ -247,9 +262,7 @@ a svg {
   z-index: 1;
 }
 .eyebrow {
-  font:
-    700 10px/1.4 "Segoe UI",
-    sans-serif;
+  font: 700 10px/1.4 var(--reading);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #ebc65f;
@@ -273,8 +286,8 @@ a svg {
   color: #ffdf72;
   text-shadow:
     0 2px #6c4b1a,
-    0 4px #1b200e,
-    0 5px 22px #081b12;
+    0 4px #201c17,
+    0 5px 22px #1a1612;
 }
 .cover-copy h1 span {
   color: #ffdd63;
@@ -300,7 +313,7 @@ a svg {
   width: clamp(205px, 23vw, 345px);
   transform: translateY(-50%);
   height: auto;
-  filter: drop-shadow(0 5px 1px #30260e99) drop-shadow(0 14px 12px #17251580);
+  filter: drop-shadow(0 5px 1px #30260e99) drop-shadow(0 14px 12px #25201a80);
 }
 
 .button {
@@ -313,10 +326,7 @@ a svg {
   border: 1px solid transparent;
   border-radius: 5px;
   color: #fff99f;
-  font:
-    650 14px/1.3 "Segoe UI",
-    Arial,
-    sans-serif;
+  font: 650 14px/1.3 var(--reading);
   transition:
     background-color 0.16s,
     border-color 0.16s,
@@ -328,47 +338,27 @@ a svg {
   height: 17px;
   stroke-width: 1.65;
 }
-.button.bronze {
-  color: #2c250d;
-  background: linear-gradient(
-    170deg,
-    #fff1a3,
-    #fbd35e 42%,
-    #eab53c 85%,
-    #d19929
-  );
-  border-color: #f7d471;
-  border-radius: 3px 11px 3px 11px;
-  box-shadow:
-    inset 0 0 0 2px #d5a33c,
-    inset 0 0 0 3px #ffe891,
-    0 2px 0 #463c16;
-}
-.button.bronze:hover {
-  background: #fffd96;
-  border-color: #ffffa5;
-}
-.button.iron {
-  color: #f5e3a1;
-  background: linear-gradient(150deg, #32462d, #1b2d21);
-  border: 1px solid #ab9d55;
-  border-radius: 3px 11px 3px 11px;
-  box-shadow: inset 0 0 0 2px #263823;
-}
-.button.iron:hover {
-  background: #202f19;
-  border-color: #f2d976;
-}
+.button.bronze,
+.button.iron,
 .button.outline {
-  padding-inline: 9px;
-  background: transparent;
-  border: 0;
-  color: #eadd86;
-  outline: none;
+  font: 600 14px/1.25 var(--interface);
+  border: 1px solid #99723a;
+  border-radius: 3px;
+  background: var(--iron-face);
+  box-shadow: var(--inset-rim);
+  color: #ffe2a0;
 }
-.button.outline:hover {
-  color: #fffb89;
-  background: #25361b66;
+.button.bronze {
+  background: var(--gold-face);
+  color: #281b0d;
+  border-color: #edc571;
+  box-shadow: var(--raised-rim);
+}
+.button:is(.bronze, .iron, .outline):hover {
+  filter: brightness(1.12);
+}
+.button:is(.bronze, .iron, .outline):active {
+  box-shadow: inset 0 2px 4px #231706aa;
 }
 .button:focus-visible {
   outline: 2px solid #fff578;
@@ -387,7 +377,7 @@ a svg {
 }
 .section-title {
   font-size: clamp(31px, 3.1vw, 43px);
-  color: #fffa97;
+  color: var(--gold);
 }
 .honors-heading {
   margin: 35px 0 12px;
@@ -416,7 +406,7 @@ a svg {
 .panel,
 .duel-side,
 .award {
-  background: linear-gradient(126deg, #1c2b1a, #142115 70%);
+  background: linear-gradient(126deg, #2b251e, #201c17 70%);
   border: 1px solid var(--border);
 }
 .stat {
@@ -446,7 +436,7 @@ a svg {
   padding: 12px 16px;
   margin: 19px 0;
   border-left: 3px solid #b79632;
-  background: #1b2917;
+  background: #29231c;
   color: #d2d1a6;
   line-height: 1.5;
   font-size: 13px;
@@ -464,87 +454,66 @@ main.page-width.panel {
 }
 
 .section-index {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .folio-tabs {
   display: flex;
-  position: relative;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   height: auto !important;
   justify-content: flex-start;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  gap: clamp(5px, 1.5vw, 24px);
-  padding: 0;
-  border-radius: 0;
-  border-bottom: 1px solid #81753573;
-  background: transparent;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #79603b;
+  background: #1a1613;
+  box-shadow: inset 0 1px 3px #0e0b08;
 }
 .folio-tabs button {
   flex: 0 0 auto;
+  min-height: 44px;
   height: auto;
-  min-height: 56px;
-  padding: 10px 6px 14px;
-  border: 0;
-  border-radius: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  box-shadow: none;
-  color: #c0be98;
-  font:
-    600 clamp(13px, 1vw, 15px) / 1.4 "Segoe UI",
-    Arial,
-    sans-serif;
+  padding: 7px clamp(10px, 1.15vw, 18px);
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font: 600 14px/1.25 var(--interface);
+  color: #e4d7bd;
 }
 .folio-tabs button svg {
-  width: 17px;
-  height: 17px;
-  stroke-width: 1.55;
-  color: #bcb75b;
+  width: 16px;
+  height: 16px;
+  color: #e4b861;
 }
-.folio-tabs button:hover,
-.folio-tabs button:hover svg {
-  color: #fffa93;
+.folio-tabs button:hover {
+  background: #3b3023;
+  color: #fff0c6;
 }
-.folio-tabs button[data-state="active"] {
-  background: transparent;
-  color: #fffe8a;
-  box-shadow: none;
+.folio-tabs button[data-state="active"],
+.folio-picker .index-trigger {
+  background: var(--gold-face);
+  border-color: #e3bb63 #865a28 #754e24 #d8ad59;
+  color: #2a1c0d;
+  box-shadow: var(--raised-rim);
 }
-.folio-tabs button[data-state="active"] svg {
-  color: #fed055;
-}
-.folio-tabs button[data-state="active"]::before {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 3px;
-  right: 3px;
-  height: 2px;
-  background: linear-gradient(90deg, #9d862d, #ffe36c 50%, #9d862d);
-}
-.folio-tabs button[data-state="active"]::after {
-  content: "";
-  position: absolute;
+.folio-tabs button[data-state="active"] svg,
+.folio-picker .index-trigger svg {
+  color: inherit;
   opacity: 1;
-  width: 6px;
-  height: 6px;
-  bottom: -3px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  background: #ffe36b;
-  box-shadow: 0 0 0 2px var(--background);
 }
-.folio-tabs button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: -2px;
+.folio-tabs button:focus-visible,
+.folio-picker .index-trigger:focus-visible {
+  outline: 2px solid #fff1ad;
+  outline-offset: 1px;
 }
 .folio-picker {
   display: none;
 }
-@media (max-width: 1020px) {
+.index-options [data-slot="select-item"] {
+  min-height: 44px;
+  font-family: var(--interface);
+}
+@media (max-width: 800px) {
   .folio-tabs {
     display: none;
   }
@@ -554,27 +523,10 @@ main.page-width.panel {
   .folio-picker .index-trigger {
     display: flex;
     width: 100%;
-    height: auto;
-    min-height: 48px;
-    padding: 11px 15px;
-    color: #fffa96;
-    border: 1px solid #857938;
-    border-radius: 6px;
-    background: #1a2818;
-    font-size: 15px;
-    font-weight: 600;
+    min-height: 46px;
+    padding: 8px 14px;
+    font: 600 15px/1.2 var(--interface);
   }
-  .index-trigger [data-slot="select-value"] {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .index-trigger [data-slot="select-value"] svg {
-    color: #f8d15f;
-  }
-}
-.index-options [data-slot="select-item"] {
-  min-height: 40px;
 }
 
 [data-slot="tabs"],
@@ -589,7 +541,7 @@ main.page-width.panel {
 }
 .panel {
   border-top-color: #9a8535;
-  box-shadow: inset 0 0 0 4px #101b1155;
+  box-shadow: inset 0 0 0 4px #1b171355;
 }
 .panel::before,
 .panel::after {
@@ -635,14 +587,14 @@ main.page-width.panel {
 
 .toolbar input,
 [data-slot="select-trigger"] {
-  background: #121f13;
-  border: 1px solid #355030;
+  background: #1e1a15;
+  border: 1px solid #514539;
   border-radius: 5px;
   min-height: 41px;
   padding: 8px 12px;
   color: var(--foreground);
   font-size: 14px;
-  box-shadow: inset 0 1px 3px #09100828;
+  box-shadow: inset 0 1px 3px #0f0d0b28;
 }
 .toolbar input {
   width: min(100%, 300px);
@@ -659,9 +611,9 @@ main.page-width.panel {
 [data-slot="select-content"] {
   padding: 3px;
   color: var(--foreground);
-  background: #162416;
+  background: #241f19;
   border: 1px solid #807537;
-  box-shadow: 0 8px 25px #070e0880;
+  box-shadow: 0 8px 25px #0e0c0a80;
   border-radius: 6px;
 }
 [data-slot="select-item"] {
@@ -675,7 +627,7 @@ main.page-width.panel {
 [data-slot="select-item"]:focus,
 [data-slot="select-item"][data-highlighted] {
   color: #ffffb4;
-  background: #243620;
+  background: #372f26;
 }
 
 .badge {
@@ -685,9 +637,7 @@ main.page-width.panel {
   border: 1px solid #79682b;
   padding: 4px 9px;
   color: #eed773;
-  font:
-    600 11px/1.4 "Segoe UI",
-    sans-serif;
+  font: 600 11px/1.4 var(--reading);
   letter-spacing: 0.04em;
 }
 .roster-search {
@@ -719,7 +669,7 @@ main.page-width.panel {
 .data-table th {
   color: #e2d37b;
   white-space: nowrap;
-  background: #121e13;
+  background: #1e1a15;
 }
 .data-table tr {
   border-color: var(--border);
@@ -728,7 +678,7 @@ main.page-width.panel {
   padding: 13px 10px;
 }
 .data-table tbody tr:hover {
-  background: #27371f60;
+  background: #38302760;
 }
 .table-sort,
 .name-cell {
@@ -756,7 +706,7 @@ main.page-width.panel {
   flex: none;
   display: grid;
   place-items: center;
-  background: #172517;
+  background: #25201a;
   border: 1px solid #8b7c33;
   color: #e7c861;
   overflow: hidden;
@@ -787,7 +737,7 @@ main.page-width.panel {
 }
 .news-paper {
   background: linear-gradient(118deg, #f7ef90, #e7d97d 75%, #d7c265);
-  color: #1d2915;
+  color: #2a241d;
   border: 1px solid #a49640;
   box-shadow:
     inset 0 0 0 4px #e0cf71,
@@ -798,9 +748,7 @@ main.page-width.panel {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: space-between;
-  font:
-    650 10px/1.4 "Segoe UI",
-    sans-serif;
+  font: 650 10px/1.4 var(--reading);
   letter-spacing: 0.12em;
 }
 .paper-title {
@@ -818,11 +766,11 @@ main.page-width.panel {
 .news-paper .empty-state,
 .news-paper .empty-state h3,
 .news-paper .empty-state svg {
-  color: #2e4020;
+  color: #41372d;
 }
 .news-paper [data-slot="select-trigger"] {
   background: #f3e88b;
-  color: #1d2813;
+  color: #29231c;
   border-color: #9c8b3b;
 }
 .award {
@@ -905,7 +853,7 @@ main.page-width.panel {
   gap: 22px;
   padding: clamp(22px, 3.5vw, 45px);
   background:
-    linear-gradient(90deg, #121d12f7, #121d12d9 51%, #14201388),
+    linear-gradient(90deg, #1d1914f7, #1d1914d9 51%, #201c1788),
     url("./art/fortaleza.webp") center 49% / cover;
   border: 1px solid #816e2c;
   box-shadow: inset 0 0 0 4px #b69e332e;
@@ -948,13 +896,13 @@ main.page-width.panel {
   grid-template-columns: repeat(4, 1fr);
   margin: 0 0 15px;
   padding: 12px 0;
-  background: #121f13;
-  border: 1px solid #2b3e22;
+  background: #1e1a15;
+  border: 1px solid #3f352c;
   border-top: none;
 }
 .character-facts > div {
   padding: 0 clamp(12px, 2vw, 30px);
-  border-inline-start: 1px solid #2b3e22;
+  border-inline-start: 1px solid #3f352c;
 }
 .character-facts > div:first-child {
   border: 0;
@@ -982,7 +930,7 @@ main.page-width.panel {
   flex-wrap: wrap;
 }
 .dossier-heading {
-  border-bottom: 1px solid #374c28;
+  border-bottom: 1px solid #4d4135;
   padding-bottom: 12px;
   margin-bottom: 15px;
 }
@@ -1028,10 +976,10 @@ main.page-width.panel {
   width: 46px;
   height: 46px;
   color: #dfcc6d;
-  background: #0f1a10;
+  background: #1a1612;
   border: 1px solid var(--rarity, #a69037);
   padding: 2px;
-  box-shadow: 0 0 0 1px #0c150b;
+  box-shadow: 0 0 0 1px #15120f;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -1082,21 +1030,21 @@ main.page-width.panel {
   align-items: start;
 }
 .talent-tree {
-  background: #132114;
-  border: 1px solid #314726;
+  background: #201c17;
+  border: 1px solid #483d32;
   border-radius: 3px;
 }
 .tree-heading {
-  background: #1a2817;
+  background: #29231c;
   padding: 13px;
-  border-bottom: 1px solid #2f4022;
+  border-bottom: 1px solid #41372d;
 }
 .tree-heading span {
   font-size: 13px;
   color: #f3df7d;
 }
 .talent-link + .talent-link {
-  border-top: 1px solid #2b3e2299;
+  border-top: 1px solid #3f352c99;
 }
 .talent-link .game-icon {
   width: 40px;
@@ -1124,7 +1072,7 @@ main.page-width.panel {
   display: flex;
   justify-content: space-between;
   padding-block: 6px;
-  border-bottom: 1px solid #2b3e23;
+  border-bottom: 1px solid #3f352c;
   gap: 15px;
 }
 .attribute-list dd {
@@ -1197,8 +1145,8 @@ footer {
   gap: 14px;
   padding: 24px
     max(var(--gutter), calc((100vw - var(--page)) / 2 + var(--gutter)));
-  background: #0d170e;
-  border-top: 1px solid #364826;
+  background: #171410;
+  border-top: 1px solid #493e33;
   color: #b5b189;
   font-size: 12px;
 }
@@ -1207,9 +1155,7 @@ footer {
   color: #eedf83;
 }
 .footer-brand span {
-  font:
-    12px "Segoe UI",
-    sans-serif;
+  font: 12px var(--reading);
 }
 
 .brand > span,
@@ -1243,43 +1189,22 @@ footer {
 .award > strong {
   color: #f9dc84;
 }
-.section-index {
-  padding: 0 8px;
-  border: 1px solid #5b6845;
-  border-bottom-color: #7e813e;
-  background: linear-gradient(180deg, #293b29, #1e3022);
-}
-.folio-tabs {
-  gap: clamp(2px, 1.1vw, 15px);
-  border-bottom: 0;
-}
-.folio-tabs button {
-  padding-inline: clamp(7px, 1vw, 14px);
-}
-.folio-tabs button[data-state="active"] {
-  color: #fff0b4;
-  background: linear-gradient(0deg, #70692f44, transparent 86%);
-}
-.folio-tabs button[data-state="active"] svg,
 .slot-label,
 .dossier-heading > a {
   color: #efd47f;
 }
-.folio-tabs button[data-state="active"]::after {
-  background-color: #f3cd5e;
-}
 .official-armory.button {
   color: #ffeaad;
   border: 1px solid #ac9955;
-  background: #18291ed9;
+  background: #2a241dd9;
   padding-inline: 14px;
 }
 .tree-heading {
-  background: linear-gradient(120deg, #394d30, #263823);
+  background: linear-gradient(120deg, #504438, #393128);
 }
 
 .dossier-heading {
-  border-color: #687240;
+  border-color: #7a6855;
 }
 .news-paper {
   background: linear-gradient(124deg, #f9e9ab, #e9d189 70%, #d9b96a);
@@ -1290,7 +1215,7 @@ footer {
     inset 0 0 0 5px #aa9048;
 }
 .news-paper .paper-title {
-  color: #334022;
+  color: #42382e;
   border-color: #78723e;
 }
 .news-paper small,
@@ -1300,28 +1225,16 @@ footer {
 }
 .news-paper [data-slot="select-trigger"] {
   background: #f9eab6;
-  color: #313620;
+  color: #3a3229;
 }
 .character-dossier .character-banner {
   background:
-    linear-gradient(90deg, #142b1cef, #15291ddb 52%, #172e1a91),
+    linear-gradient(90deg, #2a241def, #29231cdb 52%, #2c261f91),
     url("./art/fortaleza.webp") center 48% / cover;
   border-color: #a99851;
 }
 .character-facts {
-  background: #1d2c20;
-}
-@media (max-width: 1020px) {
-  .section-index {
-    border: 0;
-    background: transparent;
-    padding: 0;
-  }
-  .folio-picker .index-trigger {
-    background: linear-gradient(120deg, #30442c, #1d3022);
-    border: 1px solid #9b9854;
-    color: #fff0b9;
-  }
+  background: #2d2720;
 }
 @media (max-width: 1000px) {
   .grid-two {
@@ -1365,7 +1278,7 @@ footer {
   }
   .guild-cover::before {
     background:
-      linear-gradient(0deg, #081b11f7 3%, #0d2218df 38%, #152d1d18 78%),
+      linear-gradient(0deg, #181511f7 3%, #201c17df 38%, #2b251e18 78%),
       url("./art/fortaleza-movil.webp") 69% 26% / auto 100% no-repeat;
   }
   .cover-copy {

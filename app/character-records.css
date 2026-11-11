@@ -12,8 +12,7 @@
   margin: 0 0 7px;
   color: #cdbe92;
   font:
-    650 11px/1.3 "Segoe UI",
-    sans-serif;
+    650 11px/1.3 var(--reading);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -37,8 +36,8 @@
   min-width: 0;
   padding: 9px 6px 9px 35px;
   border: 1px solid #75825444;
-  border-left: 2px solid color-mix(in srgb, var(--stat-ink) 56%, #344130);
-  background: linear-gradient(115deg, #30413399, #1c2b2180);
+  border-left: 2px solid color-mix(in srgb, var(--stat-ink) 56%, #463b31);
+  background: linear-gradient(115deg, #443a3099, #2c261f80);
 }
 .attribute-group dt {
   color: #d5dac6;
@@ -70,8 +69,8 @@
   grid-template-columns: 40px minmax(0, 1fr);
   gap: 12px;
   padding: 8px 10px;
-  border: 1px solid #6c745048;
-  background: #1e2d2290;
+  border: 1px solid #7e6c5848;
+  background: #2e282090;
 }
 .trade-icon {
   width: 40px;
@@ -79,7 +78,7 @@
   display: grid;
   place-items: center;
   border: 1px solid #b79b63;
-  background: #17251d;
+  background: #26211b;
   color: #d5bf83;
   overflow: hidden;
 }
@@ -111,11 +110,11 @@
   height: 5px;
   border: 0;
   appearance: none;
-  background: #344035;
+  background: #463b31;
   color: #d1b362;
 }
 .trade-list progress::-webkit-progress-bar {
-  background: #344035;
+  background: #463b31;
 }
 .trade-list progress::-webkit-progress-value {
   background: linear-gradient(90deg, #99834c, #e3c67b);
@@ -131,8 +130,8 @@
   margin-top: 20px;
 }
 .record-panel {
-  background: #19281e;
-  border: 1px solid #6f704a;
+  background: #29231c;
+  border: 1px solid #7b6956;
   min-width: 0;
 }
 .record-banner {
@@ -159,7 +158,7 @@
 .record-banner h2 {
   color: #fff0ca;
   font: 700 clamp(24px, 2.5vw, 32px) / 1.05 var(--heading);
-  text-shadow: 0 1px 5px #142019;
+  text-shadow: 0 1px 5px #201c17;
 }
 .record-banner small {
   display: block;
@@ -171,14 +170,14 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
-  background: #253529;
-  border-bottom: 1px solid #586145;
+  background: #383027;
+  border-bottom: 1px solid #6a5a4a;
 }
 .record-metrics > div {
   padding: 12px clamp(6px, 1.1vw, 16px);
 }
 .record-metrics > div + div {
-  border-left: 1px solid #526044;
+  border-left: 1px solid #675848;
 }
 .record-metrics dt {
   display: flex;
@@ -186,8 +185,7 @@
   gap: 5px;
   color: #d7dbc9;
   font:
-    550 12px/1.2 "Segoe UI",
-    sans-serif;
+    550 12px/1.2 var(--reading);
 }
 .record-metrics dt svg {
   flex: none;
@@ -216,8 +214,7 @@
   margin-left: auto;
   color: #d7c698;
   font:
-    650 13px "Segoe UI",
-    sans-serif;
+    650 13px var(--reading);
 }
 .reputation-ledger,
 .record-raids {
@@ -231,7 +228,7 @@
   align-items: center;
   gap: 10px;
   padding: 7px 0;
-  border-top: 1px solid #42543e;
+  border-top: 1px solid #594c3e;
   color: #e3e3cc;
   font-size: 13px;
 }
@@ -245,11 +242,10 @@
 }
 .rep-standing {
   padding: 2px 7px;
-  background: #334231;
+  background: #463b31;
   color: #d3d6bc;
   font:
-    600 11px/1.45 "Segoe UI",
-    sans-serif;
+    600 11px/1.45 var(--reading);
 }
 .rep-standing:is(
   [data-standing="amistoso"],
@@ -266,7 +262,7 @@
   font-size: 13px;
 }
 .achievement-chapter {
-  border-block-start: 1px solid #4a5c42;
+  border-block-start: 1px solid #615344;
 }
 .achievement-chapter summary {
   display: flex;

@@ -11,6 +11,7 @@ const CharacterDetail = lazy(() =>
 );
 import { apiUrl, siteHref } from "../lib/public-settings";
 import { sectionFromPath } from "../lib/guild-navigation";
+import { browserCover } from "../lib/guild-covers";
 import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
 import "../app/globals.css";
@@ -20,6 +21,7 @@ import "../app/character-records.css";
 import "../app/guild-entrance.css";
 import "../app/guildhall.css";
 function App() {
+  const [cover] = useState(browserCover);
   const [entrance, setEntrance] = useState(initialEntrance);
   const closeEntrance = useCallback(() => setEntrance(null), []);
   const [path, setPath] = useState(location.hash.slice(1) || "/");
@@ -117,6 +119,7 @@ function App() {
         fallback={<main className="page-width panel">Abriendo el portal…</main>}
       >
         <Shell
+          cover={cover}
           path={routePath}
           onReplay={
             data?.members.length ? () => setEntrance("replay") : undefined

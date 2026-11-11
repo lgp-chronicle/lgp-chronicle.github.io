@@ -2,6 +2,42 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { positions, raceStature } from "../features/entrance-formation.ts";
 import { silhouetteFrame } from "../features/entrance-frame.ts";
+import { coverMemberId, drawCover, guildCovers } from "../lib/guild-covers.ts";
+import portraits from "../config/character-art.json" with { type: "json" };
+
+test("each illustrated member has a verified armory portrait and appears only once", () => {
+  const included = Object.values(guildCovers).flatMap(({ cast }) =>
+    cast.map(coverMemberId),
+  );
+  assert.equal(new Set(included).size, included.length);
+  assert.ok(
+    included.every((id) => portraits[id] && !portraits[id].entranceIssue),
+  );
+  assert.ok(!included.includes("forever-eu-aloqes-dloqe"));
+  assert.ok(!included.includes("forever-eu-alexion-grandwell"));
+});
+
+test("the fortress shows every cover before repeating, including across cycles", () => {
+  let saved = "invalid";
+  const store = {
+    getItem: () => saved,
+    setItem: (_, value) => {
+      saved = value;
+    },
+  };
+  const ids = Object.keys(guildCovers);
+  let previous;
+  for (let i = 0; i < 20; i++) {
+    const cycle = Array.from({ length: ids.length }, () => drawCover(store));
+    assert.deepEqual(new Set(cycle), new Set(ids));
+    assert.notEqual(cycle[0], previous);
+    previous = cycle.at(-1);
+  }
+  const blocked = () => {
+    throw Error("Storage blocked");
+  };
+  assert.ok(ids.includes(drawCover({ getItem: blocked, setItem: blocked })));
+});
 
 test("new armory figures are grounded and scaled by their visible bodies", () => {
   const width = 100,

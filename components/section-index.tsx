@@ -1,19 +1,8 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import {
-  BookOpen,
-  ChartNoAxesColumnIncreasing,
-  Compass,
-  Crown,
-  Newspaper,
-  Shield,
-  Swords,
-  Sparkles,
-  Activity,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
+import { Shield, Sparkles, Activity, type LucideIcon } from "lucide-react";
+import { guildSectionIcons } from "./section-icons";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -24,13 +13,7 @@ import {
 } from "@/components/ui/select";
 
 const sectionIcons: Record<string, LucideIcon> = {
-  overview: Users,
-  race: Compass,
-  history: ChartNoAxesColumnIncreasing,
-  awards: Crown,
-  news: Newspaper,
-  compare: Swords,
-  logs: BookOpen,
+  ...guildSectionIcons,
   armory: Shield,
   talents: Sparkles,
   attributes: Activity,

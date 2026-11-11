@@ -1,6 +1,9 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
 import { archivePath, guildSections } from "@/lib/guild-navigation";
-import { ChevronDown, Compass, Play } from "lucide-react";
+import { Check, ChevronDown, Compass, House, Play } from "lucide-react";
+import { coverMemberId, guildCovers } from "@/lib/guild-covers";
+import { Fragment } from "react";
+import { guildSectionIcons } from "./section-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,21 +13,18 @@ import {
 export function Shell({
   children,
   path = "/",
+  cover = "mapa",
   onReplay,
 }: {
   children: React.ReactNode;
   path?: string;
+  cover?: keyof typeof guildCovers;
   onReplay?: () => void;
 }) {
+  const { cast, action } = guildCovers[cover];
   return (
     <>
-      <header className="guildhall" data-home={path === "/"}>
-        {path === "/" && (
-          <p className="sr-only">
-            Rast Puñotormenta y Naisen Grandwell estudian un mapa bajo los
-            estandartes de La Ganga.
-          </p>
-        )}
+      <header className="guildhall" data-home={path === "/"} data-cover={cover}>
         <div className="guildhall-inner">
           <a
             className="guildhall-brand"
@@ -37,17 +37,25 @@ export function Shell({
               width="800"
               height="797"
             />
-            <div>
-              <p className="eyebrow">Hermandad · WoW Forever EU</p>
-              {path === "/" ? <h1>La Ganga</h1> : <strong>La Ganga</strong>}
-              {path === "/" && (
-                <p className="guildhall-legend">
-                  Las crónicas de nuestra hermandad en Azeroth.
-                </p>
-              )}
-            </div>
+            {path === "/" && <h1 className="sr-only">La Ganga</h1>}
+            <p className="eyebrow">Hermandad · WoW Forever EU</p>
           </a>
         </div>
+        <p className="guildhall-caption">
+          {cast.map((name, i) => (
+            <Fragment key={name}>
+              {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
+              <a
+                href={siteHref(
+                  "/character/" + encodeURIComponent(coverMemberId(name)),
+                )}
+              >
+                {name}
+              </a>
+            </Fragment>
+          ))}{" "}
+          {action}
+        </p>
       </header>
       <nav aria-label="Navegación principal" className="guildhall-nav">
         <div>
@@ -55,34 +63,54 @@ export function Shell({
             href={siteHref("/")}
             aria-current={path === "/" ? "page" : undefined}
           >
-            Portada
+            <House aria-hidden="true" />
+            <span>Portada</span>
           </a>
-          {guildSections.map(([id, label]) => (
-            <a
-              key={id}
-              href={siteHref(archivePath(id))}
-              data-quick={id === "overview" || id === "news"}
-              aria-current={path === archivePath(id) ? "page" : undefined}
-            >
-              {label}
-            </a>
-          ))}
+          {guildSections.map(([id, label]) => {
+            const Icon = guildSectionIcons[id];
+            return (
+              <a
+                key={id}
+                href={siteHref(archivePath(id))}
+                data-quick={id === "overview" || id === "news"}
+                aria-current={path === archivePath(id) ? "page" : undefined}
+              >
+                <Icon aria-hidden="true" />
+                <span>{label}</span>
+              </a>
+            );
+          })}
           <DropdownMenu>
-            <DropdownMenuTrigger className="guild-explore">
-              <Compass size={16} aria-hidden="true" /> Explorar{" "}
+            <DropdownMenuTrigger
+              className="guild-explore"
+              data-section={
+                guildSections.find(([id]) => archivePath(id) === path)?.[0]
+              }
+            >
+              <Compass size={16} aria-hidden="true" />
+              <span>Explorar</span>
               <ChevronDown size={13} aria-hidden="true" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="guild-explore-menu" align="end">
-              {guildSections.map(([id, label]) => (
-                <DropdownMenuItem asChild key={id}>
-                  <a
-                    aria-current={path === archivePath(id) ? "page" : undefined}
-                    href={siteHref(archivePath(id))}
-                  >
-                    {label}
-                  </a>
-                </DropdownMenuItem>
-              ))}
+              {guildSections.map(([id, label]) => {
+                const Icon = guildSectionIcons[id];
+                return (
+                  <DropdownMenuItem asChild key={id}>
+                    <a
+                      aria-current={
+                        path === archivePath(id) ? "page" : undefined
+                      }
+                      href={siteHref(archivePath(id))}
+                    >
+                      <Icon aria-hidden="true" />
+                      {label}
+                      {path === archivePath(id) && (
+                        <Check size={15} aria-hidden="true" />
+                      )}
+                    </a>
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

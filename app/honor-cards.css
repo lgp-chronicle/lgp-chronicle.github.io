@@ -26,8 +26,8 @@
   min-width: 0;
   overflow: clip;
   border: 1px solid #9c8050;
-  background: #19221e;
-  box-shadow: 0 3px 9px #080e0a80;
+  background: #241f19;
+  box-shadow: 0 3px 9px #0e0c0a80;
   --scene-height: 177px;
   --scene-position: left top;
 }
@@ -65,12 +65,12 @@
   background:
     linear-gradient(
       90deg,
-      #08140fee 0%,
+      #14110eee 0%,
       #0b1416b3 34%,
-      #10191844 58%,
+      #1b171344 58%,
       transparent 80%
     ),
-    linear-gradient(0deg, #111d1ae0, transparent 45%);
+    linear-gradient(0deg, #1e1a15e0, transparent 45%);
 }
 .honor-card:not([data-shared])
   > :is(.honor-inscription, .honor-cast, .honor-empty) {
@@ -94,7 +94,7 @@
   width: 60%;
   pointer-events: none;
   padding: clamp(16px, 4cqw, 25px);
-  text-shadow: 0 2px 5px #0b110dc9;
+  text-shadow: 0 2px 5px #110f0cc9;
 }
 .honor-title {
   display: flex;
@@ -130,16 +130,14 @@
 }
 .honor-score span {
   font:
-    600 clamp(12px, 2.25cqw, 15px) / 1.2 "Segoe UI",
-    sans-serif;
+    600 clamp(12px, 2.25cqw, 15px) / 1.2 var(--reading);
 }
 .honor-note {
   max-width: 38ch;
   margin: 8px 0 0;
   color: #e2dfcd;
   font:
-    400 12px/1.35 "Segoe UI",
-    sans-serif;
+    400 12px/1.35 var(--reading);
 }
 .honor-cast,
 .honor-extra {
@@ -179,9 +177,9 @@
   gap: 2px 9px;
   padding: 9px 18px 10px 43px;
   min-height: 62px;
-  background: linear-gradient(108deg, #233126, #121e18 72%);
+  background: linear-gradient(108deg, #332c24, #1f1b16 72%);
   border-top: 1px solid #89774e;
-  text-shadow: 0 1px 3px #080f0c;
+  text-shadow: 0 1px 3px #0f0d0b;
 }
 .laureate-name {
   grid-area: name;
@@ -196,8 +194,7 @@
   align-items: center;
   gap: 6px;
   font:
-    700 9px/1.2 "Segoe UI",
-    sans-serif;
+    700 9px/1.2 var(--reading);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -233,8 +230,8 @@
 }
 .honor-card[data-shared] .honor-painting::after {
   background:
-    linear-gradient(180deg, #0a1614cc, transparent 58%),
-    linear-gradient(90deg, #12201980, transparent 80%);
+    linear-gradient(180deg, #16130fcc, transparent 58%),
+    linear-gradient(90deg, #201c1780, transparent 80%);
 }
 .honor-card[data-shared] .honor-score {
   grid-column: 2;
@@ -273,13 +270,13 @@
   grid-template-areas: "name" "class";
   text-align: center;
   border: 0;
-  background: linear-gradient(#0c1916ed, #0c1916);
+  background: linear-gradient(#1a1612ed, #1a1612);
 }
 .honor-card[data-shared] .laureate-plaque::before {
   content: "";
   position: absolute;
   inset: -30px 0 100%;
-  background: linear-gradient(transparent, #0c1916ed);
+  background: linear-gradient(transparent, #1a1612ed);
   pointer-events: none;
 }
 .honor-card[data-shared] .laureate-name {
@@ -293,7 +290,7 @@
   display: none;
 }
 .honor-rest {
-  background: #1b291f;
+  background: #2b251e;
   color: #ecd6a3;
 }
 .honor-rest summary {
@@ -326,7 +323,7 @@
   height: var(--corner);
   object-fit: contain;
   object-position: left top;
-  filter: drop-shadow(0 1px 1px #090c0bc9);
+  filter: drop-shadow(0 1px 1px #0d0b09c9);
 }
 .class-frame > img:first-child {
   top: 0;
