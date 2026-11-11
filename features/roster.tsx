@@ -1,6 +1,7 @@
 "use client";
 import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
+import { ClassFrame } from "./class-frame";
 
 import { useState, type CSSProperties } from "react";
 import {
@@ -180,6 +181,7 @@ export function Roster({ members }: { members: Member[] }) {
                   </dl>
                   <ChevronRight size={17} aria-hidden="true" />
                 </div>
+                <ClassFrame member={m} />
               </a>
             );
           })}

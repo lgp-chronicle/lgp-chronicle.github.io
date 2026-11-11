@@ -15,6 +15,8 @@ import { archivePath } from "@/lib/guild-navigation";
 import { ExternalLink } from "lucide-react";
 import { EquipmentPanel, TalentsPanel } from "./armory-panels";
 import { fullName } from "./member-portrait";
+import { CharacterRecords } from "./character-records";
+import { ClassFrame } from "./class-frame";
 export function CharacterDetail({
   member: m,
   members,
@@ -66,6 +68,7 @@ export function CharacterDetail({
             Armería oficial aún sin ficha
           </small>
         )}
+        <ClassFrame member={m} />
       </header>
       <dl className="character-facts">
         {[
@@ -117,87 +120,7 @@ export function CharacterDetail({
               </ul>
             </section>
           )}
-          <div className="grid-two dossier-sections">
-            <section className="panel dossier-panel">
-              <div className="dossier-heading">
-                <h2>Atributos</h2>
-                <p>{ago(p.resourceTimes?.statistics)}</p>
-              </div>
-              {p.statistics && Object.keys(p.statistics).length ? (
-                <dl className="attribute-list">
-                  {Object.entries(p.statistics).map(([label, value]) => (
-                    <div key={label}>
-                      <dt>{label}</dt>
-                      <dd>{display(value)}</dd>
-                    </div>
-                  ))}
-                </dl>
-              ) : (
-                <p className="muted">Sin atributos registrados.</p>
-              )}
-            </section>
-            <section className="panel dossier-panel">
-              <div className="dossier-heading">
-                <h2>Profesiones</h2>
-                <p>{ago(p.resourceTimes?.professions)}</p>
-              </div>
-              {p.professions?.length ? (
-                <dl className="attribute-list">
-                  {p.professions.map((r, i) => (
-                    <div key={r.name + i}>
-                      <dt>{r.name}</dt>
-                      <dd>
-                        {display(r.skill)} / {display(r.max)}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              ) : (
-                <p className="muted">Sin profesiones registradas.</p>
-              )}
-            </section>
-          </div>
-          <div className="grid-two" style={{ marginTop: 22 }}>
-            <section className="panel">
-              <h3>PvP y reputaciones</h3>
-              <p className="subheading">
-                PvP · {ago(p.resourceTimes?.pvp_summary)}
-              </p>
-              <p>
-                Honor: {display(p.honor)} · Muertes honorables:{" "}
-                {display(p.honorableKills)}
-              </p>
-              {p.pvpRank !== undefined ? (
-                <p>Rango PvP comunicado: {p.pvpRank}</p>
-              ) : null}
-              {p.reputations?.length ? (
-                <ul>
-                  {p.reputations.map((r) => (
-                    <li key={r.name}>
-                      {r.name} · {r.standing} {display(r.value)}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="muted">Sin reputaciones disponibles.</p>
-              )}
-            </section>
-            <section className="panel">
-              <h3>PvE y logros</h3>
-              <p>Raids completadas: {p.raids?.join(", ") || "—"}</p>
-              <p>Bosses en Armory: {display(p.raidBosses)}</p>
-              <p>Puntos de logros: {display(p.achievementPoints)}</p>
-              {p.achievements?.length ? (
-                <ul>
-                  {p.achievements.slice(0, 30).map((x, i) => (
-                    <li key={i}>{x}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="muted">Logros no disponibles en esta ficha.</p>
-              )}
-            </section>
-          </div>
+          <CharacterRecords profile={p} />
         </TabsContent>
         <TabsContent value="history">
           <HistoryChart members={[m]} />

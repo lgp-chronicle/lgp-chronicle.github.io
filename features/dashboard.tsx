@@ -8,57 +8,33 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
 import { MemberLink } from "./member-portrait";
+import { HonorCard, HallAward } from "./honor-card";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { TabsContent } from "@/components/ui/tabs";
 import { SectionIndex } from "@/components/section-index";
-import {
-  BookOpen,
-  Trophy,
-  RefreshCw,
-  Users,
-  Heart,
-  Brain,
-  BicepsFlexed,
-  Feather,
-  Flame,
-  Shield,
-  type LucideIcon,
-} from "lucide-react";
+import { BookOpen, RefreshCw, Users } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
 import { Compare } from "./compare";
 import { Newspaper } from "./newspaper";
-import { leveling, display, awards, ago, type Award } from "./analytics";
+import { leveling, display, awards, ago } from "./analytics";
 import { numeric, type GuildData, type Member } from "./types";
-const titleIcons: Record<string, LucideIcon> = {
-  stamina: Heart,
-  intellect: Brain,
-  strength: BicepsFlexed,
-  agility: Feather,
-  spirit: Flame,
-  armor: Shield,
-};
-function AwardWinners({ award, members }: { award: Award; members: Member[] }) {
-  return (
-    <span className="banner-lineup award-winners">
-      {award.memberIds.map((id) => {
-        const winner = members.find((m) => m.id === id);
-        return winner ? <MemberLink key={id} member={winner} banner /> : null;
-      })}
-    </span>
-  );
-}
 function leader(members: Member[], score: (m: Member) => unknown) {
-  const valid = members.filter((m) => numeric(score(m)));
+  const valid = members.flatMap((member) => {
+    const value = score(member);
+    return numeric(value) ? [{ member, value }] : [];
+  });
   if (!valid.length) return null;
-  const max = Math.max(...valid.map((m) => score(m) as number));
-  const winners = valid.filter((m) => score(m) === max);
+  const max = Math.max(...valid.map((row) => row.value));
+  const winners = valid
+    .filter((row) => row.value === max)
+    .map((row) => row.member);
   return {
     winners,
     value: max,
-    partial: valid.length < members.length,
+    registered: valid.length,
   };
 }
 export function Dashboard({
@@ -104,7 +80,7 @@ export function Dashboard({
       top: leader(m, (x) => x.data.honorableKills),
       unit: "muertes honorables",
     },
-  ];
+  ] as const;
   async function refresh() {
     setBusy(true);
     setError("");
@@ -178,45 +154,25 @@ export function Dashboard({
           {error}
         </p>
       )}
-      <div className="stat-grid honors">
+      <div className="honor-gallery honors">
         {cards.map(({ label, image, top, unit }) => (
-          <article className="stat" key={label}>
-            <div className="honor-caption">
-              <img
-                className="honor-illustration"
-                src={assetUrl("/guild/" + image + ".webp")}
-                alt=""
-                width="27"
-                height="27"
-              />
-              <h3>{label}</h3>
-            </div>
-            {top ? (
-              <>
-                <div className="banner-lineup honor-winners">
-                  {top.winners.map((member) => (
-                    <MemberLink key={member.id} member={member} banner />
-                  ))}
-                </div>
-                <p className="honor-value">
-                  <span>
-                    <b>{display(top.value)}</b> {unit}
-                  </span>
-                  <small>
-                    {[
-                      top.winners.length > 1 &&
-                        top.winners.length + " ganadores",
-                      top.partial && "Cobertura parcial",
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </small>
-                </p>
-              </>
-            ) : (
-              <p className="honor-value">Sin registros suficientes.</p>
-            )}
-          </article>
+          <HonorCard
+            key={label}
+            title={label}
+            scene={image}
+            value={top?.value}
+            unit={unit}
+            winners={top?.winners ?? []}
+            note={
+              top && top.registered < m.length
+                ? "Datos de " +
+                  top.registered +
+                  " de " +
+                  m.length +
+                  " personajes"
+                : undefined
+            }
+          />
         ))}
       </div>
       <SourceNotice members={m} />
@@ -242,21 +198,9 @@ export function Dashboard({
                 <p className="eyebrow">UN POCO DE GLORIA</p>
                 <h3>Los nombres del momento</h3>
                 {trophies.length ? (
-                  trophies.slice(0, 4).map((a) => (
-                    <article
-                      className="award"
-                      key={a.id}
-                      style={{ marginTop: 15 }}
-                    >
-                      <h3>{a.title}</h3>
-                      <p>
-                        <AwardWinners award={a} members={m} />
-                      </p>
-                      <small>
-                        {a.rule} · {display(a.value)}
-                      </small>
-                    </article>
-                  ))
+                  trophies
+                    .slice(0, 4)
+                    .map((a) => <HallAward award={a} members={m} key={a.id} />)
                 ) : (
                   <Empty
                     title="Las coronas no se regalan"
@@ -284,26 +228,10 @@ export function Dashboard({
             </p>
             <h2 className="section-title">El salón de la fama</h2>
             {trophies.length ? (
-              <div className="award-grid">
-                {trophies.map((a) => {
-                  const Icon = titleIcons[a.id] ?? Trophy;
-                  return (
-                    <article className="award" key={a.id}>
-                      <Icon size={24} color="#d6be8d" aria-hidden="true" />
-                      <h3>{a.title}</h3>
-                      <p>
-                        <AwardWinners award={a} members={m} />
-                      </p>
-                      <strong>{display(a.value)}</strong>
-                      <p>
-                        <small>
-                          {a.rule}.{" "}
-                          {a.names.length > 1 ? "Premio compartido." : ""}
-                        </small>
-                      </p>
-                    </article>
-                  );
-                })}
+              <div className="honor-gallery hall-gallery">
+                {trophies.map((a) => (
+                  <HallAward key={a.id} award={a} members={m} />
+                ))}
               </div>
             ) : (
               <section className="panel">

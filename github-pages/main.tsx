@@ -14,6 +14,8 @@ import { sectionFromPath } from "../lib/guild-navigation";
 import type { GuildData } from "../features/types";
 import "../app/globals.css";
 import "../app/guild-views.css";
+import "../app/honor-cards.css";
+import "../app/character-records.css";
 function App() {
   const [path, setPath] = useState(location.hash.slice(1) || "/");
   const dataRoute = sectionFromPath(path) ? "/" : path;

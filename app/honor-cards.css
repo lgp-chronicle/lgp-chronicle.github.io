@@ -1,0 +1,375 @@
+.honor-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  align-items: stretch;
+  gap: clamp(12px, 1.4vw, 21px);
+  margin-block: 16px 24px;
+}
+.honor-gallery:has(.honor-rest[open]) {
+  align-items: start;
+}
+.honor-card:not([data-shared]):has(> .honor-cast) {
+  grid-template-rows: minmax(var(--scene-height), 1fr) auto;
+}
+.honor-card[data-shared] {
+  grid-template-rows: auto 1fr;
+}
+.panel > .honor-card {
+  margin-top: 16px;
+}
+.honor-card {
+  container-type: inline-size;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  overflow: clip;
+  border: 1px solid #9c8050;
+  background: #19221e;
+  box-shadow: 0 3px 9px #080e0a80;
+  --scene-height: 177px;
+  --paper: #ecdbb5;
+  --paper-shadow: #c7ad7b;
+  --scene-position: left top;
+}
+.honor-card[data-scene="ambar"] {
+  --scene-position: right top;
+}
+.honor-card[data-scene="bota"] {
+  --scene-position: left bottom;
+}
+.honor-card[data-scene="espadas"] {
+  --scene-position: right bottom;
+}
+.honor-painting {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.honor-painting::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 42%;
+  aspect-ratio: 3/2;
+  min-height: 100%;
+  transform: translateY(-50%);
+  background: url("./art/atlas-honor.webp") var(--scene-position) / 200% 200%
+    no-repeat;
+}
+.honor-painting::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #08140fee 0%,
+      #0b1416b3 34%,
+      #10191844 58%,
+      transparent 80%
+    ),
+    linear-gradient(0deg, #111d1ae0, transparent 45%);
+}
+.honor-card:not([data-shared])
+  > :is(.honor-inscription, .honor-cast, .honor-empty) {
+  grid-area: 1 / 1;
+}
+.honor-card:not([data-shared]) > .honor-cast {
+  grid-row: 1 / span 2;
+  grid-template-rows: subgrid;
+}
+.honor-card:not([data-shared]) .laureate {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: stretch;
+}
+.honor-inscription {
+  position: relative;
+  z-index: 2;
+  align-self: start;
+  width: 60%;
+  pointer-events: none;
+  padding: clamp(16px, 4cqw, 25px);
+  text-shadow: 0 2px 5px #0b110dc9;
+}
+.honor-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.honor-title > :is(img, svg) {
+  flex: none;
+  width: clamp(27px, 6cqw, 38px);
+  height: clamp(27px, 6cqw, 38px);
+  object-fit: contain;
+  color: #f7da96;
+  filter: drop-shadow(0 2px 3px #110e09);
+}
+.honor-card .honor-title h3 {
+  margin: 0;
+  color: #fff2ce;
+  font: 700 clamp(20px, 4.6cqw, 30px) / 1.03 var(--heading);
+  text-wrap: balance;
+}
+.honor-score {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 9px;
+  margin: clamp(13px, 2.9cqw, 19px) 0 0;
+  color: #f2dfac;
+}
+.honor-score b {
+  color: #ffe4a3;
+  font: 700 clamp(40px, 9.8cqw, 62px) / 0.88 var(--heading);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.honor-score span {
+  font:
+    600 clamp(12px, 2.25cqw, 15px) / 1.2 "Segoe UI",
+    sans-serif;
+}
+.honor-note {
+  max-width: 38ch;
+  margin: 8px 0 0;
+  color: #e2dfcd;
+  font:
+    400 12px/1.35 "Segoe UI",
+    sans-serif;
+}
+.honor-cast,
+.honor-extra {
+  display: grid;
+  grid-template-columns: repeat(var(--seats, 1), minmax(0, 1fr));
+}
+.laureate {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  color: #302919;
+  text-decoration: none;
+}
+.laureate-figure {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  min-height: var(--scene-height);
+  flex: 1;
+  overflow: hidden;
+}
+.laureate .banner-art {
+  inset: 7px 0 0;
+  z-index: auto;
+  --figure-center: 76%;
+  --zoom: 1.38;
+}
+.laureate-plaque {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "class arrow" "name arrow";
+  align-content: center;
+  gap: 2px 9px;
+  padding: 9px 18px 10px 43px;
+  min-height: 62px;
+  background:
+    linear-gradient(
+      0deg,
+      #886a3e48 0,
+      transparent 4px,
+      transparent calc(100% - 4px),
+      #fff5d65e
+    ),
+    linear-gradient(
+      113deg,
+      var(--paper-shadow),
+      var(--paper) 33%,
+      #e4d1a8 76%,
+      #cfb98e
+    );
+  border-top: 3px double #806e44;
+  text-shadow: 0 1px #fff0cc88;
+}
+.laureate-name {
+  grid-area: name;
+  font: 700 clamp(21px, 4.6cqw, 29px) / 1.03 var(--heading);
+  overflow-wrap: anywhere;
+}
+.laureate-class {
+  grid-area: class;
+  color: #4a3d27;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font:
+    700 9px/1.2 "Segoe UI",
+    sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.laureate-class::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background: var(--class-tint);
+  border: 1px solid #514835;
+}
+.laureate-arrow {
+  grid-area: arrow;
+  align-self: center;
+  color: #665431;
+}
+.laureate:hover .laureate-name,
+.laureate:focus-visible .laureate-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.laureate:focus-visible {
+  z-index: 4;
+  outline: 3px solid #fff09f;
+  outline-offset: -3px;
+}
+.honor-card[data-shared] .honor-inscription {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 12px;
+  padding: 14px 21px 7px;
+  background: linear-gradient(90deg, #13201a55, transparent 57%, #12201acc);
+}
+.honor-card[data-shared] .honor-score {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  margin: 0;
+  align-self: center;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 2px;
+}
+.honor-card[data-shared] .honor-score b {
+  font-size: clamp(29px, 6.5cqw, 42px);
+}
+.honor-card[data-shared] .honor-score span {
+  font-size: 11px;
+}
+.honor-card[data-shared] .honor-note {
+  margin: 0;
+  grid-column: 1;
+  font-size: 11px;
+}
+.honor-card[data-shared] .laureate-figure {
+  min-height: 104px;
+}
+.honor-card[data-shared] .banner-art {
+  --figure-center: 50%;
+  --zoom: 1.66;
+}
+.honor-card[data-shared] .laureate-plaque {
+  flex: none;
+  min-height: 65px;
+  padding: 8px 9px 10px;
+  align-content: start;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "class" "name";
+}
+.honor-card[data-shared] .laureate-name {
+  font-size: clamp(15px, 2.9cqw, 19px);
+}
+.honor-card[data-shared] .laureate-arrow {
+  display: none;
+}
+.honor-card[data-shared] .class-frame {
+  --corner: 29px;
+  --foot: 11px;
+}
+.honor-rest {
+  background: #1b291f;
+  color: #ecd6a3;
+}
+.honor-rest summary {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+.honor-extra {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 135px), 1fr));
+}
+.honor-empty {
+  align-self: end;
+  padding: 12px 20px;
+  margin-top: 110px;
+  color: #ebdec1;
+  font-size: 13px;
+}
+.class-frame {
+  --corner: clamp(40px, 9cqw, 58px);
+  --foot: 32px;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--frame-metal, #a8803f) 72%, #332d1b);
+  box-shadow: inset 0 0 0 2px #1b1a1440;
+}
+.class-frame > img {
+  position: absolute;
+  width: var(--corner);
+  height: var(--corner);
+  object-fit: contain;
+  object-position: left top;
+  filter: drop-shadow(0 1px 1px #090c0bc9);
+}
+.class-frame > img:first-child {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+.class-frame > img:last-child {
+  left: 0;
+  bottom: 0;
+  width: var(--foot);
+  height: var(--foot);
+  transform: scaleY(-1);
+}
+.member-banner .class-frame {
+  --corner: 38px;
+  --foot: 14px;
+}
+.roster-card .class-frame {
+  --corner: 49px;
+  --foot: 16px;
+}
+@container (max-width:455px) {
+  .honor-card[data-shared] .honor-cast:has(> :nth-child(3)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .honor-card[data-shared] .honor-inscription {
+    padding: 13px 12px 7px;
+  }
+  .honor-card[data-shared] .honor-title {
+    gap: 5px;
+  }
+  .honor-inscription {
+    width: 62%;
+    padding: 16px 13px;
+  }
+  .honor-title {
+    gap: 6px;
+  }
+  .laureate-plaque {
+    padding-left: 34px;
+  }
+  .laureate .banner-art {
+    --figure-center: 77%;
+    --zoom: 1.47;
+  }
+}

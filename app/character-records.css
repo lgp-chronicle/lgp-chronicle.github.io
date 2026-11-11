@@ -1,0 +1,326 @@
+.character-banner {
+  position: relative;
+}
+.character-banner > .class-frame {
+  --corner: 47px;
+  --foot: 22px;
+}
+.attribute-group + .attribute-group {
+  margin-top: 16px;
+}
+.record-stats .attribute-group h3 {
+  margin: 0 0 7px;
+  color: #cdbe92;
+  font:
+    650 11px/1.3 "Segoe UI",
+    sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.attribute-group {
+  --stat-ink: #c6d496;
+}
+.attribute-group[data-group="Ataque"] {
+  --stat-ink: #e5b186;
+}
+.attribute-group[data-group="Defensa"] {
+  --stat-ink: #a8cdd5;
+}
+.attribute-group dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
+  gap: 6px;
+}
+.attribute-group dl > div {
+  position: relative;
+  min-width: 0;
+  padding: 9px 6px 9px 35px;
+  border: 1px solid #75825444;
+  border-left: 2px solid color-mix(in srgb, var(--stat-ink) 56%, #344130);
+  background: linear-gradient(115deg, #30413399, #1c2b2180);
+}
+.attribute-group dt {
+  color: #d5dac6;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.attribute-group dt svg {
+  position: absolute;
+  top: 11px;
+  left: 8px;
+  color: var(--stat-ink);
+}
+.attribute-group dd {
+  margin: 4px 0 0;
+  color: #fff0c3;
+  font: 700 22px/1 var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+.trade-list {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.trade-list li {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid #6c745048;
+  background: #1e2d2290;
+}
+.trade-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b79b63;
+  background: #17251d;
+  color: #d5bf83;
+  overflow: hidden;
+}
+.trade-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.trade-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+}
+.trade-label strong {
+  font: 700 19px/1.12 var(--heading);
+  color: #f0dfac;
+}
+.trade-label span {
+  font-size: 12px;
+  color: #d7d5bd;
+  font-variant-numeric: tabular-nums;
+}
+.trade-list progress {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  height: 5px;
+  border: 0;
+  appearance: none;
+  background: #344035;
+  color: #d1b362;
+}
+.trade-list progress::-webkit-progress-bar {
+  background: #344035;
+}
+.trade-list progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #99834c, #e3c67b);
+}
+.trade-list progress::-moz-progress-bar {
+  background: #d1b362;
+}
+.record-spread {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  align-items: start;
+  gap: 17px;
+  margin-top: 20px;
+}
+.record-panel {
+  background: #19281e;
+  border: 1px solid #6f704a;
+  min-width: 0;
+}
+.record-banner {
+  --scene-position: left top;
+  display: flex;
+  position: relative;
+  isolation: isolate;
+  align-items: center;
+  gap: 13px;
+  min-height: 85px;
+  padding: 14px 21px;
+  overflow: hidden;
+  border-bottom: 1px solid #a18c55;
+}
+.record-banner[data-scene="espadas"] {
+  --scene-position: right bottom;
+}
+.record-banner img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px #12100b);
+}
+.record-banner h2 {
+  color: #fff0ca;
+  font: 700 clamp(24px, 2.5vw, 32px) / 1.05 var(--heading);
+  text-shadow: 0 1px 5px #142019;
+}
+.record-banner small {
+  display: block;
+  margin-top: 3px;
+  color: #e1dcc6;
+  font-size: 11px;
+}
+.record-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  background: #253529;
+  border-bottom: 1px solid #586145;
+}
+.record-metrics > div {
+  padding: 12px clamp(6px, 1.1vw, 16px);
+}
+.record-metrics > div + div {
+  border-left: 1px solid #526044;
+}
+.record-metrics dt {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #d7dbc9;
+  font:
+    550 12px/1.2 "Segoe UI",
+    sans-serif;
+}
+.record-metrics dt svg {
+  flex: none;
+  color: #cfb87c;
+}
+.record-metrics dd {
+  margin: 6px 0 0;
+  color: #ffe6a6;
+  font: 700 28px/1 var(--heading);
+}
+.record-body {
+  padding: 16px clamp(12px, 1.6vw, 23px);
+}
+.record-body h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: #efe0b4;
+  font: 700 23px/1.1 var(--heading);
+}
+.record-body h3 svg {
+  color: #c7ae70;
+}
+.record-body h3 small {
+  margin-left: auto;
+  color: #d7c698;
+  font:
+    650 13px "Segoe UI",
+    sans-serif;
+}
+.reputation-ledger,
+.record-raids {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.reputation-ledger li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(4ch, auto);
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid #42543e;
+  color: #e3e3cc;
+  font-size: 13px;
+}
+.reputation-ledger li:first-child {
+  border: 0;
+}
+.reputation-ledger b {
+  text-align: right;
+  color: #ebd7a5;
+  font-variant-numeric: tabular-nums;
+}
+.rep-standing {
+  padding: 2px 7px;
+  background: #334231;
+  color: #d3d6bc;
+  font:
+    600 11px/1.45 "Segoe UI",
+    sans-serif;
+}
+.rep-standing:is(
+  [data-standing="amistoso"],
+  [data-standing="honrado"],
+  [data-standing="venerado"],
+  [data-standing="exaltado"]
+) {
+  color: #d0e0a1;
+  background: #3e5134;
+}
+.record-raids {
+  margin-bottom: 14px;
+  color: #d8dcc8;
+  font-size: 13px;
+}
+.achievement-chapter {
+  border-block-start: 1px solid #4a5c42;
+}
+.achievement-chapter summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  list-style: none;
+  padding: 11px 2px;
+  color: #e2e4cf;
+  font-weight: 600;
+  font-size: 14px;
+}
+.achievement-chapter summary::-webkit-details-marker {
+  display: none;
+}
+.achievement-chapter summary svg {
+  color: #d0b576;
+}
+.achievement-chapter[open] summary svg:last-child {
+  transform: rotate(180deg);
+}
+.achievement-chapter summary b {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: #d2c093;
+  font-size: 12px;
+}
+.achievement-chapter ul {
+  list-style: disc;
+  margin: 0 0 10px;
+  padding-inline-start: 31px;
+  color: #d5d8c2;
+  font-size: 13px;
+}
+.achievement-chapter li {
+  padding: 3px 0;
+}
+.achievement-chapter li::marker {
+  color: #99905c;
+}
+@media (max-width: 480px) {
+  .attribute-group dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .record-metrics dt {
+    align-items: flex-start;
+    gap: 3px;
+    font-size: 11px;
+  }
+  .record-metrics dt svg {
+    width: 13px;
+    height: 13px;
+  }
+  .record-banner {
+    padding: 12px;
+    min-height: 70px;
+  }
+}

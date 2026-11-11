@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
 import { CharacterArt } from "./character-art";
+import { ClassFrame } from "./class-frame";
 
 import surnames from "../config/character-surnames.json";
 
@@ -73,6 +74,7 @@ export function MemberLink({
         {label}
         {subtitle && <small className="banner-subtitle">{subtitle}</small>}
       </span>
+      {banner && <ClassFrame member={member} />}
     </a>
   );
 }

@@ -156,117 +156,11 @@
   scrollbar-color: #938854 #213024;
   grid-auto-rows: 98px;
 }
-.honors .stat:nth-child(1),
 .podium-place[data-rank="1"] {
   --vista: 7% 45%;
 }
-.honors .stat:nth-child(2),
 .podium-place[data-rank="2"] {
   --vista: 68% 82%;
-}
-.honors .stat:nth-child(4) {
-  --vista: 100% 29%;
-}
-.honors .stat {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0;
-  padding: 0;
-  border-color: #756744;
-  border-top-color: #d3b569;
-  background: #18281f;
-  box-shadow: 0 3px 10px #08100b55;
-}
-.honor-caption {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 43px;
-  padding: 0 12px 0 9px;
-  border-bottom: 1px solid #99854c85;
-  background: linear-gradient(100deg, #334234, #19271f);
-}
-.honor-caption h3 {
-  font: 700 clamp(16px, 1.4vw, 20px) / 1.1 var(--heading);
-  color: #f2dfaa;
-}
-.honor-caption .honor-illustration {
-  flex: none;
-  width: 35px;
-  height: 39px;
-  align-self: flex-start;
-  padding: 4px 4px 9px;
-  background: linear-gradient(135deg, #856a33, #594522 58%, #755f32);
-  clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 99%, 0 78%);
-  object-fit: contain;
-}
-.honor-winners {
-  flex: 1;
-}
-.stat .honor-value {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 2px 9px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  border-top: 1px solid #66714377;
-  padding: 7px 13px;
-  background: linear-gradient(100deg, #263527, #16241c);
-}
-.honor-value b {
-  padding-right: 2px;
-  color: #f5da95;
-  font: 700 24px/1 var(--heading);
-}
-.honor-value small {
-  font-size: 10px;
-}
-.honor-winners:has(> :only-child) .banner-art {
-  --zoom: 1.68;
-  --figure-center: 70%;
-}
-.honor-winners .member-banner::before {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  pointer-events: none;
-  background:
-    linear-gradient(#c2a15d99, #c2a15d99) left top / 15px 1px,
-    linear-gradient(#c2a15d99, #c2a15d99) left top / 1px 15px,
-    linear-gradient(#c2a15d99, #c2a15d99) right bottom / 15px 1px,
-    linear-gradient(#c2a15d99, #c2a15d99) right bottom / 1px 15px;
-  background-repeat: no-repeat;
-}
-.honor-winners:has(> :nth-child(2)) .member-banner::before {
-  display: none;
-}
-.award-winners {
-  --scene-height: 146px;
-  margin-block: 8px;
-  border-block: 1px solid #8b804655;
-}
-.award-grid .award {
-  padding: 12px 0;
-}
-.award-grid .award > h3 {
-  min-height: 36px;
-  padding: 2px 14px 2px 57px;
-}
-.award-grid .award > svg {
-  top: 9px;
-  left: 13px;
-  width: 31px;
-  height: 35px;
-}
-.award-grid .award > strong,
-.award-grid .award > p:last-child {
-  padding-inline: 15px;
-}
-.award-grid .award a.member-link {
-  text-decoration: none;
 }
 .roster-controls,
 .view-toggle,
@@ -565,11 +459,9 @@
     sans-serif;
 }
 @media (max-width: 540px) {
-  .stat-grid.honors,
   .race-panel .race-podium {
     grid-template-columns: minmax(0, 1fr);
   }
-  .honor-winners,
   .podium-winners {
     --scene-height: 138px;
   }
@@ -1106,14 +998,6 @@
 @media (max-width: 650px) {
   .member-grid {
     grid-template-columns: 1fr;
-  }
-  .honor-caption {
-    min-height: 39px;
-    gap: 7px;
-  }
-  .honor-caption .honor-illustration {
-    width: 22px;
-    height: 22px;
   }
   .duel-side .member-banner {
     padding: 9px 6px;
