@@ -10,17 +10,19 @@ const CharacterDetail = lazy(() =>
   })),
 );
 import { apiUrl, siteHref } from "../lib/public-settings";
+import { sectionFromPath } from "../lib/guild-navigation";
 import type { GuildData } from "../features/types";
 import "../app/globals.css";
 function App() {
   const [path, setPath] = useState(location.hash.slice(1) || "/");
+  const dataRoute = sectionFromPath(path) ? "/" : path;
   const [data, setData] = useState<GuildData | null>(null),
     [error, setError] = useState(false),
     [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const route = () => {
       setPath(location.hash.slice(1) || "/");
-      window.scrollTo(0, 0);
+      if (!sectionFromPath(location.hash.slice(1))) window.scrollTo(0, 0);
     };
     window.addEventListener("hashchange", route);
     return () => window.removeEventListener("hashchange", route);
@@ -42,9 +44,9 @@ function App() {
         if (!abort.signal.aborted) setError(true);
       });
     return () => abort.abort();
-  }, [path, attempt]);
+  }, [dataRoute, attempt]);
   useEffect(() => {
-    document.title = "WoW Forever · La Ganga · LGP Chronicle";
+    document.title = "La Ganga · LGP Chronicle";
   }, [path]);
 
   let id = "";
@@ -55,9 +57,10 @@ function App() {
     } catch {}
   }
   const member = data?.members.find((m) => m.id === id);
+  const section = sectionFromPath(path);
 
   return (
-    <Shell>
+    <Shell path={path}>
       {error && (
         <div className="page-width notice" role="alert">
           No hemos podido consultar el archivo.{" "}
@@ -75,8 +78,8 @@ function App() {
           <h2>{error ? "El archivo no responde" : "Invocando al escriba…"}</h2>
           <p>Consultando los datos guardados de la hermandad.</p>
         </main>
-      ) : path === "/" || path === "" ? (
-        <Dashboard key={data.generatedAt} initial={data} />
+      ) : path === "/" || path === "" || section ? (
+        <Dashboard key={data.generatedAt} initial={data} section={section} />
       ) : member ? (
         <CharacterDetail member={member} members={data.members} />
       ) : (

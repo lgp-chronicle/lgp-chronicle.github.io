@@ -87,7 +87,7 @@ export function HistoryChart({ members }: { members: Member[] }) {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={rows}>
               <CartesianGrid
-                stroke="#303e50"
+                stroke="var(--border)"
                 strokeDasharray="3 5"
                 vertical={false}
               />
@@ -102,11 +102,11 @@ export function HistoryChart({ members }: { members: Member[] }) {
                     month: "short",
                   })
                 }
-                stroke="#8292a6"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
               />
               <YAxis
-                stroke="#8292a6"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
                 domain={["auto", "auto"]}
                 allowDecimals={metric !== "level"}
@@ -116,8 +116,8 @@ export function HistoryChart({ members }: { members: Member[] }) {
                   new Date(Number(v)).toLocaleString("es-ES")
                 }
                 contentStyle={{
-                  background: "#172231",
-                  border: "1px solid #52627a",
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
                 }}
               />
               <Legend />
@@ -172,10 +172,10 @@ export function Distribution({ members }: { members: Member[] }) {
                 count,
               }))}
             >
-              <XAxis dataKey="name" stroke="#9caabd" fontSize={12} />
-              <YAxis allowDecimals={false} stroke="#9caabd" />
-              <Tooltip contentStyle={{ background: "#172231" }} />
-              <Bar dataKey="count" name="Personajes" fill="#568fc5" />
+              <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
+              <YAxis allowDecimals={false} stroke="var(--muted-foreground)" />
+              <Tooltip contentStyle={{ background: "var(--surface)" }} />
+              <Bar dataKey="count" name="Personajes" fill="var(--gold)" />
             </BarChart>
           </ResponsiveContainer>
         </div>
