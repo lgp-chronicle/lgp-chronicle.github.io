@@ -32,13 +32,12 @@ export function Shell({
             aria-label="La Ganga · Portada"
           >
             <img
-              src={assetUrl("/guild/escudo-la-ganga.webp")}
+              src={assetUrl("/guild/escudo-la-ganga.webp?v=estandarte")}
               alt=""
               width="800"
-              height="797"
+              height="800"
             />
             {path === "/" && <h1 className="sr-only">La Ganga</h1>}
-            <p className="eyebrow">Hermandad · WoW Forever EU</p>
           </a>
         </div>
         <p className="guildhall-caption">
@@ -119,7 +118,7 @@ export function Shell({
       <footer>
         <a className="footer-brand" href={siteHref("/")}>
           <img
-            src={assetUrl("/guild/sello-la-ganga.png?v=2")}
+            src={assetUrl("/guild/sello-la-ganga.png?v=estandarte")}
             alt=""
             width="32"
             height="32"

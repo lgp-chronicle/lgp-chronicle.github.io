@@ -65,7 +65,8 @@ export function Portrait({ member }: { member: Member }) {
       aria-hidden="true"
       style={{ "--class-tint": color(member) } as CSSProperties}
     >
-      {src && src !== failed ? (
+      <span>{member.name.slice(0, 1)}</span>
+      {src && src !== failed && (
         <img
           src={src}
           alt=""
@@ -74,8 +75,6 @@ export function Portrait({ member }: { member: Member }) {
           loading="lazy"
           onError={() => setFailed(src)}
         />
-      ) : (
-        <span>{member.name.slice(0, 1)}</span>
       )}
     </span>
   );

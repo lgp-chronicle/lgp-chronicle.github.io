@@ -4,14 +4,19 @@ import { searchable } from "@/lib/guild-navigation";
 import { Empty } from "@/components/guild-ui";
 import { ago, display, leveling } from "./analytics";
 import { rankChanges } from "./observations";
-import { MemberLink, fullName } from "./member-portrait";
+import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { numeric, type Member } from "./types";
+import { RaceTrack } from "./race-track";
+import { finishLevel } from "./race-course";
+
+const hasRaceLevel = (m: Member) =>
+  numeric(m.data.level) && Number.isInteger(m.data.level) && m.data.level >= 1;
 
 export function LevelingRace({ members }: { members: Member[] }) {
   const [search, setSearch] = useEntryState<string>("raceSearch", "");
   const changes = rankChanges(members);
   const sorted = members
-    .filter((m) => numeric(m.data.level))
+    .filter(hasRaceLevel)
     .map((member) => ({
       member,
       level: member.data.level!,
@@ -26,22 +31,36 @@ export function LevelingRace({ members }: { members: Member[] }) {
   let currentRank = 0;
   const entries = sorted.map((row, i) => {
     const prev = sorted[i - 1];
-    if (!prev || prev.level !== row.level || prev.pace.day !== row.pace.day)
+    if (
+      !prev ||
+      Math.min(prev.level, finishLevel) !== Math.min(row.level, finishLevel)
+    )
       currentRank = i + 1;
     return { ...row, rank: currentRank };
   });
   const podium = [
     ...new Set(entries.filter((x) => x.rank <= 3).map((x) => x.rank)),
   ];
-  const filtered = entries.filter((x) =>
-    searchable(fullName(x.member)).includes(searchable(search)),
-  );
+  const matches = (m: Member) =>
+    searchable(fullName(m)).includes(searchable(search));
+  const filtered = entries.filter(({ member }) => matches(member));
+  const pending = members.filter((m) => !hasRaceLevel(m) && matches(m));
   return (
     <section className="panel race-panel">
       <div className="dossier-heading">
         <h2>Leveling Race</h2>
         <p>{entries.length} participantes</p>
       </div>
+      {pending.length > 0 && (
+        <p className="race-pending">
+          Nivel pendiente ·{" "}
+          {pending.map((m) => (
+            <a key={m.id} href={memberHref(m)}>
+              {fullName(m)}
+            </a>
+          ))}
+        </p>
+      )}
       {!entries.length ? (
         <Empty
           title="La parrilla está preparada"
@@ -49,6 +68,18 @@ export function LevelingRace({ members }: { members: Member[] }) {
         />
       ) : (
         <>
+          <div className="toolbar race-searchbar">
+            <label className="roster-search">
+              <Search size={16} aria-hidden="true" />
+              <input
+                aria-label="Buscar en la carrera"
+                placeholder="Buscar personaje…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </label>
+          </div>
+          <RaceTrack runners={filtered} />
           <div className="race-podium" aria-label="Podio de la carrera">
             {podium.map((rank) => {
               const group = entries.filter((x) => x.rank === rank);
@@ -81,18 +112,9 @@ export function LevelingRace({ members }: { members: Member[] }) {
             <div>
               <h3>Clasificación</h3>
               <p className="subheading">
-                Por nivel, con los niveles ganados en 24 horas como desempate.
+                Quienes alcanzan el mismo nivel comparten puesto.
               </p>
             </div>
-            <label className="roster-search">
-              <Search size={16} aria-hidden="true" />
-              <input
-                aria-label="Buscar en la carrera"
-                placeholder="Buscar personaje…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </label>
           </div>
           <div className="member-grid race-grid">
             {filtered.map(({ member, rank, pace, level }) => {

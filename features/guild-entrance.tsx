@@ -166,7 +166,7 @@ export function GuildEntrance({
         raceStature(b) - raceStature(a) ||
         fullName(a).localeCompare(fullName(b), "es"),
     );
-  const crest = assetUrl("/guild/escudo-la-ganga.webp");
+  const crest = assetUrl("/guild/escudo-la-ganga.webp?v=estandarte");
 
   useLayoutEffect(() => {
     const node = dialog.current;

@@ -16,6 +16,7 @@ import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
 import "../app/globals.css";
 import "../app/guild-views.css";
+import "../app/race-course.css";
 import "../app/honor-cards.css";
 import "../app/character-records.css";
 import "../app/guild-entrance.css";

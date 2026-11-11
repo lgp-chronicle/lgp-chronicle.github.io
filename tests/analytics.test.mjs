@@ -1,5 +1,26 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { courseProgress, raceLanes } from "../features/race-course.ts";
+
+test("the race uses one level scale, fits every portrait and stacks ties in their true position", () => {
+  const levels = [61, 60, 34, 34, 33, 32, 21, 1, 1];
+  assert.equal(courseProgress(1), 0);
+  assert.equal(courseProgress(60), 1);
+  assert.equal(courseProgress(61), 1);
+  assert.equal(courseProgress(30), 29 / 59);
+  for (const width of [180, 360, 1200]) {
+    const places = raceLanes(levels, width, 52);
+    assert.equal(places.length, levels.length);
+    assert.equal(places[2].progress, places[3].progress);
+    assert.notEqual(places[2].lane, places[3].lane);
+    for (const [i, a] of places.entries()) {
+      for (const b of places.slice(i + 1)) {
+        if (a.lane === b.lane)
+          assert.ok((a.progress - b.progress) * width >= 52);
+      }
+    }
+  }
+});
 import { rankChanges } from "../features/observations.ts";
 import { editionPlay, armoryStories } from "../features/guild-stories.ts";
 import {

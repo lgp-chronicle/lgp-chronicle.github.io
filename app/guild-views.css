@@ -33,6 +33,7 @@
 }
 .portrait {
   --size: 36px;
+  position: relative;
   display: inline-grid;
   place-items: center;
   flex: none;
@@ -49,6 +50,8 @@
   font: 400 calc(var(--size) * 0.49) / 1 var(--display);
 }
 .portrait img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
