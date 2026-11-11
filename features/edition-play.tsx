@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Play as PlayIcon, RotateCcw, Swords } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
+import { Play as PlayIcon, RotateCcw } from "lucide-react";
 import { duelPath } from "@/lib/guild-navigation";
 import { siteHref } from "@/lib/public-settings";
 import { useEntryState } from "@/hooks/use-entry-state";
@@ -110,7 +111,7 @@ export function EditionPlay({
                     href={siteHref(duelPath(lead.id, r.member.id))}
                     aria-label={"Cara a cara con " + fullName(r.member)}
                   >
-                    <Swords size={16} />
+                    <GuildIcon name="swords" size={18} />
                     <span>Cara a cara</span>
                   </a>
                 )}

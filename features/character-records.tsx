@@ -1,83 +1,41 @@
-import { useState } from "react";
-import {
-  Anvil,
-  Axe,
-  BicepsFlexed,
-  BookOpen,
-  Brain,
-  Castle,
-  ChevronDown,
-  Compass,
-  Crosshair,
-  Crown,
-  Flag,
-  Footprints,
-  Hammer,
-  Heart,
-  HeartPulse,
-  Medal,
-  ScrollText,
-  Shield,
-  ShieldCheck,
-  ShieldHalf,
-  Sparkles,
-  Swords,
-  WandSparkles,
-  Wind,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { assetUrl } from "@/lib/public-settings";
 import { ago, display } from "./analytics";
 import { numeric, type Profile } from "./types";
 
-const attributes: Record<string, [string, LucideIcon]> = {
-  Salud: ["Características", HeartPulse],
-  Fuerza: ["Características", BicepsFlexed],
-  Agilidad: ["Características", Footprints],
-  Intelecto: ["Características", Brain],
-  Aguante: ["Características", Heart],
-  Espíritu: ["Características", Wind],
-  "Poder de ataque": ["Ataque", Axe],
-  "Poder con hechizos": ["Ataque", WandSparkles],
-  "Crítico cuerpo a cuerpo (%)": ["Ataque", Swords],
-  "Crítico con hechizos (%)": ["Ataque", Sparkles],
-  "Crítico a distancia (%)": ["Ataque", Crosshair],
-  Armadura: ["Defensa", ShieldHalf],
-  Defensa: ["Defensa", Castle],
-  "Esquivar (%)": ["Defensa", Footprints],
-  "Parar (%)": ["Defensa", Swords],
-  "Bloquear (%)": ["Defensa", ShieldCheck],
+const attributes: Record<string, [string, GuildIconName]> = {
+  Salud: ["Características", "health"],
+  Fuerza: ["Características", "strength"],
+  Agilidad: ["Características", "agility"],
+  Intelecto: ["Características", "intellect"],
+  Aguante: ["Características", "stamina"],
+  Espíritu: ["Características", "spirit"],
+  "Poder de ataque": ["Ataque", "attack"],
+  "Poder con hechizos": ["Ataque", "spellpower"],
+  "Crítico cuerpo a cuerpo (%)": ["Ataque", "melee-crit"],
+  "Crítico con hechizos (%)": ["Ataque", "spell-crit"],
+  "Crítico a distancia (%)": ["Ataque", "ranged-crit"],
+  Armadura: ["Defensa", "armor"],
+  Defensa: ["Defensa", "defense"],
+  "Esquivar (%)": ["Defensa", "dodge"],
+  "Parar (%)": ["Defensa", "parry"],
+  "Bloquear (%)": ["Defensa", "block"],
 };
 const professions = [
-  ["Mining", "Minería", 136248],
-  ["Engineering", "Ingeniería", 136243],
-  ["Cooking", "Cocina", 133971],
-  ["Fishing", "Pesca", 136245],
-  ["First Aid", "Primeros auxilios", 135966],
-  ["Herbalism", "Herboristería", 136246],
-  ["Leatherworking", "Peletería", 136247],
-  ["Skinning", "Desuello", 134366],
-  ["Alchemy", "Alquimia", 136240],
-  ["Blacksmithing", "Herrería", 136241],
-  ["Tailoring", "Sastrería", 136249],
-  ["Enchanting", "Encantamiento", 136244],
+  ["Mining", "Minería", "mining"],
+  ["Engineering", "Ingeniería", "engineering"],
+  ["Cooking", "Cocina", "cooking"],
+  ["Fishing", "Pesca", "fishing"],
+  ["First Aid", "Primeros auxilios", "first-aid"],
+  ["Herbalism", "Herboristería", "herbalism"],
+  ["Leatherworking", "Peletería", "leatherworking"],
+  ["Skinning", "Desuello", "skinning"],
+  ["Alchemy", "Alquimia", "alchemy"],
+  ["Blacksmithing", "Herrería", "blacksmithing"],
+  ["Tailoring", "Sastrería", "tailoring"],
+  ["Enchanting", "Encantamiento", "enchanting"],
 ] as const;
-
-function ProfessionIcon({ id }: { id?: number }) {
-  const [failed, setFailed] = useState(false);
-  return id && !failed ? (
-    <img
-      width={40}
-      height={40}
-      loading="lazy"
-      alt=""
-      src={assetUrl("/guild/profesiones/" + id + ".jpg")}
-      onError={() => setFailed(true)}
-    />
-  ) : (
-    <Hammer size={24} aria-hidden="true" />
-  );
-}
 
 function Attributes({ profile: p }: { profile: Profile }) {
   const stats = Object.entries(p.statistics ?? {});
@@ -104,12 +62,12 @@ function Attributes({ profile: p }: { profile: Profile }) {
                   <h3>{group}</h3>
                   <dl>
                     {rows.map(([name, value]) => {
-                      const Icon = attributes[name]?.[1] ?? Medal;
+                      const icon = attributes[name]?.[1] ?? "medal";
                       const percent = name.endsWith(" (%)");
                       return (
                         <div key={name}>
                           <dt>
-                            <Icon size={19} aria-hidden="true" />
+                            <GuildIcon name={icon} size={23} />
                             {percent ? name.slice(0, -4) : name}
                           </dt>
                           <dd>
@@ -151,7 +109,7 @@ function Professions({ profile: p }: { profile: Profile }) {
             return (
               <li key={trade.name + i}>
                 <span className="trade-icon">
-                  <ProfessionIcon id={known?.[2]} />
+                  <GuildIcon name={known?.[2] ?? "blacksmithing"} size={34} />
                 </span>
                 <div>
                   <div className="trade-label">
@@ -210,16 +168,16 @@ function SectionBanner({
 function RecordMetric({
   label,
   value,
-  icon: Icon,
+  icon,
 }: {
   label: string;
   value?: number;
-  icon: LucideIcon;
+  icon: GuildIconName;
 }) {
   return (
     <div>
       <dt>
-        <Icon size={16} aria-hidden="true" />
+        <GuildIcon name={icon} size={18} />
         {label}
       </dt>
       <dd>{display(value)}</dd>
@@ -228,10 +186,10 @@ function RecordMetric({
 }
 
 const achievementGroups = [
-  ["Exploración", Compass],
-  ["Oficios", Anvil],
-  ["Combate", Swords],
-  ["Otros logros", ScrollText],
+  ["Exploración", "spyglass"],
+  ["Oficios", "blacksmithing"],
+  ["Combate", "swords"],
+  ["Otros logros", "dispatch"],
 ] as const;
 function achievementGroup(name: string) {
   if (/^(explor|.*\bspelunker\b)/i.test(name)) return "Exploración";
@@ -260,14 +218,14 @@ function ActivityRecords({ profile: p }: { profile: Profile }) {
           <RecordMetric
             label="Muertes honorables"
             value={p.honorableKills}
-            icon={Swords}
+            icon="swords"
           />
-          <RecordMetric label="Honor" value={p.honor} icon={Medal} />
-          <RecordMetric label="Rango PvP" value={p.pvpRank} icon={Flag} />
+          <RecordMetric label="Honor" value={p.honor} icon="medal" />
+          <RecordMetric label="Rango PvP" value={p.pvpRank} icon="finish" />
         </dl>
         <div className="record-body">
           <h3>
-            <Flag size={18} aria-hidden="true" />
+            <GuildIcon name="finish" size={20} />
             Reputaciones
           </h3>
           {p.reputations?.length ? (
@@ -300,24 +258,24 @@ function ActivityRecords({ profile: p }: { profile: Profile }) {
           <RecordMetric
             label="Bandas completadas"
             value={p.raids?.length}
-            icon={Castle}
+            icon="keep"
           />
           <RecordMetric
             label="Jefes en armería"
             value={p.raidBosses}
-            icon={Shield}
+            icon="helmet"
           />
           <RecordMetric
             label="Puntos de logro"
             value={p.achievementPoints}
-            icon={Crown}
+            icon="trophy"
           />
         </dl>
         <div className="record-body">
           {!!p.raids?.length && (
             <>
               <h3>
-                <Castle size={18} aria-hidden="true" />
+                <GuildIcon name="keep" size={20} />
                 Bandas completadas
               </h3>
               <ul className="record-raids">
@@ -328,14 +286,14 @@ function ActivityRecords({ profile: p }: { profile: Profile }) {
             </>
           )}
           <h3>
-            <BookOpen size={18} aria-hidden="true" />
+            <GuildIcon name="journal" size={20} />
             Logros registrados{" "}
             {p.achievements?.length ? (
               <small>{p.achievements.length}</small>
             ) : null}
           </h3>
           {achievements.length ? (
-            achievementGroups.map(([group, Icon]) => {
+            achievementGroups.map(([group, icon]) => {
               const entries = achievements.filter(
                 (name) => achievementGroup(name) === group,
               );
@@ -347,7 +305,7 @@ function ActivityRecords({ profile: p }: { profile: Profile }) {
                     open={group === "Oficios" && entries.length <= 5}
                   >
                     <summary>
-                      <Icon size={18} aria-hidden="true" />
+                      <GuildIcon name={icon} size={20} />
                       <span>{group}</span>
                       <b>{entries.length}</b>
                       <ChevronDown size={15} aria-hidden="true" />

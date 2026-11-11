@@ -18,6 +18,7 @@ import { EquipmentPanel, TalentsPanel } from "./armory-panels";
 import { fullName } from "./member-portrait";
 import { CharacterRecords } from "./character-records";
 import { ClassFrame } from "./class-frame";
+import { CoverGallery } from "./cover-gallery";
 export function CharacterDetail({
   member: m,
   members,
@@ -31,7 +32,7 @@ export function CharacterDetail({
     l = leveling(m);
   const official = memberArmoryUrl(m.id, m.region);
   const [tab, setTab] = useState(
-    ["talents", "attributes", "history", "logs", "compare"].includes(
+    ["talents", "attributes", "history", "logs", "compare", "gallery"].includes(
       initialTab ?? "",
     )
       ? initialTab!
@@ -51,6 +52,7 @@ export function CharacterDetail({
             history: "a Progresión",
             compare: "al cara a cara",
             logs: "a Warcraft Logs",
+            gallery: "a la galería",
           }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>
     award.memberIds.includes(m.id),
@@ -136,6 +138,7 @@ export function CharacterDetail({
           ["history", "Su historia"],
           ["logs", "Warcraft Logs"],
           ["compare", "Comparar"],
+          ["gallery", "Ilustraciones"],
         ]}
       >
         <TabsContent value="armory">
@@ -257,6 +260,9 @@ export function CharacterDetail({
         </TabsContent>
         <TabsContent value="compare">
           <Compare members={[m, ...members.filter((x) => x.id !== m.id)]} />
+        </TabsContent>
+        <TabsContent value="gallery">
+          <CoverGallery members={members} member={m} />
         </TabsContent>
       </SectionIndex>
       <details className="dossier-source">

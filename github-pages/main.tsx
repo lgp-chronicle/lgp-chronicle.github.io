@@ -21,6 +21,7 @@ import "../app/honor-cards.css";
 import "../app/character-records.css";
 import "../app/guild-entrance.css";
 import "../app/guildhall.css";
+import "../app/cover-gallery.css";
 function App() {
   const [cover] = useState(browserCover);
   const [entrance, setEntrance] = useState(initialEntrance);

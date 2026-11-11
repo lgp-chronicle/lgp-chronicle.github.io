@@ -1,8 +1,10 @@
-import { useMemo } from "react";
-import { ChevronLeft, ChevronRight, Fish, Gem, HelpCircle } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { armoryStories } from "./guild-stories";
-import { itemDisplay, wowheadUrl } from "./armory-data";
+import { itemDisplay } from "./armory-data";
+import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
 import { MemberLink, fullName } from "./member-portrait";
 import type { Member } from "./types";
 
@@ -12,6 +14,7 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
   const [offset, setOffset] = useEntryState<number>("rumorOffset", 0);
   const [revealed, setRevealed] = useEntryState<string>("rumorReveal", "");
   const [answer, setAnswer] = useEntryState<string>("armoryAnswer", "");
+  const [pinned, setPinned] = useState("");
   const cards = [
     ...(data.pole
       ? [
@@ -20,7 +23,7 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
             title: "¿Quién se ha dejado la caña puesta?",
             item: data.pole,
             owners: data.anglers,
-            Mark: Fish,
+            mark: "fish" as const,
           },
         ]
       : []),
@@ -31,7 +34,7 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
             title: "El uniforme extraoficial",
             item: data.shared.item,
             owners: data.shared.owners,
-            Mark: Gem,
+            mark: "amber" as const,
           },
         ]
       : []),
@@ -42,7 +45,7 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
             title: "¿De quién es esta pieza?",
             item: data.clue.item,
             owners: data.clue.owners,
-            Mark: HelpCircle,
+            mark: "clue" as const,
           },
         ]
       : []),
@@ -55,68 +58,87 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
     owner = card.owners[0];
   const chosen = data.choices.find((m) => key + "/" + m.id === answer);
   const icon = itemDisplay(card.item).icon;
+  const picture = (
+    <>
+      <GuildIcon name={card.mark} size={30} />
+      {icon && (
+        <img
+          className="rumor-item-art"
+          key={icon}
+          src={icon}
+          alt=""
+          onError={(e) => {
+            e.currentTarget.hidden = true;
+          }}
+        />
+      )}
+    </>
+  );
+  function advance(step: number) {
+    setPinned("");
+    setOffset((offset + step + cards.length) % cards.length);
+  }
+  function itemHint(trigger: string) {
+    return {
+      item: card.item,
+      side: "top" as const,
+      pinned: pinned === trigger,
+      hasPinnedItem: !!pinned,
+      onPinChange: (open: boolean) => setPinned(open ? trigger : ""),
+    };
+  }
   return (
     <section className="rumor-panel" data-story="armory-rumors">
       <header>
         <h2>Cotilleos de la armería</h2>
         {cards.length > 1 && (
           <div className="rumor-controls">
-            <button
-              aria-label="Cotilleo anterior"
-              onClick={() =>
-                setOffset((offset + cards.length - 1) % cards.length)
-              }
-            >
+            <button aria-label="Cotilleo anterior" onClick={() => advance(-1)}>
               <ChevronLeft />
             </button>
             <span>
               {index + 1} / {cards.length}
             </span>
-            <button
-              aria-label="Siguiente cotilleo"
-              onClick={() => setOffset((offset + 1) % cards.length)}
-            >
+            <button aria-label="Siguiente cotilleo" onClick={() => advance(1)}>
               <ChevronRight />
             </button>
           </div>
         )}
       </header>
-      <div className="rumor-body">
-        <button
-          className="rumor-icon"
-          aria-label={quiz ? "Ver objeto en Wowhead" : "Ver quién lo lleva"}
-          onClick={() => {
-            if (!quiz) setRevealed(key);
-            else
-              window.open(
-                wowheadUrl("item", card.item.id, card.item.name!),
-                "_blank",
-                "noopener,noreferrer",
-              );
-          }}
-        >
-          <card.Mark aria-hidden="true" />
-          {icon && (
-            <img
-              key={icon}
-              src={icon}
-              alt=""
-              onError={(e) => {
-                e.currentTarget.hidden = true;
-              }}
-            />
-          )}
-        </button>
+      <div className="rumor-body" key={key}>
+        {quiz ? (
+          <EquipmentTooltip {...itemHint("icon")}>
+            <button
+              type="button"
+              className="rumor-icon"
+              tabIndex={-1}
+              aria-label={"Detalles de " + card.item.name}
+            >
+              {picture}
+            </button>
+          </EquipmentTooltip>
+        ) : (
+          <button
+            type="button"
+            className="rumor-icon"
+            aria-label="Ver quién lo lleva"
+            onClick={() => setRevealed(key)}
+          >
+            {picture}
+          </button>
+        )}
         <div>
           <h3>{card.title}</h3>
           <p>
-            <a
-              href={wowheadUrl("item", card.item.id, card.item.name!)}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {card.item.name} ↗
-            </a>
+            <EquipmentTooltip {...itemHint("name")}>
+              <button
+                type="button"
+                className="rumor-item-name"
+                style={{ color: itemQuality(card.item)[1] }}
+              >
+                {card.item.name}
+              </button>
+            </EquipmentTooltip>
             {!quiz && (
               <>
                 {" "}

@@ -1,4 +1,5 @@
-import { Crown, Medal, Search } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
+import { Search } from "lucide-react";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { searchable } from "@/lib/guild-navigation";
 import { Empty } from "@/components/guild-ui";
@@ -83,11 +84,13 @@ export function LevelingRace({ members }: { members: Member[] }) {
           <div className="race-podium" aria-label="Podio de la carrera">
             {podium.map((rank) => {
               const group = entries.filter((x) => x.rank === rank);
-              const Mark = rank === 1 ? Crown : Medal;
               return (
                 <section key={rank} className="podium-place" data-rank={rank}>
                   <h3>
-                    <Mark aria-hidden="true" size={21} />
+                    <GuildIcon
+                      name={rank === 1 ? "crown" : "medal"}
+                      size={25}
+                    />
                     {rank === 1 ? "En cabeza" : rank + ".º puesto"}
                   </h3>
                   <div className="banner-lineup podium-winners">

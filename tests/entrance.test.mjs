@@ -2,19 +2,38 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { positions, raceStature } from "../features/entrance-formation.ts";
 import { silhouetteFrame } from "../features/entrance-frame.ts";
-import { coverMemberId, drawCover, guildCovers } from "../lib/guild-covers.ts";
+import {
+  coverMemberId,
+  coversForMember,
+  drawCover,
+  guildCovers,
+} from "../lib/guild-covers.ts";
 import portraits from "../config/character-art.json" with { type: "json" };
 
-test("each illustrated member has a verified armory portrait and appears only once", () => {
+test("each illustrated party has distinct members with verified portraits", () => {
   const included = Object.values(guildCovers).flatMap(({ cast }) =>
     cast.map(coverMemberId),
   );
-  assert.equal(new Set(included).size, included.length);
+  for (const { cast } of Object.values(guildCovers)) {
+    assert.equal(new Set(cast).size, cast.length);
+  }
   assert.ok(
     included.every((id) => portraits[id] && !portraits[id].entranceIssue),
   );
   assert.ok(!included.includes("forever-eu-aloqes-dloqe"));
   assert.ok(!included.includes("forever-eu-alexion-grandwell"));
+});
+
+test("a character's gallery includes every appearance, including expeditions", () => {
+  assert.deepEqual(coversForMember(coverMemberId("Naisen Grandwell")).sort(), [
+    "humedales",
+    "mapa",
+  ]);
+  assert.deepEqual(coversForMember(coverMemberId("Juninho Delbosque")).sort(), [
+    "pique",
+    "santuario",
+  ]);
+  assert.deepEqual(coversForMember("forever-eu-alexion-grandwell"), []);
 });
 
 test("the fortress shows every cover before repeating, including across cycles", () => {

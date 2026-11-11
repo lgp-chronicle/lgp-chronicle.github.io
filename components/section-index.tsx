@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Shield, Sparkles, Activity, type LucideIcon } from "lucide-react";
+import { GuildIcon, type GuildIconName } from "./guild-icon";
 import { guildSectionIcons } from "./section-icons";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -12,11 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const sectionIcons: Record<string, LucideIcon> = {
+const sectionIcons: Record<string, GuildIconName> = {
   ...guildSectionIcons,
-  armory: Shield,
-  talents: Sparkles,
-  attributes: Activity,
+  armory: "shield",
+  talents: "staff",
+  attributes: "ruby",
 };
 
 export function SectionIndex({
@@ -40,10 +40,9 @@ export function SectionIndex({
       <div className="section-index">
         <TabsList className="folio-tabs" aria-label={label}>
           {items.map(([id, name]) => {
-            const Icon = sectionIcons[id];
             return (
               <TabsTrigger key={id} value={id}>
-                <Icon aria-hidden="true" />
+                <GuildIcon name={sectionIcons[id]} size={22} />
                 <span>{name}</span>
               </TabsTrigger>
             );
@@ -61,10 +60,9 @@ export function SectionIndex({
               sideOffset={3}
             >
               {items.map(([id, name]) => {
-                const Icon = sectionIcons[id];
                 return (
                   <SelectItem key={id} value={id} textValue={name}>
-                    <Icon aria-hidden="true" />
+                    <GuildIcon name={sectionIcons[id]} size={22} />
                     {name}
                   </SelectItem>
                 );

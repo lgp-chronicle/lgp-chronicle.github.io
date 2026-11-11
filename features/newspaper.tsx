@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
 import type { Activity, Member } from "./types";
 import { MemberLink } from "./member-portrait";
+import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { editionPlay, rivalId } from "./guild-stories";
@@ -17,6 +18,15 @@ const categories: Record<string, string> = {
   honorableKills: "Honor",
   logs: "Raids",
   other: "Otras noticias",
+};
+const categoryIcons: Record<string, GuildIconName> = {
+  all: "dispatch",
+  overtake: "boot",
+  level: "steps",
+  itemLevel: "shield",
+  honorableKills: "medal",
+  logs: "journal",
+  other: "campfire",
 };
 const categoryOf = (e: Activity) =>
   e.kind === "gain" && e.metric && categories[e.metric]
@@ -229,7 +239,7 @@ export function Newspaper({
                     setLimit(8);
                   }}
                 >
-                  {label}{" "}
+                  <GuildIcon name={categoryIcons[key]} size={18} /> {label}{" "}
                   <small>{key === "all" ? rows.length : counts[key]}</small>
                 </button>
               ))}

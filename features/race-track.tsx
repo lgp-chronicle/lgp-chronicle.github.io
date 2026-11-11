@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { Flag, FlagTriangleRight } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
 import { fullName, memberHref, Portrait } from "./member-portrait";
 import { hasEntrancePortrait } from "./character-art";
 import { color, type Member } from "./types";
@@ -47,7 +47,7 @@ export function RaceTrack({ runners }: { runners: Runner[] }) {
       <header className="course-heading">
         <h3>Camino al nivel 60</h3>
         <span>
-          <Flag aria-hidden="true" size={15} /> {finished} en meta
+          <GuildIcon name="finish" size={20} /> {finished} en meta
         </span>
       </header>
       <div
@@ -120,7 +120,7 @@ export function RaceTrack({ runners }: { runners: Runner[] }) {
       </div>
       {!runners.length && (
         <p className="course-empty">
-          <FlagTriangleRight size={16} aria-hidden="true" /> Ningún participante
+          <GuildIcon name="finish" size={18} /> Ningún participante
           coincide con la búsqueda.
         </p>
       )}

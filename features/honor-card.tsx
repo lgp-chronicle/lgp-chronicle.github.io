@@ -1,14 +1,6 @@
 import type { CSSProperties } from "react";
-import {
-  ArrowUpRight,
-  BicepsFlexed,
-  Brain,
-  Feather,
-  Flame,
-  Heart,
-  Shield,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { assetUrl } from "@/lib/public-settings";
 import { ClassFrame } from "./class-frame";
 import { CharacterArt } from "./character-art";
@@ -17,13 +9,24 @@ import { display, type Award } from "./analytics";
 import { color, type Member } from "./types";
 
 type Scene = "corona" | "ambar" | "bota" | "espadas";
-const attributes: Record<string, LucideIcon> = {
-  stamina: Heart,
-  intellect: Brain,
-  strength: BicepsFlexed,
-  agility: Feather,
-  spirit: Flame,
-  armor: Shield,
+const awardIcons: Record<string, GuildIconName> = {
+  stamina: "stamina",
+  intellect: "intellect",
+  strength: "strength",
+  agility: "agility",
+  spirit: "spirit",
+  armor: "armor",
+  goblin: "coin",
+  craft: "engineering",
+  repair: "blacksmithing",
+  journey: "compass",
+  profession: "leatherworking",
+  dps: "attack",
+  hps: "health",
+  combat: "swords",
+  epic: "spell-crit",
+  legend: "trophy",
+  "boss-destroyer": "helmet",
 };
 const scenes: Record<string, Scene> = {
   stamina: "espadas",
@@ -86,7 +89,7 @@ type HonorCardProps = {
   unit?: string;
   note?: string;
   winners: Member[];
-  icon?: LucideIcon;
+  icon?: GuildIconName;
 };
 export function HonorCard({
   title,
@@ -95,7 +98,7 @@ export function HonorCard({
   unit,
   note,
   winners,
-  icon: Icon,
+  icon,
 }: HonorCardProps) {
   const shared = winners.length > 1;
   return (
@@ -107,8 +110,8 @@ export function HonorCard({
       <div className="honor-painting" aria-hidden="true" />
       <header className="honor-inscription">
         <div className="honor-title">
-          {Icon ? (
-            <Icon size={30} strokeWidth={1.5} aria-hidden="true" />
+          {icon ? (
+            <GuildIcon name={icon} size={36} />
           ) : (
             <img
               src={assetUrl("/guild/" + scene + ".webp")}
@@ -170,7 +173,7 @@ export function HallAward({
       note={award.rule}
       winners={winners}
       scene={scenes[award.id] ?? "corona"}
-      icon={attributes[award.id]}
+      icon={awardIcons[award.id]}
     />
   );
 }

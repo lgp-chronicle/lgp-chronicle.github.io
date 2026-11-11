@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { ExternalLink, Gem, Sparkles } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { ago } from "./analytics";
 import {
@@ -9,7 +9,8 @@ import {
   wowheadUrl,
   type Entity,
 } from "./armory-data";
-import { SlotIcon, slotInfo } from "./slot-icon";
+import { GuildIcon } from "@/components/guild-icon";
+import { slotInfo } from "./slot-icon";
 import { color, type Equipment, type Profile, type Member } from "./types";
 
 import { Portrait, fullName } from "./member-portrait";
@@ -66,7 +67,6 @@ function GameIcon({
     };
   }, [kind, id, primary, failed]);
   const url = alternate ?? primary;
-  const Fallback = kind === "item" ? Gem : Sparkles;
   return (
     <span className="game-icon" aria-hidden="true">
       {url && url !== failed ? (
@@ -78,7 +78,7 @@ function GameIcon({
           onError={() => setFailed(url)}
         />
       ) : (
-        <Fallback size={22} />
+        <GuildIcon name={kind === "item" ? "amber" : "staff"} size={24} />
       )}
     </span>
   );
@@ -168,7 +168,7 @@ function ItemSlot({
         title={label + " · Sin registrar"}
       >
         <span className="empty-slot">
-          <SlotIcon path={slot.path} />
+          <GuildIcon name={slot.icon} className="slot-mark" />
         </span>
         <span className="slot-copy">
           {label}
@@ -204,7 +204,7 @@ function ItemSlot({
           />
           <span className="slot-copy">
             <span className="slot-label">
-              <SlotIcon path={slot.path} />
+              <GuildIcon name={slot.icon} className="slot-mark" />
               {label}
             </span>
             <strong>{item.name}</strong>

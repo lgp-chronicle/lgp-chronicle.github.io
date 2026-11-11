@@ -513,7 +513,7 @@ main.page-width.panel {
   min-height: 44px;
   font-family: var(--interface);
 }
-@media (max-width: 800px) {
+@media (max-width: 960px) {
   .folio-tabs {
     display: none;
   }

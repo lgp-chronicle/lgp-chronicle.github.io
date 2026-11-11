@@ -1,9 +1,10 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
 import { archivePath, guildSections } from "@/lib/guild-navigation";
-import { Check, ChevronDown, Compass, House, Play } from "lucide-react";
+import { Check, ChevronDown, Play } from "lucide-react";
 import { coverMemberId, guildCovers } from "@/lib/guild-covers";
 import { Fragment } from "react";
 import { guildSectionIcons } from "./section-icons";
+import { GuildIcon } from "./guild-icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +22,8 @@ export function Shell({
   cover?: keyof typeof guildCovers;
   onReplay?: () => void;
 }) {
-  const { cast, action } = guildCovers[cover];
+  const scene = guildCovers[cover];
+  const { cast, action } = scene;
   return (
     <>
       <header className="guildhall" data-home={path === "/"} data-cover={cover}>
@@ -41,6 +43,11 @@ export function Shell({
           </a>
         </div>
         <p className="guildhall-caption">
+          {"date" in scene && (
+            <time dateTime={scene.date}>
+              {scene.date.split("-").reverse().join("/")}
+            </time>
+          )}
           {cast.map((name, i) => (
             <Fragment key={name}>
               {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
@@ -62,11 +69,10 @@ export function Shell({
             href={siteHref("/")}
             aria-current={path === "/" ? "page" : undefined}
           >
-            <House aria-hidden="true" />
+            <GuildIcon name="keep" />
             <span>Portada</span>
           </a>
           {guildSections.map(([id, label]) => {
-            const Icon = guildSectionIcons[id];
             return (
               <a
                 key={id}
@@ -74,7 +80,7 @@ export function Shell({
                 data-quick={id === "overview" || id === "news"}
                 aria-current={path === archivePath(id) ? "page" : undefined}
               >
-                <Icon aria-hidden="true" />
+                <GuildIcon name={guildSectionIcons[id]} />
                 <span>{label}</span>
               </a>
             );
@@ -86,13 +92,12 @@ export function Shell({
                 guildSections.find(([id]) => archivePath(id) === path)?.[0]
               }
             >
-              <Compass size={16} aria-hidden="true" />
+              <GuildIcon name="compass" />
               <span>Explorar</span>
               <ChevronDown size={13} aria-hidden="true" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="guild-explore-menu" align="end">
               {guildSections.map(([id, label]) => {
-                const Icon = guildSectionIcons[id];
                 return (
                   <DropdownMenuItem asChild key={id}>
                     <a
@@ -101,7 +106,7 @@ export function Shell({
                       }
                       href={siteHref(archivePath(id))}
                     >
-                      <Icon aria-hidden="true" />
+                      <GuildIcon name={guildSectionIcons[id]} />
                       {label}
                       {path === archivePath(id) && (
                         <Check size={15} aria-hidden="true" />

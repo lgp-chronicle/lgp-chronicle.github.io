@@ -8,6 +8,7 @@ import { HonorCard, HallAward } from "./honor-card";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
+import { CoverGallery } from "./cover-gallery";
 import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
@@ -148,13 +149,14 @@ export function Dashboard({
           <ArmoryRumors members={m} />
         </>
       )}
-      <SourceNotice members={m} />
+      {section !== "gallery" && <SourceNotice members={m} />}
       <section
         className="archive"
         ref={archive}
         id={archivePath(section ?? "overview")}
         aria-label="Archivo de la hermandad"
       >
+        {section === "gallery" && <CoverGallery members={m} />}
         {(!section || section === "overview") && (
           <>
             <Roster members={m} />
@@ -292,10 +294,12 @@ export function Dashboard({
           </>
         )}
       </section>
-      <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
-        Los datos pertenecen a la última observación válida de cada fuente. No
-        representan necesariamente el estado actual dentro del juego.
-      </p>
+      {section !== "gallery" && (
+        <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
+          Los datos pertenecen a la última observación válida de cada fuente. No
+          representan necesariamente el estado actual dentro del juego.
+        </p>
+      )}
     </main>
   );
 }

@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { ScrollText } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
 export function Pick({
   value,
   onChange,
@@ -42,7 +42,7 @@ export function Empty({
 }) {
   return (
     <div className="empty-state">
-      <ScrollText size={30} />
+      <GuildIcon name="lantern" size={35} />
       <h3>{title}</h3>
       <p>{text}</p>
     </div>

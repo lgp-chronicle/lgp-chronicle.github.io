@@ -1,21 +1,13 @@
-import {
-  BookOpen,
-  ChartNoAxesColumnIncreasing,
-  Compass,
-  Crown,
-  Newspaper,
-  Swords,
-  Users,
-} from "lucide-react";
 import type { GuildSection } from "@/lib/guild-navigation";
-import type { LucideIcon } from "lucide-react";
+import type { GuildIconName } from "./guild-icon";
 
 export const guildSectionIcons = {
-  overview: Users,
-  race: Compass,
-  history: ChartNoAxesColumnIncreasing,
-  awards: Crown,
-  news: Newspaper,
-  compare: Swords,
-  logs: BookOpen,
-} satisfies Record<GuildSection, LucideIcon>;
+  overview: "tabard",
+  race: "boot",
+  history: "steps",
+  awards: "crown",
+  news: "dispatch",
+  compare: "swords",
+  logs: "journal",
+  gallery: "painting",
+} satisfies Record<GuildSection, GuildIconName>;

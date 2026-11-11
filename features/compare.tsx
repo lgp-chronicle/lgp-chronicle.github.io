@@ -3,7 +3,7 @@ import { useEntryState } from "@/hooks/use-entry-state";
 import { Pick, Empty } from "@/components/guild-ui";
 import { display, leveling } from "./analytics";
 import { numeric, type Member } from "./types";
-import { Crown } from "lucide-react";
+import { GuildIcon } from "@/components/guild-icon";
 import { MemberLink, fullName } from "./member-portrait";
 import { duelPath, sectionFromPath } from "@/lib/guild-navigation";
 import { siteHref } from "@/lib/public-settings";
@@ -113,7 +113,7 @@ export function Compare({
         const comparable = numeric(leftValue) && numeric(rightValue);
         const marker = (
           <span className="duel-crown" role="img" aria-label="Mejor valor">
-            <Crown size={16} aria-hidden="true" />
+            <GuildIcon name="crown" size={20} />
           </span>
         );
         return (

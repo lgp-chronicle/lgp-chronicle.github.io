@@ -15,6 +15,43 @@
   --hall-compact: url("./art/fragua-movil.webp");
   --hall-y: 30%;
 }
+.guildhall[data-cover="humedales"] {
+  --hall-art: url("./art/humedales.webp");
+  --hall-compact: url("./art/humedales-movil.webp");
+  --hall-y: 58%;
+}
+.guildhall[data-cover="pique"] {
+  --hall-art: url("./art/pique.webp");
+  --hall-compact: url("./art/pique-movil.webp");
+  --hall-y: 41%;
+}
+@media (min-width: 681px) {
+  .guildhall[data-cover="pique"] {
+    background: linear-gradient(95deg, #211c17e0, #30241be8), var(--hall-art) left center / cover;
+  }
+  .guildhall[data-cover="pique"]::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 0 auto;
+    max-width: 100%;
+    aspect-ratio: 3 / 1;
+    background: var(--hall-art) right center / auto 100% no-repeat;
+    mask-image: linear-gradient(90deg, transparent, black 16%);
+  }
+}
+.guildhall-caption time {
+  display: inline-block;
+  margin-inline-end: 0.6em;
+  color: #ffe09c;
+  font-variant-numeric: tabular-nums;
+}
+.guild-icon {
+  display: inline-block;
+  flex: none;
+  object-fit: contain;
+  vertical-align: middle;
+}
 .guildhall[data-cover="jardin"] {
   --hall-art: url("./art/jardin.webp");
   --hall-compact: url("./art/jardin-movil.webp");
@@ -215,7 +252,7 @@
   background: var(--muted);
   color: #ffe5a0;
 }
-@media (max-width: 1050px) {
+@media (max-width: 1160px) {
   .guildhall-nav a[data-quick="false"] {
     display: none;
   }
@@ -232,6 +269,28 @@
   }
 }
 @media (max-width: 680px) {
+  .guildhall[data-cover="pique"][data-home] {
+    min-height: 0;
+    padding-top: 44.45vw;
+    align-items: center;
+    background: #282019 var(--hall-compact) center top / 100% auto no-repeat;
+  }
+  .guildhall[data-cover="pique"] .guildhall-inner { padding: 4px 0 5px 9px; }
+  .guildhall[data-cover="pique"] .guildhall-brand img { width: 60px; }
+  .guildhall[data-cover="pique"] .guildhall-caption {
+    position: static; max-width: 76%; margin: 4px 10px 4px auto;
+  }
+  .guildhall[data-cover="humedales"] .guildhall-inner {
+    align-self: flex-start;
+    padding: 8px 0 0 10px;
+  }
+  .guildhall[data-cover="humedales"][data-home] .guildhall-brand img {
+    width: clamp(56px, 16vw, 92px);
+  }
+  .guildhall[data-cover="humedales"] .guildhall-caption {
+    background: #17110cd9;
+    max-width: min(92%, 390px);
+  }
   .guildhall {
     min-height: 174px;
     align-items: flex-end;
@@ -379,12 +438,30 @@
   border: 2px solid #b39a53;
   border-radius: 6px;
 }
-.rumor-icon img {
+.rumor-icon .rumor-item-art {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 4px;
+}
+.rumor-item-name {
+  border: 0;
+  background: transparent;
+  padding: 4px 0;
+  font: inherit;
+  text-align: start;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+.rumor-item-name:focus-visible,
+.rumor-icon:focus-visible {
+  outline: 2px solid #ffe197;
+  outline-offset: 3px;
+}
+.news-categories .guild-icon {
+  margin-inline-end: 3px;
 }
 .rumor-reveal {
   font-weight: 650;

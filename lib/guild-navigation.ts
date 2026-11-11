@@ -6,6 +6,7 @@ export const guildSections = [
   ["news", "El Heraldo"],
   ["compare", "Cara a cara"],
   ["logs", "Warcraft Logs"],
+  ["gallery", "Galería"],
 ] as const;
 
 export type GuildSection = (typeof guildSections)[number][0];
