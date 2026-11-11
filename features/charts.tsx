@@ -1,85 +1,114 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Search, X } from "lucide-react";
 import {
   ResponsiveContainer,
-  LineChart,
-  Line,
+  ScatterChart,
+  Scatter,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
 } from "recharts";
 import { Pick, Empty } from "@/components/guild-ui";
-import { measurements } from "./observations";
-import { numeric, type Member, type Profile } from "./types";
+import { measurements, metricTime } from "./observations";
+import { color, numeric, type Member } from "./types";
 import { fullName } from "./member-portrait";
-const lineColors = ["#f9cd58", "#69d7cf", "#c6a1fa"];
-export function HistoryChart({ members }: { members: Member[] }) {
-  const [metric, setMetric] = useState("level"),
-    [range, setRange] = useState("7");
-  const start = range === "all" ? 0 : Date.now() - Number(range) * 86400000;
-  const [picks, setPicks] = useState<(string | undefined)[]>();
-  const readings = members.map((m) => {
-    const points = measurements(m, metric as keyof Profile).filter(
-      (s) => Date.parse(s.at) >= start,
-    );
-    return {
-      member: m,
-      points,
-      last: points.at(-1)?.data[metric as keyof Profile],
-    };
-  });
-  const ranked = readings
-    .filter((r) => numeric(r.last))
+
+const metrics = [
+  { value: "level", label: "Nivel" },
+  { value: "itemLevel", label: "Item level" },
+  { value: "honorableKills", label: "Muertes honorables" },
+  { value: "honor", label: "Honor" },
+] as const;
+const day = 86400000;
+const dateTick = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric",
+  month: "short",
+});
+const timeTick = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric",
+  month: "short",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+const valueFormat = new Intl.NumberFormat("es-ES");
+const searchable = (text: string) =>
+  text.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("es");
+type Metric = (typeof metrics)[number]["value"];
+
+function historySeries(members: Member[], key: Metric, range: string) {
+  const start = range === "all" ? -Infinity : Date.now() - Number(range) * day;
+  return members
+    .map((member) => {
+      const name = fullName(member);
+      const current = { at: member.data.observedAt ?? "", data: member.data };
+      const history = metricTime(current, key)
+        ? [current, ...member.history]
+        : member.history;
+      const points = measurements({ ...member, history }, key).flatMap(
+        (snapshot) => {
+          const at = Date.parse(snapshot.at),
+            value = snapshot.data[key];
+          return Number.isFinite(at) && at >= start && numeric(value)
+            ? [{ at, value, name }]
+            : [];
+        },
+      );
+      return {
+        id: member.id,
+        name,
+        tint: color(member),
+        points,
+        last: points.at(-1)?.value,
+      };
+    })
     .sort(
       (a, b) =>
-        Number(b.last) - Number(a.last) ||
-        fullName(a.member).localeCompare(fullName(b.member), "es"),
+        (b.last ?? -Infinity) - (a.last ?? -Infinity) ||
+        a.name.localeCompare(b.name, "es"),
     );
-  const limit = Math.min(3, members.length);
-  const selected =
-    picks ?? Array.from({ length: limit }, (_, i) => ranked[i]?.member.id);
-  const series = selected.flatMap((id, index) => {
-    const row = readings.find((r) => r.member.id === id);
-    return row ? [{ ...row, index }] : [];
-  });
-  const observations = new Map<number, Record<string, number>>();
-  for (const { member, points } of series)
-    for (const point of points) {
-      const at = Date.parse(point.at),
-        value = point.data[metric as keyof Profile];
-      if (!numeric(value)) continue;
-      const row = observations.get(at) ?? { at };
-      row[member.id] = value;
-      observations.set(at, row);
-    }
-  const rows = [...observations.values()].sort((a, b) => a.at - b.at);
-  const sortedMembers = [...members].sort((a, b) =>
-    fullName(a).localeCompare(fullName(b), "es"),
+}
+
+export function HistoryChart({ members }: { members: Member[] }) {
+  const [key, setKey] = useState<Metric>("level");
+  const [range, setRange] = useState("7");
+  const [selected, setSelected] = useState("");
+  const [query, setQuery] = useState("");
+  const series = useMemo(
+    () => historySeries(members, key, range),
+    [members, key, range],
   );
+  const visible = series.filter((s) => s.points.length);
+  const focus = visible.find((s) => s.id === selected);
+  const guild = members.length > 1;
+  const searchTerm = searchable(query.trim());
+  const listed = series.filter((s) => searchable(s.name).includes(searchTerm));
+  const metric = metrics.find((option) => option.value === key)!;
+  const first = Math.min(...visible.map((s) => s.points[0].at));
+  const last = Math.max(
+    ...visible.map((s) => s.points[s.points.length - 1].at),
+  );
+  const singleInstant = first === last;
+  const formatTick = last - first < 2 * day ? timeTick : dateTick;
   return (
-    <section className="panel">
+    <section className="panel history-panel">
       <div className="section-heading">
-        <div>
-          <h3>Evolución del personaje</h3>
-          <p className="subheading">
-            {members.length > 1
-              ? "Compara hasta tres personajes. Cada línea une sus registros de la armería."
-              : "La línea une los registros de la armería."}
-          </p>
-        </div>
+        <h3>
+          {guild ? "Evolución de la hermandad" : "Evolución del personaje"}
+        </h3>
+        {guild && (
+          <span className="history-coverage">
+            {visible.length} de {members.length} con registros
+          </span>
+        )}
       </div>
       <div className="chart-controls">
         <Pick
           label="Estadística"
-          value={metric}
-          onChange={setMetric}
-          options={[
-            { value: "level", label: "Nivel" },
-            { value: "itemLevel", label: "Item level" },
-            { value: "honorableKills", label: "Muertes honorables" },
-            { value: "honor", label: "Honor" },
-          ]}
+          value={key}
+          onChange={(v) => setKey(v as Metric)}
+          options={[...metrics]}
         />
         <Pick
           label="Periodo"
@@ -93,104 +122,185 @@ export function HistoryChart({ members }: { members: Member[] }) {
           ]}
         />
       </div>
-      {members.length > 1 && (
-        <div className="chart-party" aria-label="Personajes de la gráfica">
-          {selected.map((id, i) => (
-            <label key={i} style={{ borderColor: lineColors[i] }}>
-              <span>Línea {i + 1}</span>
-              <Pick
-                label={"Personaje de la línea " + (i + 1)}
-                value={id ?? "none"}
-                onChange={(v) => {
-                  const next = [...selected];
-                  next[i] = v === "none" ? undefined : v;
-                  setPicks(next);
-                }}
-                options={[
-                  { value: "none", label: "Sin personaje" },
-                  ...sortedMembers
-                    .filter((m) => m.id === id || !selected.includes(m.id))
-                    .map((m) => ({ value: m.id, label: fullName(m) })),
-                ]}
-              />
-            </label>
-          ))}
-        </div>
-      )}
-      {!rows.length ? (
+      {!visible.length ? (
         <Empty
-          title="Sin registros en esta selección"
-          text="Prueba con otro personaje, estadística o periodo."
+          title="Sin registros en este periodo"
+          text="Prueba otra estadística o amplía el periodo."
         />
       ) : (
-        <div className="chart-wrap">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={rows}>
-              <CartesianGrid
-                stroke="var(--border)"
-                strokeDasharray="3 5"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="at"
-                type="number"
-                scale="time"
-                domain={["dataMin", "dataMax"]}
-                tickFormatter={(v) =>
-                  new Date(v).toLocaleString("es-ES", {
-                    ...(range === "1"
-                      ? ({ hour: "2-digit", minute: "2-digit" } as const)
-                      : ({ day: "numeric", month: "short" } as const)),
-                  })
-                }
-                stroke="var(--muted-foreground)"
-                fontSize={12}
-              />
-              <YAxis
-                width={45}
-                stroke="var(--muted-foreground)"
-                fontSize={12}
-                domain={["auto", "auto"]}
-                allowDecimals={metric !== "level"}
-              />
-              <Tooltip
-                labelFormatter={(v) =>
-                  new Date(Number(v)).toLocaleString("es-ES")
-                }
-                contentStyle={{
-                  background: "var(--surface)",
-                  border: "1px solid var(--border)",
-                }}
-              />
-              {series.map(({ member: m, index, points }) => (
-                <Line
-                  key={m.id}
-                  name={fullName(m)}
-                  dataKey={m.id}
-                  stroke={lineColors[index]}
-                  strokeDasharray={["", "6 3", "2 3"][index]}
-                  type="stepAfter"
-                  connectNulls={true}
-                  dot={points.length < 12 ? { r: 3 } : false}
-                  activeDot={{ r: 5 }}
-                  strokeWidth={2}
-                  isAnimationActive={false}
+        <div className={guild ? "history-layout" : ""}>
+          <div className="history-plot">
+            {focus && (
+              <button
+                type="button"
+                className="history-focus"
+                onClick={() => setSelected("")}
+                aria-label={"Quitar el resaltado de " + focus.name}
+              >
+                {focus.name} <X size={14} aria-hidden="true" />
+              </button>
+            )}
+            <div className="chart-wrap">
+              <ResponsiveContainer width="100%" height="100%">
+                <ScatterChart
+                  margin={{ top: 14, right: 13, bottom: 4, left: 0 }}
+                  title={
+                    metric.label +
+                    " · " +
+                    (guild ? "La Ganga" : series[0]?.name)
+                  }
+                >
+                  <CartesianGrid
+                    stroke="var(--border)"
+                    strokeDasharray="2 6"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="at"
+                    type="number"
+                    scale="time"
+                    domain={
+                      singleInstant
+                        ? [first - 1800000, last + 1800000]
+                        : [first, last]
+                    }
+                    tickFormatter={(v) => formatTick.format(v)}
+                    minTickGap={22}
+                    tickMargin={8}
+                    stroke="var(--muted-foreground)"
+                    fontSize={11}
+                  />
+                  <YAxis
+                    dataKey="value"
+                    width="auto"
+                    stroke="var(--muted-foreground)"
+                    tickMargin={7}
+                    fontSize={12}
+                    domain={["auto", "auto"]}
+                    allowDecimals={key === "itemLevel"}
+                  />
+                  <Tooltip
+                    shared={false}
+                    cursor={false}
+                    isAnimationActive={false}
+                    content={({ active, payload }) => {
+                      const point = payload?.[0]?.payload;
+                      return active && point ? (
+                        <div className="history-tooltip">
+                          <strong>{point.name}</strong>
+                          <span>
+                            {metric.label} · {valueFormat.format(point.value)}
+                          </span>
+                          <time>{timeTick.format(point.at)}</time>
+                        </div>
+                      ) : null;
+                    }}
+                  />
+                  {visible.map((s) => {
+                    const focused = focus?.id === s.id;
+                    const dimmed = !!focus && !focused;
+                    const radius = focused || s.points.length === 1 ? 3.8 : 2.4;
+                    return (
+                      <Scatter
+                        key={s.id}
+                        name={s.name}
+                        data={s.points}
+                        fill={s.tint}
+                        opacity={dimmed ? 0.24 : 1}
+                        zIndex={focused ? 451 : 450}
+                        line={{
+                          stroke: s.tint,
+                          strokeWidth: focused ? 3 : 1.7,
+                        }}
+                        lineJointType="stepAfter"
+                        isAnimationActive={false}
+                        shape={({ cx, cy }) => (
+                          <g opacity={dimmed ? 0.24 : 1}>
+                            <circle cx={cx} cy={cy} r={7} fill="transparent" />
+                            <circle
+                              cx={cx}
+                              cy={cy}
+                              r={radius}
+                              fill={s.tint}
+                              stroke="#16221b"
+                              strokeWidth={0.8}
+                            />
+                          </g>
+                        )}
+                      />
+                    );
+                  })}
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          {guild && (
+            <div className="history-directory">
+              <label className="history-search">
+                <Search size={16} aria-hidden="true" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  aria-label="Buscar personaje para resaltar"
+                  placeholder="Resaltar personaje…"
                 />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
+              </label>
+              <ul aria-label="Personajes y último valor del periodo">
+                {listed.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      disabled={s.last === undefined}
+                      aria-pressed={focus?.id === s.id}
+                      onClick={() =>
+                        setSelected(focus?.id === s.id ? "" : s.id)
+                      }
+                      title={
+                        s.last === undefined
+                          ? "Sin registros en el periodo"
+                          : s.name
+                      }
+                    >
+                      <i
+                        aria-hidden="true"
+                        style={{ backgroundColor: s.tint }}
+                      />
+                      <span>{s.name}</span>
+                      <b>
+                        {s.last === undefined
+                          ? "—"
+                          : valueFormat.format(s.last)}
+                      </b>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {!listed.length && (
+                <p className="muted">Ningún personaje con ese nombre.</p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </section>
   );
 }
+
 export function Distribution({ members }: { members: Member[] }) {
-  const [kind, setKind] = useState("className");
-  const counts: Record<string, number> = {};
-  for (const m of members) {
-    const name = m.data[kind as keyof Profile];
-    if (typeof name === "string") counts[name] = (counts[name] ?? 0) + 1;
+  const [kind, setKind] = useState<"className" | "race" | "spec">("className");
+  const counts = new Map<string, number>();
+  const tints = new Map<string, string>();
+  for (const member of members) {
+    const label = member.data[kind]?.trim();
+    if (!label) continue;
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+    if (kind === "className") tints.set(label, color(member));
   }
+  const groups = [...counts].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"),
+  );
+  const max = groups[0]?.[1];
   return (
     <section className="panel">
       <h3>La composición de la hermandad</h3>
@@ -198,7 +308,7 @@ export function Distribution({ members }: { members: Member[] }) {
         <Pick
           label="Distribución"
           value={kind}
-          onChange={setKind}
+          onChange={(v) => setKind(v as typeof kind)}
           options={[
             { value: "className", label: "Clases" },
             { value: "race", label: "Razas" },
@@ -206,29 +316,27 @@ export function Distribution({ members }: { members: Member[] }) {
           ]}
         />
       </div>
-      {Object.keys(counts).length ? (
+      {groups.length ? (
         <ul className="distribution-bars">
-          {Object.entries(counts)
-            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"))
-            .map(([label, count]) => (
-              <li key={label}>
-                <span>{label}</span>
-                <span className="bar-track" aria-hidden="true">
-                  <i
-                    style={{
-                      width:
-                        (100 * count) / Math.max(...Object.values(count)) + "%",
-                    }}
-                  />
-                </span>
-                <b>{count}</b>
-              </li>
-            ))}
+          {groups.map(([label, count]) => (
+            <li key={label}>
+              <span>{label}</span>
+              <span className="bar-track" aria-hidden="true">
+                <i
+                  style={{
+                    width: (100 * count) / max + "%",
+                    backgroundColor: tints.get(label),
+                  }}
+                />
+              </span>
+              <b>{count}</b>
+            </li>
+          ))}
         </ul>
       ) : (
         <Empty
-          title="Aún no conocemos las clases"
-          text="La composición aparecerá cuando Blizzard proporcione las fichas."
+          title="Sin datos de composición"
+          text="La armería todavía no ha registrado este dato para la hermandad."
         />
       )}
     </section>

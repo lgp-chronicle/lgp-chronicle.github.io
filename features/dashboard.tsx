@@ -199,12 +199,18 @@ export function Dashboard({
                   ))}
                 </div>
                 <p className="honor-value">
-                  {unit === "nivel"
-                    ? "Nivel " + display(top.value)
-                    : display(top.value) + " " + unit}
-                  {top.winners.length > 1 &&
-                    " · " + top.winners.length + " ganadores"}
-                  {top.partial ? " · cobertura parcial" : ""}
+                  <span>
+                    <b>{display(top.value)}</b> {unit}
+                  </span>
+                  <small>
+                    {[
+                      top.winners.length > 1 &&
+                        top.winners.length + " ganadores",
+                      top.partial && "Cobertura parcial",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </small>
                 </p>
               </>
             ) : (

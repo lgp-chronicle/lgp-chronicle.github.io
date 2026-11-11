@@ -13,7 +13,7 @@ export function Shell({
         <div className="masthead-inner">
           <a href={siteHref("/")} className="brand">
             <img
-              src={assetUrl("/guild/sello-la-ganga.png")}
+              src={assetUrl("/guild/sello-la-ganga.png?v=2")}
               alt=""
               width="54"
               height="54"
@@ -46,7 +46,7 @@ export function Shell({
       <footer>
         <a className="footer-brand" href={siteHref("/")}>
           <img
-            src={assetUrl("/guild/sello-la-ganga.png")}
+            src={assetUrl("/guild/sello-la-ganga.png?v=2")}
             alt=""
             width="32"
             height="32"

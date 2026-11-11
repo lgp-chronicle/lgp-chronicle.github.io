@@ -1,8 +1,15 @@
 "use client";
-import { MemberLink, fullName } from "./member-portrait";
+import { MemberLink, fullName, memberHref } from "./member-portrait";
+import { CharacterArt } from "./character-art";
 
-import { useState } from "react";
-import { ArrowDown, ArrowUp, ArrowUpDown, Search } from "lucide-react";
+import { useState, type CSSProperties } from "react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  ChevronRight,
+  Search,
+} from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -13,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Pick, Empty } from "@/components/guild-ui";
 import { display, ago } from "./analytics";
-import { type Member } from "./types";
+import { color, type Member } from "./types";
 export function Roster({ members }: { members: Member[] }) {
   const [layout, setLayout] = useState("table");
   const [search, setSearch] = useState(""),
@@ -131,28 +138,51 @@ export function Roster({ members }: { members: Member[] }) {
       </div>
       {layout === "cards" ? (
         <div className="member-grid roster-cards">
-          {filtered.map((m) => (
-            <article className="roster-card" key={m.id}>
-              <MemberLink member={m} />
-              <p>
-                {[m.data.race, m.data.className, m.data.spec]
-                  .filter(Boolean)
-                  .join(" · ") || "Clase sin registrar"}
-              </p>
-              <dl className="race-metrics">
-                {[
-                  ["Nivel", m.data.level],
-                  ["Equipo", m.data.itemLevel],
-                  ["HK", m.data.honorableKills],
-                ].map(([label, v]) => (
-                  <div key={label}>
-                    <dt>{label}</dt>
-                    <dd>{display(v)}</dd>
+          {filtered.map((m) => {
+            const name = fullName(m);
+            return (
+              <a
+                key={m.id}
+                href={memberHref(m)}
+                className="roster-card"
+                aria-label={"Ver ficha de " + name}
+                style={{ "--class-tint": color(m) } as CSSProperties}
+              >
+                <div className="roster-card-scene">
+                  <CharacterArt member={m} />
+                  <span className="card-level">
+                    <small>Nivel</small>
+                    {display(m.data.level)}
+                  </span>
+                  <div className="card-identity">
+                    <span className="card-class">
+                      {m.data.className ?? "Clase sin registrar"}
+                    </span>
+                    <h4>
+                      {m.name}
+                      <span>{name.slice(m.name.length).trim()}</span>
+                    </h4>
+                    <p>
+                      {[m.data.race, m.data.spec].filter(Boolean).join(" · ")}
+                    </p>
                   </div>
-                ))}
-              </dl>
-            </article>
-          ))}
+                </div>
+                <div className="card-foot">
+                  <dl>
+                    <div>
+                      <dt>Equipo</dt>
+                      <dd>{display(m.data.itemLevel)}</dd>
+                    </div>
+                    <div>
+                      <dt>Muertes honorables</dt>
+                      <dd>{display(m.data.honorableKills)}</dd>
+                    </div>
+                  </dl>
+                  <ChevronRight size={17} aria-hidden="true" />
+                </div>
+              </a>
+            );
+          })}
         </div>
       ) : (
         <Table className="data-table">

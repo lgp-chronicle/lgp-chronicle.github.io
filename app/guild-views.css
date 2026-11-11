@@ -49,8 +49,8 @@
   grid-template-columns: minmax(0, 1fr);
   isolation: isolate;
   background:
-    linear-gradient(90deg, #14221be0, #20312677 58%, #39412648),
-    linear-gradient(0deg, #19261be8, #29392073 65%, #322c1966),
+    linear-gradient(90deg, #101d19f2, #17251a99 59%, #32352680),
+    linear-gradient(0deg, #13231ee8, #22312888 65%, #232a1d99),
     url("./art/fortaleza-movil.webp") var(--vista, 50% 54%) / max(135%, 340px)
       auto no-repeat;
 }
@@ -173,32 +173,75 @@
   align-items: stretch;
   gap: 0;
   padding: 0;
+  border-color: #756744;
+  border-top-color: #d3b569;
+  background: #18281f;
+  box-shadow: 0 3px 10px #08100b55;
 }
 .honor-caption {
   display: flex;
   align-items: center;
   gap: 8px;
   min-height: 43px;
-  padding: 6px 13px;
-  border-bottom: 1px solid #99854c65;
+  padding: 0 12px 0 9px;
+  border-bottom: 1px solid #99854c85;
+  background: linear-gradient(100deg, #334234, #19271f);
 }
 .honor-caption h3 {
   font: 700 clamp(16px, 1.4vw, 20px) / 1.1 var(--heading);
   color: #f2dfaa;
 }
 .honor-caption .honor-illustration {
-  width: 28px;
-  height: 28px;
+  flex: none;
+  width: 35px;
+  height: 39px;
+  align-self: flex-start;
+  padding: 4px 4px 9px;
+  background: linear-gradient(135deg, #856a33, #594522 58%, #755f32);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 99%, 0 78%);
   object-fit: contain;
 }
 .honor-winners {
   flex: 1;
 }
 .stat .honor-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2px 9px;
   color: var(--muted-foreground);
   font-size: 12px;
   border-top: 1px solid #66714377;
-  padding: 8px 14px;
+  padding: 7px 13px;
+  background: linear-gradient(100deg, #263527, #16241c);
+}
+.honor-value b {
+  padding-right: 2px;
+  color: #f5da95;
+  font: 700 24px/1 var(--heading);
+}
+.honor-value small {
+  font-size: 10px;
+}
+.honor-winners:has(> :only-child) .banner-art {
+  --zoom: 1.68;
+  --figure-center: 70%;
+}
+.honor-winners .member-banner::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  background:
+    linear-gradient(#c2a15d99, #c2a15d99) left top / 15px 1px,
+    linear-gradient(#c2a15d99, #c2a15d99) left top / 1px 15px,
+    linear-gradient(#c2a15d99, #c2a15d99) right bottom / 15px 1px,
+    linear-gradient(#c2a15d99, #c2a15d99) right bottom / 1px 15px;
+  background-repeat: no-repeat;
+}
+.honor-winners:has(> :nth-child(2)) .member-banner::before {
+  display: none;
 }
 .award-winners {
   --scene-height: 146px;
@@ -267,20 +310,141 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
-.roster-card,
 .race-entry {
   padding: 14px;
   border: 1px solid #4b6042;
   background: linear-gradient(130deg, #273b29, #1c2b20);
   min-width: 0;
 }
-.roster-card > .member-link {
-  font: 700 23px/1.1 var(--heading);
+.roster-card {
+  --scene-height: 175px;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-width: 0;
+  border: 1px solid #88754c;
+  background: #17261e;
+  box-shadow: 0 4px 12px #080e0a55;
 }
-.roster-card > p {
-  color: var(--muted-foreground);
+.roster-card:hover,
+.roster-card:focus-visible {
+  border-color: #ebce81;
+}
+.roster-card-scene {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 43px 17px 16px;
+  min-height: var(--scene-height);
+  background:
+    radial-gradient(
+      ellipse at 77% 44%,
+      color-mix(in srgb, var(--class-tint) 27%, transparent),
+      transparent 57%
+    ),
+    linear-gradient(80deg, #101b17 0%, #182921e8 41%, #273724a6 79%, #19251fd6),
+    url("./art/fortaleza-movil.webp") 64% 40% / cover;
+}
+.roster-card-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, #101c16c9, transparent 27%),
+    linear-gradient(90deg, #101c16b0, transparent 62%);
+  box-shadow: inset 0 1px #d5b16865;
+}
+.roster-card .banner-art {
+  --figure-center: 76%;
+  --zoom: 1.57;
+}
+.card-level {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  top: 0;
+  left: 16px;
+  min-width: 39px;
+  padding: 4px 6px 9px;
+  color: #ffe5a3;
+  background: linear-gradient(
+    110deg,
+    #856b35,
+    #503f24 20%,
+    #57482d 78%,
+    #a58542
+  );
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
+  font: 700 22px/0.95 var(--heading);
+}
+.card-level small,
+.card-class {
+  font:
+    650 10px/1.4 "Segoe UI",
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.card-level small {
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+.card-identity {
+  width: 62%;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 4px #07110c;
+}
+.card-class {
+  color: var(--class-tint);
+}
+.card-identity h4 {
+  margin: 3px 0 5px;
+  color: #ffedbc;
+  font: 700 clamp(27px, 2.3vw, 36px) / 0.95 var(--heading);
+}
+.card-identity h4 span {
+  display: block;
+  font-size: 0.73em;
+  line-height: 1.1;
+}
+.card-identity p {
   font-size: 12px;
-  margin-block: 8px;
+  line-height: 1.35;
+  color: #d0cfb6;
+}
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 14px;
+  border-top: 1px solid #8f794a8c;
+  background: linear-gradient(115deg, #2a382a, #19271e);
+  color: #d9bb77;
+}
+.card-foot dl,
+.card-foot dl div {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.card-foot dl {
+  gap: 5px 16px;
+}
+.card-foot dt {
+  color: #c9ccb4;
+  font-size: 11px;
+}
+.card-foot dd {
+  margin: 0;
+  color: #f0d99b;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
 }
 .race-metrics {
   display: grid;
@@ -429,25 +593,112 @@
   font-size: 10px;
   color: #aab49b;
 }
-.chart-party {
+.history-coverage,
+.history-tooltip time {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.history-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 23%);
+  gap: 20px;
+}
+.history-plot {
+  position: relative;
+  min-width: 0;
+  align-self: start;
+}
+.history-plot .recharts-cartesian-axis,
+.history-plot .recharts-cartesian-grid,
+.history-plot .recharts-scatter-line {
+  pointer-events: none;
+}
+.history-plot .chart-wrap {
+  margin: 0;
+  height: 330px;
+}
+.history-focus {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 8px;
+  border: 1px solid #8d874b;
+  color: #f6e4a8;
+  font-size: 12px;
+}
+.history-directory {
+  align-self: start;
+  min-width: 0;
+  border: 1px solid #495941;
+  background: #132119;
+}
+.history-search {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-block: 10px;
+  gap: 7px;
+  margin: 0 9px;
+  padding: 9px 2px;
+  border-bottom: 1px solid #4e5e43;
+  color: #ccc695;
 }
-.chart-party label {
+.history-search input {
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  font-size: 13px;
+}
+.history-directory ul {
+  list-style: none;
+  padding: 3px 4px;
+  margin: 0;
+  max-height: 283px;
+  overflow-y: auto;
+  scrollbar-color: #68744c #16231b;
+  scrollbar-width: thin;
+}
+.history-directory li button {
   display: grid;
-  gap: 3px;
-  border-inline-start: 3px solid;
-  padding-left: 8px;
+  grid-template-columns: 8px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 5px;
+  text-align: left;
+  font-size: 12px;
+  border: 1px solid transparent;
 }
-.chart-party label > span {
-  font-size: 11px;
-  color: #c6cbb4;
+.history-directory li button i {
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
 }
-.chart-party [data-slot="select-trigger"] {
-  min-height: 33px;
+.history-directory li button b {
+  color: #ebd49b;
+  font-variant-numeric: tabular-nums;
+}
+.history-directory li button:disabled {
+  opacity: 0.6;
+}
+.history-directory
+  li
+  button:is(:hover, :focus-visible, [aria-pressed="true"]):enabled {
+  background: #2b392a;
+  border-color: #897b48;
+}
+.history-directory p {
+  padding: 8px;
+  font-size: 12px;
+}
+.history-tooltip {
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid #998456;
+  background: #18261ef5;
+  font-size: 12px;
+}
+.history-tooltip strong {
+  color: #ffe8a5;
 }
 .distribution-bars {
   padding: 0;
@@ -469,7 +720,8 @@
 .bar-track i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #8d964b, #edcc66);
+  background-color: #dfbc64;
+  background-image: linear-gradient(90deg, #26341c42, transparent);
 }
 .distribution-bars b {
   text-align: right;
@@ -874,14 +1126,15 @@
   .duel-side .member-label {
     font-size: 20px;
   }
-  .chart-party {
-    display: grid;
-    grid-template-columns: 1fr;
+  .history-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
   }
-  .chart-party label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .history-directory ul {
+    max-height: 142px;
+  }
+  .history-plot .chart-wrap {
+    height: 255px;
   }
   .news-paper article.news-story {
     grid-template-columns: 1fr;

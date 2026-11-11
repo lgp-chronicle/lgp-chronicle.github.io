@@ -18,6 +18,9 @@ export function fullName(m: Member) {
   return m.name + " " + surname;
 }
 
+export const memberHref = (member: Member) =>
+  siteHref("/character/" + encodeURIComponent(member.id));
+
 export function Portrait({ member }: { member: Member }) {
   const [failed, setFailed] = useState<string>();
   const src = member.data.avatar;
@@ -56,7 +59,7 @@ export function MemberLink({
   return (
     <a
       className={banner ? "member-link member-banner" : "member-link"}
-      href={siteHref("/character/" + encodeURIComponent(member.id))}
+      href={memberHref(member)}
       title={label}
       aria-label={"Ver ficha de " + label}
       style={{ "--class-tint": color(member) } as CSSProperties}
