@@ -3,7 +3,12 @@ import { GuildIcon } from "@/components/guild-icon";
 import { fullName, memberHref, Portrait } from "./member-portrait";
 import { hasEntrancePortrait } from "./character-art";
 import { color, type Member } from "./types";
-import { courseProgress, finishLevel, raceLanes } from "./race-course";
+import {
+  courseProgress,
+  finishLevel,
+  finishTitle,
+  raceLanes,
+} from "./race-course";
 
 const milestones = [1, 10, 20, 30, 40, 50, finishLevel];
 type Runner = { member: Member; level: number; rank: number };
@@ -45,7 +50,13 @@ export function RaceTrack({ runners }: { runners: Runner[] }) {
   return (
     <section className="race-course" aria-label="Carrera hasta el nivel 60">
       <header className="course-heading">
-        <h3>Camino al nivel 60</h3>
+        <div>
+          <h3>Camino al nivel {finishLevel}</h3>
+          <p className="course-reward">
+            <GuildIcon name="tabard" size={19} /> Título en la meta ·{" "}
+            <strong>{finishTitle.title}</strong>
+          </p>
+        </div>
         <span>
           <GuildIcon name="finish" size={20} /> {finished} en meta
         </span>
@@ -120,8 +131,8 @@ export function RaceTrack({ runners }: { runners: Runner[] }) {
       </div>
       {!runners.length && (
         <p className="course-empty">
-          <GuildIcon name="finish" size={18} /> Ningún participante
-          coincide con la búsqueda.
+          <GuildIcon name="finish" size={18} /> Ningún participante coincide con
+          la búsqueda.
         </p>
       )}
     </section>

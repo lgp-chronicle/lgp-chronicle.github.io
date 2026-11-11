@@ -19,6 +19,8 @@ import { fullName } from "./member-portrait";
 import { CharacterRecords } from "./character-records";
 import { ClassFrame } from "./class-frame";
 import { CoverGallery } from "./cover-gallery";
+import { GuildIcon } from "@/components/guild-icon";
+import { finishTitle } from "./race-course";
 export function CharacterDetail({
   member: m,
   members,
@@ -84,6 +86,11 @@ export function CharacterDetail({
             WoW Forever · {m.region.toUpperCase()} · {m.realm}
           </p>
           <h1 style={{ color: color(m) }}>{fullName(m)}</h1>
+          {titles.some((a) => a.id === finishTitle.id) && (
+            <p className="character-finish-title">
+              <GuildIcon name="tabard" size={22} /> {finishTitle.title}
+            </p>
+          )}
           <p>
             {[p.race, p.className, p.spec, p.faction]
               .filter(Boolean)
@@ -159,8 +166,14 @@ export function CharacterDetail({
                   <li key={a.id}>
                     <strong>{a.title}</strong>
                     <span>
-                      {a.rule} · {display(a.value)}
-                      {a.memberIds.length > 1 ? " · Compartido" : ""}
+                      {a.rule}
+                      {a.id !== finishTitle.id && (
+                        <>
+                          {" "}
+                          · {display(a.value)}
+                          {a.memberIds.length > 1 ? " · Compartido" : ""}
+                        </>
+                      )}
                     </span>
                   </li>
                 ))}

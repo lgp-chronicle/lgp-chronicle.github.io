@@ -387,6 +387,12 @@
   font-size: clamp(21px, 2.2vw, 31px);
   color: #ffedb8;
 }
+.rumor-edition {
+  margin: 4px 0 0;
+  color: #d6c8aa;
+  font-size: 12px;
+  line-height: 1.4;
+}
 .rumor-panel h3 {
   font-size: clamp(20px, 2vw, 28px);
   color: #f7dc95;

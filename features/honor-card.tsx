@@ -6,10 +6,12 @@ import { ClassFrame } from "./class-frame";
 import { CharacterArt } from "./character-art";
 import { FittedName, fullName, memberHref } from "./member-portrait";
 import { display, type Award } from "./analytics";
+import { finishTitle } from "./race-course";
 import { color, type Member } from "./types";
 
 type Scene = "corona" | "ambar" | "bota" | "espadas";
 const awardIcons: Record<string, GuildIconName> = {
+  [finishTitle.id]: "tabard",
   stamina: "stamina",
   intellect: "intellect",
   strength: "strength",
@@ -144,7 +146,7 @@ export function HonorCard({
       )}
       {winners.length > 4 && (
         <details className="honor-rest">
-          <summary>Otros {winners.length - 4} ganadores del empate</summary>
+          <summary>Ver los demás personajes ({winners.length - 4})</summary>
           <div className="honor-extra">
             {winners.slice(4).map((member) => (
               <Winner key={member.id} member={member} shared />
@@ -170,6 +172,7 @@ export function HallAward({
     <HonorCard
       title={award.title}
       value={award.value}
+      unit={award.id === finishTitle.id ? "nivel" : undefined}
       note={award.rule}
       winners={winners}
       scene={scenes[award.id] ?? "corona"}

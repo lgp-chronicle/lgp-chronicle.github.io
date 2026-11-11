@@ -49,6 +49,20 @@
   color: #f0dbaf;
   font-size: 14px;
 }
+.course-reward, .character-finish-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 5px 0 0;
+  color: #dfcaa3;
+  font: 400 14px/1.4 var(--reading);
+}
+.course-reward strong, .character-finish-title {
+  color: #ffda79;
+  font-family: var(--heading);
+  font-size: 18px;
+}
 .course-road {
   position: relative;
   margin: 4px calc(var(--racer-width) / 2 + 8px) 12px;

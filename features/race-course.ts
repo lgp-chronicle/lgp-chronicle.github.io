@@ -1,4 +1,9 @@
 export const finishLevel = 60;
+export const finishTitle = {
+  id: "level-60",
+  title: "Colmillo de Oro",
+  rule: `Alcanzar el nivel ${finishLevel}`,
+} as const;
 
 export const courseProgress = (level: number) =>
   (Math.min(Math.max(level, 1), finishLevel) - 1) / (finishLevel - 1);

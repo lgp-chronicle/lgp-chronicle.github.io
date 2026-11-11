@@ -1,4 +1,5 @@
 import { measurements } from "./observations.ts";
+import { finishLevel, finishTitle } from "./race-course.ts";
 import { raidActivity } from "./raid-activity.ts";
 import {
   numeric,
@@ -291,6 +292,19 @@ export function awards(members: Member[], now = Date.now()): Award[] {
     (m) => counts[m.id],
     1,
   );
+  const atFinish = (level?: number) =>
+    numeric(level) && Number.isInteger(level) && level >= finishLevel;
+  const finishers = members.filter(
+    (m) => atFinish(m.data.level) || m.history.some((s) => atFinish(s.data.level)),
+  );
+  if (finishers.length) {
+    a.unshift({
+      ...finishTitle,
+      value: finishLevel,
+      names: finishers.map((m) => m.name),
+      memberIds: finishers.map((m) => m.id),
+    });
+  }
   return a;
 }
 export const display = (v: unknown) =>

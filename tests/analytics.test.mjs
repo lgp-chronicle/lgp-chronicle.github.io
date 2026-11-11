@@ -89,16 +89,79 @@ test("rumors count players once and quiz choices have a single verified owner", 
     0,
   );
   assert.equal(r.coverage, 3);
-  assert.equal(r.anglers.length, 2);
-  assert.equal(r.shared.owners.length, 2);
-  assert.equal(r.clue.item.id, 2);
-  assert.equal(new Set(r.choices.map((m) => m.id)).size, 3);
+  const shared = r.cards.find((card) => card.kind === "shared");
+  assert.deepEqual(
+    shared.owners.map((m) => m.id),
+    ["a", "b"],
+  );
+  const quiz = r.cards.find((card) => card.kind === "quiz");
+  assert.equal(quiz.item.id, 2);
+  assert.equal(new Set(quiz.choices.map((m) => m.id)).size, 3);
   assert.equal(
-    r.choices.filter((m) =>
-      m.data.equipment.some((i) => i.id === r.clue.item.id),
+    quiz.choices.filter((m) =>
+      m.data.equipment.some((i) => i.id === quiz.item.id),
     ).length,
     1,
   );
+});
+test("daily editions rotate quizzes, shared gear and themes without repeating pieces within a day", () => {
+  const roster = ["a", "b", "c"].map((name, n) => ({
+    ...member(name),
+    data: {
+      equipment: [
+        ...[
+          "Espalda",
+          "Pies",
+          "Anillo 1",
+          "Mano principal",
+          "Abalorio 2",
+          "Cuello",
+        ].map((slot, i) => ({
+          id: 100 * n + i + 10,
+          name: name + " " + slot,
+          slot,
+          quality: "RARE",
+        })),
+        ...[1, 2, 3].map((id) => ({ id, name: "Uniforme " + id })),
+      ],
+    },
+  }));
+  const types = new Set(),
+    quizzes = new Set(),
+    uniforms = new Set();
+  for (let day = 0; day < 14; day++) {
+    const deck = armoryStories(roster, day).cards;
+    assert.deepEqual(deck, armoryStories([...roster].reverse(), day).cards);
+    assert.equal(deck.length, 5);
+    assert.equal(new Set(deck.map((card) => card.item.name)).size, 5);
+    for (const card of deck) {
+      types.add(card.kind);
+      if (card.choices.length) {
+        assert.equal(card.choices.length, 3);
+        assert.deepEqual(
+          card.choices.filter((m) =>
+            m.data.equipment.some((i) => i.name === card.item.name),
+          ),
+          card.owners,
+        );
+      }
+      if (card.kind === "quiz") quizzes.add(card.item.id);
+      if (card.kind === "shared") uniforms.add(card.item.id);
+    }
+  }
+  assert.equal(quizzes.size, 14);
+  assert.equal(uniforms.size, 3);
+  assert.ok(types.size >= 7);
+});
+test("ambiguous item names never give a one-owner quiz; sparse rosters still get factual stories", () => {
+  const equip = (name, id) => ({
+    ...member(name),
+    data: { equipment: [{ id, name: "Misma capa", slot: "Espalda" }] },
+  });
+  const players = [equip("a", 1), equip("b", 2), equip("c", 3)];
+  assert.ok(armoryStories(players, 2).cards.every((c) => !c.choices.length));
+  assert.equal(armoryStories([players[0]], 4).cards.length, 1);
+  assert.deepEqual(armoryStories([member("unknown")], 0).cards, []);
 });
 test("unknown data never receives an award", () =>
   assert.deepEqual(awards([member("a"), member("b")], now), []));
@@ -148,6 +211,18 @@ test("ties share awards", () => {
 });
 test("one character alone cannot win comparisons", () =>
   assert.deepEqual(awards([member("a", [point(0, 20)])], now), []));
+test("Colmillo de Oro belongs to every finisher, including the first and earlier finishers", () => {
+  const holders = (roster) =>
+    awards(roster, now).find((award) => award.id === "level-60")?.memberIds ??
+    [];
+  const first = member("a", [point(1, 59), point(0, 60)]);
+  const second = { ...member("b"), data: { level: 61 } };
+  const partial = { ...first, data: {} };
+  const below = member("c", [point(0, 59)]);
+  assert.deepEqual(holders([below, member("unknown")]), []);
+  assert.deepEqual(holders([first]), ["a"]);
+  assert.deepEqual(holders([partial, second, below]), ["a", "b"]);
+});
 test("best interval and last level are observation timestamps", () => {
   const r = leveling(
     member("a", [point(2, 10), point(1, 12), point(0, 13)]),
