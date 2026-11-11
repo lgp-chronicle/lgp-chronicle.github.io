@@ -64,6 +64,7 @@ jobs:
       - name: Construir con los últimos datos válidos
         run: pnpm build
       - name: Conservar histórico
+        id: history
         working-directory: .guild-data
         run: |
           git config user.name 'github-actions[bot]'
@@ -72,6 +73,10 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m 'Actualizar histórico de la guild'
             git push origin HEAD:guild-data
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo '::notice::No se detectaron cambios nuevos en el histórico de la hermandad.'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
@@ -79,8 +84,13 @@ jobs:
           path: pages-dist
       - uses: actions/deploy-pages@v4
         id: deployment
-      - name: Avisar de errores de las APIs
-        if: steps.sync.outcome == 'failure'
+      - name: Avisar de estado de sincronización
+        if: steps.sync.outcome == 'failure' || steps.history.outputs.changed == 'false'
         run: |
-          echo 'La web conserva los últimos datos válidos. Revisa el paso de sincronización.'
-          exit 1
+          if [ "${{ steps.sync.outcome }}" = "failure" ]; then
+            echo '::warning::La web conserva los últimos datos válidos. Revisa el paso de sincronización.'
+            echo '⚠️ **Aviso**: Hubo errores parciales o de API en la sincronización. La web conserva los últimos datos válidos.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "${{ steps.history.outputs.changed }}" = "false" ]; then
+            echo 'ℹ️ **Sin cambios**: No se detectaron novedades en los datos de la hermandad durante esta ejecución.' >> "$GITHUB_STEP_SUMMARY"
+          fi

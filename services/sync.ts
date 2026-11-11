@@ -111,10 +111,14 @@ export async function sync(force = false) {
       );
       // Fall back to already-known characters from the DB
       const known = await db
-        .prepare("SELECT name,realm FROM characters WHERE campaign_id=?")
+        .prepare("SELECT id,name,realm,region FROM characters WHERE campaign_id=?")
         .bind("forever")
-        .all<{ name: string; realm: string }>();
-      characters = known.results.map((r) => rosterEntry(r.name, r.name.toLowerCase(), r.realm));
+        .all<{ id: string; name: string; realm: string; region: string }>();
+      characters = known.results.map((r) => {
+        const prefix = `forever-${r.region}-`;
+        const slug = r.id.startsWith(prefix) ? r.id.slice(prefix.length) : r.name.toLowerCase();
+        return rosterEntry(r.name, slug, r.realm);
+      });
       if (!characters.length) {
         return { status: "error", reason: "no-roster-and-no-fallback" };
       }
@@ -141,49 +145,52 @@ export async function sync(force = false) {
         .first<{ profile: string; logs: string | null }>();
       const old: Profile = JSON.parse(row?.profile ?? "{}");
 
-      // Seed with roster data if available
-      if (c.initialLevel !== undefined && old.level === undefined) {
-        old.level = c.initialLevel;
-      }
-      if (c.classId !== undefined && old.classId === undefined) {
-        old.classId = c.classId;
-      }
-      if (c.className && !old.className) {
-        old.className = c.className;
-      }
-      if (c.race && !old.race) {
-        old.race = c.race;
-      }
-      if (c.faction && !old.faction) {
-        old.faction = c.faction;
-      }
-      if (!old.observedAt) {
-        old.observedAt = at;
-      }
+      // Build updated base profile from guild roster observation
+      const rosterProfile: Profile = {
+        ...old,
+        ...(c.initialLevel !== undefined ? { level: c.initialLevel } : {}),
+        ...(c.classId !== undefined && old.classId === undefined ? { classId: c.classId } : {}),
+        ...(c.className && !old.className ? { className: c.className } : {}),
+        ...(c.race && !old.race ? { race: c.race } : {}),
+        ...(c.faction && !old.faction ? { faction: c.faction } : {}),
+        observedAt: at,
+        resourceTimes: { ...old.resourceTimes, summary: at },
+      };
 
-      let profile = old,
+      let profile = rosterProfile,
         logs: Logs | undefined = row?.logs ? JSON.parse(row.logs) : undefined;
       let profileOk = false,
         logsOk = false;
       const errors: string[] = [];
-      try {
-        if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
-        const p = await blizzard(c, s, old);
-        profile = p.data;
-        errors.push(...p.errors.map((x) => "blizzard:" + x));
+      if (c.initialLevel !== undefined && c.initialLevel < 10) {
+        // Blizzard Forever Armory does not expose detailed profiles below level 10;
+        // guild roster data (level, class, race, faction) is already authoritative.
         profileOk = true;
-        cooldownSeconds = Math.max(cooldownSeconds, p.retryAfter);
-        if (p.errors.some((x) => x.includes("rate-limited")))
-          blizzardBlocked = true;
-      } catch (e) {
-        if (e instanceof ProviderError && e.code === "rate-limited") {
-          blizzardBlocked = true;
-          cooldownSeconds = Math.max(cooldownSeconds, e.retryAfter);
+      } else {
+        try {
+          if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
+          const p = await blizzard(c, s, rosterProfile);
+          profile = p.data;
+          errors.push(...p.errors.map((x) => "blizzard:" + x));
+          profileOk = true;
+          cooldownSeconds = Math.max(cooldownSeconds, p.retryAfter);
+          if (p.errors.some((x) => x.includes("rate-limited")))
+            blizzardBlocked = true;
+        } catch (e) {
+          if (e instanceof ProviderError && e.code === "rate-limited") {
+            blizzardBlocked = true;
+            cooldownSeconds = Math.max(cooldownSeconds, e.retryAfter);
+          }
+          if (e instanceof ProviderError && e.code === "http-404" && c.initialLevel !== undefined) {
+            // Character may not have logged out since reaching level 10; keep roster update without failing.
+            profileOk = true;
+          } else {
+            errors.push(
+              "blizzard:" +
+                (e instanceof ProviderError ? e.code : "invalid-response"),
+            );
+          }
         }
-        errors.push(
-          "blizzard:" +
-            (e instanceof ProviderError ? e.code : "invalid-response"),
-        );
       }
       try {
         if (logsBlocked) throw new ProviderError("deferred-rate-limit");

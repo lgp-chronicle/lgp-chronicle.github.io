@@ -7,7 +7,8 @@ let failed=false;
 if(mode==='sync'){
  const result=await sync(process.argv.includes('--force'));
  console.log(JSON.stringify(result));
- if('characters' in result)failed=!!result.characters?.some(c=>c.errors.some(e=>!e.startsWith('logs:not-found')));
+ if(result.status==='error')failed=true;
+ else if('characters' in result)failed=!!result.characters?.some(c=>c.errors.some(e=>!e.startsWith('logs:not-found')));
 }
 mkdirSync('public/data/editions',{recursive:true});
 const save=(file:string,value:unknown)=>{writeFileSync(file+'.tmp',JSON.stringify(value));renameSync(file+'.tmp',file)};
