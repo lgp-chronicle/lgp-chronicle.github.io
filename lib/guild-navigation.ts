@@ -3,6 +3,8 @@ export const archiveGroups = [
     label: "Hermandad",
     sections: [
       ["overview", "Miembros"],
+      ["awards", "Salón de la fama"],
+      ["compare", "Cara a cara"],
       ["gallery", "Galería"],
     ],
   },
@@ -12,13 +14,6 @@ export const archiveGroups = [
       ["race", "Leveling Race"],
       ["history", "Evolución"],
       ["logs", "Warcraft Logs"],
-    ],
-  },
-  {
-    label: "Honor",
-    sections: [
-      ["awards", "Salón de la fama"],
-      ["compare", "Cara a cara"],
     ],
   },
   { label: "El Heraldo", sections: [["news", "El Heraldo"]] },

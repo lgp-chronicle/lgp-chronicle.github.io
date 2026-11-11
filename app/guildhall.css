@@ -177,7 +177,8 @@
   padding: 5px 8px 6px;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: clamp(2px, .5vw, 8px);
 }
 .guildhall-nav a {
@@ -289,6 +290,12 @@
   .guildhall-nav .guild-icon { width: 21px; height: 21px; }
   .archive-links { gap: 0 7px; }
   .archive-links a { font-size: 13px; }
+}
+@media (max-width: 420px) {
+  .archive-links:has(> a:nth-child(4)) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .archive,
