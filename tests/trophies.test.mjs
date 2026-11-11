@@ -134,6 +134,11 @@ test("permanent trophies backfill, share a survey, persist, and generate one her
       professions: [{ name: "Cocina", skill: 75, max: 75 }],
     });
     const firstRoom = recordTrophies(db, roster);
+    assert.equal(firstRoom.unlocks["level-20"], undefined);
+    assert.equal(firstRoom.unlocks["cooking-75"], undefined);
+    assert.ok(firstRoom.unlocks["level-40"]);
+    assert.ok(firstRoom.unlocks["cooking-150"]);
+    assert.ok(firstRoom.unlocks["cooking-225"]);
     assert.equal(firstRoom.unlocks["five-trades"], undefined);
     assert.deepEqual(
       firstRoom.unlocks["level-60"].winners.map((w) => w.id),
@@ -142,8 +147,14 @@ test("permanent trophies backfill, share a survey, persist, and generate one her
     assert.ok(firstRoom.unlocks["rep-forjaz"]);
     assert.equal(firstRoom.unlocks["rep-ventormenta"], undefined);
     assert.equal(firstRoom.unlocks["cooking-300"].winners.length, 1);
+    // A previously published register also needs updating without new snapshots.
+    const stored = JSON.parse(db.prepare("SELECT data FROM trophy_register WHERE id=1").get().data);
+    for (const id of ["level-20", "mining-75", "cooking-75"])
+      stored.unlocks[id] = firstRoom.unlocks["level-60"];
+    db.prepare("UPDATE trophy_register SET data=? WHERE id=1").run(JSON.stringify(stored));
     const retry = recordTrophies(db, roster);
     assert.deepEqual(retry, firstRoom);
+    assert.deepEqual(JSON.parse(db.prepare("SELECT data FROM trophy_register WHERE id=1").get().data).unlocks, firstRoom.unlocks);
     put("c", "2026-11-10T13:20:01Z", second, {
       level: 60,
       honorableKills: 5000,

@@ -8,7 +8,7 @@ import {
   type TrophyRoom,
 } from "../features/types.ts";
 import { fullName } from "../features/member-name.ts";
-import { knownProfession } from "../features/professions.ts";
+import { knownProfession, professions } from "../features/professions.ts";
 import {
   honorSteps,
   levelSteps,
@@ -67,6 +67,7 @@ const legacySlots: Record<string, string> = {
   tabardo: "TABARD",
 };
 const properties: Record<string, { inventoryType?: string }> = itemProperties;
+const retiredTrophies = ["level-20", ...professions.map(([, , id]) => id + "-75")];
 function itemSlot(item: Equipment) {
   const slot =
     item.slotType ?? legacySlots[item.slot?.toLowerCase()] ?? item.slot;
@@ -153,6 +154,8 @@ export function recordTrophies(
       factions: saved.factions,
       unlocks: saved.unlocks,
     };
+    const retired = retiredTrophies.filter((id) => Object.hasOwn(room.unlocks, id));
+    for (const id of retired) delete room.unlocks[id];
     let legacyRun = saved.legacyRun;
     let cursor = Number(state?.cursor ?? 0);
     const roster = new Map(members.map((m) => [m.id, m]));
@@ -211,7 +214,7 @@ export function recordTrophies(
         unlock.winners.sort((a, b) => a.name.localeCompare(b.name, "es"));
       }
     }
-    if (!state || cursor !== state.cursor)
+    if (!state || cursor !== state.cursor || retired.length > 0)
       db.prepare(
         "INSERT INTO trophy_register VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET cursor=excluded.cursor,data=excluded.data",
       ).run(cursor, JSON.stringify({ ...room, legacyRun }));

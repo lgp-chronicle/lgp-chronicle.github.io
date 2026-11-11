@@ -2,8 +2,8 @@ import type { GuildIconName } from "../components/guild-icon";
 import { professions } from "./professions.ts";
 
 export const honorSteps = [1000, 5000, 10000, 25000, 50000, 100000];
-export const levelSteps = [20, 40, 60];
-export const tradeSteps = [75, 150, 225, 300];
+export const levelSteps = [40, 60];
+export const tradeSteps = [150, 225, 300];
 export const groups = [
   "Hermandad y equipo",
   "Aventura",
