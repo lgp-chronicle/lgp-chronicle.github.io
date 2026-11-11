@@ -10,26 +10,14 @@ import {
 import { ArrowRight } from "lucide-react";
 import { assetUrl } from "@/lib/public-settings";
 import { hasEntrancePortrait, useCharacterArt } from "./character-art";
+import { measureEntranceFrame } from "./entrance-frame";
+import { positions, raceStature } from "./entrance-formation";
 import { fullName } from "./member-portrait";
 import type { Member } from "./types";
 
 const seenKey = "la-ganga:entrada";
 const motionQuery = "(prefers-reduced-motion: reduce)";
 export type EntranceMode = "auto" | "replay";
-
-// Grounded heights relative to a human at the same distance from the camera.
-const stature: Record<string, number> = {
-  gnomo: 0.6,
-  gnome: 0.6,
-  enano: 0.78,
-  dwarf: 0.78,
-  "elfo de la noche": 1.1,
-  "night elf": 1.1,
-  tauren: 1.22,
-  trol: 1.12,
-  troll: 1.12,
-  draenei: 1.12,
-};
 
 export function initialEntrance(): EntranceMode | null {
   if (new URLSearchParams(window.location.search).get("presentacion") === "1")
@@ -40,56 +28,6 @@ export function initialEntrance(): EntranceMode | null {
   } catch {
     return "auto";
   }
-}
-
-function raceStature(member: Member) {
-  return stature[member.data.race?.toLowerCase() ?? ""] ?? 1;
-}
-
-// Reserve the front ranks for shorter races even when a back rank has room.
-function positions(members: Member[], compact: boolean) {
-  const total = members.length;
-  const columns = Math.max(
-    1,
-    Math.ceil(Math.sqrt(Math.ceil(total / 2) * (compact ? 0.52 : 2))),
-  );
-  const short = members.filter((member) => raceStature(member) < 1).length;
-  const ranks = [total - short, short].flatMap((size) => {
-    const rows = Math.ceil(size / (2 * columns));
-    return Array.from(
-      { length: rows },
-      (_, i) => Math.floor(size / rows) + Number(i < size % rows),
-    );
-  });
-  const slots = [];
-  const wingWidth = compact ? 47.5 : 40;
-  // All short races share the same figure scale, even when they span two steps.
-  const shortRanks = Math.ceil(short / (2 * columns));
-  const shortColumns = shortRanks ? Math.ceil(short / (2 * shortRanks)) : 0;
-  for (const [row, count] of ranks.entries()) {
-    const depth = ranks.length > 1 ? row / (ranks.length - 1) : 0.7;
-    const shortRank = row >= ranks.length - shortRanks;
-    const scaleDepth = shortRank ? 1 : depth;
-    const scaleColumns = shortRank ? shortColumns : Math.ceil(count / 2);
-    for (let col = 0; col < count; col++) {
-      const wingCount = col % 2 ? Math.floor(count / 2) : Math.ceil(count / 2);
-      const stagger = wingCount > 2 ? (row % 2 ? 0.22 : -0.15) : 0;
-      const x = 5 + ((Math.floor(col / 2) + 0.5 + stagger) * 90) / wingCount;
-      slots.push({
-        x: Math.min(94, x),
-        feet: (compact ? 40 : 64) + depth * (compact ? 46 : 24),
-        height: (compact ? 13 : 18) + scaleDepth * (compact ? 9 : 10),
-        maxHeight: Math.min(
-          compact ? 36 : 23,
-          (wingWidth / scaleColumns) * (1.3 + scaleDepth * 0.16),
-        ),
-        width: Math.min(95, 98 / wingCount),
-        depth,
-        row,
-      });
-    }
-  }
-  return slots;
 }
 
 type MissingPortrait = (id: string) => void;
@@ -106,6 +44,8 @@ function Guest({
     true,
   );
   const name = fullName(member);
+  const [unreadable, setUnreadable] = useState<string>();
+  const measure = Boolean(image && !cutout && !avatar && unreadable !== image);
   useEffect(() => {
     if (!image) onMissing(member.id);
   }, [image, member.id, onMissing]);
@@ -119,6 +59,8 @@ function Guest({
       aria-label={name}
     >
       <img
+        key={measure ? "measure:" + image : image}
+        crossOrigin={measure ? "anonymous" : undefined}
         className={
           avatar
             ? "arrival-avatar"
@@ -131,8 +73,22 @@ function Guest({
         onLoad={(event) => {
           const img = event.currentTarget;
           img.style.setProperty("--native-height", img.naturalHeight + "px");
+          if (measure) {
+            const frame = measureEntranceFrame(img);
+            if (frame) {
+              img.style.setProperty("--model-x", -frame.center + "%");
+              img.style.setProperty("--model-feet", -frame.feet + "%");
+              img.style.setProperty(
+                "--model-height",
+                10000 / frame.height + "%",
+              );
+            }
+          }
         }}
-        onError={onError}
+        onError={() => {
+          if (measure && image) setUnreadable(image);
+          else onError();
+        }}
         decoding="async"
         draggable={false}
       />
