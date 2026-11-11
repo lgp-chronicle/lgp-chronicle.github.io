@@ -283,40 +283,69 @@ a svg {
   z-index: 3;
   filter: drop-shadow(0 5px 4px #100b08aa);
 }
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 43px;
-  padding: 9px 20px;
-  color: #f0dab1;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #f2dec0;
+  font:
+    650 14px/1.3 "Segoe UI",
+    Arial,
+    sans-serif;
   transition:
-    filter 0.15s,
-    background-color 0.15s;
+    background-color 0.16s,
+    border-color 0.16s,
+    color 0.16s,
+    box-shadow 0.16s;
+}
+.button svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.65;
 }
 .button.bronze {
-  padding-inline: 28px;
-  background: url("./art/placa.webp") center / 100% 100% no-repeat;
-  color: #241605;
-  text-shadow: 0 1px #f7c96a99;
-  font-weight: 750;
-}
-.button.iron,
-.button.outline {
-  background: linear-gradient(155deg, #342b20, #201b16);
-  border: 1px solid #907141;
+  color: #292013;
+  background: linear-gradient(160deg, #f3d8a1, #dfb979);
+  border-color: #e7c78b;
   box-shadow:
-    inset 0 0 0 2px #211b16,
-    inset 0 0 0 3px #a17d452d;
+    inset 0 1px #fff2d577,
+    0 2px 4px #100c0850;
 }
-.button:hover {
-  filter: brightness(1.18);
+.button.bronze:hover {
+  background: #f8e2b5;
+  border-color: #ffebc7;
 }
-.button:active {
+.button.iron {
+  color: #f4e7cc;
+  background: #231d17d9;
+  border-color: #a38b63;
+}
+.button.iron:hover {
+  background: #3b3021;
+  border-color: #e2c28e;
+}
+.button.outline {
+  padding-inline: 9px;
+  background: transparent;
+  border: 0;
+  color: #dbc5a1;
+  outline: none;
+}
+.button.outline:hover {
+  color: #ffe0a5;
+  background: #46382466;
+}
+.button:focus-visible {
+  outline: 2px solid #ffdb90;
+  outline-offset: 3px;
+}
+.button:active:not(:disabled) {
   transform: translateY(1px);
 }
 
@@ -442,49 +471,121 @@ main.page-width.panel {
   margin-top: 23px;
   scroll-margin-top: 14px;
 }
-.nav-tabs {
+
+.section-index {
+  margin-bottom: 14px;
+}
+.folio-tabs {
   display: flex;
+  position: relative;
   width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  flex-wrap: wrap;
+  height: auto !important;
   justify-content: flex-start;
   align-items: stretch;
-  gap: 0;
+  flex-wrap: nowrap;
+  gap: clamp(5px, 1.5vw, 24px);
   padding: 0;
-  margin: 0 0 17px;
-  height: auto !important;
   border-radius: 0;
-  border: 1px solid #675034;
-  border-block-color: #a78048 #634a30;
-  background: linear-gradient(#30291f, #211c17);
+  border-bottom: 1px solid #79624473;
+  background: transparent;
 }
-.nav-tabs button {
-  flex: 1 0 auto;
+.folio-tabs button {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 56px;
+  padding: 10px 6px 14px;
   border: 0;
   border-radius: 0;
-  min-height: 45px;
-  height: auto;
-  padding: 7px 12px;
-  color: #d0bfa5;
-  font: 700 16px var(--heading);
-  border-right: 1px solid #6a543845;
-}
-.nav-tabs button[data-state="active"] {
-  color: #27190e;
-  background: url("./art/placa.webp") center / 100% 100% no-repeat;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
   box-shadow: none;
-  padding-inline: 21px;
+  color: #c4b7a5;
+  font:
+    600 clamp(13px, 1vw, 15px) / 1.4 "Segoe UI",
+    Arial,
+    sans-serif;
 }
-.nav-tabs button:hover:not([data-state="active"]) {
-  background: #3f3326;
-  color: #fbe1ae;
+.folio-tabs button svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.55;
+  color: #b09a75;
 }
-.nav-tabs button:focus-visible {
-  outline: 2px solid #ffda86;
-  outline-offset: -3px;
-  z-index: 1;
+.folio-tabs button:hover,
+.folio-tabs button:hover svg {
+  color: #f6dfb1;
 }
+.folio-tabs button[data-state="active"] {
+  background: transparent;
+  color: #ffe3a6;
+  box-shadow: none;
+}
+.folio-tabs button[data-state="active"] svg {
+  color: #edba66;
+}
+.folio-tabs button[data-state="active"]::before {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 3px;
+  right: 3px;
+  height: 2px;
+  background: linear-gradient(90deg, #93713a, #f4cb82 50%, #93713a);
+}
+.folio-tabs button[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  opacity: 1;
+  width: 6px;
+  height: 6px;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  background: #f3cb81;
+  box-shadow: 0 0 0 2px var(--background);
+}
+.folio-tabs button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+.folio-picker {
+  display: none;
+}
+@media (max-width: 1020px) {
+  .folio-tabs {
+    display: none;
+  }
+  .folio-picker {
+    display: block;
+  }
+  .folio-picker .index-trigger {
+    display: flex;
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    padding: 11px 15px;
+    color: #f6dfb5;
+    border: 1px solid #7c6648;
+    border-radius: 6px;
+    background: #30281f;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .index-trigger [data-slot="select-value"] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .index-trigger [data-slot="select-value"] svg {
+    color: #e8bb73;
+  }
+}
+.index-options [data-slot="select-item"] {
+  min-height: 40px;
+}
+
 [data-slot="tabs"],
 [data-slot="tabs-content"] {
   min-width: 0;
@@ -539,32 +640,52 @@ main.page-width.panel {
 .toolbar {
   justify-content: space-between;
 }
+
 .toolbar input,
 [data-slot="select-trigger"] {
-  color: var(--foreground);
-  background: #201b16;
-  border: 1px solid #736044;
-  border-radius: 2px;
+  background: #211d18;
+  border: 1px solid #645642;
+  border-radius: 5px;
+  min-height: 41px;
   padding: 8px 12px;
-  min-height: 39px;
+  color: var(--foreground);
   font-size: 14px;
+  box-shadow: inset 0 1px 3px #100c0828;
 }
 .toolbar input {
   width: min(100%, 300px);
 }
 .toolbar input::placeholder {
-  color: #b9ac97;
+  color: #b5a993;
+}
+[data-slot="select-trigger"]:hover {
+  border-color: #aa8b5c;
+}
+[data-slot="select-trigger"][data-state="open"] {
+  border-color: #d2b17b;
 }
 [data-slot="select-content"] {
+  padding: 3px;
   color: var(--foreground);
-  background: var(--surface);
-  border: 1px solid #896a43;
+  background: #29231c;
+  border: 1px solid #786246;
+  box-shadow: 0 8px 25px #0c090780;
+  border-radius: 6px;
+}
+[data-slot="select-item"] {
+  cursor: pointer;
+  min-height: 35px;
+  padding-inline-start: 10px;
+}
+[data-slot="select-item"][data-state="checked"] {
+  color: #efcc90;
 }
 [data-slot="select-item"]:focus,
 [data-slot="select-item"][data-highlighted] {
   color: #fff2d9;
-  background: #473825;
+  background: #44382a;
 }
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -576,6 +697,29 @@ main.page-width.panel {
     600 11px/1.4 "Segoe UI",
     sans-serif;
   letter-spacing: 0.04em;
+}
+.roster-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: min(100%, 300px);
+}
+.roster-search svg {
+  position: absolute;
+  left: 12px;
+  pointer-events: none;
+  color: #bba98e;
+}
+.toolbar .roster-search input {
+  width: 100%;
+  padding-left: 37px;
+}
+.data-table th[aria-sort="ascending"] .table-sort,
+.data-table th[aria-sort="descending"] .table-sort {
+  color: #f2d092;
+}
+.table-sort:hover {
+  color: #f8dfb1;
 }
 .data-table {
   font-size: 14px;
@@ -601,6 +745,7 @@ main.page-width.panel {
   gap: 7px;
 }
 .table-sort {
+  min-height: 36px;
   color: inherit;
   font-size: 12px;
 }
@@ -839,9 +984,6 @@ footer {
   .honors .stat {
     min-height: 86px;
   }
-  .nav-tabs button {
-    flex: 1 0 22%;
-  }
 }
 @media (max-width: 680px) {
   .masthead-inner {
@@ -904,11 +1046,8 @@ footer {
   }
   .cover-actions .button {
     font-size: 12px;
-    min-height: 40px;
-    padding-inline: 13px;
-  }
-  .cover-actions .bronze {
-    padding-inline: 16px;
+    min-height: 44px;
+    padding-inline: 14px;
   }
   .cover-crest {
     width: 77px;
@@ -948,15 +1087,6 @@ footer {
   .honor-text small,
   .honor-text p {
     font-size: 11px;
-  }
-  .nav-tabs button {
-    flex: 1 0 30%;
-    padding: 5px;
-    font-size: 14px;
-    min-height: 39px;
-  }
-  .nav-tabs button[data-state="active"] {
-    padding-inline: 9px;
   }
   .equipment,
   .award-grid {
@@ -1036,9 +1166,6 @@ footer {
     min-width: 40px;
     min-height: 40px;
   }
-}
-.button.outline:not(:focus-visible) {
-  outline: none;
 }
 @media (max-width: 375px) {
   .guild-nav {

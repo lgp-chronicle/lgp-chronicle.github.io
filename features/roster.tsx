@@ -2,7 +2,7 @@
 import { siteHref } from "@/lib/public-settings";
 
 import { useState } from "react";
-import { ArrowUpDown, Shield } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Search, Shield } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -66,12 +66,15 @@ export function Roster({ members }: { members: Member[] }) {
         <span className="badge">CLASSIC ERA / FOREVER</span>
       </div>
       <div className="toolbar">
-        <input
-          aria-label="Buscar personaje"
-          placeholder="Buscar en la hermandad…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <label className="roster-search">
+          <Search size={16} aria-hidden="true" />
+          <input
+            aria-label="Buscar personaje"
+            placeholder="Buscar en la hermandad…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
         <Pick
           label="Filtrar por clase"
           value={cls}
@@ -105,7 +108,13 @@ export function Roster({ members }: { members: Member[] }) {
                   }}
                 >
                   {label}
-                  <ArrowUpDown size={12} />
+                  {sort !== key ? (
+                    <ArrowUpDown size={12} />
+                  ) : asc ? (
+                    <ArrowUp size={13} />
+                  ) : (
+                    <ArrowDown size={13} />
+                  )}
                 </button>
               </TableHead>
             ))}
@@ -118,9 +127,7 @@ export function Roster({ members }: { members: Member[] }) {
                 <TableCell key={key}>
                   {key === "name" ? (
                     <a
-                      href={siteHref(
-                        `/character/${encodeURIComponent(m.id)}`,
-                      )}
+                      href={siteHref(`/character/${encodeURIComponent(m.id)}`)}
                       className="name-cell"
                       style={{ color: color(m) }}
                     >

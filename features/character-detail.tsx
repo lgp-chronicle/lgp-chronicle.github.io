@@ -1,7 +1,8 @@
 "use client";
 import { siteHref } from "@/lib/public-settings";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
+import { SectionIndex } from "@/components/section-index";
 import { Empty } from "@/components/guild-ui";
 import { HistoryChart } from "./charts";
 import { Compare } from "./compare";
@@ -91,19 +92,15 @@ export function CharacterDetail({
           </div>
         ))}
       </div>
-      <Tabs defaultValue="armory">
-        <TabsList className="nav-tabs">
-          {[
-            ["armory", "Armory"],
-            ["history", "Su historia"],
-            ["logs", "Warcraft Logs"],
-            ["compare", "Comparar"],
-          ].map(([id, label]) => (
-            <TabsTrigger key={id} value={id}>
-              {label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      <SectionIndex
+        label="Secciones del personaje"
+        items={[
+          ["armory", "Armory"],
+          ["history", "Su historia"],
+          ["logs", "Warcraft Logs"],
+          ["compare", "Comparar"],
+        ]}
+      >
         <TabsContent value="armory">
           <div className="grid-two">
             <section className="panel">
@@ -334,7 +331,7 @@ export function CharacterDetail({
         <TabsContent value="compare">
           <Compare members={[m, ...members.filter((x) => x.id !== m.id)]} />
         </TabsContent>
-      </Tabs>
+      </SectionIndex>
       {p.statistics && Object.keys(p.statistics).length ? (
         <section className="panel" style={{ marginTop: 24 }}>
           <h3>El personaje en números</h3>

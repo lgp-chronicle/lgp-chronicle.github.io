@@ -9,7 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
 import { rankChanges } from "./observations";
 import { SourceNotice } from "./source-notice";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
+import { SectionIndex } from "@/components/section-index";
 import { BookOpen, Trophy, RefreshCw, Users } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
@@ -180,20 +181,14 @@ export function Dashboard({
         id={archivePath(section ?? "overview")}
         aria-label="Archivo de la hermandad"
       >
-        <Tabs
-          activationMode="manual"
+        <SectionIndex
+          items={guildSections}
+          label="Secciones del archivo"
           value={section ?? "overview"}
-          onValueChange={(value) => {
+          onChange={(value) => {
             window.location.hash = archivePath(value as GuildSection);
           }}
         >
-          <TabsList className="nav-tabs" aria-label="Secciones del archivo">
-            {guildSections.map(([id, label]) => (
-              <TabsTrigger value={id} key={id}>
-                {label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
           <TabsContent value="overview">
             <Roster members={m} />
             <div style={{ marginTop: 24 }} className="grid-two">
@@ -383,7 +378,7 @@ export function Dashboard({
               )}
             </section>
           </TabsContent>
-        </Tabs>
+        </SectionIndex>
       </section>
       <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
         Los datos pertenecen a la última observación válida de cada fuente. No
