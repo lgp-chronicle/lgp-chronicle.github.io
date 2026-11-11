@@ -18,22 +18,64 @@ import "../app/guild-views.css";
 import "../app/honor-cards.css";
 import "../app/character-records.css";
 import "../app/guild-entrance.css";
+import "../app/guildhall.css";
 function App() {
   const [entrance, setEntrance] = useState(initialEntrance);
   const closeEntrance = useCallback(() => setEntrance(null), []);
   const [path, setPath] = useState(location.hash.slice(1) || "/");
-  const dataRoute = sectionFromPath(path) ? "/" : path;
+  const [routePath, query] = path.split("?");
+  const dataRoute = sectionFromPath(routePath) ? "/" : routePath;
   const [data, setData] = useState<GuildData | null>(null),
     [error, setError] = useState(false),
     [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    let departure: { from: string; to: string } | undefined;
+    const remember = (event: MouseEvent) => {
+      departure = undefined;
+      if (
+        event.button ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.shiftKey ||
+        !(event.target instanceof Element)
+      )
+        return;
+      const a = event.target.closest<HTMLAnchorElement>('a[href^="#/"]');
+      const to = a?.hash.slice(1);
+      if (
+        !to ||
+        !a ||
+        a.target === "_blank" ||
+        (!to.startsWith("/character/") && !to.startsWith("/archivo/compare?"))
+      )
+        return;
+      const from = location.hash.slice(1) || "/";
+      if (from === to) return;
+      departure = { from, to };
+      history.replaceState(
+        {
+          ...history.state,
+          returnY: scrollY,
+          returnStory: a.closest<HTMLElement>("[data-story]")?.dataset.story,
+        },
+        "",
+      );
+    };
     const route = () => {
+      if (departure?.to === location.hash.slice(1))
+        history.replaceState({ ...history.state, origin: departure.from }, "");
+      departure = undefined;
       setEntrance(null);
       setPath(location.hash.slice(1) || "/");
       if (!sectionFromPath(location.hash.slice(1))) window.scrollTo(0, 0);
     };
     window.addEventListener("hashchange", route);
-    return () => window.removeEventListener("hashchange", route);
+    document.addEventListener("click", remember, true);
+    return () => {
+      window.removeEventListener("hashchange", route);
+      document.removeEventListener("click", remember, true);
+    };
   }, []);
   useEffect(() => {
     const abort = new AbortController();
@@ -61,7 +103,9 @@ function App() {
   const charPrefix = "/character/";
   if (path.startsWith(charPrefix)) {
     try {
-      id = decodeURIComponent(path.slice(charPrefix.length)).normalize("NFC");
+      id = decodeURIComponent(routePath.slice(charPrefix.length)).normalize(
+        "NFC",
+      );
     } catch {}
   }
   const member = data?.members.find((m) => m.id === id);
@@ -73,7 +117,7 @@ function App() {
         fallback={<main className="page-width panel">Abriendo el portal…</main>}
       >
         <Shell
-          path={path}
+          path={routePath}
           onReplay={
             data?.members.length ? () => setEntrance("replay") : undefined
           }
@@ -99,7 +143,7 @@ function App() {
             </main>
           ) : path === "/" || path === "" || section ? (
             <Dashboard
-              key={data.generatedAt}
+              key={path + data.generatedAt}
               initial={data}
               section={section}
             />
@@ -108,6 +152,7 @@ function App() {
               key={member.id}
               member={member}
               members={data.members}
+              initialTab={new URLSearchParams(query).get("tab")}
             />
           ) : (
             <main className="page-width panel">

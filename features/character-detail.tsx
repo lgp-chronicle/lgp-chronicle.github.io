@@ -1,5 +1,6 @@
 "use client";
 import { siteHref } from "@/lib/public-settings";
+import { useState } from "react";
 
 import { TabsContent } from "@/components/ui/tabs";
 import { SectionIndex } from "@/components/section-index";
@@ -11,7 +12,7 @@ import { SourceNotice } from "./source-notice";
 import { color, type Member } from "./types";
 import { display, ago, leveling, awards } from "./analytics";
 import { memberArmoryUrl } from "@/config/characters";
-import { archivePath } from "@/lib/guild-navigation";
+import { archivePath, sectionFromPath } from "@/lib/guild-navigation";
 import { ExternalLink } from "lucide-react";
 import { EquipmentPanel, TalentsPanel } from "./armory-panels";
 import { fullName } from "./member-portrait";
@@ -20,20 +21,53 @@ import { ClassFrame } from "./class-frame";
 export function CharacterDetail({
   member: m,
   members,
+  initialTab,
 }: {
   member: Member;
   members: Member[];
+  initialTab?: string | null;
 }) {
   const p = m.data,
     l = leveling(m);
   const official = memberArmoryUrl(m.id, m.region);
+  const [tab, setTab] = useState(
+    ["talents", "attributes", "history", "logs", "compare"].includes(
+      initialTab ?? "",
+    )
+      ? initialTab!
+      : "armory",
+  );
+  const origin: string | undefined = window.history.state?.origin;
+  const originLabel =
+    origin === "/"
+      ? "a la portada"
+      : origin?.startsWith("/character/")
+        ? "a la ficha anterior"
+        : {
+            overview: "a la hermandad",
+            news: "al Heraldo",
+            awards: "al Salón de la fama",
+            race: "a la carrera",
+            history: "a Progresión",
+            compare: "al cara a cara",
+            logs: "a Warcraft Logs",
+          }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>
     award.memberIds.includes(m.id),
   );
   return (
     <main className="page-width character-dossier">
-      <a className="back-link" href={siteHref(archivePath("overview"))}>
-        ← Volver a la hermandad
+      <a
+        className="back-link"
+        href={siteHref(origin ?? archivePath("overview"))}
+        onClick={(e) => {
+          if (origin && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            e.preventDefault();
+            window.history.back();
+          }
+        }}
+      >
+        ← Volver {originLabel}
       </a>
       <header className="character-banner">
         <div className="avatar" style={{ color: color(m) }}>
@@ -84,6 +118,16 @@ export function CharacterDetail({
         ))}
       </dl>
       <SectionIndex
+        value={tab}
+        onChange={(value) => {
+          setTab(value);
+          const base = location.hash.split("?")[0];
+          history.replaceState(
+            history.state,
+            "",
+            base + (value === "armory" ? "" : "?tab=" + value),
+          );
+        }}
         label="Secciones del personaje"
         items={[
           ["armory", "Equipo"],

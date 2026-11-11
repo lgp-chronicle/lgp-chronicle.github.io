@@ -14,6 +14,7 @@ import { Pick, Empty } from "@/components/guild-ui";
 import { measurements, metricTime } from "./observations";
 import { color, numeric, type Member } from "./types";
 import { fullName } from "./member-portrait";
+import { searchable } from "@/lib/guild-navigation";
 
 const metrics = [
   { value: "level", label: "Nivel" },
@@ -33,8 +34,6 @@ const timeTick = new Intl.DateTimeFormat("es-ES", {
   minute: "2-digit",
 });
 const valueFormat = new Intl.NumberFormat("es-ES");
-const searchable = (text: string) =>
-  text.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("es");
 type Metric = (typeof metrics)[number]["value"];
 
 function historySeries(members: Member[], key: Metric, range: string) {

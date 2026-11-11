@@ -1,19 +1,14 @@
 "use client";
-import { apiUrl, assetUrl, siteHref } from "@/lib/public-settings";
-import {
-  archivePath,
-  guildSections,
-  type GuildSection,
-} from "@/lib/guild-navigation";
+import { apiUrl } from "@/lib/public-settings";
+import { archivePath, type GuildSection } from "@/lib/guild-navigation";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
 import { MemberLink } from "./member-portrait";
 import { HonorCard, HallAward } from "./honor-card";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
-import { TabsContent } from "@/components/ui/tabs";
-import { SectionIndex } from "@/components/section-index";
-import { BookOpen, RefreshCw, Users } from "lucide-react";
+import { ArmoryRumors } from "./armory-rumors";
+import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
@@ -50,7 +45,9 @@ export function Dashboard({
   useGuildTools(data);
   const archive = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (section) archive.current?.scrollIntoView({ block: "start" });
+    const y = window.history.state?.returnY;
+    if (typeof y === "number") window.scrollTo(0, y);
+    else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members;
   const trophies = awards(m);
@@ -98,83 +95,59 @@ export function Dashboard({
   }
   return (
     <main className="page-width guild-dashboard">
-      <header className="guild-cover">
-        <div className="cover-copy">
-          <p className="eyebrow cover-kicker">
-            Hermandad <i aria-hidden="true" /> WoW Forever
-          </p>
-          <h1>La Ganga</h1>
-          <p className="cover-summary">
-            Las crónicas de nuestra hermandad en Azeroth.
-          </p>
-          <div className="cover-actions">
-            <a
-              className="button bronze"
-              href={siteHref(archivePath("overview"))}
+      {!section && (
+        <>
+          <div className="section-heading honors-heading">
+            <div>
+              <h2 className="section-title">Cuadro de honor</h2>
+            </div>
+            <button
+              className="button outline"
+              onClick={refresh}
+              disabled={busy}
+              aria-label={busy ? "Consultando el archivo" : "Consultar archivo"}
+              title="Consultar archivo"
             >
-              <Users size={16} /> Ver personajes
-            </a>
-            <a className="button iron" href={siteHref(archivePath("news"))}>
-              <BookOpen size={16} /> Leer El Heraldo
-            </a>
+              <RefreshCw size={15} />
+              <span>{busy ? "Consultando…" : "Consultar archivo"}</span>
+            </button>
           </div>
-        </div>
-        <img
-          className="cover-crest"
-          src={assetUrl("/guild/escudo-la-ganga.webp")}
-          alt="Escudo de La Ganga con dos serpientes de escamas oliva y una cinta dorada"
-          width="650"
-          height="597"
-        />
-      </header>
-      <div className="section-heading honors-heading">
-        <div>
-          <h2 className="section-title">Cuadro de honor</h2>
-        </div>
-        <button
-          className="button outline"
-          onClick={refresh}
-          disabled={busy}
-          aria-label={busy ? "Consultando el archivo" : "Consultar archivo"}
-          title="Consultar archivo"
-        >
-          <RefreshCw size={15} />
-          <span>{busy ? "Consultando…" : "Consultar archivo"}</span>
-        </button>
-      </div>
-      {(!data.available || m.every((x) => !x.data.observedAt)) && (
-        <div className="notice">
-          {data.available
-            ? "La hermandad está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
-            : data.message}
-        </div>
+          {(!data.available || m.every((x) => !x.data.observedAt)) && (
+            <div className="notice">
+              {data.available
+                ? "La hermandad está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
+                : data.message}
+            </div>
+          )}
+          {error && (
+            <p role="alert" className="notice">
+              {error}
+            </p>
+          )}
+          <div className="honor-gallery honors">
+            {cards.map(({ label, image, top, unit }) => (
+              <HonorCard
+                key={label}
+                title={label}
+                scene={image}
+                value={top?.value}
+                unit={unit}
+                winners={top?.winners ?? []}
+                note={
+                  top && top.registered < m.length
+                    ? "Datos de " +
+                      top.registered +
+                      " de " +
+                      m.length +
+                      " personajes"
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+          <ArmoryRumors members={m} />
+        </>
       )}
-      {error && (
-        <p role="alert" className="notice">
-          {error}
-        </p>
-      )}
-      <div className="honor-gallery honors">
-        {cards.map(({ label, image, top, unit }) => (
-          <HonorCard
-            key={label}
-            title={label}
-            scene={image}
-            value={top?.value}
-            unit={unit}
-            winners={top?.winners ?? []}
-            note={
-              top && top.registered < m.length
-                ? "Datos de " +
-                  top.registered +
-                  " de " +
-                  m.length +
-                  " personajes"
-                : undefined
-            }
-          />
-        ))}
-      </div>
       <SourceNotice members={m} />
       <section
         className="archive"
@@ -182,15 +155,8 @@ export function Dashboard({
         id={archivePath(section ?? "overview")}
         aria-label="Archivo de la hermandad"
       >
-        <SectionIndex
-          items={guildSections}
-          label="Secciones del archivo"
-          value={section ?? "overview"}
-          onChange={(value) => {
-            window.location.hash = archivePath(value as GuildSection);
-          }}
-        >
-          <TabsContent value="overview">
+        {(!section || section === "overview") && (
+          <>
             <Roster members={m} />
             <div style={{ marginTop: 24 }} className="grid-two">
               <Newspaper members={m} events={data.events.slice(0, 12)} />
@@ -209,20 +175,26 @@ export function Dashboard({
                 )}
               </section>
             </div>
-          </TabsContent>
-          <TabsContent value="race">
+          </>
+        )}
+        {section === "race" && (
+          <>
             <LevelingRace members={m} />
             <div style={{ marginTop: 22 }}>
               <HistoryChart members={m} />
             </div>
-          </TabsContent>
-          <TabsContent value="history">
+          </>
+        )}
+        {section === "history" && (
+          <>
             <HistoryChart members={m} />
             <div style={{ marginTop: 22 }}>
               <Distribution members={m} />
             </div>
-          </TabsContent>
-          <TabsContent value="awards">
+          </>
+        )}
+        {section === "awards" && (
+          <>
             <p className="eyebrow">
               HONOR ETERNO. HASTA LA PRÓXIMA SINCRONIZACIÓN.
             </p>
@@ -241,14 +213,25 @@ export function Dashboard({
                 />
               </section>
             )}
-          </TabsContent>
-          <TabsContent value="news">
-            <Newspaper members={m} events={data.events} />
-          </TabsContent>
-          <TabsContent value="compare">
-            <Compare members={m} />
-          </TabsContent>
-          <TabsContent value="logs">
+          </>
+        )}
+        {section === "news" && (
+          <>
+            <Newspaper members={m} events={data.events} featured />
+          </>
+        )}
+        {section === "compare" && (
+          <>
+            <Compare
+              members={m}
+              initialPair={
+                new URLSearchParams(window.location.hash.split("?")[1])
+              }
+            />
+          </>
+        )}
+        {section === "logs" && (
+          <>
             <section className="panel">
               <h3>Warcraft Logs · La mesa de raid</h3>
               <p className="subheading">
@@ -306,8 +289,8 @@ export function Dashboard({
                 </details>
               )}
             </section>
-          </TabsContent>
-        </SectionIndex>
+          </>
+        )}
       </section>
       <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
         Los datos pertenecen a la última observación válida de cada fuente. No

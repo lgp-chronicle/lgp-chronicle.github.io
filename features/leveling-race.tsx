@@ -1,5 +1,6 @@
 import { Crown, Medal, Search } from "lucide-react";
-import { useState } from "react";
+import { useEntryState } from "@/hooks/use-entry-state";
+import { searchable } from "@/lib/guild-navigation";
 import { Empty } from "@/components/guild-ui";
 import { ago, display, leveling } from "./analytics";
 import { rankChanges } from "./observations";
@@ -7,7 +8,7 @@ import { MemberLink, fullName } from "./member-portrait";
 import { numeric, type Member } from "./types";
 
 export function LevelingRace({ members }: { members: Member[] }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useEntryState<string>("raceSearch", "");
   const changes = rankChanges(members);
   const sorted = members
     .filter((m) => numeric(m.data.level))
@@ -33,9 +34,7 @@ export function LevelingRace({ members }: { members: Member[] }) {
     ...new Set(entries.filter((x) => x.rank <= 3).map((x) => x.rank)),
   ];
   const filtered = entries.filter((x) =>
-    fullName(x.member)
-      .toLocaleLowerCase("es")
-      .includes(search.trim().toLocaleLowerCase("es")),
+    searchable(fullName(x.member)).includes(searchable(search)),
   );
   return (
     <section className="panel race-panel">
@@ -97,7 +96,8 @@ export function LevelingRace({ members }: { members: Member[] }) {
           </div>
           <div className="member-grid race-grid">
             {filtered.map(({ member, rank, pace, level }) => {
-              const delta = changes.get(member.id) ?? 0;
+              const delta = changes.get(member.id);
+              const age = Date.now() - Date.parse(member.addedAt ?? "");
               return (
                 <article className="race-entry" key={member.id}>
                   <div className="race-identity">
@@ -123,8 +123,17 @@ export function LevelingRace({ members }: { members: Member[] }) {
                     ))}
                   </dl>
                   <p className="race-last">
-                    {delta !== 0 && (
-                      <b>
+                    {delta === undefined &&
+                      (age >= 0 && age < 86400000 ? (
+                        <b>Nuevo · </b>
+                      ) : (
+                        <span>Sin referencia de ayer · </span>
+                      ))}
+                    {delta !== undefined && delta !== 0 && (
+                      <b
+                        className={delta > 0 ? "rank-up" : "rank-down"}
+                        title="Cambio por nivel entre personajes con registros comparables"
+                      >
                         {delta > 0 ? "↑ " : "↓ "}
                         {Math.abs(delta)} ·{" "}
                       </b>

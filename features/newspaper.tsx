@@ -5,6 +5,9 @@ import { Pick, Empty } from "@/components/guild-ui";
 import type { Activity, Member } from "./types";
 import { MemberLink } from "./member-portrait";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import { useEntryState } from "@/hooks/use-entry-state";
+import { editionPlay, rivalId } from "./guild-stories";
+import { EditionPlay } from "./edition-play";
 
 const categories: Record<string, string> = {
   all: "Todo",
@@ -30,9 +33,7 @@ function NewsEntry({
   members: Member[];
 }) {
   const primary = members.find((m) => m.id === e.characterId);
-  const secondId =
-    e.otherCharacterId ??
-    (e.kind === "overtake" ? e.id.split(":")[1] : undefined);
+  const secondId = e.kind === "overtake" ? rivalId(e) : e.otherCharacterId;
   const second = members.find((m) => m.id === secondId);
   const moved = e.kind === "overtake" && primary && second;
   const tail = e.text
@@ -42,7 +43,7 @@ function NewsEntry({
     .replace(/\. La clasificación tiene movimiento\.$/, ".");
   const personal = primary && e.text.startsWith(primary.name + " ");
   return (
-    <article className="news-story">
+    <article className="news-story" data-story={e.id}>
       <div className="story-meta">
         <time dateTime={e.at}>
           {new Date(e.at).toLocaleTimeString("es-ES", {
@@ -89,12 +90,14 @@ function NewsEntry({
 export function Newspaper({
   events,
   members,
+  featured = false,
 }: {
   events: Activity[];
   members: Member[];
+  featured?: boolean;
 }) {
-  const [category, setCategory] = useState("all");
-  const [limit, setLimit] = useState(8);
+  const [category, setCategory] = useEntryState<string>("newsCategory", "all");
+  const [limit, setLimit] = useEntryState<number>("newsLimit", 8);
   const [archivedDays, setArchivedDays] = useState<string[]>([]);
   const [archivedEvents, setArchivedEvents] = useState<Activity[] | null>(null);
   const [archiveError, setArchiveError] = useState(false);
@@ -107,7 +110,7 @@ export function Newspaper({
   )
     .sort()
     .reverse();
-  const [day, setDay] = useState(days[0]);
+  const [day, setDay] = useEntryState<string>("newsDay", days[0]);
   useEffect(() => {
     const abort = new AbortController();
     fetch(apiUrl("/api/editions"), { signal: abort.signal })
@@ -130,6 +133,21 @@ export function Newspaper({
   }, [day]);
   const rows =
     archivedEvents ?? events.filter((e) => e.at.slice(0, 10) === day);
+  const play = featured ? editionPlay(rows, members) : undefined;
+  useEffect(() => {
+    const id = window.history.state?.returnStory;
+    if (id && archivedEvents) {
+      const story = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-story]"),
+      ).find((el) => el.dataset.story === id);
+      if (
+        story &&
+        (story.getBoundingClientRect().bottom < 60 ||
+          story.getBoundingClientRect().top > innerHeight)
+      )
+        story.scrollIntoView({ block: "center" });
+    }
+  }, [archivedEvents]);
   const counts = rows.reduce<Record<string, number>>((counts, row) => {
     const key = categoryOf(row);
     counts[key] = (counts[key] ?? 0) + 1;
@@ -137,6 +155,17 @@ export function Newspaper({
   }, {});
   const visible = rows
     .filter((row) => category === "all" || categoryOf(row) === category)
+    .filter(
+      (row) =>
+        !(
+          category === "all" &&
+          play &&
+          row.kind === "overtake" &&
+          row.at === play.at &&
+          row.characterId === play.lead.member.id &&
+          play.rivals.some((r) => r.member.id === rivalId(row))
+        ),
+    )
     .sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
   const sums = (metric: string) =>
     rows
@@ -181,6 +210,9 @@ export function Newspaper({
             {sums("level")} niveles · {sums("itemLevel")} puntos de equipo ·{" "}
             {sums("honorableKills")} HK ganadas
           </p>
+          {play && (category === "all" || category === "overtake") && (
+            <EditionPlay key={play.key} play={play} />
+          )}
           <div
             className="news-categories"
             role="group"

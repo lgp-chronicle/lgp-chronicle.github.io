@@ -109,6 +109,7 @@ export type Activity = {
   id: string;
   characterId: string;
   otherCharacterId?: string;
+  levels?: { before: [number, number]; after: [number, number] };
   at: string;
   kind: string;
   text: string;

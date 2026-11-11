@@ -3,7 +3,9 @@ import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
 
-import { useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
+import { useEntryState } from "@/hooks/use-entry-state";
+import { searchable } from "@/lib/guild-navigation";
 import {
   ArrowDown,
   ArrowUp,
@@ -23,11 +25,11 @@ import { Pick, Empty } from "@/components/guild-ui";
 import { display, ago } from "./analytics";
 import { color, type Member } from "./types";
 export function Roster({ members }: { members: Member[] }) {
-  const [layout, setLayout] = useState("table");
-  const [search, setSearch] = useState(""),
-    [cls, setCls] = useState("all"),
-    [sort, setSort] = useState("level"),
-    [asc, setAsc] = useState(false);
+  const [layout, setLayout] = useEntryState<string>("layout", "table");
+  const [search, setSearch] = useEntryState<string>("rosterSearch", ""),
+    [cls, setCls] = useEntryState<string>("rosterClass", "all"),
+    [sort, setSort] = useEntryState<string>("rosterSort", "level"),
+    [asc, setAsc] = useEntryState<boolean>("ascending", false);
   const columns = [
     ["name", "Personaje"],
     ["level", "Nivel"],
@@ -49,7 +51,7 @@ export function Roster({ members }: { members: Member[] }) {
   const filtered = members
     .filter(
       (m) =>
-        fullName(m).toLowerCase().includes(search.trim().toLowerCase()) &&
+        searchable(fullName(m)).includes(searchable(search)) &&
         (cls === "all" || m.data.className === cls),
     )
     .sort((a, b) => {

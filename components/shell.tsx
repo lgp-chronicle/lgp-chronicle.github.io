@@ -1,6 +1,12 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
-import { archivePath } from "@/lib/guild-navigation";
-import { Play } from "lucide-react";
+import { archivePath, guildSections } from "@/lib/guild-navigation";
+import { ChevronDown, Compass, Play } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 export function Shell({
   children,
   path = "/",
@@ -12,39 +18,75 @@ export function Shell({
 }) {
   return (
     <>
-      <header className="masthead">
-        <div className="masthead-inner">
-          <a href={siteHref("/")} className="brand">
+      <header className="guildhall" data-home={path === "/"}>
+        {path === "/" && (
+          <p className="sr-only">
+            Rast Puñotormenta y Naisen Grandwell estudian un mapa bajo los
+            estandartes de La Ganga.
+          </p>
+        )}
+        <div className="guildhall-inner">
+          <a
+            className="guildhall-brand"
+            href={siteHref("/")}
+            aria-label="La Ganga · Portada"
+          >
             <img
-              src={assetUrl("/guild/sello-la-ganga.png?v=2")}
+              src={assetUrl("/guild/escudo-la-ganga.webp")}
               alt=""
-              width="54"
-              height="54"
+              width="800"
+              height="797"
             />
-            <span>
-              La Ganga<small>Hermandad</small>
-            </span>
+            <div>
+              <p className="eyebrow">Hermandad · WoW Forever EU</p>
+              {path === "/" ? <h1>La Ganga</h1> : <strong>La Ganga</strong>}
+              {path === "/" && (
+                <p className="guildhall-legend">
+                  Las crónicas de nuestra hermandad en Azeroth.
+                </p>
+              )}
+            </div>
           </a>
-          <nav aria-label="Navegación principal" className="guild-nav">
-            {[
-              ["/", "Portada"],
-              [archivePath("overview"), "Hermandad"],
-              [archivePath("news"), "El Heraldo"],
-            ].map(([route, label]) => (
-              <a
-                href={siteHref(route)}
-                key={route}
-                aria-current={route === path ? "page" : undefined}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-          <span className="realm-note">
-            WoW Forever <span>·</span> EU
-          </span>
         </div>
       </header>
+      <nav aria-label="Navegación principal" className="guildhall-nav">
+        <div>
+          <a
+            href={siteHref("/")}
+            aria-current={path === "/" ? "page" : undefined}
+          >
+            Portada
+          </a>
+          {guildSections.map(([id, label]) => (
+            <a
+              key={id}
+              href={siteHref(archivePath(id))}
+              data-quick={id === "overview" || id === "news"}
+              aria-current={path === archivePath(id) ? "page" : undefined}
+            >
+              {label}
+            </a>
+          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="guild-explore">
+              <Compass size={16} aria-hidden="true" /> Explorar{" "}
+              <ChevronDown size={13} aria-hidden="true" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="guild-explore-menu" align="end">
+              {guildSections.map(([id, label]) => (
+                <DropdownMenuItem asChild key={id}>
+                  <a
+                    aria-current={path === archivePath(id) ? "page" : undefined}
+                    href={siteHref(archivePath(id))}
+                  >
+                    {label}
+                  </a>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </nav>
       {children}
       <footer>
         <a className="footer-brand" href={siteHref("/")}>

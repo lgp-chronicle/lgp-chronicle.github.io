@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { rankChanges } from "../features/observations.ts";
+import { editionPlay, armoryStories } from "../features/guild-stories.ts";
 import {
   awards,
   windowGain,
@@ -20,6 +22,62 @@ const member = (name, history = []) => ({
 const point = (days, level) => ({
   at: new Date(now - days * DAY).toISOString(),
   data: { level },
+});
+test("a new recruit does not erase established positions", () => {
+  const a = member("a", [point(1, 10), point(0, 12)]),
+    b = member("b", [point(1, 11), point(0, 11)]);
+  assert.deepEqual(
+    [...rankChanges([a, b, member("c", [point(0, 1)])], now)],
+    [
+      ["a", 1],
+      ["b", -1],
+    ],
+  );
+});
+test("replays keep a single race observation and distinct participants", () => {
+  const at = point(0, 0).at,
+    roster = ["a", "b", "c"].map((n) => member(n));
+  const pass = (r, time) => ({
+    kind: "overtake",
+    id: "a:" + r + ":" + time + ":overtake",
+    characterId: "a",
+    at: time,
+    text: "a adelanta: nivel 30 frente a 29.",
+  });
+  const play = editionPlay(
+    [pass("b", at), pass("c", at), pass("b", at), pass("c", point(1, 1).at)],
+    roster,
+  );
+  assert.equal(play.rivals.length, 2);
+  assert.equal(play.lead.after, 30);
+  assert.equal(play.lead.before, undefined);
+  assert.equal(editionPlay([pass("unknown", at)], roster), undefined);
+});
+test("rumors count players once and quiz choices have a single verified owner", () => {
+  const gear = (name, ids) => ({
+    ...member(name),
+    data: {
+      equipment: ids.map((id) => ({
+        id,
+        name: id === 1 ? "Caña de pescar" : "Pieza " + id,
+      })),
+    },
+  });
+  const r = armoryStories(
+    [gear("a", [1, 1, 2]), gear("b", [1, 3]), gear("c", [4]), member("blank")],
+    0,
+  );
+  assert.equal(r.coverage, 3);
+  assert.equal(r.anglers.length, 2);
+  assert.equal(r.shared.owners.length, 2);
+  assert.equal(r.clue.item.id, 2);
+  assert.equal(new Set(r.choices.map((m) => m.id)).size, 3);
+  assert.equal(
+    r.choices.filter((m) =>
+      m.data.equipment.some((i) => i.id === r.clue.item.id),
+    ).length,
+    1,
+  );
 });
 test("unknown data never receives an award", () =>
   assert.deepEqual(awards([member("a"), member("b")], now), []));

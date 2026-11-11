@@ -1,0 +1,424 @@
+.guildhall {
+  color: #ffedbf;
+  background: #251f17 url("./art/sala-de-la-ganga.webp") center 49% / cover
+    no-repeat;
+  border-top: 3px solid #a8863b;
+}
+.guildhall-inner {
+  max-width: var(--page);
+  margin: auto;
+  min-height: clamp(130px, 13vw, 230px);
+  display: flex;
+  align-items: center;
+  padding: 20px var(--gutter);
+}
+.guildhall[data-home="true"] .guildhall-inner {
+  min-height: clamp(275px, 24vw, 440px);
+}
+.guildhall-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 28px);
+  color: #ffdfa0;
+  text-shadow: 0 2px 7px #0c100b;
+}
+.guildhall-brand img {
+  width: clamp(56px, 6vw, 100px);
+  height: auto;
+  filter: drop-shadow(0 4px 5px #151208bb);
+}
+.guildhall[data-home="true"] .guildhall-brand img {
+  width: clamp(85px, 10vw, 154px);
+}
+.guildhall-brand :is(h1, strong) {
+  display: block;
+  margin: 2px 0 0;
+  font: 400 clamp(34px, 4.2vw, 70px) / 1.02 var(--display);
+  color: #ffe69d;
+}
+.guildhall[data-home="true"] h1 {
+  font-size: clamp(53px, 6vw, 100px);
+}
+.guildhall-brand .eyebrow {
+  color: #f1cc7e;
+  margin: 0;
+  font-size: clamp(8px, 0.72vw, 12px);
+}
+.guildhall-legend {
+  font:
+    clamp(14px, 1.2vw, 18px) / 1.3 Georgia,
+    serif;
+  margin: 7px 0 0;
+  max-width: 25ch;
+  color: #ffefc8;
+}
+.guildhall-nav {
+  position: sticky;
+  z-index: 15;
+  top: 0;
+  background: linear-gradient(#343a28, #19241c 75%);
+  border-block: 1px solid #ac8f50;
+  box-shadow:
+    inset 0 2px #ead2991c,
+    0 4px 12px #08130e70;
+}
+.guildhall-nav > div {
+  width: min(100%, var(--page));
+  padding: 0 var(--gutter);
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.guildhall-nav a,
+.guild-explore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 46px;
+  padding: 0 7px;
+  color: #e5d8ae;
+  font: 700 clamp(14px, 1.35vw, 20px) / 1.1 var(--heading);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+.guildhall-nav a:hover,
+.guildhall-nav a[aria-current],
+.guild-explore:hover,
+.guild-explore[data-state="open"] {
+  color: #fff0a4;
+  border-bottom-color: #edc45f;
+}
+.guild-explore {
+  display: none;
+  background: none;
+  cursor: pointer;
+}
+.guild-explore-menu {
+  min-width: 192px;
+  color: #f5e1ae;
+  background: #17271c;
+  border: 1px solid #96804d;
+}
+.guild-explore-menu a {
+  padding: 9px 12px;
+  display: block;
+  font: 700 17px/1.25 var(--heading);
+}
+.guild-explore-menu a:is([aria-current], [data-highlighted]) {
+  color: #ffdf84;
+  background: #35422b;
+}
+.archive,
+[data-story] {
+  scroll-margin-top: 62px;
+}
+.race-last .rank-up {
+  color: #83d897;
+}
+.race-last .rank-down {
+  color: #ff9890;
+}
+.rumor-panel {
+  margin: 26px 0;
+  padding: 18px clamp(16px, 2.5vw, 34px);
+  border: 1px solid #8a7546;
+  border-left: 4px solid #c09c49;
+  background: linear-gradient(106deg, #293829, #17271e 67%, #263226);
+  box-shadow: inset 0 1px #eed79c26;
+}
+.rumor-panel > header,
+.rumor-controls,
+.rumor-body,
+.rumor-owners,
+.rumor-answers {
+  display: flex;
+  align-items: center;
+}
+.rumor-panel > header {
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #b8a16745;
+}
+.rumor-panel h2,
+.rumor-panel h3,
+.play-bill h3 {
+  margin: 0;
+  font-family: var(--heading);
+}
+.rumor-panel h2 {
+  font-size: clamp(21px, 2.2vw, 31px);
+  color: #ffedb8;
+}
+.rumor-panel h3 {
+  font-size: clamp(20px, 2vw, 28px);
+  color: #f7dc95;
+}
+.rumor-controls {
+  gap: 7px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: #ded3ac;
+}
+.rumor-controls button,
+.rumor-icon {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #f6d57a;
+  background: #18231b;
+  border: 1px solid #8d814f;
+}
+.rumor-controls button {
+  width: 38px;
+  height: 38px;
+}
+.rumor-controls svg {
+  width: 17px;
+}
+.rumor-body {
+  gap: 16px;
+  padding-block: 17px 2px;
+}
+.rumor-body p {
+  margin: 4px 0;
+  color: #d4ccb0;
+  font-size: 14px;
+}
+.rumor-body a {
+  color: #f7dea2;
+}
+.rumor-icon {
+  color: #f7d775;
+  width: 58px;
+  height: 58px;
+  position: relative;
+  flex: none;
+  align-self: flex-start;
+  margin-top: 4px;
+  border: 2px solid #b39a53;
+  border-radius: 6px;
+}
+.rumor-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+.rumor-reveal {
+  font-weight: 650;
+  color: #ffdf91;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: 40px;
+  cursor: pointer;
+}
+.rumor-owners,
+.rumor-answers {
+  gap: 6px 16px;
+  flex-wrap: wrap;
+}
+.rumor-owners {
+  margin-top: 12px;
+}
+.rumor-answers {
+  margin-top: 10px;
+}
+.rumor-answers .button {
+  min-height: 36px;
+  padding: 3px 10px;
+}
+.edition-play {
+  margin: 16px 0 20px;
+  color: #f5e8bf;
+  background: #1a2922;
+  border: 1px solid #8e7440;
+}
+.play-bill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 176px;
+  background:
+    linear-gradient(90deg, #101d16 8%, #16231ceb 46%, #1b2b229c 72%, #1e302552),
+    url("./art/fortaleza.webp") 60% 46% / cover;
+}
+.play-copy {
+  position: relative;
+  z-index: 1;
+  padding: clamp(16px, 2.2vw, 30px);
+  width: 70%;
+}
+.play-copy .eyebrow {
+  color: #f0ca7b;
+  margin: 0 0 7px;
+}
+.play-copy h3 {
+  color: #fff0c5;
+  font-size: clamp(23px, 3.3vw, 44px);
+  line-height: 1.04;
+}
+.play-copy > p:not(.eyebrow) {
+  margin: 9px 0 12px;
+  color: #e3dbc3;
+  font-size: 13px;
+}
+.play-portrait {
+  position: absolute;
+  top: 4%;
+  right: 1%;
+  bottom: 0;
+  width: 37%;
+  z-index: 0;
+  isolation: isolate;
+}
+.play-portrait .banner-art {
+  --figure-center: 50%;
+  --zoom: 1.53;
+}
+.replay-content {
+  padding: 10px clamp(8px, 1.5vw, 20px) 16px;
+}
+.replay-phase {
+  margin: 0 0 7px;
+  color: #ddc281;
+  font-size: 13px;
+}
+.replay-field {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  --row: 46px;
+  height: calc(var(--runners) * var(--row));
+}
+.replay-field li {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--row);
+  transform: translateY(calc(var(--place) * 100%));
+  transition: transform 0.85s cubic-bezier(0.22, 0.74, 0.2, 1);
+  border-bottom: 1px solid #d7c18729;
+  font-size: 13px;
+}
+.replay-field .member-link {
+  min-width: 0;
+}
+.replay-field .member-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.replay-field li > span {
+  white-space: nowrap;
+}
+.replay-lead {
+  z-index: 1;
+  background: #34422b;
+}
+.replay-duel {
+  margin-left: auto;
+  color: #ffde8d;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+}
+@media (max-width: 840px) {
+  .guildhall-nav a[data-quick="false"] {
+    display: none;
+  }
+  .guild-explore {
+    display: inline-flex;
+  }
+}
+@media (max-width: 680px) {
+  .guildhall {
+    background-image:
+      linear-gradient(0deg, #111910cc, transparent 65%),
+      url("./art/sala-de-la-ganga-movil.webp");
+    background-position:
+      center,
+      center 42%;
+  }
+  .guildhall-inner {
+    align-items: flex-end;
+    min-height: 134px;
+    padding: 10px var(--gutter);
+  }
+  .guildhall[data-home="true"] {
+    background-image:
+      linear-gradient(0deg, #0e1a14 1%, #0f1914c4 18%, transparent 45%),
+      url("./art/sala-de-la-ganga-movil.webp");
+  }
+  .guildhall[data-home="true"] .guildhall-inner {
+    min-height: clamp(288px, 70vw, 345px);
+  }
+  .guildhall-brand img {
+    width: 46px;
+  }
+  .guildhall[data-home="true"] .guildhall-brand img {
+    width: 65px;
+  }
+  .guildhall-brand :is(h1, strong) {
+    font-size: 32px;
+  }
+  .guildhall[data-home="true"] h1 {
+    font-size: 43px;
+  }
+  .guildhall-legend {
+    max-width: none;
+    font-size: 12px;
+    margin: 1px 0 0;
+  }
+  .guildhall-nav > div {
+    gap: 2px;
+  }
+  .guildhall-nav a,
+  .guild-explore {
+    font-size: 15px;
+    padding: 0 3px;
+  }
+  .replay-duel span {
+    display: none;
+  }
+  .replay-field li {
+    gap: 6px;
+  }
+  .play-copy {
+    width: 73%;
+  }
+  .rumor-body {
+    gap: 10px;
+  }
+  .rumor-icon {
+    height: 44px;
+    width: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .replay-field li {
+    transition: none;
+  }
+}
+@media (max-width: 375px) {
+  .guildhall-nav > div {
+    padding-inline: 7px;
+  }
+  .guildhall-nav a,
+  .guild-explore {
+    font-size: 14px;
+    padding-inline: 2px;
+  }
+  .guild-explore svg:first-child {
+    display: none;
+  }
+}

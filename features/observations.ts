@@ -47,6 +47,10 @@ export function overtakeEvents(before: Member[], after: Member[], at: string) {
           id: `${a.id}:${b.id}:${at}:overtake`,
           characterId: a.id,
           otherCharacterId: b.id,
+          levels: {
+            before: [oldA!.data.level!, oldB!.data.level!],
+            after: [a.data.level, b.data.level],
+          },
           at,
           kind: "overtake",
           text: `${a.name} adelanta a ${b.name}: nivel ${a.data.level} frente a ${b.data.level}. La clasificación tiene movimiento.`,
@@ -57,19 +61,19 @@ export function overtakeEvents(before: Member[], after: Member[], at: string) {
   return events;
 }
 export function rankChanges(members: Member[], now = Date.now()) {
-  const values = members.map((m) => ({
-    m,
-    current: m.data.level,
-    old: measurements(m, "level")
-      .filter(
-        (s) =>
-          Date.parse(s.at) <= now - 86400000 &&
-          Date.parse(s.at) >= now - 86400000 - 6 * 3600000,
-      )
-      .at(-1)?.data.level,
-  }));
-  if (values.some((v) => !numeric(v.current) || !numeric(v.old)))
-    return new Map<string, number>();
+  const values = members
+    .map((m) => ({
+      m,
+      current: m.data.level,
+      old: measurements(m, "level")
+        .filter(
+          (s) =>
+            Date.parse(s.at) <= now - 86400000 &&
+            Date.parse(s.at) >= now - 86400000 - 6 * 3600000,
+        )
+        .at(-1)?.data.level,
+    }))
+    .filter((v) => numeric(v.current) && numeric(v.old));
   const current = [...values].sort((a, b) => b.current! - a.current!);
   const old = [...values].sort((a, b) => b.old! - a.old!);
   return new Map(

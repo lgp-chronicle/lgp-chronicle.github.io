@@ -1,13 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useEntryState } from "@/hooks/use-entry-state";
 import { Pick, Empty } from "@/components/guild-ui";
 import { display, leveling } from "./analytics";
 import { numeric, type Member } from "./types";
 import { Crown } from "lucide-react";
 import { MemberLink, fullName } from "./member-portrait";
-export function Compare({ members }: { members: Member[] }) {
-  const [left, setLeft] = useState(members[0]?.id ?? ""),
-    [right, setRight] = useState(members[1]?.id ?? "");
+import { duelPath, sectionFromPath } from "@/lib/guild-navigation";
+import { siteHref } from "@/lib/public-settings";
+export function Compare({
+  members,
+  initialPair,
+}: {
+  members: Member[];
+  initialPair?: URLSearchParams;
+}) {
+  const first =
+    members.find((m) => m.id === initialPair?.get("left")) ?? members[0];
+  const second =
+    members.find(
+      (m) => m.id !== first?.id && m.id === initialPair?.get("right"),
+    ) ?? members.find((m) => m.id !== first?.id);
+  const [left, setLeft] = useEntryState<string>("duelLeft", first?.id ?? ""),
+    [right, setRight] = useEntryState<string>("duelRight", second?.id ?? "");
   const a = members.find((m) => m.id === left),
     b = members.find((m) => m.id === right);
   if (!a || !b) return <Empty />;
@@ -43,6 +57,21 @@ export function Compare({ members }: { members: Member[] }) {
   ];
   return (
     <section className="panel">
+      {initialPair &&
+        sectionFromPath(window.history.state?.origin ?? "") === "news" && (
+          <a
+            className="back-link"
+            href={siteHref(window.history.state.origin)}
+            onClick={(e) => {
+              if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+                e.preventDefault();
+                history.back();
+              }
+            }}
+          >
+            ← Volver a la jugada
+          </a>
+        )}
       <h3>Duelo de compañeros</h3>
       <p className="subheading">Sin /duel. Sin reparar. Con números.</p>
       <div className="duel">
@@ -53,7 +82,16 @@ export function Compare({ members }: { members: Member[] }) {
               <Pick
                 label={i ? "Segundo personaje" : "Primer personaje"}
                 value={i ? right : left}
-                onChange={i ? setRight : setLeft}
+                onChange={(value) => {
+                  if (i) setRight(value);
+                  else setLeft(value);
+                  if (initialPair)
+                    history.replaceState(
+                      history.state,
+                      "",
+                      siteHref(duelPath(i ? left : value, i ? value : right)),
+                    );
+                }}
                 options={members
                   .filter((x) => x.id !== (i ? left : right))
                   .map((x) => ({ value: x.id, label: fullName(x) }))}
