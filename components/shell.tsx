@@ -1,11 +1,14 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
 import { archivePath } from "@/lib/guild-navigation";
+import { Play } from "lucide-react";
 export function Shell({
   children,
   path = "/",
+  onReplay,
 }: {
   children: React.ReactNode;
   path?: string;
+  onReplay?: () => void;
 }) {
   return (
     <>
@@ -53,6 +56,11 @@ export function Shell({
           />{" "}
           La Ganga <span>· WoW Forever</span>
         </a>
+        {onReplay && (
+          <button type="button" className="entrance-replay" onClick={onReplay}>
+            <Play size={15} aria-hidden="true" /> Ver la presentación
+          </button>
+        )}
         <span>
           Proyecto de fans. World of Warcraft © Blizzard Entertainment.
         </span>

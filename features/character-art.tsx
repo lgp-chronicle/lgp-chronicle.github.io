@@ -7,7 +7,13 @@ type Frame = { x: number; top: number; height: number };
 type ArchivedModel = { url: string; modified: number; frame: Frame };
 const models: Record<string, ArchivedModel> = archive;
 
-export function useCharacterArt(member: Member) {
+export function hasCharacterArt(member: Member) {
+  return Boolean(
+    models[member.id] || member.data.characterRender || member.data.avatar,
+  );
+}
+
+export function useCharacterArt(member: Member, entrance = false) {
   const archived = models[member.id];
   const live = member.data.characterRender || archived?.url;
   // Blizzard can update a character in place at the same URL after a gear change.
@@ -22,8 +28,12 @@ export function useCharacterArt(member: Member) {
           ".webp",
       )
     : undefined;
+  const cutout =
+    entrance && local
+      ? local.replace("/personajes/", "/formacion/")
+      : undefined;
   const [failed, setFailed] = useState<string[]>([]);
-  const image = [local, live, member.data.avatar].find(
+  const image = [cutout, local, live, member.data.avatar].find(
     (src) => src && !failed.includes(src),
   );
   const avatar = image && image === member.data.avatar;
@@ -37,7 +47,13 @@ export function useCharacterArt(member: Member) {
   const onError = () => {
     if (image) setFailed((previous) => [...previous, image]);
   };
-  return { image, avatar, style, onError };
+  return {
+    image,
+    avatar,
+    cutout: Boolean(cutout && image === cutout),
+    style,
+    onError,
+  };
 }
 
 export function CharacterArt({ member }: { member: Member }) {

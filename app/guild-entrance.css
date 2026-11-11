@@ -1,0 +1,415 @@
+.guild-entrance {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  color: #f9e9c7;
+  background: #101c20;
+}
+.guild-entrance::backdrop {
+  background: transparent;
+}
+html:has(.guild-entrance[open]) {
+  overflow: hidden;
+}
+.guild-entrance[data-leaving="true"] {
+  animation: arrival-exit 0.44s ease-in both;
+}
+.arrival-scene,
+.arrival-courtyard,
+.arrival-air {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.arrival-scene {
+  isolation: isolate;
+  overflow: hidden;
+}
+.arrival-courtyard {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 50% 59%;
+}
+.arrival-scene::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 48%,
+      transparent 22%,
+      #06111744 76%,
+      #040c13ac
+    ),
+    linear-gradient(
+      0deg,
+      #080f13db,
+      transparent 25%,
+      transparent 70%,
+      #091b2752
+    );
+  pointer-events: none;
+}
+.arrival-air {
+  z-index: 3;
+  pointer-events: none;
+}
+.arrival-air i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ffe4a2;
+  box-shadow: 0 0 6px 1px #fdb8689c;
+  animation: arrival-ember 4.5s ease-out var(--delay) infinite both;
+}
+.arrival-wing {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  --approach: -36px;
+}
+.arrival-wing[data-side="left"] {
+  left: 1.5%;
+  --facing: -1;
+}
+.arrival-wing[data-side="right"] {
+  right: 1.5%;
+  --facing: 1;
+  --approach: 36px;
+}
+.arrival-wing li {
+  position: absolute;
+  z-index: var(--rank);
+  left: var(--x);
+  top: var(--feet);
+  width: var(--width);
+  height: min(var(--height), var(--cap));
+  transform: translate(-50%, -100%);
+}
+.arrival-guest {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.arrival-guest::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4%;
+  width: 82%;
+  height: 10%;
+  transform: translateX(-49%) rotate(-4deg);
+  background: radial-gradient(
+    ellipse,
+    #10100fcc 0%,
+    #1720266b 38%,
+    transparent 72%
+  );
+}
+.arrival-guest img {
+  position: absolute;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  filter: brightness(1.16) saturate(0.91);
+}
+.arrival-cutout {
+  height: min(
+    calc(100% * var(--stature)),
+    calc(var(--native-height, 1000px) / var(--dpr, 1))
+  );
+  bottom: 0;
+  transform: translateX(-50%) scaleX(var(--facing));
+}
+.arrival-guest .arrival-cutout {
+  width: 112%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.arrival-render {
+  height: min(
+    calc(var(--model-height) * var(--stature)),
+    calc(var(--native-height, 1000px) / var(--dpr, 1))
+  );
+  top: 100%;
+  transform-origin: 0 0;
+  transform: scaleX(var(--facing)) translate(var(--model-x), var(--model-feet));
+}
+.arrival-avatar {
+  height: min(78%, calc(var(--native-height, 80px) / var(--dpr, 1)));
+  max-width: 100%;
+  bottom: 4%;
+  transform: translateX(-50%) scaleX(var(--facing));
+  object-fit: contain;
+  mask-image: radial-gradient(ellipse, black 39%, transparent 72%);
+}
+.arrival-sigil {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 37%;
+  width: clamp(145px, min(23vw, 38dvh), 358px);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.arrival-shield {
+  position: relative;
+  isolation: isolate;
+}
+.arrival-shield::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -24%;
+  background: radial-gradient(
+    ellipse,
+    #fff2b077,
+    #f7c86d28 34%,
+    transparent 68%
+  );
+}
+.arrival-shield img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 5px 5px #071316a6);
+}
+.arrival-shield span {
+  position: absolute;
+  inset: 0;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background: linear-gradient(
+      115deg,
+      transparent 40%,
+      #fff1baad 49%,
+      transparent 58%
+    ) -100%
+    center / 240% 100% no-repeat;
+  opacity: 0;
+}
+.arrival-sigil p {
+  display: table;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 11px 0 0;
+  padding: 4px 18px 5px;
+  color: #fff1cd;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #0d1a1bdc 14% 86%,
+    transparent
+  );
+  font:
+    650 clamp(10px, 0.85vw, 13px) / 1.4 "Segoe UI",
+    sans-serif;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px #0a1417;
+}
+.arrival-sigil p span {
+  margin-inline: 0.25em;
+  font-size: 0.64em;
+  color: #e7be70;
+}
+.arrival-enter {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: max(3dvh, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 22px;
+  border: 1px solid #bca269;
+  background: linear-gradient(135deg, #293027f5, #101d1bf5);
+  box-shadow:
+    inset 0 0 0 2px #1d241e,
+    0 3px 12px #0a121690;
+  color: #ffe8af;
+  font: 700 18px/1.15 var(--heading);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.arrival-enter:hover {
+  border-color: #ffe5a6;
+  color: #fff6dc;
+}
+.arrival-enter:focus-visible {
+  outline: 2px solid #ffdc8b;
+  outline-offset: 3px;
+}
+.guild-entrance[data-ready="false"] :is(.arrival-guest, .arrival-sigil) {
+  opacity: 0;
+}
+.guild-entrance[data-ready="true"] .arrival-courtyard {
+  animation: arrival-pan 6s cubic-bezier(0.18, 0.65, 0.28, 1) both;
+}
+.guild-entrance[data-ready="true"] .arrival-guest {
+  animation: arrival-muster 1.15s cubic-bezier(0.16, 0.7, 0.23, 1) var(--delay)
+    both;
+}
+.guild-entrance[data-ready="true"] .arrival-shield {
+  animation: arrival-crest 1.45s cubic-bezier(0.15, 0.75, 0.24, 1) 0.42s both;
+}
+.guild-entrance[data-ready="true"] .arrival-shield span {
+  animation: arrival-glint 1.4s ease 1.9s both;
+}
+.guild-entrance[data-ready="true"] .arrival-sigil p {
+  animation: arrival-legend 0.8s ease 1.2s both;
+}
+.guild-entrance[data-auto="true"][data-ready="true"] .arrival-enter::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  background: #f6d284;
+  transform-origin: left;
+  animation: arrival-progress 6.1s linear both;
+}
+.entrance-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #e1cd9c;
+  min-height: 38px;
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@keyframes arrival-pan {
+  from {
+    transform: scale(1.075);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes arrival-muster {
+  from {
+    opacity: 0;
+    transform: translate(var(--approach), 12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes arrival-crest {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.83);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes arrival-glint {
+  0% {
+    opacity: 0;
+    background-position: 130% center;
+  }
+  20%,
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    background-position: -40% center;
+  }
+}
+@keyframes arrival-ember {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  26% {
+    opacity: 0.75;
+  }
+  98% {
+    transform: translate(var(--drift), -76px) scale(0.4);
+  }
+}
+@keyframes arrival-legend {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes arrival-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes arrival-exit {
+  to {
+    opacity: 0;
+  }
+}
+@media (max-aspect-ratio: 1/1) {
+  .arrival-wing {
+    width: 47.5%;
+  }
+  .arrival-wing li {
+    z-index: var(--mrank);
+    left: var(--mx);
+    top: var(--mfeet);
+    width: var(--mwidth);
+    height: min(var(--mheight), var(--mcap));
+  }
+  .arrival-sigil {
+    top: 15%;
+    width: min(41vw, 24dvh, 260px);
+  }
+  .arrival-sigil p {
+    margin-top: 3px;
+  }
+}
+@media (max-height: 440px) and (min-aspect-ratio: 1/1) {
+  .arrival-sigil {
+    top: 33%;
+    width: 31dvh;
+  }
+  .arrival-sigil p {
+    margin-top: 0;
+  }
+  .arrival-enter {
+    bottom: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guild-entrance *,
+  .guild-entrance[data-leaving="true"] {
+    animation: none !important;
+  }
+  .arrival-air {
+    display: none;
+  }
+}
