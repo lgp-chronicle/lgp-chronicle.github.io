@@ -14,7 +14,7 @@ import { color, type Equipment, type Profile, type Member } from "./types";
 
 import { Portrait, fullName } from "./member-portrait";
 import { useCharacterArt } from "./character-art";
-import { ClassRoom } from "./class-frame";
+import { ClassRoom, classRoomName } from "./class-frame";
 import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
 const iconRequests = new Map<string, Promise<string | undefined>>();
 function lookupIcon(kind: Entity, id: number) {
@@ -113,23 +113,32 @@ const weaponSlots = [
 
 function Model({ member }: { member: Member }) {
   const { image, avatar, style, onError } = useCharacterArt(member);
+  const room = classRoomName(member);
   return (
     <figure className="armory-model" style={style}>
-      {image && !avatar ? (
-        <img
-          className="full-model"
-          src={image}
-          alt={fullName(member) + " con su equipo"}
-          onError={onError}
-        />
-      ) : (
-        <div className="model-fallback">
-          <Portrait member={member} />
-          <small>Sin imagen de cuerpo entero</small>
-        </div>
-      )}
-      <figcaption style={{ color: color(member) }}>
-        {fullName(member)}
+      <div className="armory-scene">
+        <ClassRoom member={member} large />
+        {image && !avatar ? (
+          <>
+            <span className="model-shadow" aria-hidden="true" />
+            <img className="model-cast" src={image} alt="" aria-hidden="true" />
+            <img
+              className="full-model"
+              src={image}
+              alt={fullName(member) + " con su equipo"}
+              onError={onError}
+            />
+          </>
+        ) : (
+          <div className="model-fallback">
+            <Portrait member={member} />
+            <small>Sin imagen de cuerpo entero</small>
+          </div>
+        )}
+      </div>
+      <figcaption>
+        <strong style={{ color: color(member) }}>{fullName(member)}</strong>
+        {room && <span>{room}</span>}
       </figcaption>
     </figure>
   );
@@ -277,7 +286,6 @@ export function EquipmentPanel({ member }: { member: Member }) {
         </p>
       </div>
       <div className="paperdoll">
-        <ClassRoom member={member} large />
         <div className="slot-rail rail-left">
           {leftSlots.map((label) => renderSlot(label, bySlot.get(label)))}
         </div>

@@ -31,6 +31,7 @@ export function useCharacterArt(member: Member) {
   const style = {
     "--model-x": -frame.x + "%",
     "--model-top": -frame.top + "%",
+    "--model-feet": -(frame.top + frame.height) + "%",
     "--model-height": 10000 / frame.height + "%",
   } as CSSProperties;
   const onError = () => {

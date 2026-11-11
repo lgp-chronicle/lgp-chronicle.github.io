@@ -2,16 +2,16 @@ import type { CSSProperties } from "react";
 import { assetUrl } from "@/lib/public-settings";
 import type { Member } from "./types";
 
-const frames: Record<number, [string, string, string]> = {
-  1: ["guerrero", "Guerrero", "#a8a49b"],
-  2: ["paladin", "Paladín", "#dbb464"],
-  3: ["cazador", "Cazador", "#b6a372"],
-  4: ["picaro", "Pícaro", "#baa473"],
-  5: ["sacerdote", "Sacerdote", "#d2c8aa"],
-  7: ["chaman", "Chamán", "#8fabad"],
-  8: ["mago", "Mago", "#9bc9e0"],
-  9: ["brujo", "Brujo", "#ad8bbb"],
-  11: ["druida", "Druida", "#a0a768"],
+const frames: Record<number, [slug: string, name: string, metal: string, room: string]> = {
+  1: ["guerrero", "Guerrero", "#a8a49b", "Sala de armas"],
+  2: ["paladin", "Paladín", "#dbb464", "Capilla de la Mano de Plata"],
+  3: ["cazador", "Cazador", "#b6a372", "Refugio del rastreador"],
+  4: ["picaro", "Pícaro", "#baa473", "Escondite del contrabandista"],
+  5: ["sacerdote", "Sacerdote", "#d2c8aa", "Oratorio de la luna"],
+  7: ["chaman", "Chamán", "#8fabad", "Casa de los cuatro elementos"],
+  8: ["mago", "Mago", "#9bc9e0", "Observatorio arcano"],
+  9: ["brujo", "Brujo", "#ad8bbb", "Cámara de las almas"],
+  11: ["druida", "Druida", "#a0a768", "Santuario de las raíces"],
 };
 
 function classArt(member: Member) {
@@ -19,6 +19,10 @@ function classArt(member: Member) {
     frames[member.data.classId ?? 0] ??
     Object.values(frames).find(([, name]) => name === member.data.className)
   );
+}
+
+export function classRoomName(member: Member) {
+  return classArt(member)?.[3];
 }
 
 export function ClassRoom({
