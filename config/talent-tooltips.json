@@ -1,0 +1,491 @@
+{
+  "1:Abrumar mejorado:2": {
+    "description": "Aumenta en un 50% la probabilidad de golpe crítico de tu facultad Abrumar.",
+    "cast": "Pasivo"
+  },
+  "1:Cólera desbocada:5": {
+    "description": "Te da un 60% de probabilidad de generar 1 p. de ira adicionales al infligir daño con un arma en un ataque cuerpo a cuerpo.",
+    "cast": "Pasivo"
+  },
+  "1:Crueldad:5": {
+    "description": "Mejora un 5% tu probabilidad de conseguir un golpe crítico con ataques cuerpo a cuerpo.",
+    "cast": "Pasivo"
+  },
+  "1:Desgarrar mejorado:3": {
+    "description": "Aumenta un 35% el daño de sangrado infligido por tu facultad Desgarrar.",
+    "cast": "Pasivo"
+  },
+  "1:Desvío:1": {
+    "description": "Aumenta tu probabilidad de parar en un 1%.",
+    "cast": "Pasivo"
+  },
+  "1:Embestir mejorado:2": {
+    "description": "Aumenta 6 p. la ira generada por tu facultad Cargar.",
+    "cast": "Pasivo"
+  },
+  "1:Enfurecer:2": {
+    "description": "Te da un 30% de probabilidades de infligir un 4% más de daño físico 12 s después de ser víctima de cualquier ataque dañino.",
+    "cast": "Pasivo"
+  },
+  "1:Especialización en armas de dos manos:3": {
+    "description": "Aumenta en un 6% el daño infligido con las armas cuerpo a cuerpo de dos manos.",
+    "cast": "Pasivo"
+  },
+  "1:Especialización en doble empuñadura:2": {
+    "description": "Aumenta un 10% el daño de tu arma de mano izquierda y un 20% la ira generada por tus ataques con la mano izquierda.",
+    "cast": "Pasivo"
+  },
+  "1:Especialización en escudos:5": {
+    "description": "Aumenta un 5% la probabilidad de bloquear ataques con un escudo. Te otorga un 100% de probabilidad de generar 5 p. de ira cuando bloqueas.",
+    "cast": "Pasivo"
+  },
+  "1:Golpe heroico mejorado:3": {
+    "description": "Reduce 3 p. el coste de ira de tu facultad Golpe heroico.",
+    "cast": "Pasivo"
+  },
+  "1:Heridas profundas:3": {
+    "description": "Tus golpes críticos provocan que tu adversario sangre, lo que inflige un 60% del daño medio de tu arma cuerpo a cuerpo durante 12 s.",
+    "cast": "Pasivo"
+  },
+  "1:Maestría táctica mejorada:2": {
+    "description": "Maestría táctica te permite retener hasta 10 p. más de tu ira cuando cambias de actitud.",
+    "cast": "Pasivo"
+  },
+  "1:Precisión furiosa:3": {
+    "description": "Aumenta un 10% tu probabilidad de golpear con ataques de mano secundaria.",
+    "cast": "Pasivo"
+  },
+  "1:Revancha mejorada:1": {
+    "description": "Aumenta un 20% el daño infligido por tu facultad Revancha.",
+    "cast": "Pasivo"
+  },
+  "1:Sanguinario mejorado:1": {
+    "description": "Aumenta 25 p. toda la ira generada por tu facultad Ira sangrienta.",
+    "cast": "Pasivo"
+  },
+  "11:Alcance de la naturaleza:2": {
+    "description": "Aumenta un 20% el alcance de tus hechizos de Equilibrio ofensivos y un 4% la probabilidad de golpear.",
+    "cast": "Pasivo"
+  },
+  "11:Ataques trituradores:1": {
+    "description": "Reduce 6 p. el coste de energía de tu facultad Triturar y 1 p. el coste de ira de tu facultad Lacerar.",
+    "cast": "Pasivo"
+  },
+  "11:Brillo lunar:3": {
+    "description": "Reduce un 25% el coste de maná de tus hechizos de daño.",
+    "cast": "Pasivo"
+  },
+  "11:Cólera mejorada:2": {
+    "description": "Reduce 0,2 s el tiempo de lanzamiento y un 20% el coste de maná de tu hechizo Cólera.",
+    "cast": "Pasivo"
+  },
+  "11:Cólera mejorada:5": {
+    "description": "Reduce 0,5 s el tiempo de lanzamiento y un 50% el coste de maná de tu hechizo Cólera.",
+    "cast": "Pasivo"
+  },
+  "11:Esplendor de la naturaleza:1": {
+    "description": "Aumenta la duración de tu Fuego lunar y Rejuvenecimiento 3 s, tu Recrecimiento 6 s, y tu Enjambre de insectos 2 s.",
+    "cast": "Pasivo"
+  },
+  "11:Ferocidad:3": {
+    "description": "Reduce el consumo de tus facultades Magullar, Mordisco primigenio, Flagelo, Zarpa y Arañazo en 3 p. de ira o energía.",
+    "cast": "Pasivo"
+  },
+  "11:Ferocidad:5": {
+    "description": "Reduce el consumo de tus facultades Magullar, Mordisco primigenio, Flagelo, Zarpa y Arañazo en 5 p. de ira o energía.",
+    "cast": "Pasivo"
+  },
+  "11:Fuego estelar mejorado:4": {
+    "description": "Reduce 0,4 s el tiempo de lanzamiento de Fuego estelar, que obtiene una probabilidad del 12% de aturdir a su objetivo durante 3 s.",
+    "cast": "Pasivo"
+  },
+  "11:Fuegolunar mejorado:2": {
+    "description": "Aumenta en un 10% la probabilidad de golpe crítico y el daño de tus hechizos de Fuegolunar.",
+    "cast": "Pasivo"
+  },
+  "11:Furia salvaje:2": {
+    "description": "Aumenta un 10% el daño infligido por tus facultades Zarpa, Arañazo, Triturar, Magullar y Flagelo.",
+    "cast": "Pasivo"
+  },
+  "11:Furor:3": {
+    "description": "Te da un 60% de probabilidad de obtener 10 p. de ira cuando adoptas la forma de oso o la forma de oso nefasto. Cuando adoptas la forma felina, recuperas un 60% de la energía que tenías la última vez que adoptaste la forma felina, y 6 p. más de energía por cada segundo que hayas pasado fuera de la forma de oso o la forma de oso nefasto, hasta un máximo de 60 p. de energía.",
+    "cast": "Pasivo"
+  },
+  "11:Garras afiladas:2": {
+    "description": "Aumenta un 6 % tu probabilidad de golpe crítico mientras estás en forma de oso, forma de oso temible o forma felina.",
+    "cast": "Pasivo"
+  },
+  "11:Golpes depredadores:3": {
+    "description": "Aumenta en un 150 % de tu nivel tu poder de ataque cuerpo a cuerpo al estar en forma felina, de oso o de oso temible.",
+    "cast": "Pasivo"
+  },
+  "11:Instinto feral:3": {
+    "description": "Aumenta un 30% el daño infligido por tu facultad Flagelo y reduce la probabilidad que tienen los enemigos de detectarte mientras acechas como si tuvieras 3 niveles más.",
+    "cast": "Pasivo"
+  },
+  "11:Majestuosidad de la naturaleza:2": {
+    "description": "Aumenta la probabilidad de conseguir un golpe crítico con hechizos y ataques cuerpo a cuerpo en un 4%.",
+    "cast": "Pasivo"
+  },
+  "11:Predatory Discipline:1": {
+    "description": "Your Ferocious Bite ability no longer converts extra Energy into damage, but still deals extra damage based on your excess Energy.",
+    "cast": "Pasivo"
+  },
+  "11:Presteza feral:2": {
+    "description": "Aumenta un 30% tu velocidad de movimiento y un 4% tu probabilidad de esquivar mientras estás en forma felina.",
+    "cast": "Pasivo"
+  },
+  "11:Venganza:1": {
+    "description": "Aumenta un 20% el bonus de daño de golpe crítico de tus hechizos de Naturaleza y Arcanos.",
+    "cast": "Pasivo"
+  },
+  "2:Baluarte:1": {
+    "description": "Los ataques cuerpo a cuerpo que te asesten tienen un 10% de probabilidad de aumentar tu probabilidad de bloqueo un 6%. Dura 10 s o 5 bloqueos.",
+    "cast": "Pasivo"
+  },
+  "2:Baluarte:5": {
+    "description": "Los ataques cuerpo a cuerpo que te asesten tienen un 10% de probabilidad de aumentar tu probabilidad de bloqueo un 30%. Dura 10 s o 5 bloqueos.",
+    "cast": "Pasivo"
+  },
+  "2:Búsqueda de justicia:2": {
+    "description": "Aumenta un 15% la velocidad de movimiento y la velocidad de movimiento sobre montura. No se acumula con otros efectos de aumento de velocidad de movimiento.",
+    "cast": "Pasivo"
+  },
+  "2:Convicción:3": {
+    "description": "Mejora un 6% tu probabilidad de conseguir un golpe crítico con todos los hechizos y ataques.",
+    "cast": "Pasivo"
+  },
+  "2:Deber sagrado:1": {
+    "description": "Reduce 30 s el tiempo de reutilización de tus hechizos Escudo divino, Protección divina y Baluarte de templario, y reduce 5 s la duración de Abstinencia.",
+    "cast": "Pasivo"
+  },
+  "2:Deber sagrado:2": {
+    "description": "Reduce 60 s el tiempo de reutilización de tus hechizos Escudo divino, Protección divina y Baluarte de templario, y reduce 10 s la duración de Abstinencia.",
+    "cast": "Pasivo"
+  },
+  "2:Desvío:1": {
+    "description": "Aumenta tu probabilidad de parar en un 1%.",
+    "cast": "Pasivo"
+  },
+  "2:Desvío:5": {
+    "description": "Aumenta tu probabilidad de parar en un 5%.",
+    "cast": "Pasivo"
+  },
+  "2:Enjuiciador Sagrado:1": {
+    "description": "Aumenta un 20% el daño de tu facultad Golpe Sagrado y reinicia todos los efectos de tus sentencias sobre el objetivo.",
+    "cast": "Pasivo"
+  },
+  "2:Especialización en escudos:2": {
+    "description": "Aumenta un 30% la absorción de daño de tu escudo y da a tus bloqueos un 100% de probabilidad de restaurar un 4% de tu maná máximo. Solo puede ocurrir una vez cada 3 s.",
+    "cast": "Pasivo"
+  },
+  "2:Fuerza divina:3": {
+    "description": "Aumenta tu fuerza en un 6%.",
+    "cast": "Pasivo"
+  },
+  "2:Oración:2": {
+    "description": "Reduce un 4% el coste de maná de todos los hechizos y facultades de lanzamiento instantáneo.",
+    "cast": "Pasivo"
+  },
+  "2:Oración:5": {
+    "description": "Reduce un 10% el coste de maná de todos los hechizos y facultades de lanzamiento instantáneo.",
+    "cast": "Pasivo"
+  },
+  "2:Precisión:3": {
+    "description": "Mejora un 3% tu probabilidad de golpear.",
+    "cast": "Pasivo"
+  },
+  "2:Sentencia mejorada:2": {
+    "description": "Reduce 2 s el tiempo de reutilización de tu facultad Sentencia.",
+    "cast": "Pasivo"
+  },
+  "2:Sentencia santificada:3": {
+    "description": "Da a tu facultad Sentencia un 100% de probabilidades de devolver un 60% del coste de maná del sello sentenciado.",
+    "cast": "Pasivo"
+  },
+  "3:Aspectos letales:3": {
+    "description": "Mientras Aspecto del halcón está activo, Disparo automático tiene un 6% de probabilidad de aumentar la velocidad de ataque a distancia un 30% durante 12 s. Mientras Aspecto de la bestia está activo, todos los ataques automáticos cuerpo a cuerpo tienen un 6% de probabilidad de aumentar la velocidad de ataque cuerpo a cuerpo un 30% durante 12 s.",
+    "cast": "Pasivo"
+  },
+  "3:Aspectos letales:5": {
+    "description": "Mientras Aspecto del halcón está activo, Disparo automático tiene un 10% de probabilidad de aumentar la velocidad de ataque a distancia un 30% durante 12 s. Mientras Aspecto de la bestia está activo, todos los ataques automáticos cuerpo a cuerpo tienen un 10% de probabilidad de aumentar la velocidad de ataque cuerpo a cuerpo un 30% durante 12 s.",
+    "cast": "Pasivo"
+  },
+  "3:Ataques letales:5": {
+    "description": "Aumenta un 5% tu probabilidad de golpe crítico con todos los ataques.",
+    "cast": "Pasivo"
+  },
+  "3:Entrenamiento en aguante:2": {
+    "description": "Aumenta un 6% la salud y la armadura de tus mascotas.",
+    "cast": "Pasivo"
+  },
+  "3:Entrenamiento en aguante:3": {
+    "description": "Aumenta un 9% la salud y la armadura de tus mascotas.",
+    "cast": "Pasivo"
+  },
+  "3:Ferocidad:3": {
+    "description": "Aumenta un 6% la probabilidad de golpe crítico de tus mascotas y halcones.",
+    "cast": "Pasivo"
+  },
+  "3:Fuego enfocado:2": {
+    "description": "Aumenta todo el daño que infligís tú y tu mascota un 2% mientras tu mascota está activa.",
+    "cast": "Pasivo"
+  },
+  "3:Furia desatada:5": {
+    "description": "Aumenta un 15% el daño infligido por tus mascotas y halcones.",
+    "cast": "Pasivo"
+  },
+  "3:Rapidez de bestias:1": {
+    "description": "Aumenta un 30% la velocidad de movimiento de tus mascotas.",
+    "cast": "Pasivo"
+  },
+  "4:Agresión:3": {
+    "description": "Aumenta un 15% el daño infligido por tus facultades Eviscerar y Golpe siniestro.",
+    "cast": "Pasivo"
+  },
+  "4:Ataques implacables:1": {
+    "description": "Después de matar a un enemigo no trivial, aumenta un 20% la probabilidad de golpe crítico de tu siguiente Golpe siniestro, Puñalada, Emboscada, Mutilar o Golpe fantasmal. Dura 20 s.",
+    "cast": "Pasivo"
+  },
+  "4:Compostura:2": {
+    "description": "Aumenta 10 p. la reducción del coste de energía de tu facultad Disposición.",
+    "cast": "Pasivo"
+  },
+  "4:Correr mejorado:1": {
+    "description": "Otorga un 50% de probabilidad de eliminar todos los efectos de reducción de movimiento cuando activas la facultad Sprint.",
+    "cast": "Pasivo"
+  },
+  "4:Desvío:3": {
+    "description": "Aumenta tu probabilidad de parar en un 6%.",
+    "cast": "Pasivo"
+  },
+  "4:Ejecución impecable:1": {
+    "description": "Reduce 15 p. el coste de energía de tu facultad Eviscerar.",
+    "cast": "Pasivo"
+  },
+  "4:Experiencia con armas:1": {
+    "description": "Reduce un 1% la probabilidad de que tus ataques se esquiven o paren.",
+    "cast": "Pasivo"
+  },
+  "4:Golpe de gracia:3": {
+    "description": "Aumenta un 20% el daño infligido por tu facultad Eviscerar y un 20% el daño y la tasa de almacenamiento de tu facultad Marca de la muerte.",
+    "cast": "Pasivo"
+  },
+  "4:Golpes eficientes:2": {
+    "description": "Reduce el consumo de energía de tus facultades Golpe siniestro y Hemorragia en 5 p.",
+    "cast": "Pasivo"
+  },
+  "4:Precisión:3": {
+    "description": "Mejora un 3% tu probabilidad de golpear.",
+    "cast": "Pasivo"
+  },
+  "4:Robustez:1": {
+    "description": "Reduce un 30% el tiempo de reutilización de tus facultades Sprint y Evasión.",
+    "cast": "Pasivo"
+  },
+  "4:Robustez:2": {
+    "description": "Reduce un 60% el tiempo de reutilización de tus facultades Sprint y Evasión.",
+    "cast": "Pasivo"
+  },
+  "5:Disciplinas gemelas:3": {
+    "description": "Aumenta un 3% el daño y la sanación de tus hechizos de lanzamiento instantáneo.",
+    "cast": "Pasivo"
+  },
+  "5:Especialización en varitas:2": {
+    "description": "Aumenta el daño con varitas en un 25%.",
+    "cast": "Pasivo"
+  },
+  "7:Aluvión:1": {
+    "description": "Aumenta un 6% la velocidad de ataque de tus siguientes 3 golpes tras infligir un golpe crítico cuerpo a cuerpo.",
+    "cast": "Pasivo"
+  },
+  "7:Armas elementales:3": {
+    "description": "Aumenta un 20% el bonus de poder de ataque cuerpo a cuerpo de tu Arma Muerdepiedras, un 40% el efecto de tu Arma Viento Furioso y un 15% el daño infligido por tu Arma Lengua de Fuego y tu Arma Estigma de Escarcha.",
+    "cast": "Pasivo"
+  },
+  "7:Conciencia:3": {
+    "description": "Permite que un 50% de la regeneración de maná continúe mientras lanzas hechizos.",
+    "cast": "Pasivo"
+  },
+  "7:Conocimiento ancestral:3": {
+    "description": "Aumenta un 6% tu intelecto.",
+    "cast": "Pasivo"
+  },
+  "7:Convección:5": {
+    "description": "Reduce un 10% el coste de maná de tus hechizos Choque, Descarga de relámpagos y Cadena de relámpagos.",
+    "cast": "Pasivo"
+  },
+  "7:Enfoque chamanístico:1": {
+    "description": "Reduce un 45% el coste de maná de tus hechizos Choque y Escudo de relámpagos.",
+    "cast": "Pasivo"
+  },
+  "7:Enfoque de las mareas:5": {
+    "description": "Reduce un 5% el coste de maná de tus hechizos de sanación y aumenta un 5% la probabilidad de golpear.",
+    "cast": "Pasivo"
+  },
+  "7:Golpes de trueno:5": {
+    "description": "Mejora un 5% tus probabilidades de conseguir un golpe crítico con todos los hechizos y ataques.",
+    "cast": "Pasivo"
+  },
+  "7:Lobo fantasmal mejorado:2": {
+    "description": "Reduce 3,0 s el tiempo de lanzamiento de tu hechizo Lobo fantasmal, que ahora se puede utilizar en lugares cerrados.",
+    "cast": "Pasivo"
+  },
+  "7:Maña mental:3": {
+    "description": "Aumenta un valor equivalente al 150% de tu intelecto tu poder de ataque.",
+    "cast": "Pasivo"
+  },
+  "8:Descarga de Escarcha mejorada:1": {
+    "description": "Reduce 0,1 s el tiempo de lanzamiento de tu hechizo Descarga de Escarcha.",
+    "cast": "Pasivo"
+  },
+  "8:Descarga de Escarcha mejorada:5": {
+    "description": "Reduce 0,5 s el tiempo de lanzamiento de tu hechizo Descarga de Escarcha.",
+    "cast": "Pasivo"
+  },
+  "8:Especialización en varitas:1": {
+    "description": "Aumenta el daño con varitas en 13%.",
+    "cast": "Pasivo"
+  },
+  "8:Especialización en varitas:2": {
+    "description": "Aumenta el daño con varitas en 25%.",
+    "cast": "Pasivo"
+  },
+  "8:Fragmentos de hielo:1": {
+    "description": "Aumenta en un 20% el daño extra de golpe crítico con tus hechizos de Escarcha.",
+    "cast": "Pasivo"
+  },
+  "8:Fragmentos de hielo:3": {
+    "description": "Aumenta en un 60% el daño extra de golpe crítico con tus hechizos de Escarcha.",
+    "cast": "Pasivo"
+  },
+  "8:Mordiescarcha:2": {
+    "description": "Da a tus efectos de escalofrío un 10% de probabilidad de congelar al objetivo durante 5 s.",
+    "cast": "Pasivo"
+  },
+  "8:Nova de Escarcha mejorada:2": {
+    "description": "Reduce el tiempo de regeneración de tu hechizo Nova de Escarcha en 4 s.",
+    "cast": "Pasivo"
+  },
+  "8:Precisión:3": {
+    "description": "Mejora un 6% tu probabilidad de golpear con todos los hechizos.",
+    "cast": "Pasivo"
+  },
+  "9:Abrazo demoníaco:5": {
+    "description": "Aumenta tu aguante total un 15%.",
+    "cast": "Pasivo"
+  },
+  "9:Alcance macabro:1": {
+    "description": "Aumenta en un 10% el alcance de tus hechizos de Aflicción.",
+    "cast": "Pasivo"
+  },
+  "9:Corrupción mejorado:3": {
+    "description": "Reduce 1,2 s el tiempo de lanzamiento de tu hechizo Corrupción y aumenta un 6% el daño que inflige.",
+    "cast": "Pasivo"
+  },
+  "9:Cosecha de almas:2": {
+    "description": "Matar a un objetivo no trivial afectado por Drenar alma aumenta un 100% tu regeneración de maná durante 10 s y permite que perdure un 100% de la regeneración de maná normal mientras se lanza.",
+    "cast": "Pasivo"
+  },
+  "9:Égida demoníaca:2": {
+    "description": "Aumenta un 30% la efectividad de tus hechizos Piel de demonio y Armadura demoníaca.",
+    "cast": "Pasivo"
+  },
+  "9:Maestro invocador:2": {
+    "description": "Reduce el tiempo de lanzamiento de los hechizos de invocación de tu diablillo, abisario, súcubo, íncubo y manáfago en 4 s y el coste de maná en un 40%.",
+    "cast": "Pasivo"
+  },
+  "9:Marca demoníaca:2": {
+    "description": "Tu Dolor abrasador genera un 33% menos de amenaza y marca al objetivo durante 10 s. Los siguientes 4 ataques de tu mascota contra el objetivo infligen de 20 a 23 de daño de Fuego o de las Sombras según la mascota. Si inflige daño de las Sombras, genera gran amenaza.",
+    "cast": "Pasivo"
+  },
+  "9:Sayaad mejorado:3": {
+    "description": "Aumenta en un 30% el efecto de los hechizos Látigo doloroso y Beso calmante de tu súcubo y tu íncubo, y en un 30% la duración de los hechizos Seducción e Invisibilidad inferior de tu súcubo y tu íncubo.",
+    "cast": "Pasivo"
+  },
+  "9:Supresión:1": {
+    "description": "Aumenta un 1% tu probabilidad de golpear y reduce un 4% toda la amenaza que generas.",
+    "cast": "Pasivo"
+  },
+  "9:Supresión:4": {
+    "description": "Aumenta un 4% tu probabilidad de golpear y reduce un 16% toda la amenaza que generas.",
+    "cast": "Pasivo"
+  },
+  "9:Transfusión de  vida mejorada:1": {
+    "description": "Aumenta el maná generado por tu hechizo Transfusión de vida en un 10%.",
+    "cast": "Pasivo"
+  },
+  "9:Vitalidad vil:3": {
+    "description": "Aumenta un 15% tu maná máximo y un 15% la salud y el maná máximos de tu diablillo, abisario, súcubo, íncubo y manáfago.",
+    "cast": "Pasivo"
+  },
+  "forever-eu-ferrogard-escudoferreo:27:Baluarte de templario:1": {
+    "description": "Al activarse, esta facultad te otorga un escudo de absorción equivalente a un 100% de tu salud máxima durante 8 s. Aplica Abstinencia durante 50 s. No se puede lanzar mientras Abstinencia está activa.",
+    "cast": "Instantáneo",
+    "cost": "99 Maná",
+    "cooldown": "Reutilización: 5 min"
+  },
+  "forever-eu-jukkz-shelby:26:Estocada:1": {
+    "description": "Un golpe que se activa tras haber parado el ataque de un oponente. Este ataque inflige un 150% de daño de arma y desarma al objetivo durante 6 s.",
+    "cast": "Instantáneo",
+    "cost": "10 Energía",
+    "range": "Alcance cuerpo a cuerpo",
+    "cooldown": "Reutilización: 6 s"
+  },
+  "forever-eu-juninho-delbosque:29:Carga feral:1": {
+    "description": "Requiere forma de oso, forma de oso temible\r\nCargas contra un objetivo, lo que lo inmoviliza e interrumpe el lanzamiento de hechizos durante 4 s.",
+    "cast": "Instantáneo",
+    "cost": "5 Ira",
+    "range": "Alcance de 8-25 m",
+    "cooldown": "Reutilización: 15 s"
+  },
+  "forever-eu-lyrae-grandwell:29:Invocar halcón:1": {
+    "description": "Ordena a un halcón que se lance contra tu enemigo objetivo, infligiendo 66 p. de daño físico. El ataque continúa durante 18 s. Solo puede haber 2 halcones activos a la vez. Invocar halcón comparte su tiempo de reutilización con Disparo Arcano.",
+    "cast": "Instantáneo",
+    "cost": "80 Maná",
+    "range": "Alcance de 35 m",
+    "cooldown": "Reutilización: 6 s"
+  },
+  "forever-eu-naisen-grandwell:28:Dominio de lo maldito:1": {
+    "description": "Tu próximo hechizo de invocación a un diablillo, abisario, súcubo, íncubo o manáfago reducirá en 5,5 s el tiempo de lanzamiento y su coste de maná se reducirá en un 50%.",
+    "cast": "Instantáneo",
+    "cooldown": "Reutilización: 5 min"
+  },
+  "forever-eu-naisen-grandwell:28:Sacrificio demoníaco:1": {
+    "description": "Cuando se activa, sacrifica a tu demonio invocado para mejorar el aspecto opuesto de tu poder, lo que te otorga un efecto que dura 2 h. El efecto se cancela si se invoca a cualquier demonio.\r\n\r\nDiablillo: Aumenta un 15% tu daño de las Sombras.\r\n\r\nAbisario: Restaura un 2% de tu maná total cada 4 s.\r\n\r\nSúcubo/Íncubo: Aumenta tu daño de Fuego un 15%.\r\n\r\nManáfago: Restaura un 3% de tu salud total cada 4 s.",
+    "cast": "Instantáneo",
+    "range": "Alcance de 100 m"
+  },
+  "forever-eu-rast-puñotormenta:28:Golpe de tormenta:1": {
+    "description": "Asesta un golpe que inflige un 150% de daño con arma y aumenta un 20% el daño que infliges al objetivo con tu siguiente hechizo Descarga de relámpagos, Cadena de relámpagos o Choque de tierra durante 12 s.",
+    "cast": "Instantáneo",
+    "cost": "48 Maná",
+    "range": "Alcance cuerpo a cuerpo",
+    "cooldown": "Reutilización: 6 s"
+  },
+  "forever-eu-rompecraneos-roman:27:Golpes temerarios:1": {
+    "description": "Tus próximos 4 ataques cuerpo a cuerpo generan 5 p. de ira adicional. Dura 8 s.",
+    "cast": "Instantáneo",
+    "cooldown": "Reutilización: 15 s"
+  },
+  "forever-eu-viçent-wildfang:24:Carga feral:1": {
+    "description": "Requiere forma de oso, forma de oso temible\r\nCargas contra un objetivo, lo que lo inmoviliza e interrumpe el lanzamiento de hechizos durante 4 s.",
+    "cast": "Instantáneo",
+    "cost": "5 Ira",
+    "range": "Alcance de 8-25 m",
+    "cooldown": "Reutilización: 15 s"
+  },
+  "forever-eu-vincie-quickhands:30:Estocada:1": {
+    "description": "Un golpe que se activa tras haber parado el ataque de un oponente. Este ataque inflige un 150% de daño de arma y desarma al objetivo durante 6 s.",
+    "cast": "Instantáneo",
+    "cost": "10 Energía",
+    "range": "Alcance cuerpo a cuerpo",
+    "cooldown": "Reutilización: 6 s"
+  },
+  "forever-eu-vincie-quickhands:30:Ráfaga con espada:1": {
+    "description": "Aumenta la velocidad de ataque cuerpo a cuerpo un 20% y hace que tus ataques cuerpo a cuerpo golpeen a un enemigo cercano adicional. Dura 15 s.",
+    "cast": "Instantáneo",
+    "cost": "25 Energía",
+    "cooldown": "Reutilización: 2 min"
+  }
+}

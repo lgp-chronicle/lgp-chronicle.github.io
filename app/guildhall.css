@@ -6,7 +6,7 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: clamp(168px, 16vw, 440px);
+  min-height: clamp(290px, 25vw, 490px);
   background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
   border-top: 2px solid #a67b29;
 }
@@ -97,9 +97,6 @@
   --hall-compact: url("./art/santuario-movil.webp");
   --hall-y: 39%;
 }
-.guildhall[data-home="true"] {
-  min-height: clamp(290px, 25vw, 490px);
-}
 .guildhall-caption a {
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -132,12 +129,9 @@
   border-radius: 4px;
 }
 .guildhall-brand img {
-  width: clamp(96px, 8vw, 148px);
+  width: clamp(175px, 17.8vw, 338px);
   height: auto;
   filter: drop-shadow(0 3px 3px #140d07a8);
-}
-.guildhall[data-home="true"] .guildhall-brand img {
-  width: clamp(175px, 17.8vw, 338px);
 }
 .guildhall-caption {
   position: absolute;
@@ -236,7 +230,6 @@
     background: #282019 var(--hall-compact) center top / 100% auto no-repeat;
   }
   .guildhall[data-cover="pique"] .guildhall-inner { padding: 4px 0 5px 9px; }
-  .guildhall[data-cover="pique"] .guildhall-brand img { width: 60px; }
   .guildhall[data-cover="pique"] .guildhall-caption {
     position: static; max-width: 76%; margin: 4px 10px 4px auto;
   }
@@ -252,12 +245,9 @@
     max-width: min(92%, 390px);
   }
   .guildhall {
-    min-height: 174px;
+    min-height: clamp(290px, 72vw, 350px);
     align-items: flex-end;
     background-image: var(--hall-compact);
-  }
-  .guildhall[data-home="true"] {
-    min-height: clamp(290px, 72vw, 350px);
   }
   .guildhall::before {
     background:
@@ -269,9 +259,6 @@
     padding: 0 0 43px clamp(12px, 3vw, 25px);
   }
   .guildhall-brand img {
-    width: 70px;
-  }
-  .guildhall[data-home="true"] .guildhall-brand img {
     width: clamp(102px, 26vw, 142px);
   }
   .guildhall-caption {

@@ -1,4 +1,5 @@
 export type ItemProperties = {
+  inventoryTypeId?: string;
   binding?: string;
   unique?: string;
   inventoryType?: string;
@@ -24,6 +25,11 @@ export type Equipment = {
   properties?: ItemProperties;
 };
 export type Talent = {
+  description?: string;
+  cast?: string;
+  cost?: string;
+  range?: string;
+  cooldown?: string;
   name: string;
   spellId?: number;
   rank?: number;
@@ -106,6 +112,7 @@ export type Member = {
   errors?: string[];
 };
 export type Activity = {
+  trophyWinners?: { id: string; name: string; tint: string }[];
   id: string;
   characterId: string;
   otherCharacterId?: string;
@@ -118,11 +125,20 @@ export type Activity = {
 };
 export type GuildData = {
   chronicles?: IllustratedChronicle[];
+  trophyRoom?: TrophyRoom;
   members: Member[];
   events: Activity[];
   available: boolean;
   message?: string;
   generatedAt: string;
+};
+export type TrophyRoom = {
+  factions: Record<string, string>;
+  unlocks: Record<string, {
+    batch: string;
+    at: string;
+    winners: { id: string; name: string; tint: string }[];
+  }>;
 };
 export type ChronicleKind = "pvp" | "chase" | "gear" | "levels" | "finish";
 export type ChronicleRow = {

@@ -1,5 +1,6 @@
 "use client";
-import { apiUrl } from "@/lib/public-settings";
+import { apiUrl, siteHref } from "@/lib/public-settings";
+import { archivePath } from "@/lib/guild-navigation";
 import { useState, useEffect } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
 import type { Activity, Member } from "./types";
@@ -12,6 +13,7 @@ import { EditionPlay } from "./edition-play";
 
 const categories: Record<string, string> = {
   all: "Todo",
+  trophy: "Trofeos",
   overtake: "Posiciones",
   level: "Niveles",
   itemLevel: "Equipo",
@@ -21,6 +23,7 @@ const categories: Record<string, string> = {
 };
 const categoryIcons: Record<string, GuildIconName> = {
   all: "dispatch",
+  trophy: "trophy",
   overtake: "boot",
   level: "steps",
   itemLevel: "shield",
@@ -64,7 +67,30 @@ function NewsEntry({
         </time>
         <span>{categories[categoryOf(e)]}</span>
       </div>
-      {moved ? (
+      {e.kind === "trophy" ? (
+        <div className="story-content trophy-news">
+          <a href={siteHref(archivePath("awards"))}>
+            <GuildIcon name="trophy" size={23} /> {e.text}
+          </a>
+          <div>
+            {e.trophyWinners?.map((w) =>
+              members.some((m) => m.id === w.id) ? (
+                <a
+                  key={w.id}
+                  style={{ color: w.tint }}
+                  href={siteHref("/character/" + encodeURIComponent(w.id))}
+                >
+                  {w.name}
+                </a>
+              ) : (
+                <span key={w.id} style={{ color: w.tint }}>
+                  {w.name}
+                </span>
+              ),
+            )}
+          </div>
+        </div>
+      ) : moved ? (
         <div className="story-content">
           <div className="news-movement">
             <span className="movement-chip">
@@ -106,7 +132,9 @@ export function Newspaper({
   members: Member[];
   featured?: boolean;
 }) {
-  const [category, setCategory] = useEntryState<string>("newsCategory", "all");
+  const queryDay = featured ? new URLSearchParams(window.location.hash.split("?")[1]).get("trofeos") : null;
+  const trophyDay = queryDay && /^\d{4}-\d{2}-\d{2}$/.test(queryDay) ? queryDay : undefined;
+  const [category, setCategory] = useEntryState<string>("newsCategory", trophyDay ? "trophy" : "all");
   const [limit, setLimit] = useEntryState<number>("newsLimit", 8);
   const [archivedDays, setArchivedDays] = useState<string[]>([]);
   const [archivedEvents, setArchivedEvents] = useState<Activity[] | null>(null);
@@ -115,12 +143,13 @@ export function Newspaper({
     new Set([
       new Date().toISOString().slice(0, 10),
       ...archivedDays,
+      ...(trophyDay ? [trophyDay] : []),
       ...events.map((e) => e.at.slice(0, 10)),
     ]),
   )
     .sort()
     .reverse();
-  const [day, setDay] = useEntryState<string>("newsDay", days[0]);
+  const [day, setDay] = useEntryState<string>("newsDay", trophyDay ?? days[0]);
   useEffect(() => {
     const abort = new AbortController();
     fetch(apiUrl("/api/editions"), { signal: abort.signal })

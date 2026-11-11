@@ -3,6 +3,7 @@ import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { assetUrl } from "@/lib/public-settings";
 import { ago, display } from "./analytics";
 import { numeric, type Profile } from "./types";
+import { knownProfession } from "./professions";
 
 const attributes: Record<string, [string, GuildIconName]> = {
   Salud: ["Características", "health"],
@@ -22,20 +23,6 @@ const attributes: Record<string, [string, GuildIconName]> = {
   "Parar (%)": ["Defensa", "parry"],
   "Bloquear (%)": ["Defensa", "block"],
 };
-const professions = [
-  ["Mining", "Minería", "mining"],
-  ["Engineering", "Ingeniería", "engineering"],
-  ["Cooking", "Cocina", "cooking"],
-  ["Fishing", "Pesca", "fishing"],
-  ["First Aid", "Primeros auxilios", "first-aid"],
-  ["Herbalism", "Herboristería", "herbalism"],
-  ["Leatherworking", "Peletería", "leatherworking"],
-  ["Skinning", "Desuello", "skinning"],
-  ["Alchemy", "Alquimia", "alchemy"],
-  ["Blacksmithing", "Herrería", "blacksmithing"],
-  ["Tailoring", "Sastrería", "tailoring"],
-  ["Enchanting", "Encantamiento", "enchanting"],
-] as const;
 
 function Attributes({ profile: p }: { profile: Profile }) {
   const stats = Object.entries(p.statistics ?? {});
@@ -100,11 +87,7 @@ function Professions({ profile: p }: { profile: Profile }) {
       {p.professions?.length ? (
         <ul className="trade-list">
           {p.professions.map((trade, i) => {
-            const known = professions.find(
-              ([en, es]) =>
-                en.toLowerCase() === trade.name.toLowerCase() ||
-                es.toLowerCase() === trade.name.toLowerCase(),
-            );
+            const known = knownProfession(trade.name);
             const name = known?.[1] ?? trade.name;
             return (
               <li key={trade.name + i}>

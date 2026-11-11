@@ -1,5 +1,6 @@
 import catalog from "../config/armory-catalog.json";
 import tooltipCatalog from "../config/item-tooltips.json";
+import talentTooltips from "../config/talent-tooltips.json";
 import type { Equipment, ItemProperties, Talent } from "./types";
 
 type KnownTalent = {
@@ -55,6 +56,8 @@ export function itemDisplay(item: Equipment) {
 export function talentDisplay(
   value: Talent | string,
   classId?: number,
+  memberId?: string,
+  level?: number,
 ): Talent {
   let talent: Talent;
   if (typeof value === "string") {
@@ -65,8 +68,18 @@ export function talentDisplay(
   } else talent = value;
   const known = classId ? talents[classId]?.[talent.name] : undefined;
   const max = talent.maxRank ?? known?.maxRank;
+  const tooltips: Record<string, Partial<Talent>> = talentTooltips;
+  const signature = ":" + talent.name + ":" + talent.rank;
+  const saved =
+    tooltips[memberId + ":" + level + signature] ??
+    tooltips[classId + signature];
   return {
     ...talent,
+    description: talent.description ?? saved?.description,
+    cast: talent.cast ?? saved?.cast,
+    cost: talent.cost ?? saved?.cost,
+    cooldown: talent.cooldown ?? saved?.cooldown,
+    range: talent.range ?? saved?.range,
     spellId: talent.spellId ?? known?.spellId,
     tree: talent.tree ?? known?.tree,
     icon: talent.icon ?? catalogIcon(known?.icon),

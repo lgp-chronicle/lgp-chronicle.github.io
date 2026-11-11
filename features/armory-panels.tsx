@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Info } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { ago } from "./analytics";
 import {
@@ -16,7 +16,11 @@ import { color, type Equipment, type Profile, type Member } from "./types";
 import { Portrait, fullName } from "./member-portrait";
 import { useCharacterArt } from "./character-art";
 import { ClassRoom, classRoomName } from "./class-frame";
-import { EquipmentTooltip, itemQuality } from "./equipment-tooltip";
+import {
+  ArmoryTooltip,
+  EquipmentTooltip,
+  itemQuality,
+} from "./equipment-tooltip";
 const iconRequests = new Map<string, Promise<string | undefined>>();
 function lookupIcon(kind: Entity, id: number) {
   const key = kind + "/" + id;
@@ -302,9 +306,16 @@ export function EquipmentPanel({ member }: { member: Member }) {
   );
 }
 
-export function TalentsPanel({ profile }: { profile: Profile }) {
+export function TalentsPanel({
+  profile,
+  memberId,
+}: {
+  profile: Profile;
+  memberId: string;
+}) {
+  const [pinned, setPinned] = useState<string | null>(null);
   const talents = (profile.talents ?? []).map((t) =>
-    talentDisplay(t, profile.classId),
+    talentDisplay(t, profile.classId, memberId, profile.level),
   );
   const unknown = "Rama sin identificar";
   const trees = [
@@ -338,42 +349,83 @@ export function TalentsPanel({ profile }: { profile: Profile }) {
                     </span>
                   )}
                 </div>
-                {entries.map((talent, i) => (
-                  <a
-                    className="talent-link"
-                    key={talent.name + i}
-                    href={wowheadUrl("spell", talent.spellId, talent.name)}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={
-                      (talent.spellId ? "Ver " : "Buscar ") +
-                      talent.name +
-                      " en Wowhead"
-                    }
-                  >
-                    <GameIcon
-                      key={String(talent.spellId) + talent.icon}
-                      kind="spell"
+                {entries.map((talent, i) => {
+                  const key = tree + "/" + talent.name + "/" + i;
+                  const rank =
+                    talent.rank === undefined
+                      ? undefined
+                      : "Rango " +
+                        talent.rank +
+                        (talent.maxRank ? " / " + talent.maxRank : "");
+                  return (
+                    <ArmoryTooltip
+                      key={key}
+                      entity="spell"
                       id={talent.spellId}
-                      src={talent.icon}
-                    />
-                    <span>
-                      <strong>{talent.name}</strong>
-                      {talent.rank !== undefined && (
-                        <small>
-                          Rango {talent.rank}
-                          {talent.maxRank ? " / " + talent.maxRank : ""}
-                        </small>
-                      )}
-                      {!talent.spellId && <small>Buscar en Wowhead</small>}
-                    </span>
-                    <ExternalLink
-                      className="entry-external"
-                      size={13}
-                      aria-hidden="true"
-                    />
-                  </a>
-                ))}
+                      name={talent.name}
+                      side="right"
+                      tint="#ffe3a0"
+                      pinned={pinned === key}
+                      hasPinnedItem={pinned !== null}
+                      onPinChange={(open) =>
+                        setPinned((current) =>
+                          open ? key : current === key ? null : current,
+                        )
+                      }
+                      body={
+                        <>
+                          <p className="wow-item-name">{talent.name}</p>
+                          <p className="wow-item-level">
+                            {[talent.tree, rank].filter(Boolean).join(" · ")}
+                          </p>
+                          {[
+                            talent.cost,
+                            talent.range,
+                            talent.cast,
+                            talent.cooldown,
+                          ]
+                            .filter(Boolean)
+                            .map((line, index) => (
+                              <p key={index}>{line}</p>
+                            ))}
+                          <p className="wow-talent-effect">
+                            {talent.description ||
+                              "La armería aún no ha registrado el efecto de este rango."}
+                          </p>
+                        </>
+                      }
+                    >
+                      <button
+                        type="button"
+                        className="talent-link"
+                        aria-label={[talent.name, rank]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      >
+                        <GameIcon
+                          key={String(talent.spellId) + talent.icon}
+                          kind="spell"
+                          id={talent.spellId}
+                          src={talent.icon}
+                        />
+                        <span>
+                          <strong>{talent.name}</strong>
+                          {talent.rank !== undefined && (
+                            <small>
+                              Rango {talent.rank}
+                              {talent.maxRank ? " / " + talent.maxRank : ""}
+                            </small>
+                          )}
+                        </span>
+                        <Info
+                          className="entry-external"
+                          size={13}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </ArmoryTooltip>
+                  );
+                })}
                 {!entries.length && (
                   <p className="empty-tree">
                     {points === 0

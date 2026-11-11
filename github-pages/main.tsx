@@ -34,8 +34,10 @@ function App() {
     [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let departure: { from: string; to: string } | undefined;
+    let menuFromTop: string | undefined;
     const remember = (event: MouseEvent) => {
       departure = undefined;
+      menuFromTop = undefined;
       if (
         event.button ||
         event.metaKey ||
@@ -47,6 +49,8 @@ function App() {
         return;
       const a = event.target.closest<HTMLAnchorElement>('a[href^="#/"]');
       const to = a?.hash.slice(1);
+      if (to && a?.closest(".guildhall-nav, .archive-links") && window.scrollY <= 2)
+        menuFromTop = to;
       if (
         !to ||
         !a ||
@@ -67,6 +71,9 @@ function App() {
       );
     };
     const route = () => {
+      if (menuFromTop === location.hash.slice(1))
+        history.replaceState({ ...history.state, menuFromTop: true }, "");
+      menuFromTop = undefined;
       if (departure?.to === location.hash.slice(1))
         history.replaceState({ ...history.state, origin: departure.from }, "");
       departure = undefined;

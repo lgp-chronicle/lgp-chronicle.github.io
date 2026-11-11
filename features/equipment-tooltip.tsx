@@ -4,10 +4,11 @@ import {
   useState,
   type CSSProperties,
   type ReactElement,
+  type ReactNode,
 } from "react";
 import { ExternalLink, X } from "lucide-react";
 import { Popover, Tooltip } from "radix-ui";
-import { itemDisplay, wowheadUrl } from "./armory-data";
+import { itemDisplay, wowheadUrl, type Entity } from "./armory-data";
 import type { Equipment } from "./types";
 
 const qualities: Record<string, [string, string]> = {
@@ -76,20 +77,47 @@ function ItemLines({ item }: { item: Equipment }) {
   );
 }
 
-export function EquipmentTooltip({
-  item,
-  side,
-  pinned,
-  hasPinnedItem,
-  onPinChange,
-  children,
-}: {
-  item: Equipment;
+type TriggerProps = {
   side: "left" | "right" | "top";
   pinned: boolean;
   hasPinnedItem: boolean;
   onPinChange: (open: boolean) => void;
   children: ReactElement;
+};
+
+export function EquipmentTooltip({
+  item,
+  ...trigger
+}: TriggerProps & { item: Equipment }) {
+  return (
+    <ArmoryTooltip
+      {...trigger}
+      name={item.name}
+      id={item.id}
+      entity="item"
+      tint={itemQuality(item)[1]}
+      body={<ItemLines item={item} />}
+    />
+  );
+}
+
+export function ArmoryTooltip({
+  name,
+  id,
+  entity,
+  tint,
+  body,
+  side,
+  pinned,
+  hasPinnedItem,
+  onPinChange,
+  children,
+}: TriggerProps & {
+  name: string;
+  id?: number;
+  entity: Entity;
+  tint: string;
+  body: ReactNode;
 }) {
   const [hovered, setHovered] = useState(false);
   const restoringFocus = useRef(false);
@@ -114,7 +142,7 @@ export function EquipmentTooltip({
     collisionPadding: 10,
     hideWhenDetached: true,
   } as const;
-  const cardStyle = { "--wow-rarity": itemQuality(item)[1] } as CSSProperties;
+  const cardStyle = { "--wow-rarity": tint } as CSSProperties;
   return (
     <Popover.Root
       open={pinned}
@@ -148,7 +176,7 @@ export function EquipmentTooltip({
               className="wow-item-card"
               style={cardStyle}
             >
-              <ItemLines item={item} />
+              {body}
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
@@ -159,7 +187,7 @@ export function EquipmentTooltip({
           side="top"
           className="wow-item-card wow-item-pinned"
           style={cardStyle}
-          aria-label={item.name}
+          aria-label={name}
           onCloseAutoFocus={(event) => {
             const focused = document.activeElement;
             if (
@@ -177,17 +205,20 @@ export function EquipmentTooltip({
             });
           }}
         >
-          <Popover.Close className="wow-item-close" aria-label="Cerrar objeto">
+          <Popover.Close
+            className="wow-item-close"
+            aria-label={entity === "item" ? "Cerrar objeto" : "Cerrar talento"}
+          >
             <X size={16} aria-hidden="true" />
           </Popover.Close>
-          <ItemLines item={item} />
+          {body}
           <a
             className="wow-item-link"
-            href={wowheadUrl("item", item.id, item.name)}
+            href={wowheadUrl(entity, id, name)}
             target="_blank"
             rel="noreferrer"
           >
-            {item.id ? "Ver en Wowhead" : "Buscar en Wowhead"}{" "}
+            {id ? "Ver en Wowhead" : "Buscar en Wowhead"}{" "}
             <ExternalLink size={12} aria-hidden="true" />
           </a>
         </Popover.Content>

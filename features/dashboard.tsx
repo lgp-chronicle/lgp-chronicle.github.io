@@ -16,6 +16,7 @@ import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
 import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
+import { TrophyRoom } from "./trophy-room";
 import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
@@ -55,6 +56,7 @@ export function Dashboard({
   useEffect(() => {
     const y = window.history.state?.returnY;
     if (typeof y === "number") window.scrollTo(0, y);
+    else if (window.history.state?.menuFromTop) window.scrollTo(0, 0);
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members;
@@ -162,7 +164,7 @@ export function Dashboard({
       <section
         className="archive"
         ref={archive}
-        id={archivePath(section ?? "overview")}
+        id="guild-archive"
         aria-label="Archivo de la hermandad"
       >
         {group && group.sections.length > 1 && (
@@ -220,6 +222,8 @@ export function Dashboard({
               HONOR ETERNO. HASTA LA PRÓXIMA SINCRONIZACIÓN.
             </p>
             <h2 className="section-title">El salón de la fama</h2>
+            <TrophyRoom room={data.trophyRoom} members={m} />
+            <h3 className="section-title">Premios actuales</h3>
             {trophies.length ? (
               <div className="honor-gallery hall-gallery">
                 {trophies.map((a) => (

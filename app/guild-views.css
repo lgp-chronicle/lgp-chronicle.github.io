@@ -1305,3 +1305,5 @@
     padding-inline: 11px;
   }
 }
+.talent-tree button.talent-link { width: 100%; text-align: left; cursor: pointer; }
+.wow-item-card .wow-talent-effect { color: #ffda75; white-space: pre-line; margin-top: 5px; }

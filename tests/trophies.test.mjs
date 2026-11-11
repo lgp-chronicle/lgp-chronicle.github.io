@@ -1,0 +1,181 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { DatabaseSync } from "node:sqlite";
+import {
+  equipmentTrophies,
+  recordTrophies,
+  trophyNews,
+} from "../services/permanent-trophies.ts";
+
+const slots = [
+  "HEAD",
+  "NECK",
+  "SHOULDER",
+  "BACK",
+  "CHEST",
+  "WRIST",
+  "HANDS",
+  "WAIST",
+  "LEGS",
+  "FEET",
+  "FINGER_1",
+  "FINGER_2",
+  "TRINKET_1",
+  "TRINKET_2",
+  "MAIN_HAND",
+  "RANGED",
+];
+test("full sets require every combat slot at the threshold in the same set, with correct two-handed and cosmetic exceptions", () => {
+  const items = slots.map((slotType) => ({
+    slotType,
+    slot: slotType,
+    quality: "EPIC",
+  }));
+  const main = items.find((i) => i.slotType === "MAIN_HAND");
+  main.properties = { inventoryType: "Dos manos" };
+  const gear = (x) =>
+    equipmentTrophies(x).filter((id) => id.startsWith("gear-"));
+  assert.deepEqual(gear(items), ["gear-2", "gear-3", "gear-4"]);
+  assert.deepEqual(
+    gear([...items, { slot: "Tabardo", quality: "COMMON" }]),
+    gear(items),
+  );
+  assert.deepEqual(gear(items.slice(1)), []);
+  assert.deepEqual(
+    gear(
+      items.map((i) => (i.slotType === "HEAD" ? { ...i, quality: "RARE" } : i)),
+    ),
+    ["gear-2", "gear-3"],
+  );
+  assert.deepEqual(
+    gear(
+      items.map((i) =>
+        i.slotType === "HEAD" ? { ...i, quality: "UNCOMMON" } : i,
+      ),
+    ),
+    ["gear-2"],
+  );
+  main.properties = { inventoryType: "Una mano" };
+  assert.deepEqual(gear(items), []);
+  assert.deepEqual(
+    gear([...items, { slotType: "OFF_HAND", quality: "COMMON" }]),
+    [],
+  );
+  assert.deepEqual(
+    gear([...items, { slotType: "OFF_HAND", quality: "RARE" }]),
+    ["gear-2", "gear-3"],
+  );
+  assert.equal(
+    equipmentTrophies([{ slot: "Tabardo", id: 5976 }]).includes("tabard"),
+    true,
+  );
+  assert.equal(
+    equipmentTrophies([
+      { slot: "Tabardo", id: 123 },
+      { slot: "Pecho", id: 5976 },
+    ]).includes("tabard"),
+    false,
+  );
+});
+
+test("permanent trophies backfill, share a survey, persist, and generate one herald story for each milestone", () => {
+  const db = new DatabaseSync(":memory:");
+  try {
+    db.exec(
+      "CREATE TABLE character_snapshots(id INTEGER PRIMARY KEY,character_id TEXT,at TEXT,data TEXT)",
+    );
+    const write = db.prepare(
+      "INSERT INTO character_snapshots(character_id,at,data) VALUES(?,?,?)",
+    );
+    const roster = ["a", "b", "c"].map((id) => ({
+      id,
+      name: id.toUpperCase(),
+      region: "eu",
+      data: {},
+    }));
+    const put = (id, at, surveyAt, p) =>
+      write.run(
+        id,
+        at,
+        JSON.stringify({
+          ...p,
+          surveyAt,
+          observedAt: at,
+          resourceTimes: {
+            summary: at,
+            pvp_summary: at,
+            professions: at,
+            reputations: at,
+            equipment: at,
+            ...p.resourceTimes,
+          },
+        }),
+      );
+    const first = "2026-11-10T13:00:00Z",
+      second = "2026-11-10T13:20:00Z";
+    const trades = [
+      "Cooking",
+      "Fishing",
+      "Engineering",
+      "First Aid",
+      "Mining",
+    ].map((name) => ({ name, skill: 300, max: 300 }));
+    put("a", "2026-11-10T13:00:02Z", first, {
+      level: 60,
+      honorableKills: 1000,
+      professions: trades.slice(0, 4),
+      reputations: [
+        { name: "Forjaz", standing: "Exaltado" },
+        { name: "Ventormenta", standing: "Venerado", value: 42000 },
+      ],
+    });
+    put("b", "2026-11-10T13:00:14Z", first, {
+      level: 60,
+      professions: [{ name: "Cocina", skill: 75, max: 75 }],
+    });
+    const firstRoom = recordTrophies(db, roster);
+    assert.equal(firstRoom.unlocks["five-trades"], undefined);
+    assert.deepEqual(
+      firstRoom.unlocks["level-60"].winners.map((w) => w.id),
+      ["a", "b"],
+    );
+    assert.ok(firstRoom.unlocks["rep-forjaz"]);
+    assert.equal(firstRoom.unlocks["rep-ventormenta"], undefined);
+    assert.equal(firstRoom.unlocks["cooking-300"].winners.length, 1);
+    const retry = recordTrophies(db, roster);
+    assert.deepEqual(retry, firstRoom);
+    put("c", "2026-11-10T13:20:01Z", second, {
+      level: 60,
+      honorableKills: 5000,
+      professions: trades,
+    });
+    put("a", "2026-11-10T13:20:02Z", second, {
+      professions: trades.slice(4),
+      honorableKills: 100000,
+      resourceTimes: { pvp_summary: first },
+    });
+    const final = recordTrophies(db, roster);
+    assert.deepEqual(final.unlocks["level-60"], firstRoom.unlocks["level-60"]);
+    assert.deepEqual(
+      final.unlocks["honor-1000"].winners.map((w) => w.id),
+      ["a"],
+    );
+    assert.ok(final.unlocks["honor-5000"]);
+    assert.equal(final.unlocks["honor-100000"], undefined);
+    assert.deepEqual(
+      final.unlocks["five-trades"].winners.map((w) => w.id),
+      ["c"],
+    );
+    const news = trophyNews(final);
+    assert.equal(news.length, Object.keys(final.unlocks).length);
+    assert.equal(new Set(news.map((e) => e.id)).size, news.length);
+    assert.deepEqual(
+      news
+        .find((e) => e.id === "trophy/level-60")
+        .trophyWinners.map((w) => w.name),
+      ["A", "B"],
+    );
+  } finally {
+    db.close();
+  }
+});

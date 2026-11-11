@@ -99,7 +99,7 @@ test("Classic talents select only the active group and preserve tied primary tre
                   {
                     talent_rank: 3,
                     talent: { id: 7777 },
-                    spell_tooltip: { spell: { name: "TEST-TALENT", id: 1234 } },
+                    spell_tooltip: { spell: { name: "TEST-TALENT", id: 1234 }, description: "Efecto del rango 3", cast_time: "Pasivo" },
                   },
                 ],
               },
@@ -122,6 +122,7 @@ test("Classic talents select only the active group and preserve tied primary tre
     assert.equal(result.data.specDerived, true);
     assert.deepEqual(result.data.talents, [{
       name: "TEST-TALENT", spellId: 1234, rank: 3, tree: "TEST-A", icon: undefined,
+      description: "Efecto del rango 3", cast: "Pasivo", cost: undefined, range: undefined, cooldown: undefined,
     }]);
     assert.equal(result.data.talentTrees?.length, 2);
   } finally {
@@ -149,6 +150,9 @@ test("legacy items and talents recover metadata; current observations take prece
   assert.equal(talentDisplay({ name: "Baluarte", spellId: 6789 }, 2).spellId, 6789);
   const missing = talentDisplay("Baluarte · 3 puntos", 0);
   assert.equal(missing.spellId, undefined);
+  assert.match(talentDisplay({name:"Ferocidad",rank:3},11).description ?? "",/3 p\./);
+  assert.equal(talentDisplay({name:"Ferocidad",rank:3,description:"Efecto vigente"},11).description,"Efecto vigente");
+  assert.equal(talentDisplay({name:"Ferocidad",rank:15},11).description,undefined);
   assert.match(wowheadUrl("spell", missing.spellId, missing.name), /search\?q=Baluarte$/);
 });
 test("equipment synchronization keeps spells, on-equip stats and conditional set effects", async () => {

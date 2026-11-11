@@ -153,7 +153,7 @@ export function CharacterDetail({
           <EquipmentPanel member={m} />
         </TabsContent>
         <TabsContent value="talents">
-          <TalentsPanel profile={p} />
+          <TalentsPanel profile={p} memberId={m.id} />
         </TabsContent>
         <TabsContent value="attributes">
           {titles.length > 0 && (

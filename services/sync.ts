@@ -247,7 +247,7 @@ export async function sync(force = false) {
               .prepare(
                 "INSERT INTO character_snapshots(character_id,at,hash,data) VALUES(?,?,?,?)",
               )
-              .bind(id, at, h, JSON.stringify(profile)),
+              .bind(id, at, h, JSON.stringify({ ...profile, surveyAt: new Date(now).toISOString() })),
           );
           for (const e of changedEvents(id, c.name, old, profile, at))
             statements.push(
