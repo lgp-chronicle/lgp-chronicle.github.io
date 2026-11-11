@@ -9,6 +9,8 @@ import {
   Newspaper,
   Shield,
   Swords,
+  Sparkles,
+  Activity,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -30,6 +32,8 @@ const sectionIcons: Record<string, LucideIcon> = {
   compare: Swords,
   logs: BookOpen,
   armory: Shield,
+  talents: Sparkles,
+  attributes: Activity,
 };
 
 export function SectionIndex({

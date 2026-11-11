@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
 import { display, leveling } from "./analytics";
-import { color, type Member } from "./types";
+import { numeric, type Member } from "./types";
+import { Crown } from "lucide-react";
+import { MemberLink, fullName } from "./member-portrait";
 export function Compare({ members }: { members: Member[] }) {
   const [left, setLeft] = useState(members[0]?.id ?? ""),
     [right, setRight] = useState(members[1]?.id ?? "");
@@ -13,6 +15,17 @@ export function Compare({ members }: { members: Member[] }) {
     ["Nivel", (m) => m.data.level],
     ["Item level", (m) => m.data.itemLevel],
     ["Muertes honorables", (m) => m.data.honorableKills],
+    ...[
+      "Aguante",
+      "Intelecto",
+      "Fuerza",
+      "Agilidad",
+      "Espíritu",
+      "Armadura",
+    ].map((attribute): [string, (m: Member) => unknown] => [
+      attribute,
+      (m) => m.data.statistics?.[attribute],
+    ]),
     [
       "Profesiones",
       (m) =>
@@ -43,9 +56,11 @@ export function Compare({ members }: { members: Member[] }) {
                 onChange={i ? setRight : setLeft}
                 options={members
                   .filter((x) => x.id !== (i ? left : right))
-                  .map((x) => ({ value: x.id, label: x.name }))}
+                  .map((x) => ({ value: x.id, label: fullName(x) }))}
               />
-              <h2 style={{ color: color(m) }}>{m.name}</h2>
+              <h2>
+                <MemberLink member={m} />
+              </h2>
               <p className="muted">
                 {m.data.className ?? "Clase por descubrir"}
               </p>
@@ -53,13 +68,34 @@ export function Compare({ members }: { members: Member[] }) {
           </div>
         ))}
       </div>
-      {rows.map(([label, get]) => (
-        <div className="compare-row" key={label}>
-          <strong>{display(get(a))}</strong>
-          <span>{label}</span>
-          <strong>{display(get(b))}</strong>
-        </div>
-      ))}
+      {rows.map(([label, get]) => {
+        const leftValue = get(a),
+          rightValue = get(b);
+        const comparable = numeric(leftValue) && numeric(rightValue);
+        const marker = (
+          <span className="duel-crown" role="img" aria-label="Mejor valor">
+            <Crown size={16} aria-hidden="true" />
+          </span>
+        );
+        return (
+          <div className="compare-row" key={label}>
+            <strong>
+              {comparable && leftValue > rightValue && marker}
+              {display(leftValue)}
+            </strong>
+            <span>
+              {label}
+              {comparable && leftValue === rightValue && (
+                <small className="tied-value">Empate</small>
+              )}
+            </span>
+            <strong>
+              {comparable && rightValue > leftValue && marker}
+              {display(rightValue)}
+            </strong>
+          </div>
+        );
+      })}
       <p className="subheading" style={{ marginTop: 18 }}>
         DPS y HPS son mejores registros; pueden corresponder a encuentros
         distintos.

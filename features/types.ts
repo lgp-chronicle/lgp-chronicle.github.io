@@ -1,13 +1,27 @@
 export type Equipment = {
   slot: string;
+  slotType?: string;
+  icon?: string;
   name: string;
   quality?: string;
   itemLevel?: number;
   id?: number;
   details?: string[];
+  effects?: string[];
+  setBonuses?: string[];
+};
+export type Talent = {
+  name: string;
+  spellId?: number;
+  rank?: number;
+  maxRank?: number;
+  tree?: string;
+  icon?: string;
 };
 export type Profession = { name: string; skill?: number; max?: number };
 export type Profile = {
+  surname?: string;
+  characterRender?: string;
   level?: number;
   className?: string;
   classId?: number;
@@ -20,7 +34,7 @@ export type Profile = {
   honor?: number;
   equipment?: Equipment[];
   professions?: Profession[];
-  talents?: string[];
+  talents?: (Talent | string)[];
   talentTrees?: { name: string; points: number }[];
   specDerived?: boolean;
   statistics?: Record<string, number>;
@@ -81,6 +95,7 @@ export type Member = {
 export type Activity = {
   id: string;
   characterId: string;
+  otherCharacterId?: string;
   at: string;
   kind: string;
   text: string;

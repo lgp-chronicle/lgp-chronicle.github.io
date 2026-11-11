@@ -8,48 +8,64 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
-  BarChart,
-  Bar,
 } from "recharts";
 import { Pick, Empty } from "@/components/guild-ui";
 import { measurements } from "./observations";
-import { color, numeric, type Member, type Profile } from "./types";
+import { numeric, type Member, type Profile } from "./types";
+import { fullName } from "./member-portrait";
+const lineColors = ["#f9cd58", "#69d7cf", "#c6a1fa"];
 export function HistoryChart({ members }: { members: Member[] }) {
   const [metric, setMetric] = useState("level"),
     [range, setRange] = useState("7");
   const start = range === "all" ? 0 : Date.now() - Number(range) * 86400000;
-  const times = Array.from(
-    new Set(
-      members.flatMap((m) =>
-        measurements(m, metric as keyof Profile)
-          .filter(
-            (s) =>
-              Date.parse(s.at) >= start &&
-              numeric(s.data[metric as keyof Profile]),
-          )
-          .map((s) => s.at),
-      ),
-    ),
-  ).sort();
-  const rows = times.map((at) => {
-    const row: Record<string, number | string> = { at: Date.parse(at) };
-    for (const m of members) {
-      const p = measurements(m, metric as keyof Profile).find(
-        (s) => s.at === at,
-      );
-      if (p && numeric(p.data[metric as keyof Profile]))
-        row[m.name] = p.data[metric as keyof Profile] as number;
-    }
-    return row;
+  const [picks, setPicks] = useState<(string | undefined)[]>();
+  const readings = members.map((m) => {
+    const points = measurements(m, metric as keyof Profile).filter(
+      (s) => Date.parse(s.at) >= start,
+    );
+    return {
+      member: m,
+      points,
+      last: points.at(-1)?.data[metric as keyof Profile],
+    };
   });
+  const ranked = readings
+    .filter((r) => numeric(r.last))
+    .sort(
+      (a, b) =>
+        Number(b.last) - Number(a.last) ||
+        fullName(a.member).localeCompare(fullName(b.member), "es"),
+    );
+  const limit = Math.min(3, members.length);
+  const selected =
+    picks ?? Array.from({ length: limit }, (_, i) => ranked[i]?.member.id);
+  const series = selected.flatMap((id, index) => {
+    const row = readings.find((r) => r.member.id === id);
+    return row ? [{ ...row, index }] : [];
+  });
+  const observations = new Map<number, Record<string, number>>();
+  for (const { member, points } of series)
+    for (const point of points) {
+      const at = Date.parse(point.at),
+        value = point.data[metric as keyof Profile];
+      if (!numeric(value)) continue;
+      const row = observations.get(at) ?? { at };
+      row[member.id] = value;
+      observations.set(at, row);
+    }
+  const rows = [...observations.values()].sort((a, b) => a.at - b.at);
+  const sortedMembers = [...members].sort((a, b) =>
+    fullName(a).localeCompare(fullName(b), "es"),
+  );
   return (
     <section className="panel">
       <div className="section-heading">
         <div>
-          <h3>Todo progreso deja huella.</h3>
+          <h3>Evolución del personaje</h3>
           <p className="subheading">
-            La línea une observaciones; no indica el instante exacto del cambio.
+            {members.length > 1
+              ? "Compara hasta tres personajes. Cada línea une sus registros de la armería."
+              : "La línea une los registros de la armería."}
           </p>
         </div>
       </div>
@@ -77,10 +93,34 @@ export function HistoryChart({ members }: { members: Member[] }) {
           ]}
         />
       </div>
+      {members.length > 1 && (
+        <div className="chart-party" aria-label="Personajes de la gráfica">
+          {selected.map((id, i) => (
+            <label key={i} style={{ borderColor: lineColors[i] }}>
+              <span>Línea {i + 1}</span>
+              <Pick
+                label={"Personaje de la línea " + (i + 1)}
+                value={id ?? "none"}
+                onChange={(v) => {
+                  const next = [...selected];
+                  next[i] = v === "none" ? undefined : v;
+                  setPicks(next);
+                }}
+                options={[
+                  { value: "none", label: "Sin personaje" },
+                  ...sortedMembers
+                    .filter((m) => m.id === id || !selected.includes(m.id))
+                    .map((m) => ({ value: m.id, label: fullName(m) })),
+                ]}
+              />
+            </label>
+          ))}
+        </div>
+      )}
       {!rows.length ? (
         <Empty
-          title="La primera línea empieza contigo"
-          text="En cuanto tengamos registros, aquí podrás seguir la evolución del grupo. No rellenamos el pasado con estimaciones."
+          title="Sin registros en esta selección"
+          text="Prueba con otro personaje, estadística o periodo."
         />
       ) : (
         <div className="chart-wrap">
@@ -97,15 +137,17 @@ export function HistoryChart({ members }: { members: Member[] }) {
                 scale="time"
                 domain={["dataMin", "dataMax"]}
                 tickFormatter={(v) =>
-                  new Date(v).toLocaleDateString("es-ES", {
-                    day: "numeric",
-                    month: "short",
+                  new Date(v).toLocaleString("es-ES", {
+                    ...(range === "1"
+                      ? ({ hour: "2-digit", minute: "2-digit" } as const)
+                      : ({ day: "numeric", month: "short" } as const)),
                   })
                 }
                 stroke="var(--muted-foreground)"
                 fontSize={12}
               />
               <YAxis
+                width={45}
                 stroke="var(--muted-foreground)"
                 fontSize={12}
                 domain={["auto", "auto"]}
@@ -120,16 +162,17 @@ export function HistoryChart({ members }: { members: Member[] }) {
                   border: "1px solid var(--border)",
                 }}
               />
-              <Legend />
-              {members.map((m) => (
+              {series.map(({ member: m, index, points }) => (
                 <Line
                   key={m.id}
-                  name={m.name}
-                  dataKey={m.name}
-                  stroke={color(m)}
+                  name={fullName(m)}
+                  dataKey={m.id}
+                  stroke={lineColors[index]}
+                  strokeDasharray={["", "6 3", "2 3"][index]}
                   type="stepAfter"
                   connectNulls={true}
-                  dot={{ r: 3 }}
+                  dot={points.length < 12 ? { r: 3 } : false}
+                  activeDot={{ r: 5 }}
                   strokeWidth={2}
                   isAnimationActive={false}
                 />
@@ -164,21 +207,24 @@ export function Distribution({ members }: { members: Member[] }) {
         />
       </div>
       {Object.keys(counts).length ? (
-        <div className="chart-wrap">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={Object.entries(counts).map(([name, count]) => ({
-                name,
-                count,
-              }))}
-            >
-              <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
-              <YAxis allowDecimals={false} stroke="var(--muted-foreground)" />
-              <Tooltip contentStyle={{ background: "var(--surface)" }} />
-              <Bar dataKey="count" name="Personajes" fill="var(--gold)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <ul className="distribution-bars">
+          {Object.entries(counts)
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"))
+            .map(([label, count]) => (
+              <li key={label}>
+                <span>{label}</span>
+                <span className="bar-track" aria-hidden="true">
+                  <i
+                    style={{
+                      width:
+                        (100 * count) / Math.max(...Object.values(count)) + "%",
+                    }}
+                  />
+                </span>
+                <b>{count}</b>
+              </li>
+            ))}
+        </ul>
       ) : (
         <Empty
           title="Aún no conocemos las clases"

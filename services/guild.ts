@@ -1,4 +1,4 @@
-import { characterId } from "../config/characters";
+import { memberArmoryUrl } from "../config/characters";
 import { database } from "../db/client";
 import type { GuildData, Member, Activity } from "../features/types";
 export async function readGuild(): Promise<GuildData> {
@@ -30,7 +30,7 @@ export async function readGuild(): Promise<GuildData> {
       name: r.name,
       realm: r.realm,
       region: r.region,
-      armory: `https://worldofwarcraft.blizzard.com/es-es/classic/eu/armory/character/${encodeURIComponent(r.realm)}/${encodeURIComponent(r.name.toLowerCase())}`,
+      armory: memberArmoryUrl(r.id, r.region),
       addedAt: r.added_at,
       data: JSON.parse(r.profile),
       logs: r.logs ? JSON.parse(r.logs) : undefined,

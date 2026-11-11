@@ -1,11 +1,36 @@
 import type { CharacterConfig } from "../config/characters";
 import { guildConfig } from "../config/characters";
-import type { Profile } from "../features/types";
+import type { Profile, Talent } from "../features/types";
 import { numeric } from "../features/types";
 import { request, token, ProviderError } from "./http";
 type Json = Record<string, any>;
 const name = (v: any): string | undefined =>
   typeof v === "string" ? v : typeof v?.name === "string" ? v.name : undefined;
+
+function iconUrl(media: any): string | undefined {
+  const url = (media?.assets ?? media?.content?.assets)?.find(
+    (asset: any) => asset.key === "icon",
+  )?.value;
+  return typeof url === "string" && url.startsWith("https://") ? url : undefined;
+}
+
+function learnedTalents(tree: Json): Talent[] {
+  return (tree.talents ?? []).flatMap((entry: Json) => {
+    const spell = entry.spell_tooltip?.spell ?? entry.spell;
+    const label = name(spell) ?? name(entry.talent);
+    if (!label) return [];
+    return [{
+      name: label,
+      spellId: Number.isSafeInteger(spell?.id) && spell.id > 0 ? spell.id : undefined,
+      rank: numeric(entry.talent_rank) ? entry.talent_rank : undefined,
+      tree: name(tree.specialization_name) ?? name(tree.specialization),
+      icon: iconUrl(spell?.media ?? entry.media),
+    }];
+  });
+}
+
+const uniqueLines = (values: unknown[]): string[] =>
+  [...new Set(values.filter((v): v is string => typeof v === "string" && !!v.trim()))];
 
 const CLASS_NAMES: Record<number, string> = {
   1: "Guerrero",
@@ -124,6 +149,7 @@ export async function blizzard(
     if (value !== undefined && value !== null) (data as any)[key] = value;
   };
   assign("level", numeric(p.level) ? p.level : undefined);
+  assign("surname", name(p.surname));
   assign("className", name(p.character_class));
   assign("classId", p.character_class?.id);
   assign("race", name(p.race));
@@ -147,15 +173,22 @@ export async function blizzard(
         if (Array.isArray(j.equipped_items))
           data.equipment = j.equipped_items.map((x: any) => ({
             slot: name(x.slot) ?? x.slot?.type ?? "Equipo",
+            slotType: x.slot?.type,
+            icon: iconUrl(x.media),
             name: name(x) ?? "Objeto",
             quality: x.quality?.type,
             itemLevel: x.level?.value,
             id: x.item?.id,
             details: [
               x.armor?.display?.display_string,
-              ...(x.stats ?? []).map((s: any) => s.display?.display_string),
+              ...(x.stats ?? []).filter((s: any) => !s.is_equip_bonus).map((s: any) => s.display?.display_string),
               ...(x.enchantments ?? []).map((e: any) => e.display_string),
             ].filter((v): v is string => typeof v === "string"),
+            effects: uniqueLines([
+              ...(x.stats ?? []).filter((s: any) => s.is_equip_bonus).map((s: any) => s.display?.display_string),
+              ...(x.spells ?? []).map((s: any) => s.description ?? name(s.spell)),
+            ]),
+            setBonuses: uniqueLines((x.set?.effects ?? []).map((s: any) => s.display_string)),
           }));
       },
     ],
@@ -165,6 +198,10 @@ export async function blizzard(
       (j) => {
         const u = j.assets?.find((a: any) => a.key === "avatar")?.value;
         if (typeof u === "string" && u.startsWith("https://")) data.avatar = u;
+        const render = ["main-raw", "main-sd-raw", "main"].map(
+          key => j.assets?.find((asset: any) => asset.key === key)?.value,
+        ).find(url => typeof url === "string" && url.startsWith("https://"));
+        if (render) data.characterRender = render;
       },
     ],
     [
@@ -208,23 +245,10 @@ export async function blizzard(
               .map((t) => t.name)
               .join(" / ") || undefined;
           data.specDerived = true;
-          data.talents = trees
-            .flatMap((t: any) =>
-              (t.talents ?? []).map((x: any) => {
-                const n = name(x.spell_tooltip?.spell);
-                return n
-                  ? `${n}${numeric(x.talent_rank) ? ` · ${x.talent_rank} puntos` : ""}`
-                  : undefined;
-              }),
-            )
-            .filter((v: unknown): v is string => typeof v === "string");
+          data.talents = trees.flatMap(learnedTalents);
+        } else if (Array.isArray(j.specializations)) {
+          data.talents = j.specializations.flatMap(learnedTalents);
         }
-        if (Array.isArray(j.specializations))
-          data.talents = j.specializations.flatMap((x: any) =>
-            (x.talents ?? [])
-              .map((t: any) => name(t.talent) ?? name(t.spell))
-              .filter((x: unknown): x is string => typeof x === "string"),
-          );
       },
     ],
     [

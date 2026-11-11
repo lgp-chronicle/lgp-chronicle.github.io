@@ -1,0 +1,1462 @@
+{
+  "items": {
+    "38": 135009,
+    "45": 135005,
+    "49": 135009,
+    "53": 135005,
+    "148": 135005,
+    "154": 133766,
+    "796": 132543,
+    "859": 135006,
+    "860": 132539,
+    "983": 133694,
+    "1076": 133344,
+    "1156": 133351,
+    "1182": 132606,
+    "1292": 132417,
+    "1319": 132520,
+    "1360": 132939,
+    "1364": 135009,
+    "1370": 132609,
+    "1429": 133763,
+    "1497": 133754,
+    "1502": 132515,
+    "1561": 132654,
+    "1764": 132543,
+    "1769": 135040,
+    "1793": 135037,
+    "1945": 132955,
+    "2033": 132542,
+    "2036": 132939,
+    "2041": 132722,
+    "2042": 135147,
+    "2140": 135637,
+    "2237": 134582,
+    "2238": 134588,
+    "2280": 135143,
+    "2300": 132724,
+    "2302": 132538,
+    "2303": 134706,
+    "2326": 132611,
+    "2515": "inv_ammo_arrow_02",
+    "2575": 135029,
+    "2645": 132938,
+    "2690": 132495,
+    "2691": 132535,
+    "2817": 135014,
+    "2848": 133483,
+    "2857": 132492,
+    "2905": 133763,
+    "2910": 132535,
+    "2933": 133347,
+    "2957": 132647,
+    "2958": 134590,
+    "2962": 134586,
+    "2970": 134590,
+    "2976": 132939,
+    "2977": 132631,
+    "2982": 134581,
+    "2992": 132944,
+    "3030": "inv_ammo_arrow_02",
+    "3160": 134956,
+    "3161": 132662,
+    "3214": 132602,
+    "3217": 132512,
+    "3375": 132612,
+    "3431": 132717,
+    "3464": "inv_ammo_arrow_02",
+    "3469": 132535,
+    "3480": 135036,
+    "3481": 135040,
+    "3493": 135491,
+    "3562": 132494,
+    "3647": 132601,
+    "4237": 132493,
+    "4362": 135612,
+    "4368": 133149,
+    "4385": 133149,
+    "4566": 135145,
+    "4699": 132511,
+    "4705": 135039,
+    "4708": 132500,
+    "4711": 133762,
+    "4715": 133760,
+    "5069": 135139,
+    "5107": 135016,
+    "5191": 135325,
+    "5195": 132957,
+    "5202": 135012,
+    "5254": 135039,
+    "5315": 132610,
+    "5394": 132939,
+    "5591": 133764,
+    "5610": 133763,
+    "5812": 132679,
+    "5944": 132535,
+    "6087": 134583,
+    "6092": 132539,
+    "6094": 135419,
+    "6096": 135005,
+    "6097": 135005,
+    "6148": 132539,
+    "6256": 132932,
+    "6319": 132492,
+    "6320": 134949,
+    "6321": 132518,
+    "6337": 134583,
+    "6340": 134367,
+    "6378": 133757,
+    "6379": 132515,
+    "6459": 132535,
+    "6463": 133357,
+    "6469": 135498,
+    "6537": 132537,
+    "6539": 132494,
+    "6542": 133769,
+    "6546": 134590,
+    "6548": 132514,
+    "6552": 135015,
+    "6554": 132949,
+    "6562": 132539,
+    "6564": 133767,
+    "6568": 134581,
+    "6581": 132505,
+    "6583": 132606,
+    "6587": 134582,
+    "6591": 132609,
+    "6593": 133770,
+    "6601": 132537,
+    "6629": 133769,
+    "6631": 135162,
+    "6633": 135314,
+    "6642": 132627,
+    "6743": 133350,
+    "6978": 132408,
+    "6998": 132539,
+    "7000": 132493,
+    "7277": 132607,
+    "7282": 134582,
+    "7415": 135039,
+    "7506": 134376,
+    "7509": 132677,
+    "7738": 132952,
+    "8067": "inv_ammo_bullet_02",
+    "8186": 135468,
+    "9746": 132955,
+    "9777": 132604,
+    "9779": 133771,
+    "9788": 132500,
+    "9794": 133767,
+    "9807": 135039,
+    "9824": 135037,
+    "10400": 134592,
+    "10402": 132539,
+    "10403": 132515,
+    "10421": 132624,
+    "11121": 135346,
+    "11192": 132939,
+    "11287": 135139,
+    "11475": 133770,
+    "11982": 133355,
+    "12052": 133347,
+    "12295": 134586,
+    "12522": 132939,
+    "13245": 134964,
+    "14129": 132537,
+    "14168": 132950,
+    "14367": 132952,
+    "14368": 135040,
+    "15204": 135469,
+    "15397": 135145,
+    "15400": 132602,
+    "15501": 133765,
+    "248005": 133053,
+    "248008": 135155,
+    "250499": 133140,
+    "250530": 133141,
+    "252425": 132539,
+    "252493": 132715,
+    "263411": 134914,
+    "263412": 134919,
+    "270000": 132665,
+    "270013": 132539,
+    "270015": 132606,
+    "270016": 134586,
+    "270029": 132961,
+    "270031": 134582,
+    "270032": 132611,
+    "270039": 135039,
+    "270050": 133355,
+    "270231": 132959,
+    "270260": 134586,
+    "270261": 132650,
+    "271096": 132610,
+    "271098": 132624,
+    "271203": 135146,
+    "271205": 132637,
+    "271208": 132938,
+    "271211": 132551,
+    "271214": 132539,
+    "271216": 133728,
+    "271655": 7813752,
+    "271670": 133354,
+    "271766": 133046,
+    "271767": 135147,
+    "273023": 132510,
+    "273088": 133884,
+    "273089": 132510,
+    "273293": 132602,
+    "273298": 134440,
+    "273457": 133294,
+    "273804": 135039,
+    "273805": 132719,
+    "273806": 133357,
+    "273807": 132513,
+    "273810": 132939,
+    "273839": 133344,
+    "273840": 136155,
+    "273843": 135491,
+    "274092": 135426,
+    "277210": 133344,
+    "277234": 132535,
+    "277246": 135277,
+    "279865": 133762,
+    "279867": 133361,
+    "279868": 134586,
+    "279870": 133295,
+    "279896": 135473,
+    "279897": 132492,
+    "279899": 133763,
+    "280096": 132952,
+    "280766": 133633,
+    "281256": 132603,
+    "285292": 134427,
+    "286737": 133349,
+    "286979": 132956,
+    "286980": 132500,
+    "287059": 135653
+  },
+  "talents": {
+    "1": {
+      "Abrumar mejorado": {
+        "tree": "Armas",
+        "icon": 135275,
+        "spellId": 12290,
+        "maxRank": 2
+      },
+      "Cólera desbocada": {
+        "tree": "Furia",
+        "icon": 136097,
+        "spellId": 12322,
+        "maxRank": 5
+      },
+      "Crueldad": {
+        "tree": "Furia",
+        "icon": 132292,
+        "spellId": 12320,
+        "maxRank": 5
+      },
+      "Desgarrar mejorado": {
+        "tree": "Armas",
+        "icon": 132155,
+        "spellId": 12286,
+        "maxRank": 3
+      },
+      "Desvío": {
+        "tree": "Armas",
+        "icon": 132269,
+        "spellId": 16462,
+        "maxRank": 5
+      },
+      "Embestir mejorado": {
+        "tree": "Armas",
+        "icon": 132337,
+        "spellId": 12285,
+        "maxRank": 2
+      },
+      "Enfurecer": {
+        "tree": "Furia",
+        "icon": 136224,
+        "spellId": 12317,
+        "maxRank": 5
+      },
+      "Especialización en armas de dos manos": {
+        "tree": "Armas",
+        "icon": 132400,
+        "spellId": 12163,
+        "maxRank": 3
+      },
+      "Especialización en doble empuñadura": {
+        "tree": "Furia",
+        "icon": 132147,
+        "spellId": 23584,
+        "maxRank": 5
+      },
+      "Especialización en escudos": {
+        "tree": "Protección",
+        "icon": 134952,
+        "spellId": 12298,
+        "maxRank": 5
+      },
+      "Golpe heroico mejorado": {
+        "tree": "Armas",
+        "icon": 132282,
+        "spellId": 12282,
+        "maxRank": 3
+      },
+      "Golpes temerarios": {
+        "tree": "Furia",
+        "icon": 132334,
+        "spellId": 1329555,
+        "maxRank": 1
+      },
+      "Heridas profundas": {
+        "tree": "Armas",
+        "icon": 132090,
+        "spellId": 12834,
+        "maxRank": 3
+      },
+      "Maestría táctica mejorada": {
+        "tree": "Armas",
+        "icon": 136031,
+        "spellId": 12295,
+        "maxRank": 3
+      },
+      "Precisión furiosa": {
+        "tree": "Furia",
+        "icon": 236309,
+        "spellId": 1323963,
+        "maxRank": 3
+      },
+      "Revancha mejorada": {
+        "tree": "Protección",
+        "icon": 132353,
+        "spellId": 12797,
+        "maxRank": 3
+      },
+      "Sanguinario mejorado": {
+        "tree": "Protección",
+        "icon": 132277,
+        "spellId": 12301,
+        "maxRank": 2
+      }
+    },
+    "2": {
+      "Baluarte": {
+        "tree": "Protección",
+        "icon": 132110,
+        "spellId": 20127,
+        "maxRank": 5
+      },
+      "Baluarte de templario": {
+        "tree": "Protección",
+        "icon": 236264,
+        "spellId": 1311015,
+        "maxRank": 1
+      },
+      "Búsqueda de justicia": {
+        "tree": "Reprensión",
+        "icon": 135937,
+        "spellId": 26022,
+        "maxRank": 2
+      },
+      "Convicción": {
+        "tree": "Reprensión",
+        "icon": 135957,
+        "spellId": 20117,
+        "maxRank": 3
+      },
+      "Deber sagrado": {
+        "tree": "Protección",
+        "icon": 135896,
+        "spellId": 1224697,
+        "maxRank": 2
+      },
+      "Desvío": {
+        "tree": "Reprensión",
+        "icon": 132269,
+        "spellId": 20060,
+        "maxRank": 5
+      },
+      "Enjuiciador Sagrado": {
+        "tree": "Reprensión",
+        "icon": 135278,
+        "spellId": 1311087,
+        "maxRank": 1
+      },
+      "Especialización en escudos": {
+        "tree": "Protección",
+        "icon": 134952,
+        "spellId": 20150,
+        "maxRank": 2
+      },
+      "Fuerza divina": {
+        "tree": "Sagrado",
+        "icon": 132154,
+        "spellId": 20262,
+        "maxRank": 5
+      },
+      "Oración": {
+        "tree": "Reprensión",
+        "icon": 135863,
+        "spellId": 20101,
+        "maxRank": 5
+      },
+      "Precisión": {
+        "tree": "Protección",
+        "icon": 132282,
+        "spellId": 20189,
+        "maxRank": 3
+      },
+      "Sentencia mejorada": {
+        "tree": "Reprensión",
+        "icon": 135959,
+        "spellId": 25956,
+        "maxRank": 2
+      },
+      "Sentencia santificada": {
+        "tree": "Reprensión",
+        "icon": 236255,
+        "spellId": 1311074,
+        "maxRank": 3
+      }
+    },
+    "3": {
+      "Aspectos letales": {
+        "tree": "Dominio de bestias",
+        "icon": 136076,
+        "spellId": 19552,
+        "maxRank": 5
+      },
+      "Ataques letales": {
+        "tree": "Puntería",
+        "icon": 132312,
+        "spellId": 19426,
+        "maxRank": 5
+      },
+      "Entrenamiento en aguante": {
+        "tree": "Dominio de bestias",
+        "icon": 136080,
+        "spellId": 19583,
+        "maxRank": 5
+      },
+      "Ferocidad": {
+        "tree": "Dominio de bestias",
+        "icon": 134297,
+        "spellId": 19598,
+        "maxRank": 5
+      },
+      "Fuego enfocado": {
+        "tree": "Dominio de bestias",
+        "icon": 135539,
+        "spellId": 1223755,
+        "maxRank": 2
+      },
+      "Furia desatada": {
+        "tree": "Dominio de bestias",
+        "icon": 132091,
+        "spellId": 19616,
+        "maxRank": 5
+      },
+      "Invocar halcón": {
+        "tree": "Dominio de bestias",
+        "icon": 132158,
+        "spellId": 1293241,
+        "maxRank": 1
+      },
+      "Rapidez de bestias": {
+        "tree": "Dominio de bestias",
+        "icon": 132120,
+        "spellId": 19596,
+        "maxRank": 1
+      }
+    },
+    "4": {
+      "Agresión": {
+        "tree": "Combate",
+        "icon": 132275,
+        "spellId": 18427,
+        "maxRank": 3
+      },
+      "Ataques implacables": {
+        "tree": "Asesinato",
+        "icon": 132151,
+        "spellId": 14144,
+        "maxRank": 2
+      },
+      "Compostura": {
+        "tree": "Combate",
+        "icon": 132296,
+        "spellId": 1329265,
+        "maxRank": 2
+      },
+      "Correr mejorado": {
+        "tree": "Combate",
+        "icon": 132307,
+        "spellId": 13743,
+        "maxRank": 2
+      },
+      "Desvío": {
+        "tree": "Combate",
+        "icon": 132269,
+        "spellId": 13713,
+        "maxRank": 3
+      },
+      "Ejecución impecable": {
+        "tree": "Combate",
+        "icon": 135345,
+        "spellId": 1310711,
+        "maxRank": 1
+      },
+      "Estocada": {
+        "tree": "Combate",
+        "icon": 132336,
+        "spellId": 14251,
+        "maxRank": 1
+      },
+      "Experiencia con armas": {
+        "tree": "Combate",
+        "icon": 135882,
+        "spellId": 30919,
+        "maxRank": 2
+      },
+      "Golpe de gracia": {
+        "tree": "Combate",
+        "icon": 132292,
+        "spellId": 14162,
+        "maxRank": 3
+      },
+      "Golpes eficientes": {
+        "tree": "Combate",
+        "icon": 136189,
+        "spellId": 13732,
+        "maxRank": 2
+      },
+      "Precisión": {
+        "tree": "Combate",
+        "icon": 132222,
+        "spellId": 13705,
+        "maxRank": 3
+      },
+      "Ráfaga con espada": {
+        "tree": "Combate",
+        "icon": 132350,
+        "spellId": 13877,
+        "maxRank": 1
+      },
+      "Robustez": {
+        "tree": "Combate",
+        "icon": 136205,
+        "spellId": 13742,
+        "maxRank": 2
+      }
+    },
+    "5": {
+      "Disciplinas gemelas": {
+        "tree": "Disciplina",
+        "icon": 135969,
+        "spellId": 1225132,
+        "maxRank": 5
+      },
+      "Especialización en varitas": {
+        "tree": "Disciplina",
+        "icon": 135463,
+        "spellId": 14524,
+        "maxRank": 2
+      }
+    },
+    "7": {
+      "Aluvión": {
+        "tree": "Mejora",
+        "icon": 132152,
+        "spellId": 16256,
+        "maxRank": 5
+      },
+      "Armas elementales": {
+        "tree": "Mejora",
+        "icon": 135814,
+        "spellId": 16266,
+        "maxRank": 3
+      },
+      "Conciencia": {
+        "tree": "Recuperación",
+        "icon": 136090,
+        "spellId": 1223033,
+        "maxRank": 3
+      },
+      "Conocimiento ancestral": {
+        "tree": "Mejora",
+        "icon": 136162,
+        "spellId": 17485,
+        "maxRank": 5
+      },
+      "Convección": {
+        "tree": "Combate elemental",
+        "icon": 136116,
+        "spellId": 16039,
+        "maxRank": 5
+      },
+      "Enfoque chamanístico": {
+        "tree": "Mejora",
+        "icon": 136027,
+        "spellId": 1223030,
+        "maxRank": 1
+      },
+      "Enfoque de las mareas": {
+        "tree": "Recuperación",
+        "icon": 135859,
+        "spellId": 16179,
+        "maxRank": 5
+      },
+      "Golpe de tormenta": {
+        "tree": "Mejora",
+        "icon": 132314,
+        "spellId": 17364,
+        "maxRank": 1
+      },
+      "Golpes de trueno": {
+        "tree": "Mejora",
+        "icon": 132325,
+        "spellId": 16255,
+        "maxRank": 5
+      },
+      "Lobo fantasmal mejorado": {
+        "tree": "Mejora",
+        "icon": 136095,
+        "spellId": 16262,
+        "maxRank": 2
+      },
+      "Maña mental": {
+        "tree": "Mejora",
+        "icon": 136055,
+        "spellId": 415140,
+        "maxRank": 3
+      }
+    },
+    "8": {
+      "Descarga de Escarcha mejorada": {
+        "tree": "Escarcha",
+        "icon": 135846,
+        "spellId": 11070,
+        "maxRank": 5
+      },
+      "Especialización en varitas": {
+        "tree": "Arcano",
+        "icon": 135463,
+        "spellId": 6057,
+        "maxRank": 2
+      },
+      "Fragmentos de hielo": {
+        "tree": "Escarcha",
+        "icon": 135855,
+        "spellId": 11207,
+        "maxRank": 5
+      },
+      "Mordiescarcha": {
+        "tree": "Escarcha",
+        "icon": 135842,
+        "spellId": 11071,
+        "maxRank": 3
+      },
+      "Nova de Escarcha mejorada": {
+        "tree": "Escarcha",
+        "icon": 135840,
+        "spellId": 11165,
+        "maxRank": 2
+      },
+      "Precisión": {
+        "tree": "Escarcha",
+        "icon": 135989,
+        "spellId": 29438,
+        "maxRank": 3
+      }
+    },
+    "9": {
+      "Abrazo demoníaco": {
+        "tree": "Demonología",
+        "icon": 136172,
+        "spellId": 18697,
+        "maxRank": 5
+      },
+      "Alcance macabro": {
+        "tree": "Aflicción",
+        "icon": 136127,
+        "spellId": 18218,
+        "maxRank": 2
+      },
+      "Corrupción mejorado": {
+        "tree": "Aflicción",
+        "icon": 136118,
+        "spellId": 17810,
+        "maxRank": 5
+      },
+      "Cosecha de almas": {
+        "tree": "Aflicción",
+        "icon": 132851,
+        "spellId": 437032,
+        "maxRank": 2
+      },
+      "Dominio de lo maldito": {
+        "tree": "Demonología",
+        "icon": 136082,
+        "spellId": 18708,
+        "maxRank": 1
+      },
+      "Égida demoníaca": {
+        "tree": "Demonología",
+        "icon": 136185,
+        "spellId": 1235316,
+        "maxRank": 2
+      },
+      "Maestro invocador": {
+        "tree": "Demonología",
+        "icon": 136164,
+        "spellId": 18709,
+        "maxRank": 2
+      },
+      "Marca demoníaca": {
+        "tree": "Demonología",
+        "icon": 4226151,
+        "spellId": 1293695,
+        "maxRank": 3
+      },
+      "Sacrificio demoníaco": {
+        "tree": "Demonología",
+        "icon": 136184,
+        "spellId": 18788,
+        "maxRank": 1
+      },
+      "Sayaad mejorado": {
+        "tree": "Demonología",
+        "icon": 4352493,
+        "spellId": 18754,
+        "maxRank": 3
+      },
+      "Supresión": {
+        "tree": "Aflicción",
+        "icon": 136230,
+        "spellId": 18174,
+        "maxRank": 5
+      },
+      "Transfusión de  vida mejorada": {
+        "tree": "Aflicción",
+        "icon": 136126,
+        "spellId": 18182,
+        "maxRank": 2
+      },
+      "Vitalidad vil": {
+        "tree": "Demonología",
+        "icon": 136150,
+        "spellId": 18731,
+        "maxRank": 3
+      }
+    },
+    "11": {
+      "Alcance de la naturaleza": {
+        "tree": "Equilibrio",
+        "icon": 136065,
+        "spellId": 16819,
+        "maxRank": 2
+      },
+      "Ataques trituradores": {
+        "tree": "Combate feral",
+        "icon": 136231,
+        "spellId": 16966,
+        "maxRank": 3
+      },
+      "Brillo lunar": {
+        "tree": "Equilibrio",
+        "icon": 136087,
+        "spellId": 16845,
+        "maxRank": 3
+      },
+      "Carga feral": {
+        "tree": "Combate feral",
+        "icon": 132183,
+        "spellId": 1238122,
+        "maxRank": 1
+      },
+      "Cólera mejorada": {
+        "tree": "Equilibrio",
+        "icon": 136006,
+        "spellId": 16814,
+        "maxRank": 5
+      },
+      "Esplendor de la naturaleza": {
+        "tree": "Equilibrio",
+        "icon": 136061,
+        "spellId": 1223083,
+        "maxRank": 1
+      },
+      "Ferocidad": {
+        "tree": "Combate feral",
+        "icon": 132190,
+        "spellId": 16934,
+        "maxRank": 5
+      },
+      "Fuego estelar mejorado": {
+        "tree": "Equilibrio",
+        "icon": 135753,
+        "spellId": 16850,
+        "maxRank": 5
+      },
+      "Fuegolunar mejorado": {
+        "tree": "Equilibrio",
+        "icon": 136096,
+        "spellId": 16821,
+        "maxRank": 2
+      },
+      "Furia salvaje": {
+        "tree": "Combate feral",
+        "icon": 132141,
+        "spellId": 16998,
+        "maxRank": 2
+      },
+      "Furor": {
+        "tree": "Combate feral",
+        "icon": 135881,
+        "spellId": 17056,
+        "maxRank": 5
+      },
+      "Garras afiladas": {
+        "tree": "Combate feral",
+        "icon": 134297,
+        "spellId": 16942,
+        "maxRank": 2
+      },
+      "Golpes depredadores": {
+        "tree": "Combate feral",
+        "icon": 132185,
+        "spellId": 16972,
+        "maxRank": 3
+      },
+      "Instinto feral": {
+        "tree": "Combate feral",
+        "icon": 132089,
+        "spellId": 16947,
+        "maxRank": 3
+      },
+      "Majestuosidad de la naturaleza": {
+        "tree": "Equilibrio",
+        "icon": 135138,
+        "spellId": 1223082,
+        "maxRank": 2
+      },
+      "Predatory Discipline": {
+        "tree": "Combate feral",
+        "icon": 1033484,
+        "spellId": 1328613,
+        "maxRank": 1
+      },
+      "Presteza feral": {
+        "tree": "Combate feral",
+        "icon": 136095,
+        "spellId": 17002,
+        "maxRank": 2
+      },
+      "Venganza": {
+        "tree": "Equilibrio",
+        "icon": 136075,
+        "spellId": 16909,
+        "maxRank": 5
+      }
+    }
+  },
+  "itemEffects": {
+    "1319": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "1561": {
+      "stats": [
+        "+2 poder con hechizos",
+        "+2 espíritu"
+      ]
+    },
+    "1945": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "2033": {
+      "stats": [
+        "+4 espíritu"
+      ]
+    },
+    "2042": {
+      "spells": [
+        "Equipar: Velocidad de movimiento aumentada un 2% en el Bosque de Elwynn, los Páramos de Poniente, las Montañas Crestagrana y las Minas de la Muerte."
+      ],
+      "stats": [
+        "+6 espíritu"
+      ]
+    },
+    "2280": {
+      "spells": [
+        "Equipar: Reduce un 10% la duración de todos los efectos de reducción de movimiento sobre ti."
+      ]
+    },
+    "2933": {
+      "stats": [
+        "+3 espíritu"
+      ]
+    },
+    "2957": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "2958": {
+      "stats": [
+        "+1 espíritu"
+      ]
+    },
+    "2982": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "3160": {
+      "stats": [
+        "+2 poder con hechizos"
+      ]
+    },
+    "3217": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "3481": {
+      "stats": [
+        "+3 espíritu"
+      ]
+    },
+    "4368": {
+      "stats": [
+        "+4 espíritu"
+      ]
+    },
+    "4385": {
+      "stats": [
+        "+7 espíritu"
+      ]
+    },
+    "4711": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "4715": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "5069": {
+      "stats": [
+        "+1 Daño de Fuego"
+      ]
+    },
+    "5191": {
+      "stats": [
+        "+12 Poder de ataque"
+      ]
+    },
+    "5202": {
+      "stats": [
+        "+3 Daño con hechizos",
+        "+11 Sanación con hechizos",
+        "+8 espíritu"
+      ]
+    },
+    "5254": {
+      "stats": [
+        "+20 bonus de armadura"
+      ]
+    },
+    "5315": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "5812": {
+      "stats": [
+        "+8 espíritu"
+      ]
+    },
+    "6319": {
+      "spells": [
+        "Equipar: Aumenta 1 p. tu nivel de detección de sigilo efectivo."
+      ],
+      "stats": [
+        "+7 poder con hechizos"
+      ]
+    },
+    "6320": {
+      "stats": [
+        "+4 Salud cada 5 s"
+      ]
+    },
+    "6321": {
+      "spells": [
+        "Equipar: Aumenta un 2% la velocidad de movimiento en los Claros de Tirisfal, el Bosque de Argénteos y el Castillo de Colmillo Oscuro."
+      ]
+    },
+    "6337": {
+      "stats": [
+        "+3 Daño Sagrado"
+      ]
+    },
+    "6378": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "6459": {
+      "stats": [
+        "+6 Salud cada 5 s"
+      ]
+    },
+    "6463": {
+      "stats": [
+        "+2 Perforación de hechizo"
+      ]
+    },
+    "6469": {
+      "spells": [
+        "Probabilidad de acertar: Golpea al objetivo con un disparo venenoso que inflige 23 a 33 p. de daño de Naturaleza."
+      ]
+    },
+    "6537": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "6542": {
+      "stats": [
+        "+4 Poder de ataque",
+        "+1 espíritu"
+      ]
+    },
+    "6546": {
+      "stats": [
+        "+7 Daño Sagrado"
+      ]
+    },
+    "6552": {
+      "stats": [
+        "+4 Daño con hechizos",
+        "+13 Sanación con hechizos"
+      ]
+    },
+    "6591": {
+      "stats": [
+        "+1 Defensa"
+      ]
+    },
+    "6601": {
+      "stats": [
+        "+11 Daño Arcano"
+      ]
+    },
+    "6629": {
+      "spells": [
+        "Equipar: Al recibir un golpe en combate, inflige 1 p. de daño de Naturaleza al atacante."
+      ]
+    },
+    "6631": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "6633": {
+      "stats": [
+        "+6 Poder de ataque"
+      ]
+    },
+    "6642": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "6743": {
+      "stats": [
+        "+4 Salud cada 5 s"
+      ]
+    },
+    "6998": {
+      "stats": [
+        "+3 Daño con hechizos",
+        "+10 Sanación con hechizos"
+      ]
+    },
+    "7000": {
+      "stats": [
+        "+6 poder con hechizos"
+      ]
+    },
+    "7415": {
+      "stats": [
+        "+3 poder con hechizos"
+      ]
+    },
+    "7506": {
+      "spells": [
+        "Usar: Permite controlar a un objetivo mecánico durante un momento. No siempre funciona y puede provocar que la máquina se pare o se enfade mucho. Ingeniería gnómica pura. (3 min de tiempo de reutilización)."
+      ],
+      "stats": [
+        "+18 Poder de ataque contra mecánicos"
+      ]
+    },
+    "7738": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "9794": {
+      "stats": [
+        "+3 Defensa"
+      ]
+    },
+    "9807": {
+      "stats": [
+        "+6 Poder de ataque"
+      ]
+    },
+    "9824": {
+      "stats": [
+        "+6 espíritu"
+      ]
+    },
+    "10400": {
+      "sets": [
+        "Conjunto: +5 p. de resistencia Arcana.",
+        "Conjunto: +15 p. de poder de ataque contra humanoides.",
+        "(4) Bonif.: Otorga a tus ataques cuerpo a cuerpo un 5% de probabilidad de acertar en un punto vital al golpear por la espalda, lo que hace que el objetivo reciba 70 a 85 p. de daño físico por sangrado durante 5 s.",
+        "(5) Bonif.: Dagas aumentadas +1."
+      ]
+    },
+    "10402": {
+      "sets": [
+        "(4) Bonif.: Otorga a tus ataques cuerpo a cuerpo un 5% de probabilidad de acertar en un punto vital al golpear por la espalda, lo que hace que el objetivo reciba 70 a 85 p. de daño físico por sangrado durante 5 s.",
+        "(5) Bonif.: Dagas aumentadas +1."
+      ]
+    },
+    "10403": {
+      "stats": [
+        "+18 Poder de ataque"
+      ],
+      "sets": [
+        "Conjunto: +5 p. de resistencia Arcana.",
+        "Conjunto: +15 p. de poder de ataque contra humanoides.",
+        "(4) Bonif.: Otorga a tus ataques cuerpo a cuerpo un 5% de probabilidad de acertar en un punto vital al golpear por la espalda, lo que hace que el objetivo reciba 70 a 85 p. de daño físico por sangrado durante 5 s.",
+        "(5) Bonif.: Dagas aumentadas +1."
+      ]
+    },
+    "11121": {
+      "spells": [
+        "Probabilidad de acertar: Lanza un golpe de Sombras al enemigo causándole 7 p. de daño de las Sombras."
+      ]
+    },
+    "11287": {
+      "stats": [
+        "+1 poder con hechizos"
+      ]
+    },
+    "11982": {
+      "stats": [
+        "+4 espíritu"
+      ]
+    },
+    "12295": {
+      "stats": [
+        "+2 poder con hechizos"
+      ]
+    },
+    "13245": {
+      "stats": [
+        "+5 Defensa"
+      ]
+    },
+    "14168": {
+      "stats": [
+        "+2 poder con hechizos"
+      ]
+    },
+    "14367": {
+      "stats": [
+        "+4 espíritu"
+      ]
+    },
+    "250530": {
+      "stats": [
+        "+7 Defensa"
+      ]
+    },
+    "252493": {
+      "stats": [
+        "+5 Daño con hechizos",
+        "+15 Sanación con hechizos",
+        "+3 espíritu"
+      ]
+    },
+    "263411": {
+      "spells": [
+        "Equipar: Reduce el coste de maná de los hechizos de cambio de forma 40 p."
+      ]
+    },
+    "263412": {
+      "spells": [
+        "Equipar: Reduce 5 p. el coste de maná de Choque de llamas y Descarga de relámpagos."
+      ]
+    },
+    "270000": {
+      "stats": [
+        "+2 poder con hechizos"
+      ]
+    },
+    "270013": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "270016": {
+      "stats": [
+        "+2 poder con hechizos"
+      ]
+    },
+    "270029": {
+      "stats": [
+        "+3 poder con hechizos"
+      ]
+    },
+    "270031": {
+      "stats": [
+        "+14 poder con hechizos"
+      ]
+    },
+    "270032": {
+      "stats": [
+        "+10 Poder de ataque"
+      ]
+    },
+    "270039": {
+      "stats": [
+        "+7 poder con hechizos"
+      ]
+    },
+    "270050": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "270231": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "270261": {
+      "stats": [
+        "+8 poder con hechizos",
+        "+4 espíritu"
+      ]
+    },
+    "271096": {
+      "stats": [
+        "+3 poder con hechizos",
+        "+30 bonus de armadura"
+      ]
+    },
+    "271098": {
+      "stats": [
+        "+60 bonus de armadura"
+      ]
+    },
+    "271203": {
+      "stats": [
+        "+5 espíritu"
+      ]
+    },
+    "271214": {
+      "stats": [
+        "+5 Daño con hechizos",
+        "+15 Sanación con hechizos"
+      ],
+      "sets": [
+        "(2) Bonif.: +5 p. de resistencia a las Sombras.",
+        "(3) Bonif.: +10 p. de intelecto.",
+        "(4) Bonif.: Restaura 200 p. de maná durante 10 s cuando este baja del 15%. Restaura el doble en zonas embrujadas y páramos. Solo puede ocurrir una vez cada 5 min.",
+        "(5) Bonif.: Otorga a tus hechizos de sanación una probabilidad de sanarte 40 p. de salud extra cada 3 s durante 15 s."
+      ]
+    },
+    "271670": {
+      "stats": [
+        "+5 poder con hechizos"
+      ]
+    },
+    "271766": {
+      "stats": [
+        "+32 Poder de ataque",
+        "+60 bonus de armadura"
+      ]
+    },
+    "271767": {
+      "stats": [
+        "+5 Regeneración de maná cada 5 s"
+      ]
+    },
+    "273088": {
+      "stats": [
+        "+1 espíritu"
+      ]
+    },
+    "273089": {
+      "spells": [
+        "Usar: Escapas de todos los efectos de inmovilización. (30 min de tiempo de reutilización)."
+      ],
+      "stats": [
+        "+3 Regeneración de maná cada 5 s"
+      ]
+    },
+    "273293": {
+      "spells": [
+        "Equipar: Inflige 5 a 7 p. de daño físico cada vez que bloqueas."
+      ]
+    },
+    "273298": {
+      "spells": [
+        "Usar: Permite ver a lo lejos."
+      ],
+      "stats": [
+        "+1 espíritu"
+      ]
+    },
+    "273457": {
+      "spells": [
+        "Equipar: Reduce un 4% la probabilidad de golpearte de los efectos de silencio."
+      ],
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "273804": {
+      "stats": [
+        "+10 Poder de ataque",
+        "+9 espíritu"
+      ]
+    },
+    "273805": {
+      "stats": [
+        "+4 Defensa",
+        "+14 Poder de ataque"
+      ]
+    },
+    "273806": {
+      "stats": [
+        "+6 poder con hechizos"
+      ]
+    },
+    "273807": {
+      "stats": [
+        "+9 Daño con hechizos"
+      ]
+    },
+    "273839": {
+      "spells": [
+        "Equipar: Al recibir un golpe en combate inflige 2 p. de daño de Naturaleza al atacante."
+      ]
+    },
+    "273840": {
+      "spells": [
+        "Equipar: Los hechizos y ataques infligen 2 de daño de las Sombras. Inflige 4 veces más daño a los múrlocs."
+      ]
+    },
+    "274092": {
+      "stats": [
+        "+1 Daño físico"
+      ]
+    },
+    "277210": {
+      "stats": [
+        "+4 golpe"
+      ]
+    },
+    "279867": {
+      "stats": [
+        "+1 Defensa"
+      ]
+    },
+    "279897": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "279899": {
+      "stats": [
+        "+3 Poder de ataque",
+        "+4 Poder de ataque contra humanoides"
+      ]
+    },
+    "280766": {
+      "spells": [
+        "Usar: Mete la mano en la bolsa y espera algo bueno. (10 min de tiempo de reutilización)."
+      ]
+    },
+    "281256": {
+      "stats": [
+        "+2 espíritu"
+      ]
+    },
+    "285292": {
+      "stats": [
+        "+6 Poder de ataque"
+      ]
+    },
+    "286979": {
+      "stats": [
+        "+8 espíritu"
+      ],
+      "sets": [
+        "(2) Bonif.: +5 p. de resistencia a las Sombras.",
+        "(3) Bonif.: +10 p. de intelecto.",
+        "(4) Bonif.: Restaura 200 p. de maná durante 10 s cuando este baja del 15%. Restaura el doble en zonas embrujadas y páramos. Solo puede ocurrir una vez cada 5 min.",
+        "(5) Bonif.: Otorga a tus hechizos de sanación una probabilidad de sanarte 40 p. de salud extra cada 3 s durante 15 s."
+      ]
+    },
+    "286980": {
+      "sets": [
+        "(2) Bonif.: +5 p. de resistencia a las Sombras.",
+        "(3) Bonif.: +10 p. de intelecto.",
+        "(4) Bonif.: Restaura 200 p. de maná durante 10 s cuando este baja del 15%. Restaura el doble en zonas embrujadas y páramos. Solo puede ocurrir una vez cada 5 min.",
+        "(5) Bonif.: Otorga a tus hechizos de sanación una probabilidad de sanarte 40 p. de salud extra cada 3 s durante 15 s."
+      ]
+    }
+  },
+  "renders": {
+    "forever-eu-aditus-antrum": "https://render.worldofwarcraft.com/forever-eu/character/242/3616754-main-raw.png",
+    "forever-eu-akimis-derechos": "https://render.worldofwarcraft.com/forever-eu/character/91/14140507-main-raw.png",
+    "forever-eu-alexion-grandwell": "https://render.worldofwarcraft.com/forever-eu/character/133/6919813-main-raw.png",
+    "forever-eu-armentak-akrom": "https://render.worldofwarcraft.com/forever-eu/character/208/18617808-main-raw.png",
+    "forever-eu-betadine-sagrado": "https://render.worldofwarcraft.com/forever-eu/character/92/16389724-main-raw.png",
+    "forever-eu-chusticiero-maldito": "https://render.worldofwarcraft.com/forever-eu/character/146/2810258-main-raw.png",
+    "forever-eu-clairex-fuenteterna": "https://render.worldofwarcraft.com/forever-eu/character/79/15963471-main-raw.png",
+    "forever-eu-dertak-reign": "https://render.worldofwarcraft.com/forever-eu/character/195/14728899-main-raw.png",
+    "forever-eu-ferrogard-escudoferreo": "https://render.worldofwarcraft.com/forever-eu/character/59/6969915-main-raw.png",
+    "forever-eu-franz-martel": "https://render.worldofwarcraft.com/forever-eu/character/153/6744729-main-raw.png",
+    "forever-eu-hellbrios-realtrece": "https://render.worldofwarcraft.com/forever-eu/character/30/12510238-main-raw.png",
+    "forever-eu-jukkz-shelby": "https://render.worldofwarcraft.com/forever-eu/character/75/6976331-main-raw.png",
+    "forever-eu-juninho-delbosque": "https://render.worldofwarcraft.com/forever-eu/character/95/2345567-main-raw.png",
+    "forever-eu-loqe-delabahía": "https://render.worldofwarcraft.com/forever-eu/character/252/2833148-main-raw.png",
+    "forever-eu-lua-nita": "https://render.worldofwarcraft.com/forever-eu/character/69/12973637-main-raw.png",
+    "forever-eu-lyrae-grandwell": "https://render.worldofwarcraft.com/forever-eu/character/2/6673922-main-raw.png",
+    "forever-eu-naisen-grandwell": "https://render.worldofwarcraft.com/forever-eu/character/138/6787978-main-raw.png",
+    "forever-eu-olynn-grandwell": "https://render.worldofwarcraft.com/forever-eu/character/180/3182260-main-raw.png",
+    "forever-eu-rast-puñotormenta": "https://render.worldofwarcraft.com/forever-eu/character/170/6488490-main-raw.png",
+    "forever-eu-rompecraneos-roman": "https://render.worldofwarcraft.com/forever-eu/character/206/6829518-main-raw.png",
+    "forever-eu-starshow-ofvalley": "https://render.worldofwarcraft.com/forever-eu/character/88/11283800-main-raw.png",
+    "forever-eu-varón-dandy": "https://render.worldofwarcraft.com/forever-eu/character/138/5601418-main-raw.png",
+    "forever-eu-veshar-frostmind": "https://render.worldofwarcraft.com/forever-eu/character/116/6991220-main-raw.png",
+    "forever-eu-viçent-wildfang": "https://render.worldofwarcraft.com/forever-eu/character/215/10125783-main-raw.png",
+    "forever-eu-vincie-quickhands": "https://render.worldofwarcraft.com/forever-eu/character/200/5957832-main-raw.png"
+  }
+}

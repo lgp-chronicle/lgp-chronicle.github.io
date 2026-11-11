@@ -13,6 +13,7 @@ import { apiUrl, siteHref } from "../lib/public-settings";
 import { sectionFromPath } from "../lib/guild-navigation";
 import type { GuildData } from "../features/types";
 import "../app/globals.css";
+import "../app/guild-views.css";
 function App() {
   const [path, setPath] = useState(location.hash.slice(1) || "/");
   const dataRoute = sectionFromPath(path) ? "/" : path;
@@ -46,7 +47,7 @@ function App() {
     return () => abort.abort();
   }, [dataRoute, attempt]);
   useEffect(() => {
-    document.title = "La Ganga · LGP Chronicle";
+    document.title = "La Ganga · Crónicas de la hermandad";
   }, [path]);
 
   let id = "";
@@ -81,7 +82,7 @@ function App() {
       ) : path === "/" || path === "" || section ? (
         <Dashboard key={data.generatedAt} initial={data} section={section} />
       ) : member ? (
-        <CharacterDetail member={member} members={data.members} />
+        <CharacterDetail key={member.id} member={member} members={data.members} />
       ) : (
         <main className="page-width panel">
           <h2>Personaje no encontrado</h2>

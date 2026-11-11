@@ -93,6 +93,7 @@ export type Award = {
   id: string;
   title: string;
   names: string[];
+  memberIds: string[];
   value: number;
   rule: string;
 };
@@ -110,14 +111,26 @@ export function awards(members: Member[], now = Date.now()): Award[] {
       .filter((x): x is { m: Member; n: number } => numeric(x.n) && x.n > min);
     if (values.length < 2) return;
     const max = Math.max(...values.map((x) => x.n));
+    const winners = values.filter((x) => x.n === max).map((x) => x.m);
     a.push({
       id,
       title,
       rule,
       value: max,
-      names: values.filter((x) => x.n === max).map((x) => x.m.name),
+      names: winners.map((m) => m.name),
+      memberIds: winners.map((m) => m.id),
     });
   };
+  for (const [id, title, attribute] of [
+    ["stamina", "El más duro", "Aguante"],
+    ["intellect", "El más inteligente", "Intelecto"],
+    ["strength", "El que abre los botes", "Fuerza"],
+    ["agility", "Pies de mantequilla", "Agilidad"],
+    ["spirit", "El más zen", "Espíritu"],
+    ["armor", "La lata con patas", "Armadura"],
+  ]) {
+    add(id, title, "Mayor puntuación de " + attribute.toLocaleLowerCase("es"), m => m.data.statistics?.[attribute]);
+  }
   add(
     "pvp",
     "El más PvPero",
@@ -260,21 +273,22 @@ export function awards(members: Member[], now = Date.now()): Award[] {
         id: "newcomer",
         title: "El recién llegado",
         names: [latest.name],
+        memberIds: [latest.id],
         value: 1,
         rule: "Último personaje incorporado al archivo",
       });
   }
   const counts = Object.fromEntries(
     members.map((m) => [
-      m.name,
-      a.filter((x) => x.names.includes(m.name)).length,
+      m.id,
+      a.filter((x) => x.memberIds.includes(m.id)).length,
     ]),
   );
   add(
     "main",
     "Main Character",
     "Lidera más categorías de este salón",
-    (m) => counts[m.name],
+    (m) => counts[m.id],
     1,
   );
   return a;

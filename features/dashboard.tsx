@@ -7,26 +7,56 @@ import {
 } from "@/lib/guild-navigation";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
-import { rankChanges } from "./observations";
+import { MemberLink } from "./member-portrait";
+import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { TabsContent } from "@/components/ui/tabs";
 import { SectionIndex } from "@/components/section-index";
-import { BookOpen, Trophy, RefreshCw, Users } from "lucide-react";
+import {
+  BookOpen,
+  Trophy,
+  RefreshCw,
+  Users,
+  Heart,
+  Brain,
+  BicepsFlexed,
+  Feather,
+  Flame,
+  Shield,
+  type LucideIcon,
+} from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
 import { Compare } from "./compare";
 import { Newspaper } from "./newspaper";
-import { leveling, display, awards, ago } from "./analytics";
-import { numeric, type GuildData, type Member, color } from "./types";
+import { leveling, display, awards, ago, type Award } from "./analytics";
+import { numeric, type GuildData, type Member } from "./types";
+const titleIcons: Record<string, LucideIcon> = {
+  stamina: Heart,
+  intellect: Brain,
+  strength: BicepsFlexed,
+  agility: Feather,
+  spirit: Flame,
+  armor: Shield,
+};
+function AwardWinners({ award, members }: { award: Award; members: Member[] }) {
+  return (
+    <span className="award-winners">
+      {award.memberIds.map((id) => {
+        const winner = members.find((m) => m.id === id);
+        return winner ? <MemberLink key={id} member={winner} /> : null;
+      })}
+    </span>
+  );
+}
 function leader(members: Member[], score: (m: Member) => unknown) {
   const valid = members.filter((m) => numeric(score(m)));
   if (!valid.length) return null;
   const max = Math.max(...valid.map((m) => score(m) as number));
-  const names = valid.filter((m) => score(m) === max).map((m) => m.name);
+  const winners = valid.filter((m) => score(m) === max);
   return {
-    name: names.length > 1 ? `${names.length} empatados` : names[0],
-    names: names.join(" / "),
+    winners,
     value: max,
     partial: valid.length < members.length,
   };
@@ -48,7 +78,7 @@ export function Dashboard({
   }, [section]);
   const m = data.members;
   const trophies = awards(m);
-  const changes = rankChanges(m);
+  const withoutLogs = m.filter((member) => !member.logs);
   const cards = [
     {
       label: "Por delante en nivel",
@@ -95,15 +125,11 @@ export function Dashboard({
       <header className="guild-cover">
         <div className="cover-copy">
           <p className="eyebrow cover-kicker">
-            World of Warcraft <i aria-hidden="true" /> WoW Forever
+            Hermandad <i aria-hidden="true" /> WoW Forever
           </p>
-          <h1>
-            Crónicas de
-            <br />
-            <span>La Ganga</span>
-          </h1>
+          <h1>La Ganga</h1>
           <p className="cover-summary">
-            Personajes, hazañas y noticias de nuestra hermandad en Azeroth.
+            Las crónicas de nuestra hermandad en Azeroth.
           </p>
           <div className="cover-actions">
             <a
@@ -119,10 +145,10 @@ export function Dashboard({
         </div>
         <img
           className="cover-crest"
-          src={assetUrl("/guild/la-ganga.webp")}
-          alt="Escudo de La Ganga, una víbora negra sobre campo ocre"
-          width="190"
-          height="190"
+          src={assetUrl("/guild/escudo-la-ganga.webp")}
+          alt="Escudo de La Ganga con dos serpientes de escamas oliva y una cinta dorada"
+          width="650"
+          height="597"
         />
       </header>
       <div className="section-heading honors-heading">
@@ -155,22 +181,39 @@ export function Dashboard({
       <div className="stat-grid honors">
         {cards.map(({ label, image, top, unit }) => (
           <article className="stat" key={label}>
-            <img
-              className="honor-illustration"
-              src={assetUrl("/guild/" + image + ".webp")}
-              alt=""
-              width="68"
-              height="68"
-            />
-            <div className="honor-text">
-              <small>{label}</small>
-              <strong title={top?.names}>{top?.name ?? "Por descubrir"}</strong>
-              <p>
-                {top
-                  ? `${display(top.value)} ${unit}${top.partial ? " · cobertura parcial" : ""}`
-                  : "Esperando datos reales"}
-              </p>
+            <div className="honor-caption">
+              <img
+                className="honor-illustration"
+                src={assetUrl("/guild/" + image + ".webp")}
+                alt=""
+                width="27"
+                height="27"
+              />
+              <h3>{label}</h3>
             </div>
+            {top ? (
+              <>
+                <div
+                  className={
+                    top.winners.length > 1
+                      ? "honor-winners shared"
+                      : "honor-winners"
+                  }
+                >
+                  {top.winners.map((member) => (
+                    <MemberLink key={member.id} member={member} />
+                  ))}
+                </div>
+                <p className="honor-value">
+                  {unit === "nivel"
+                    ? "Nivel " + display(top.value)
+                    : display(top.value) + " " + unit}
+                  {top.partial ? " · cobertura parcial" : ""}
+                </p>
+              </>
+            ) : (
+              <p className="honor-value">Sin registros suficientes.</p>
+            )}
           </article>
         ))}
       </div>
@@ -192,7 +235,7 @@ export function Dashboard({
           <TabsContent value="overview">
             <Roster members={m} />
             <div style={{ marginTop: 24 }} className="grid-two">
-              <Newspaper events={data.events.slice(0, 12)} />
+              <Newspaper members={m} events={data.events.slice(0, 12)} />
               <section className="panel">
                 <p className="eyebrow">UN POCO DE GLORIA</p>
                 <h3>Los nombres del momento</h3>
@@ -204,7 +247,9 @@ export function Dashboard({
                       style={{ marginTop: 15 }}
                     >
                       <h3>{a.title}</h3>
-                      <p>{a.names.join(" / ")}</p>
+                      <p>
+                        <AwardWinners award={a} members={m} />
+                      </p>
                       <small>
                         {a.rule} · {display(a.value)}
                       </small>
@@ -220,72 +265,7 @@ export function Dashboard({
             </div>
           </TabsContent>
           <TabsContent value="race">
-            <section className="panel">
-              <h3>Leveling Race</h3>
-              <p className="subheading">
-                Nivel primero; velocidad reciente como desempate. Velocidad de
-                calendario, no horas de juego.
-              </p>
-              {m.some((x) => numeric(x.data.level)) ? (
-                <>
-                  <div className="race-row muted">
-                    <span>#</span>
-                    <span>Personaje</span>
-                    <span>24 h</span>
-                    <span>7 días</span>
-                    <span>Media / día</span>
-                  </div>
-                  {[...m]
-                    .filter((x) => numeric(x.data.level))
-                    .sort(
-                      (a, b) =>
-                        b.data.level! - a.data.level! ||
-                        (leveling(b).day ?? -1) - (leveling(a).day ?? -1),
-                    )
-                    .map((x, i, sorted) => {
-                      const l = leveling(x);
-                      return (
-                        <div className="race-row" key={x.id}>
-                          <strong>
-                            {sorted.findIndex(
-                              (other) =>
-                                other.data.level === x.data.level &&
-                                (leveling(other).day ?? -1) === (l.day ?? -1),
-                            ) + 1}
-                          </strong>
-                          <div>
-                            <span style={{ color: color(x) }}>
-                              {x.name}{" "}
-                              {changes.has(x.id) && changes.get(x.id) !== 0
-                                ? changes.get(x.id)! > 0
-                                  ? "↑ " + changes.get(x.id)
-                                  : "↓ " + Math.abs(changes.get(x.id)!)
-                                : null}
-                            </span>
-                            <p className="subheading">
-                              Nivel {x.data.level} · Último nivel:{" "}
-                              {l.lastLevel
-                                ? ago(l.lastLevel)
-                                : "Sin cambio detectado"}
-                            </p>
-                          </div>
-                          <span>{display(l.day)}</span>
-                          <span>{display(l.week)}</span>
-                          <span>{display(l.average)}</span>
-                        </div>
-                      );
-                    })}
-                </>
-              ) : (
-                <Empty
-                  title="La parrilla está preparada"
-                  text="Necesitamos niveles e histórico para ordenar esta carrera. No hay posiciones asignadas todavía."
-                />
-              )}
-              <p className="subheading">
-                Un guion significa que el periodo no tiene cobertura suficiente.
-              </p>
-            </section>
+            <LevelingRace members={m} />
             <div style={{ marginTop: 22 }}>
               <HistoryChart members={m} />
             </div>
@@ -303,20 +283,25 @@ export function Dashboard({
             <h2 className="section-title">El salón de la fama</h2>
             {trophies.length ? (
               <div className="award-grid">
-                {trophies.map((a) => (
-                  <article className="award" key={a.id}>
-                    <Trophy size={24} color="#d6be8d" />
-                    <h3>{a.title}</h3>
-                    <p>{a.names.join(" / ")}</p>
-                    <strong>{display(a.value)}</strong>
-                    <p>
-                      <small>
-                        {a.rule}.{" "}
-                        {a.names.length > 1 ? "Premio compartido." : ""}
-                      </small>
-                    </p>
-                  </article>
-                ))}
+                {trophies.map((a) => {
+                  const Icon = titleIcons[a.id] ?? Trophy;
+                  return (
+                    <article className="award" key={a.id}>
+                      <Icon size={24} color="#d6be8d" aria-hidden="true" />
+                      <h3>{a.title}</h3>
+                      <p>
+                        <AwardWinners award={a} members={m} />
+                      </p>
+                      <strong>{display(a.value)}</strong>
+                      <p>
+                        <small>
+                          {a.rule}.{" "}
+                          {a.names.length > 1 ? "Premio compartido." : ""}
+                        </small>
+                      </p>
+                    </article>
+                  );
+                })}
               </div>
             ) : (
               <section className="panel">
@@ -328,7 +313,7 @@ export function Dashboard({
             )}
           </TabsContent>
           <TabsContent value="news">
-            <Newspaper events={data.events} />
+            <Newspaper members={m} events={data.events} />
           </TabsContent>
           <TabsContent value="compare">
             <Compare members={m} />
@@ -349,7 +334,9 @@ export function Dashboard({
                       key={x.id}
                       style={{ marginTop: 16 }}
                     >
-                      <h3 style={{ color: color(x) }}>{x.name}</h3>
+                      <h3>
+                        <MemberLink member={x} />
+                      </h3>
                       <p>
                         Best Parse: {display(x.logs?.bestParse)} · DPS:{" "}
                         {display(x.logs?.bestDps)} · HPS:{" "}
@@ -375,6 +362,18 @@ export function Dashboard({
                   title="Sin informes en la mesa, de momento"
                   text="Warcraft Logs aparecerá tras conectar la cuenta de aplicación y encontrar informes públicos. Los parses necesitan zonas de raid configuradas."
                 />
+              )}
+              {withoutLogs.length > 0 && (
+                <details className="logs-directory">
+                  <summary>
+                    Personajes sin informes ({withoutLogs.length})
+                  </summary>
+                  <div className="member-grid">
+                    {withoutLogs.map((member) => (
+                      <MemberLink key={member.id} member={member} />
+                    ))}
+                  </div>
+                </details>
               )}
             </section>
           </TabsContent>

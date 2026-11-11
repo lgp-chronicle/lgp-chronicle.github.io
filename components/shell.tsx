@@ -13,13 +13,13 @@ export function Shell({
         <div className="masthead-inner">
           <a href={siteHref("/")} className="brand">
             <img
-              src={assetUrl("/guild/la-ganga.webp")}
+              src={assetUrl("/guild/sello-la-ganga.png")}
               alt=""
               width="54"
               height="54"
             />
             <span>
-              La Ganga<small>LGP Chronicle</small>
+              La Ganga<small>Hermandad</small>
             </span>
           </a>
           <nav aria-label="Navegación principal" className="guild-nav">
@@ -46,12 +46,12 @@ export function Shell({
       <footer>
         <a className="footer-brand" href={siteHref("/")}>
           <img
-            src={assetUrl("/guild/favicon.png")}
+            src={assetUrl("/guild/sello-la-ganga.png")}
             alt=""
             width="32"
             height="32"
           />{" "}
-          La Ganga <span>· LGP Chronicle</span>
+          La Ganga <span>· WoW Forever</span>
         </a>
         <span>
           Proyecto de fans. World of Warcraft © Blizzard Entertainment.

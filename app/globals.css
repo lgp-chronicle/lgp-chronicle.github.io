@@ -10,6 +10,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Germania One";
+  src: url("./art/GermaniaOne-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -22,7 +30,7 @@
   --color-accent: var(--muted);
   --color-accent-foreground: var(--foreground);
   --color-primary: var(--gold);
-  --color-primary-foreground: #211810;
+  --color-primary-foreground: #121b0e;
   --color-ring: var(--gold);
   --color-card: var(--surface);
   --color-card-foreground: var(--foreground);
@@ -30,18 +38,25 @@
 
 :root {
   color-scheme: dark;
-  --background: #191612;
-  --surface: #27221c;
-  --foreground: #f1e8d7;
-  --muted: #373026;
-  --muted-foreground: #c4b7a2;
-  --border: #554535;
-  --gold: #e3b568;
+  --background: #101912;
+  --surface: #1d2c20;
+  --foreground: #f5efd9;
+  --muted: #34432b;
+  --muted-foreground: #c1c6aa;
+  --border: #516043;
+  --gold: #f6cb55;
+  --display: "Germania One", "Almendra", Georgia, serif;
   --heading: "Almendra", Georgia, serif;
   --page: 1376px;
   --gutter: clamp(16px, 4vw, 64px);
-  --bronze-line: linear-gradient(90deg, #5e4228, #ad8248 43%, #5b412a);
-  --rivets: url("./art/remache.webp");
+  --gold-rule: linear-gradient(90deg, #323f1e, #b99a38 43%, #303e20);
+  --finial: linear-gradient(
+    135deg,
+    #fff1a2 10%,
+    #d6aa42 46%,
+    #8e6622 50%,
+    #d6a83c 80%
+  );
 }
 
 * {
@@ -50,7 +65,7 @@
 body {
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% 0, #32291e 0, transparent 55rem),
+    radial-gradient(ellipse at 50% 0, #233822 0, transparent 62rem),
     var(--background);
   color: var(--foreground);
   font:
@@ -75,7 +90,7 @@ button:disabled {
   opacity: 0.65;
 }
 :where(a, button, input, summary, [tabindex]):focus-visible {
-  outline: 2px solid #ffda86;
+  outline: 2px solid #fff46f;
   outline-offset: 3px;
 }
 h1,
@@ -105,9 +120,9 @@ a svg {
   padding-block: 27px 64px;
 }
 .masthead {
-  background: #191612;
-  border-bottom: 1px solid #765834;
-  box-shadow: 0 3px 12px #08060450;
+  background: #0e1a14;
+  border-top: 3px solid #c39530;
+  border-bottom: 1px solid #6e723e;
 }
 .masthead-inner {
   min-height: 76px;
@@ -122,7 +137,7 @@ a svg {
   gap: 11px;
 }
 .brand {
-  color: #f0cf8c;
+  color: #ffe874;
   flex: none;
 }
 .brand img {
@@ -136,7 +151,7 @@ a svg {
 .brand small {
   display: block;
   margin-top: 5px;
-  color: #b5a089;
+  color: #c2be6b;
   text-transform: uppercase;
   font:
     600 9px/1.1 "Segoe UI",
@@ -154,13 +169,13 @@ a svg {
   position: relative;
   display: grid;
   place-items: center;
-  color: #c7bcab;
+  color: #c3c49d;
   font: 700 19px var(--heading);
   white-space: nowrap;
 }
 .guild-nav a[aria-current],
 .guild-nav a:hover {
-  color: #ffda91;
+  color: #fff478;
 }
 .guild-nav a[aria-current]::after {
   content: "";
@@ -169,10 +184,10 @@ a svg {
   left: 14%;
   right: 14%;
   height: 1px;
-  background: var(--bronze-line);
+  background: var(--gold-rule);
 }
 .realm-note {
-  color: #c9b697;
+  color: #d7cc7d;
   font-size: 12px;
   border-left: 1px solid var(--border);
   padding-left: clamp(16px, 2.5vw, 36px);
@@ -188,12 +203,13 @@ a svg {
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: clamp(390px, 32vw, 462px);
-  border: 2px solid #856136;
-  background: #342a20;
+  min-height: clamp(350px, 30vw, 430px);
+  border: 1px solid #d8b24f;
+  background: #203021;
   box-shadow:
-    0 0 0 2px #0c0b08,
-    0 10px 26px #09070559;
+    0 0 0 2px #101b15,
+    0 0 0 3px #716c37,
+    0 12px 28px #09130c66;
 }
 .guild-cover::before {
   content: "";
@@ -201,28 +217,29 @@ a svg {
   z-index: -2;
   inset: 0;
   background:
-    linear-gradient(
-      90deg,
-      #12100ded 0%,
-      #17120fcf 22%,
-      #211a1366 43%,
-      transparent 67%
-    ),
-    linear-gradient(0deg, #15110e66, transparent 35%),
-    url("./art/fortaleza.webp") center 51% / cover no-repeat;
+    linear-gradient(90deg, #0b1c15ed, #0f2019ae 30%, transparent 62%),
+    url("./art/fortaleza.webp") center 49% / cover no-repeat;
 }
 .guild-cover::after {
   content: "";
-  pointer-events: none;
   position: absolute;
-  z-index: 2;
-  inset: 5px;
-  border: 1px solid #d1a55a75;
+  pointer-events: none;
+  inset: 6px;
+  border: 1px solid #ecd47277;
   background:
-    var(--rivets) top left / 19px 19px,
-    var(--rivets) top right / 19px 19px,
-    var(--rivets) bottom left / 19px 19px,
-    var(--rivets) bottom right / 19px 19px;
+    conic-gradient(
+        from 90deg at 0 0,
+        #fff2aa 0 21deg,
+        #b88d2d 21deg 45deg,
+        transparent 45deg
+      )
+      left top / 25px 25px,
+    conic-gradient(from 180deg at 100% 0, #dcae42 0 45deg, transparent 45deg)
+      right top / 25px 25px,
+    conic-gradient(from 270deg at 100% 100%, #ffe48b 0 45deg, transparent 45deg)
+      right bottom / 25px 25px,
+    conic-gradient(at 0 100%, #d5a436 0 45deg, transparent 45deg) left bottom /
+      25px 25px;
   background-repeat: no-repeat;
 }
 .cover-copy {
@@ -235,34 +252,36 @@ a svg {
     sans-serif;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #dcb172;
+  color: #ebc65f;
 }
 .cover-kicker {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #f0c574;
+  color: #ffdd60;
 }
 .cover-kicker i {
   width: 5px;
   height: 5px;
-  background: #d7a757;
+  background: #e6bb48;
   transform: rotate(45deg);
 }
 .cover-copy h1 {
-  margin: 16px 0 12px;
-  font-size: clamp(52px, 5.6vw, 84px);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-  color: #fcf0d7;
-  text-shadow: 0 3px 8px #171008;
+  margin: 12px 0;
+  font: 400 clamp(76px, 7.9vw, 114px) / 0.99 var(--display);
+  letter-spacing: -0.025em;
+  color: #ffdf72;
+  text-shadow:
+    0 2px #6c4b1a,
+    0 4px #1b200e,
+    0 5px 22px #081b12;
 }
 .cover-copy h1 span {
-  color: #f1c577;
+  color: #ffdd63;
 }
 .cover-summary {
   max-width: 390px;
-  color: #e4d8c4;
+  color: #dfe1b4;
   font:
     17px/1.55 Georgia,
     serif;
@@ -276,12 +295,12 @@ a svg {
 }
 .cover-crest {
   position: absolute;
-  right: clamp(26px, 4.3vw, 74px);
-  bottom: -16px;
-  width: clamp(115px, 12vw, 181px);
+  right: clamp(38px, 6vw, 110px);
+  top: 50%;
+  width: clamp(205px, 23vw, 345px);
+  transform: translateY(-50%);
   height: auto;
-  z-index: 3;
-  filter: drop-shadow(0 5px 4px #100b08aa);
+  filter: drop-shadow(0 5px 1px #30260e99) drop-shadow(0 14px 12px #17251580);
 }
 
 .button {
@@ -293,7 +312,7 @@ a svg {
   padding: 10px 18px;
   border: 1px solid transparent;
   border-radius: 5px;
-  color: #f2dec0;
+  color: #fff99f;
   font:
     650 14px/1.3 "Segoe UI",
     Arial,
@@ -310,39 +329,49 @@ a svg {
   stroke-width: 1.65;
 }
 .button.bronze {
-  color: #292013;
-  background: linear-gradient(160deg, #f3d8a1, #dfb979);
-  border-color: #e7c78b;
+  color: #2c250d;
+  background: linear-gradient(
+    170deg,
+    #fff1a3,
+    #fbd35e 42%,
+    #eab53c 85%,
+    #d19929
+  );
+  border-color: #f7d471;
+  border-radius: 3px 11px 3px 11px;
   box-shadow:
-    inset 0 1px #fff2d577,
-    0 2px 4px #100c0850;
+    inset 0 0 0 2px #d5a33c,
+    inset 0 0 0 3px #ffe891,
+    0 2px 0 #463c16;
 }
 .button.bronze:hover {
-  background: #f8e2b5;
-  border-color: #ffebc7;
+  background: #fffd96;
+  border-color: #ffffa5;
 }
 .button.iron {
-  color: #f4e7cc;
-  background: #231d17d9;
-  border-color: #a38b63;
+  color: #f5e3a1;
+  background: linear-gradient(150deg, #32462d, #1b2d21);
+  border: 1px solid #ab9d55;
+  border-radius: 3px 11px 3px 11px;
+  box-shadow: inset 0 0 0 2px #263823;
 }
 .button.iron:hover {
-  background: #3b3021;
-  border-color: #e2c28e;
+  background: #202f19;
+  border-color: #f2d976;
 }
 .button.outline {
   padding-inline: 9px;
   background: transparent;
   border: 0;
-  color: #dbc5a1;
+  color: #eadd86;
   outline: none;
 }
 .button.outline:hover {
-  color: #ffe0a5;
-  background: #46382466;
+  color: #fffb89;
+  background: #25361b66;
 }
 .button:focus-visible {
-  outline: 2px solid #ffdb90;
+  outline: 2px solid #fff578;
   outline-offset: 3px;
 }
 .button:active:not(:disabled) {
@@ -358,7 +387,7 @@ a svg {
 }
 .section-title {
   font-size: clamp(31px, 3.1vw, 43px);
-  color: #f3dfb6;
+  color: #fffa97;
 }
 .honors-heading {
   margin: 35px 0 12px;
@@ -368,7 +397,7 @@ a svg {
   order: 1;
   height: 1px;
   flex: 1;
-  background: var(--bronze-line);
+  background: var(--gold-rule);
   opacity: 0.7;
 }
 .honors-heading .button {
@@ -386,9 +415,8 @@ a svg {
 .stat,
 .panel,
 .duel-side,
-.award,
-.equipment article {
-  background: linear-gradient(126deg, #342b22, #241f1a 70%);
+.award {
+  background: linear-gradient(126deg, #1c2b1a, #142115 70%);
   border: 1px solid var(--border);
 }
 .stat {
@@ -399,13 +427,12 @@ a svg {
 .subheading,
 .muted,
 .stat p,
-.award small,
-.equipment small {
+.award small {
   color: var(--muted-foreground);
 }
 .stat strong {
   display: block;
-  color: #f2d69e;
+  color: #fff083;
   margin-block: 4px 1px;
   font: 700 clamp(23px, 2.15vw, 30px) / 1.1 var(--heading);
   overflow-wrap: anywhere;
@@ -426,8 +453,8 @@ a svg {
   gap: 12px;
   padding: 18px 14px;
   min-height: 109px;
-  border-top-color: #8c6a40;
-  box-shadow: inset 0 0 0 3px #17130e55;
+  border-top-color: #967e32;
+  box-shadow: inset 0 0 0 3px #0d160d55;
 }
 .honors .stat::after {
   content: "";
@@ -436,17 +463,17 @@ a svg {
   bottom: 3px;
   width: 10px;
   height: 10px;
-  border-right: 1px solid #a27c44;
-  border-bottom: 1px solid #a27c44;
+  border-right: 1px solid #ad9335;
+  border-bottom: 1px solid #ad9335;
 }
 .honor-illustration {
   width: 100%;
   height: auto;
-  filter: drop-shadow(1px 3px 2px #100c08);
+  filter: drop-shadow(1px 3px 2px #091008);
 }
 .honor-text small {
   display: block;
-  color: #e1ccb0;
+  color: #f1e492;
 }
 .honor-text strong {
   font-size: clamp(21px, 1.75vw, 26px);
@@ -454,14 +481,14 @@ a svg {
 .notice {
   padding: 12px 16px;
   margin: 19px 0;
-  border-left: 3px solid #ab7e40;
-  background: #32291e;
-  color: #d6c9b4;
+  border-left: 3px solid #b79632;
+  background: #1b2917;
+  color: #d2d1a6;
   line-height: 1.5;
   font-size: 13px;
 }
 .notice strong {
-  color: #f1d59f;
+  color: #ffef84;
 }
 main[aria-busy],
 main.page-width.panel {
@@ -486,7 +513,7 @@ main.page-width.panel {
   gap: clamp(5px, 1.5vw, 24px);
   padding: 0;
   border-radius: 0;
-  border-bottom: 1px solid #79624473;
+  border-bottom: 1px solid #81753573;
   background: transparent;
 }
 .folio-tabs button {
@@ -501,7 +528,7 @@ main.page-width.panel {
   gap: 8px;
   background: transparent;
   box-shadow: none;
-  color: #c4b7a5;
+  color: #c0be98;
   font:
     600 clamp(13px, 1vw, 15px) / 1.4 "Segoe UI",
     Arial,
@@ -511,19 +538,19 @@ main.page-width.panel {
   width: 17px;
   height: 17px;
   stroke-width: 1.55;
-  color: #b09a75;
+  color: #bcb75b;
 }
 .folio-tabs button:hover,
 .folio-tabs button:hover svg {
-  color: #f6dfb1;
+  color: #fffa93;
 }
 .folio-tabs button[data-state="active"] {
   background: transparent;
-  color: #ffe3a6;
+  color: #fffe8a;
   box-shadow: none;
 }
 .folio-tabs button[data-state="active"] svg {
-  color: #edba66;
+  color: #fed055;
 }
 .folio-tabs button[data-state="active"]::before {
   content: "";
@@ -532,7 +559,7 @@ main.page-width.panel {
   left: 3px;
   right: 3px;
   height: 2px;
-  background: linear-gradient(90deg, #93713a, #f4cb82 50%, #93713a);
+  background: linear-gradient(90deg, #9d862d, #ffe36c 50%, #9d862d);
 }
 .folio-tabs button[data-state="active"]::after {
   content: "";
@@ -543,7 +570,7 @@ main.page-width.panel {
   bottom: -3px;
   left: 50%;
   transform: translateX(-50%) rotate(45deg);
-  background: #f3cb81;
+  background: #ffe36b;
   box-shadow: 0 0 0 2px var(--background);
 }
 .folio-tabs button:focus-visible {
@@ -566,10 +593,10 @@ main.page-width.panel {
     height: auto;
     min-height: 48px;
     padding: 11px 15px;
-    color: #f6dfb5;
-    border: 1px solid #7c6648;
+    color: #fffa96;
+    border: 1px solid #857938;
     border-radius: 6px;
-    background: #30281f;
+    background: #1a2818;
     font-size: 15px;
     font-weight: 600;
   }
@@ -579,7 +606,7 @@ main.page-width.panel {
     gap: 10px;
   }
   .index-trigger [data-slot="select-value"] svg {
-    color: #e8bb73;
+    color: #f8d15f;
   }
 }
 .index-options [data-slot="select-item"] {
@@ -597,24 +624,25 @@ main.page-width.panel {
   min-width: 0;
 }
 .panel {
-  border-top-color: #907044;
-  box-shadow: inset 0 0 0 4px #1d181455;
+  border-top-color: #9a8535;
+  box-shadow: inset 0 0 0 4px #101b1155;
 }
 .panel::before,
 .panel::after {
   position: absolute;
   content: "";
-  width: 12px;
-  height: 12px;
-  top: 3px;
+  width: 8px;
+  height: 8px;
+  top: 6px;
   pointer-events: none;
-  background: var(--rivets) center / contain no-repeat;
+  background: var(--finial);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
 .panel::before {
-  left: 3px;
+  left: 6px;
 }
 .panel::after {
-  right: 3px;
+  right: 6px;
 }
 .panel h3,
 .news-paper h3 {
@@ -643,33 +671,33 @@ main.page-width.panel {
 
 .toolbar input,
 [data-slot="select-trigger"] {
-  background: #211d18;
-  border: 1px solid #645642;
+  background: #121f13;
+  border: 1px solid #355030;
   border-radius: 5px;
   min-height: 41px;
   padding: 8px 12px;
   color: var(--foreground);
   font-size: 14px;
-  box-shadow: inset 0 1px 3px #100c0828;
+  box-shadow: inset 0 1px 3px #09100828;
 }
 .toolbar input {
   width: min(100%, 300px);
 }
 .toolbar input::placeholder {
-  color: #b5a993;
+  color: #c2c873;
 }
 [data-slot="select-trigger"]:hover {
-  border-color: #aa8b5c;
+  border-color: #b6a548;
 }
 [data-slot="select-trigger"][data-state="open"] {
-  border-color: #d2b17b;
+  border-color: #e1c666;
 }
 [data-slot="select-content"] {
   padding: 3px;
   color: var(--foreground);
-  background: #29231c;
-  border: 1px solid #786246;
-  box-shadow: 0 8px 25px #0c090780;
+  background: #162416;
+  border: 1px solid #807537;
+  box-shadow: 0 8px 25px #070e0880;
   border-radius: 6px;
 }
 [data-slot="select-item"] {
@@ -678,21 +706,21 @@ main.page-width.panel {
   padding-inline-start: 10px;
 }
 [data-slot="select-item"][data-state="checked"] {
-  color: #efcc90;
+  color: #ffe478;
 }
 [data-slot="select-item"]:focus,
 [data-slot="select-item"][data-highlighted] {
-  color: #fff2d9;
-  background: #44382a;
+  color: #ffffb4;
+  background: #243620;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  border: 1px solid #715737;
+  border: 1px solid #79682b;
   padding: 4px 9px;
-  color: #dec08b;
+  color: #eed773;
   font:
     600 11px/1.4 "Segoe UI",
     sans-serif;
@@ -708,7 +736,7 @@ main.page-width.panel {
   position: absolute;
   left: 12px;
   pointer-events: none;
-  color: #bba98e;
+  color: #c8bd76;
 }
 .toolbar .roster-search input {
   width: 100%;
@@ -716,18 +744,18 @@ main.page-width.panel {
 }
 .data-table th[aria-sort="ascending"] .table-sort,
 .data-table th[aria-sort="descending"] .table-sort {
-  color: #f2d092;
+  color: #ffe979;
 }
 .table-sort:hover {
-  color: #f8dfb1;
+  color: #fffa93;
 }
 .data-table {
   font-size: 14px;
 }
 .data-table th {
-  color: #d3bc94;
+  color: #e2d37b;
   white-space: nowrap;
-  background: #211c17;
+  background: #121e13;
 }
 .data-table tr {
   border-color: var(--border);
@@ -736,7 +764,7 @@ main.page-width.panel {
   padding: 13px 10px;
 }
 .data-table tbody tr:hover {
-  background: #49392960;
+  background: #27371f60;
 }
 .table-sort,
 .name-cell {
@@ -764,9 +792,9 @@ main.page-width.panel {
   flex: none;
   display: grid;
   place-items: center;
-  background: #2b241d;
-  border: 1px solid #826841;
-  color: #d8b375;
+  background: #172517;
+  border: 1px solid #8b7c33;
+  color: #e7c861;
   overflow: hidden;
 }
 .avatar img {
@@ -783,23 +811,23 @@ main.page-width.panel {
 }
 .empty-state svg {
   margin: 0 auto 12px;
-  color: #c6a266;
+  color: #d4b555;
 }
 .empty-state h3 {
   font-size: 24px;
-  color: #e8d1a5;
+  color: #f8ea89;
   margin-bottom: 8px;
 }
 .empty-state p {
   font-size: 14px;
 }
 .news-paper {
-  background: linear-gradient(118deg, #e7d5ad, #d8c297 75%, #c9ad7a);
-  color: #35291a;
-  border: 1px solid #997e52;
+  background: linear-gradient(118deg, #f7ef90, #e7d97d 75%, #d7c265);
+  color: #1d2915;
+  border: 1px solid #a49640;
   box-shadow:
-    inset 0 0 0 4px #d1b988,
-    inset 0 0 0 5px #a78956;
+    inset 0 0 0 4px #e0cf71,
+    inset 0 0 0 5px #b3a343;
 }
 .paper-meta {
   display: flex;
@@ -816,22 +844,22 @@ main.page-width.panel {
   padding: 8px 0;
   font-size: clamp(32px, 3.6vw, 52px);
   text-align: center;
-  border-block: 3px double #7d6645;
+  border-block: 3px double #867936;
 }
 .news-paper article {
   padding: 15px 0;
-  border-bottom: 1px solid #9e845c;
+  border-bottom: 1px solid #a99d48;
 }
 .news-paper small,
 .news-paper .empty-state,
 .news-paper .empty-state h3,
 .news-paper .empty-state svg {
-  color: #56432b;
+  color: #2e4020;
 }
 .news-paper [data-slot="select-trigger"] {
-  background: #e3cfa8;
-  color: #362818;
-  border-color: #92754b;
+  background: #f3e88b;
+  color: #1d2813;
+  border-color: #9c8b3b;
 }
 .award-grid {
   display: grid;
@@ -843,7 +871,7 @@ main.page-width.panel {
   padding: 20px;
 }
 .award h3 {
-  color: #f0d49b;
+  color: #ffed81;
   font-size: 24px;
 }
 .award p,
@@ -853,7 +881,7 @@ main.page-width.panel {
 }
 .award a,
 .back-link {
-  color: #f0c785;
+  color: #ffdf6e;
 }
 .chart-wrap {
   height: 320px;
@@ -919,15 +947,15 @@ main.page-width.panel {
   gap: 22px;
   padding: clamp(22px, 3.5vw, 45px);
   background:
-    linear-gradient(90deg, #211b16f7, #211b16d9 51%, #241e1788),
+    linear-gradient(90deg, #121d12f7, #121d12d9 51%, #14201388),
     url("./art/fortaleza.webp") center 49% / cover;
-  border: 1px solid #795c39;
-  box-shadow: inset 0 0 0 4px #aa85422e;
+  border: 1px solid #816e2c;
+  box-shadow: inset 0 0 0 4px #b69e332e;
 }
 .character-banner .avatar {
   width: 80px;
   height: 80px;
-  border: 3px double #b59059;
+  border: 3px double #c2ab45;
   font: 700 40px var(--heading);
 }
 .character-banner h1 {
@@ -935,21 +963,301 @@ main.page-width.panel {
   margin: 5px 0;
   overflow-wrap: anywhere;
 }
-.equipment {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.character-dossier .character-banner {
+  flex-wrap: wrap;
+  padding: clamp(18px, 2.3vw, 32px);
+}
+.character-name {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.character-name p:last-child {
+  color: #d9d7aa;
+}
+.character-dossier .character-banner h1 {
+  font-size: clamp(36px, 4vw, 56px);
+}
+.official-armory {
+  display: inline-flex;
+  align-items: center;
   gap: 9px;
 }
-.equipment article {
-  padding: 13px;
-  font-size: 14px;
+.armory-unavailable {
+  color: var(--muted-foreground);
 }
-.equipment small {
-  display: block;
+.character-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 0 15px;
+  padding: 12px 0;
+  background: #121f13;
+  border: 1px solid #2b3e22;
+  border-top: none;
+}
+.character-facts > div {
+  padding: 0 clamp(12px, 2vw, 30px);
+  border-inline-start: 1px solid #2b3e22;
+}
+.character-facts > div:first-child {
+  border: 0;
+}
+.character-facts dt,
+.dossier-heading p,
+.catalog-credit,
+.empty-tree {
+  color: var(--muted-foreground);
+}
+.character-facts dt {
   font-size: 12px;
 }
+.character-facts dd {
+  color: #ffe979;
+  font: 700 26px/1.2 var(--heading);
+  margin: 2px 0 0;
+}
+.dossier-heading,
+.tree-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 20px;
+  flex-wrap: wrap;
+}
+.dossier-heading {
+  border-bottom: 1px solid #374c28;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+}
+.dossier-heading h2 {
+  font-size: clamp(28px, 3vw, 38px);
+  color: #fffa96;
+}
+.dossier-heading p,
+.dossier-heading > a,
+.catalog-credit {
+  font-size: 13px;
+}
+.dossier-heading > a,
+.catalog-credit a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dossier-panel .tree-heading h3 {
+  color: #f4d464;
+  font-size: 23px;
+  margin: 0;
+}
+
+.talent-link {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 11px;
+}
+.talent-link:hover {
+  background: #9c893318;
+}
+.talent-link:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.game-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: #dfcc6d;
+  background: #0f1a10;
+  border: 1px solid var(--rarity, #a69037);
+  padding: 2px;
+  box-shadow: 0 0 0 1px #0c150b;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.game-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.talent-link > span:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.talent-link strong {
+  color: var(--rarity, #fffa9d);
+  font-size: 14px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.talent-link small {
+  font-size: 12px;
+}
+.slot-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #f1df78;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.slot-mark {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+.entry-external {
+  color: #c1b95b;
+}
+.item-effects,
+.item-details ul,
+.personal-titles {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.item-effects {
+  margin: 0 11px 9px;
+  border-left: 2px solid #718e5a;
+  padding-left: 9px;
+  color: #b6d79f;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.item-effects li + li,
+.item-details li + li {
+  margin-top: 4px;
+}
+.item-details {
+  font-size: 12px;
+  padding: 0 11px 9px;
+}
+.item-details summary {
+  width: fit-content;
+  padding-block: 3px;
+}
+.item-details ul,
+.item-details strong {
+  display: block;
+  color: #cecca2;
+  margin-top: 5px;
+}
+.talent-trees {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.talent-tree {
+  background: #132114;
+  border: 1px solid #314726;
+  border-radius: 3px;
+}
+.tree-heading {
+  background: #1a2817;
+  padding: 13px;
+  border-bottom: 1px solid #2f4022;
+}
+.tree-heading span {
+  font-size: 13px;
+  color: #f3df7d;
+}
+.talent-link + .talent-link {
+  border-top: 1px solid #2b3e2299;
+}
+.talent-link .game-icon {
+  width: 40px;
+  height: 40px;
+}
+.talent-link small,
+.attribute-list dt {
+  color: #d6cf84;
+}
+.empty-tree {
+  padding: 13px;
+  font-size: 13px;
+}
+.catalog-credit {
+  margin-top: 18px;
+}
+.dossier-sections {
+  margin-top: 16px;
+  align-items: start;
+}
+.attribute-list {
+  margin: 0;
+}
+.attribute-list > div {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 6px;
+  border-bottom: 1px solid #2b3e23;
+  gap: 15px;
+}
+.attribute-list dd {
+  color: #fff495;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.personal-titles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 12px;
+}
+.personal-titles li {
+  border-left: 2px solid #ba9e37;
+  padding-left: 12px;
+}
+.personal-titles strong,
+.personal-titles span {
+  display: block;
+}
+.personal-titles strong {
+  color: #ffe873;
+  font: 700 21px var(--heading);
+}
+.personal-titles span,
+.dossier-source {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.dossier-source {
+  margin: 22px 0 0;
+}
+.dossier-source p,
+.dossier-source .notice {
+  margin-top: 9px;
+}
+
+@media (max-width: 680px) {
+  .character-dossier .character-banner {
+    gap: 12px;
+  }
+  .character-name {
+    flex: 1 1 130px;
+  }
+  .official-armory,
+  .armory-unavailable {
+    margin-top: 3px;
+  }
+
+  .character-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 10px;
+  }
+  .character-facts > div:nth-child(3) {
+    border: 0;
+  }
+  .dossier-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
 details summary {
-  color: #dcc194;
+  color: #ebd87b;
 }
 footer {
   display: flex;
@@ -959,14 +1267,14 @@ footer {
   gap: 14px;
   padding: 24px
     max(var(--gutter), calc((100vw - var(--page)) / 2 + var(--gutter)));
-  background: #171410;
-  border-top: 1px solid #654d33;
-  color: #b9aa95;
+  background: #0d170e;
+  border-top: 1px solid #364826;
+  color: #b5b189;
   font-size: 12px;
 }
 .footer-brand {
   font: 700 20px var(--heading);
-  color: #dec79e;
+  color: #eedf83;
 }
 .footer-brand span {
   font:
@@ -974,6 +1282,160 @@ footer {
     sans-serif;
 }
 
+.brand > span,
+.footer-brand,
+.section-title,
+.dossier-heading h2,
+.character-banner h1,
+.paper-title {
+  font-family: var(--display);
+  font-weight: 400;
+}
+.brand > span {
+  color: #ffdf7e;
+}
+.brand img {
+  width: 47px;
+  height: 47px;
+  object-fit: contain;
+}
+.section-title,
+.dossier-heading h2,
+.paper-title {
+  letter-spacing: 0.005em;
+}
+.honors-heading::after {
+  height: 3px;
+  border-block: 1px solid #a08d4a88;
+  background: none;
+}
+.honors .stat {
+  border: 1px solid #697345;
+  border-top: 2px solid #c5aa53;
+  background: linear-gradient(145deg, #30422b, #1b2b20 78%);
+}
+.honors .stat::after {
+  width: 13px;
+  height: 13px;
+  border-color: #a9a15e;
+}
+.honor-illustration {
+  filter: drop-shadow(0 3px 2px #101a11);
+}
+.stat strong,
+.award > strong {
+  color: #f9dc84;
+}
+.award-grid .award {
+  position: relative;
+  padding: 20px 20px 18px 66px;
+  border-top: 2px solid #b6a34f;
+  background: linear-gradient(130deg, #2d402a, #1c2b20);
+}
+.award-grid .award > svg {
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  width: 36px;
+  height: 40px;
+  padding: 7px 6px 10px;
+  color: #ffdb71;
+  background: linear-gradient(#53653a, #374d30);
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+}
+.award-grid .award > strong {
+  font: 400 28px/1.3 var(--display);
+}
+.award-grid .award a {
+  color: #f8e7ab;
+  text-decoration: underline;
+  text-decoration-color: #75834e;
+  text-underline-offset: 3px;
+}
+.section-index {
+  padding: 0 8px;
+  border: 1px solid #5b6845;
+  border-bottom-color: #7e813e;
+  background: linear-gradient(180deg, #293b29, #1e3022);
+}
+.folio-tabs {
+  gap: clamp(2px, 1.1vw, 15px);
+  border-bottom: 0;
+}
+.folio-tabs button {
+  padding-inline: clamp(7px, 1vw, 14px);
+}
+.folio-tabs button[data-state="active"] {
+  color: #fff0b4;
+  background: linear-gradient(0deg, #70692f44, transparent 86%);
+}
+.folio-tabs button[data-state="active"] svg,
+.slot-label,
+.dossier-heading > a {
+  color: #efd47f;
+}
+.folio-tabs button[data-state="active"]::after {
+  background-color: #f3cd5e;
+}
+.official-armory.button {
+  color: #ffeaad;
+  border: 1px solid #ac9955;
+  background: #18291ed9;
+  padding-inline: 14px;
+}
+.tree-heading {
+  background: linear-gradient(120deg, #394d30, #263823);
+}
+
+.item-effects {
+  color: #b6dc9f;
+  border-color: #80a56b;
+}
+.dossier-heading {
+  border-color: #687240;
+}
+.news-paper {
+  background: linear-gradient(124deg, #f9e9ab, #e9d189 70%, #d9b96a);
+  color: #322c17;
+  border-color: #c09a3d;
+  box-shadow:
+    inset 0 0 0 4px #e8cd82,
+    inset 0 0 0 5px #aa9048;
+}
+.news-paper .paper-title {
+  color: #334022;
+  border-color: #78723e;
+}
+.news-paper small,
+.news-paper .empty-state,
+.news-paper .empty-state h3 {
+  color: #514c2c;
+}
+.news-paper [data-slot="select-trigger"] {
+  background: #f9eab6;
+  color: #313620;
+}
+.character-dossier .character-banner {
+  background:
+    linear-gradient(90deg, #142b1cef, #15291ddb 52%, #172e1a91),
+    url("./art/fortaleza.webp") center 48% / cover;
+  border-color: #a99851;
+}
+.character-facts {
+  background: #1d2c20;
+}
+@media (max-width: 1020px) {
+  .section-index {
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+  .folio-picker .index-trigger {
+    background: linear-gradient(120deg, #30442c, #1d3022);
+    border: 1px solid #9b9854;
+    color: #fff0b9;
+  }
+}
 @media (max-width: 1000px) {
   .grid-two {
     grid-template-columns: 1fr;
@@ -1022,14 +1484,14 @@ footer {
   }
   .guild-cover::before {
     background:
-      linear-gradient(0deg, #15100ef5 4%, #1a130fcf 41%, #17110e29 76%),
+      linear-gradient(0deg, #081b11f7 3%, #0d2218df 38%, #152d1d18 78%),
       url("./art/fortaleza-movil.webp") 69% 26% / auto 100% no-repeat;
   }
   .cover-copy {
-    padding: 105px 22px 26px;
+    padding: 155px 22px 26px;
   }
   .cover-copy h1 {
-    font-size: 54px;
+    font-size: clamp(59px, 12vw, 78px);
   }
   .cover-kicker {
     font-size: 9px;
@@ -1050,9 +1512,10 @@ footer {
     padding-inline: 14px;
   }
   .cover-crest {
-    width: 77px;
-    right: 15px;
-    top: 14px;
+    width: clamp(125px, 33vw, 175px);
+    right: 17px;
+    top: 15px;
+    transform: none;
     bottom: auto;
   }
   .honors-heading {
@@ -1088,7 +1551,6 @@ footer {
   .honor-text p {
     font-size: 11px;
   }
-  .equipment,
   .award-grid {
     grid-template-columns: 1fr;
   }

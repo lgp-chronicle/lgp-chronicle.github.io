@@ -10,14 +10,11 @@ import { RaidActivity } from "./raid-panel";
 import { SourceNotice } from "./source-notice";
 import { color, type Member } from "./types";
 import { display, ago, leveling, awards } from "./analytics";
-const quality: Record<string, string> = {
-  POOR: "#9d9d9d",
-  COMMON: "#eee",
-  UNCOMMON: "#77ca51",
-  RARE: "#649df6",
-  EPIC: "#bc8eff",
-  LEGENDARY: "#ffb151",
-};
+import { memberArmoryUrl } from "@/config/characters";
+import { archivePath } from "@/lib/guild-navigation";
+import { ExternalLink } from "lucide-react";
+import { EquipmentPanel, TalentsPanel } from "./armory-panels";
+import { fullName } from "./member-portrait";
 export function CharacterDetail({
   member: m,
   members,
@@ -27,165 +24,136 @@ export function CharacterDetail({
 }) {
   const p = m.data,
     l = leveling(m);
+  const official = memberArmoryUrl(m.id, m.region);
+  const titles = awards(members).filter((award) =>
+    award.memberIds.includes(m.id),
+  );
   return (
-    <main className="page-width">
-      <a className="back-link" href={siteHref("/")}>
+    <main className="page-width character-dossier">
+      <a className="back-link" href={siteHref(archivePath("overview"))}>
         ← Volver a la hermandad
       </a>
-      <div
-        className="character-banner"
-        style={{ borderBottom: `1px solid ${color(m)}55` }}
-      >
-        <div
-          className="avatar"
-          style={{ boxShadow: `0 0 40px ${color(m)}22`, color: color(m) }}
-        >
+      <header className="character-banner">
+        <div className="avatar" style={{ color: color(m) }}>
           {p.avatar ? (
-            <img src={p.avatar} alt="" width={88} height={88} />
+            <img src={p.avatar} alt="" width={80} height={80} />
           ) : (
             m.name[0]
           )}
         </div>
-        <div>
+        <div className="character-name">
           <p className="eyebrow">
-            {m.region.toUpperCase()} · {m.realm} · WOW FOREVER
+            WoW Forever · {m.region.toUpperCase()} · {m.realm}
           </p>
-          <h1 style={{ color: color(m) }}>{m.name}</h1>
-          <p className="muted">
+          <h1 style={{ color: color(m) }}>{fullName(m)}</h1>
+          <p>
             {[p.race, p.className, p.spec, p.faction]
               .filter(Boolean)
-              .join(" · ") || "Su historia todavía no ha llegado al archivo."}
+              .join(" · ")}
           </p>
         </div>
-      </div>
-      <div className="toolbar">
-        <span className="badge">
-          Consultado {ago(p.observedAt)}
-          {m.status === "partial" ? " · Datos parciales" : ""}
-        </span>
-        <a
-          className="button outline"
-          href={m.armory}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Ver Armory oficial ↗
-        </a>
-      </div>
-      <SourceNotice members={[m]} />
-      {m.errors?.length ? (
-        <div className="notice">
-          Algunos datos no se han podido actualizar. Se conserva la última
-          información válida; cada apartado indica su fecha.
-        </div>
-      ) : null}
-      <div className="stat-grid">
+        {official && (p.level === undefined || p.level >= 10) ? (
+          <a
+            className="button outline official-armory"
+            href={official}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Armería oficial <ExternalLink size={15} aria-hidden="true" />
+          </a>
+        ) : (
+          <small className="armory-unavailable">
+            Armería oficial aún sin ficha
+          </small>
+        )}
+      </header>
+      <dl className="character-facts">
         {[
           ["Nivel", p.level],
-          ["Item level", p.itemLevel],
+          ["Nivel de objeto", p.itemLevel],
           ["Muertes honorables", p.honorableKills],
-          ["Bosses en logs", m.logs?.bosses],
+          ["Jefes en logs", m.logs?.bosses],
         ].map(([label, v]) => (
-          <div className="stat" key={String(label)}>
-            <small>{label}</small>
-            <strong>{display(v)}</strong>
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{display(v)}</dd>
           </div>
         ))}
-      </div>
+      </dl>
       <SectionIndex
         label="Secciones del personaje"
         items={[
-          ["armory", "Armory"],
+          ["armory", "Equipo"],
+          ["talents", "Talentos"],
+          ["attributes", "Estadísticas"],
           ["history", "Su historia"],
           ["logs", "Warcraft Logs"],
           ["compare", "Comparar"],
         ]}
       >
         <TabsContent value="armory">
-          <div className="grid-two">
-            <section className="panel">
-              <h3>Arsenal</h3>
-              <p className="subheading">{ago(p.resourceTimes?.equipment)}</p>
-              {p.equipment?.length ? (
-                <div className="equipment" style={{ marginTop: 18 }}>
-                  {p.equipment.map((e, i) => (
-                    <article key={e.slot + i}>
-                      <small>
-                        {e.slot} · iLvl {display(e.itemLevel)}
-                      </small>
-                      <strong
-                        style={{ color: quality[e.quality ?? ""] ?? "#e8dcc5" }}
-                      >
-                        {e.name}
-                      </strong>
-                      <small>{e.quality ?? "Calidad no disponible"}</small>
-                      {e.details?.length ? (
-                        <details>
-                          <summary>Estadísticas y encantamientos</summary>
-                          {e.details.map((d, n) => (
-                            <small
-                              key={n}
-                              style={{ display: "block", marginTop: 6 }}
-                            >
-                              {d}
-                            </small>
-                          ))}
-                        </details>
-                      ) : null}
-                    </article>
+          <EquipmentPanel member={m} />
+        </TabsContent>
+        <TabsContent value="talents">
+          <TalentsPanel profile={p} />
+        </TabsContent>
+        <TabsContent value="attributes">
+          {titles.length > 0 && (
+            <section className="panel dossier-panel">
+              <div className="dossier-heading">
+                <h2>Títulos de la hermandad</h2>
+                <a href={siteHref(archivePath("awards"))}>Salón de la fama →</a>
+              </div>
+              <ul className="personal-titles">
+                {titles.map((a) => (
+                  <li key={a.id}>
+                    <strong>{a.title}</strong>
+                    <span>
+                      {a.rule} · {display(a.value)}
+                      {a.memberIds.length > 1 ? " · Compartido" : ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          <div className="grid-two dossier-sections">
+            <section className="panel dossier-panel">
+              <div className="dossier-heading">
+                <h2>Atributos</h2>
+                <p>{ago(p.resourceTimes?.statistics)}</p>
+              </div>
+              {p.statistics && Object.keys(p.statistics).length ? (
+                <dl className="attribute-list">
+                  {Object.entries(p.statistics).map(([label, value]) => (
+                    <div key={label}>
+                      <dt>{label}</dt>
+                      <dd>{display(value)}</dd>
+                    </div>
                   ))}
-                </div>
+                </dl>
               ) : (
-                <Empty
-                  title="El armero aún no tiene el inventario"
-                  text="Las piezas y sus calidades aparecerán si el perfil oficial ofrece equipamiento."
-                />
+                <p className="muted">Sin atributos registrados.</p>
               )}
             </section>
-            <section className="panel">
-              <h3>Oficios y talentos</h3>
-              <p className="subheading">
-                Profesiones · {ago(p.resourceTimes?.professions)}
-              </p>
+            <section className="panel dossier-panel">
+              <div className="dossier-heading">
+                <h2>Profesiones</h2>
+                <p>{ago(p.resourceTimes?.professions)}</p>
+              </div>
               {p.professions?.length ? (
-                p.professions.map((r, i) => (
-                  <article
-                    key={r.name + i}
-                    className="award"
-                    style={{ marginTop: 12 }}
-                  >
-                    <h3>{r.name}</h3>
-                    <p>
-                      {display(r.skill)} / {display(r.max)}
-                    </p>
-                  </article>
-                ))
-              ) : (
-                <Empty
-                  title="Oficios por descubrir"
-                  text="La fuente todavía no ha proporcionado profesiones."
-                />
-              )}
-              <h3>Talentos</h3>
-              {p.talentTrees?.length ? (
-                <p className="subheading">
-                  {p.talentTrees
-                    .map((t) => `${t.name} ${t.points}`)
-                    .join(" · ")}
-                  .{" "}
-                  {p.specDerived
-                    ? "Spec: rama con más puntos del grupo activo."
-                    : ""}
-                </p>
-              ) : null}
-              {p.talents?.length ? (
-                <ul>
-                  {p.talents.map((t, i) => (
-                    <li key={i}>{t}</li>
+                <dl className="attribute-list">
+                  {p.professions.map((r, i) => (
+                    <div key={r.name + i}>
+                      <dt>{r.name}</dt>
+                      <dd>
+                        {display(r.skill)} / {display(r.max)}
+                      </dd>
+                    </div>
                   ))}
-                </ul>
+                </dl>
               ) : (
-                <p className="muted">Sin talentos publicados por la fuente.</p>
+                <p className="muted">Sin profesiones registradas.</p>
               )}
             </section>
           </div>
@@ -215,7 +183,7 @@ export function CharacterDetail({
               )}
             </section>
             <section className="panel">
-              <h3>PvE, logros y reconocimientos</h3>
+              <h3>PvE y logros</h3>
               <p>Raids completadas: {p.raids?.join(", ") || "—"}</p>
               <p>Bosses en Armory: {display(p.raidBosses)}</p>
               <p>Puntos de logros: {display(p.achievementPoints)}</p>
@@ -228,14 +196,6 @@ export function CharacterDetail({
               ) : (
                 <p className="muted">Logros no disponibles en esta ficha.</p>
               )}
-              {awards(members)
-                .filter((a) => a.names.includes(m.name))
-                .map((a) => (
-                  <article className="award" key={a.id}>
-                    <h3>{a.title}</h3>
-                    <small>{a.rule}</small>
-                  </article>
-                ))}
             </section>
           </div>
         </TabsContent>
@@ -332,27 +292,31 @@ export function CharacterDetail({
           <Compare members={[m, ...members.filter((x) => x.id !== m.id)]} />
         </TabsContent>
       </SectionIndex>
-      {p.statistics && Object.keys(p.statistics).length ? (
-        <section className="panel" style={{ marginTop: 24 }}>
-          <h3>El personaje en números</h3>
-          <p className="subheading">
-            Estadísticas del perfil, no rendimiento de raid · Consultado{" "}
-            {ago(p.resourceTimes?.statistics)}
+      <details className="dossier-source">
+        <summary>
+          Datos de Blizzard · {ago(p.observedAt)}
+          {m.status === "partial" || m.errors?.length
+            ? " · Actualización parcial"
+            : ""}
+        </summary>
+        <SourceNotice members={[m]} />
+        {m.errors?.length ? (
+          <p>
+            Se conserva la última información disponible de los apartados que no
+            se pudieron actualizar.
           </p>
-          <div className="stat-grid">
-            {Object.entries(p.statistics).map(([label, value]) => (
-              <div className="stat" key={label}>
-                <small>{label}</small>
-                <strong>{display(value)}</strong>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-      <p className="subheading" style={{ marginTop: 28 }}>
-        Fuente del perfil: Blizzard · Género: {p.gender ?? "No disponible"} ·
-        Última modificación comunicada: {p.sourceModified ?? "No disponible"}
-      </p>
+        ) : null}
+        <p>
+          Última modificación comunicada: {p.sourceModified ?? "Sin fecha"} ·
+          Género: {p.gender ?? "Sin registrar"}
+        </p>
+        {p.specDerived && (
+          <p>
+            La especialización corresponde a la rama con más puntos del grupo
+            activo.
+          </p>
+        )}
+      </details>
     </main>
   );
 }

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { blizzard } from "../providers/blizzard";
+import { memberArmoryUrl } from "../config/characters";
+import { itemDisplay, talentDisplay, wowheadUrl } from "../features/armory-data";
+import { awards } from "../features/analytics";
+import type { Member } from "../features/types";
 import {
   normalizeRankings,
   participantFights,
@@ -94,7 +98,8 @@ test("Classic talents select only the active group and preserve tied primary tre
                 talents: [
                   {
                     talent_rank: 3,
-                    spell_tooltip: { spell: { name: "TEST-TALENT" } },
+                    talent: { id: 7777 },
+                    spell_tooltip: { spell: { name: "TEST-TALENT", id: 1234 } },
                   },
                 ],
               },
@@ -102,6 +107,7 @@ test("Classic talents select only the active group and preserve tied primary tre
             ],
           },
         ],
+        specializations: [{ talents: [{ talent: { id: 9999, name: "SECONDARY" } }] }],
       })
       : response({
         name: config.name,
@@ -114,11 +120,58 @@ test("Classic talents select only the active group and preserve tied primary tre
     const result = await blizzard(config, env, {});
     assert.equal(result.data.spec, "TEST-A / TEST-B");
     assert.equal(result.data.specDerived, true);
-    assert.deepEqual(result.data.talents, ["TEST-TALENT · 3 puntos"]);
+    assert.deepEqual(result.data.talents, [{
+      name: "TEST-TALENT", spellId: 1234, rank: 3, tree: "TEST-A", icon: undefined,
+    }]);
     assert.equal(result.data.talentTrees?.length, 2);
   } finally {
     globalThis.fetch = real;
   }
+});
+test("Forever character URLs preserve region, surname, hyphens and accents", () => {
+  assert.equal(memberArmoryUrl("forever-eu-varón-dandy", "eu"),
+    "https://worldofwarcraft.blizzard.com/es-es/forever/eu/armory/character/var%C3%B3n-dandy/");
+  assert.equal(memberArmoryUrl("forever-us-a-b-c", "us")?.endsWith("/forever/us/armory/character/a-b-c/"), true);
+});
+test("legacy items and talents recover metadata; current observations take precedence", () => {
+  const item = { slot: "Espalda", name: "Manteo esporidio", id: 6629, details: ["+6 aguante"] };
+  assert.match(itemDisplay(item).effects.join(" "), /Naturaleza/);
+  assert.deepEqual(itemDisplay({ ...item, effects: [] }).effects, []);
+  assert.deepEqual(itemDisplay(item).details, item.details);
+  const talent = talentDisplay("Baluarte · 3 puntos", 2);
+  assert.equal(talent.spellId, 20127);
+  assert.equal(talent.rank, 3);
+  assert.equal(talent.tree, "Protección");
+  assert.equal(talentDisplay({ name: "Baluarte", spellId: 6789 }, 2).spellId, 6789);
+  const missing = talentDisplay("Baluarte · 3 puntos", 0);
+  assert.equal(missing.spellId, undefined);
+  assert.match(wowheadUrl("spell", missing.spellId, missing.name), /search\?q=Baluarte$/);
+});
+test("equipment synchronization keeps spells, on-equip stats and conditional set effects", async () => {
+  const real = globalThis.fetch;
+  globalThis.fetch = async input => String(input).includes("/equipment?")
+    ? response({equipped_items: [{
+      slot: { name: "Cuello", type: "NECK" }, item: {id: 456}, name: "Test",
+      stats: [{display:{display_string:"+5 aguante"}}, {is_equip_bonus:true, display:{display_string:"+7 Poder con hechizos"}}],
+      spells: [{description:"Equipar: Devuelve daño."},{description:"Usar: Recuperas maná."}],
+      set: {effects:[{display_string:"(2) Bonif.: +5 aguante"}]},
+    }]}) : response({ name: config.name, equipment: {href:"equipment"} });
+  try {
+    const item = (await blizzard(config, env, {})).data.equipment![0];
+    assert.equal(item.slotType,"NECK");
+    assert.deepEqual(item.details,["+5 aguante"]);
+    assert.deepEqual(item.effects,["+7 Poder con hechizos","Equipar: Devuelve daño.","Usar: Recuperas maná."]);
+    assert.deepEqual(item.setBonuses,["(2) Bonif.: +5 aguante"]);
+  } finally { globalThis.fetch = real; }
+});
+test("attribute awards distinguish namesakes, share ties and skip unknown scores", () => {
+  const player = (id: string, stamina?: number, intellect?: number) => ({
+    id, name: "Naisen", data: { statistics: { Aguante: stamina, Intelecto: intellect } }, history: [],
+  } as unknown as Member);
+  const results = awards([player("a",80,17),player("b",73,17),player("c")]);
+  assert.deepEqual(results.find(a => a.id === "stamina")?.memberIds,["a"]);
+  assert.deepEqual(results.find(a => a.id === "intellect")?.memberIds,["a","b"]);
+  assert.equal(results.some(a => a.id === "agility"),false);
 });
 test("Missing rankings stay unknown rather than zero", () =>
   assert.deepEqual(normalizeRankings([{ id: 1, dps: null, hps: null }]), {}));

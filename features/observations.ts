@@ -46,6 +46,7 @@ export function overtakeEvents(before: Member[], after: Member[], at: string) {
         events.push({
           id: `${a.id}:${b.id}:${at}:overtake`,
           characterId: a.id,
+          otherCharacterId: b.id,
           at,
           kind: "overtake",
           text: `${a.name} adelanta a ${b.name}: nivel ${a.data.level} frente a ${b.data.level}. La clasificación tiene movimiento.`,
