@@ -1,16 +1,15 @@
 import { siteHref, assetUrl } from "@/lib/public-settings";
-import { archivePath, guildSections } from "@/lib/guild-navigation";
-import { Check, ChevronDown, Play } from "lucide-react";
+import {
+  archiveGroups,
+  archivePath,
+  groupForSection,
+  sectionFromPath,
+} from "@/lib/guild-navigation";
+import { Play } from "lucide-react";
 import { coverMemberId, guildCovers } from "@/lib/guild-covers";
 import { Fragment } from "react";
 import { guildSectionIcons } from "./section-icons";
 import { GuildIcon } from "./guild-icon";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 export function Shell({
   children,
   path = "/",
@@ -24,6 +23,9 @@ export function Shell({
 }) {
   const scene = guildCovers[cover];
   const { cast, action } = scene;
+  const activeGroup = groupForSection(
+    path.startsWith("/character/") ? "overview" : sectionFromPath(path),
+  );
   return (
     <>
       <header className="guildhall" data-home={path === "/"} data-cover={cover}>
@@ -72,51 +74,25 @@ export function Shell({
             <GuildIcon name="keep" />
             <span>Portada</span>
           </a>
-          {guildSections.map(([id, label]) => {
+          {archiveGroups.map((group) => {
+            const [id] = group.sections[0];
             return (
               <a
                 key={id}
                 href={siteHref(archivePath(id))}
-                data-quick={id === "overview" || id === "news"}
-                aria-current={path === archivePath(id) ? "page" : undefined}
+                aria-current={
+                  path === archivePath(id)
+                    ? "page"
+                    : activeGroup === group
+                      ? "location"
+                      : undefined
+                }
               >
                 <GuildIcon name={guildSectionIcons[id]} />
-                <span>{label}</span>
+                <span>{group.label}</span>
               </a>
             );
           })}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              className="guild-explore"
-              data-section={
-                guildSections.find(([id]) => archivePath(id) === path)?.[0]
-              }
-            >
-              <GuildIcon name="compass" />
-              <span>Explorar</span>
-              <ChevronDown size={13} aria-hidden="true" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="guild-explore-menu" align="end">
-              {guildSections.map(([id, label]) => {
-                return (
-                  <DropdownMenuItem asChild key={id}>
-                    <a
-                      aria-current={
-                        path === archivePath(id) ? "page" : undefined
-                      }
-                      href={siteHref(archivePath(id))}
-                    >
-                      <GuildIcon name={guildSectionIcons[id]} />
-                      {label}
-                      {path === archivePath(id) && (
-                        <Check size={15} aria-hidden="true" />
-                      )}
-                    </a>
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </nav>
       {children}

@@ -51,7 +51,7 @@ export function CharacterDetail({
             news: "al Heraldo",
             awards: "al Salón de la fama",
             race: "a la carrera",
-            history: "a Progresión",
+            history: "a Evolución",
             compare: "al cara a cara",
             logs: "a Warcraft Logs",
             gallery: "a la galería",

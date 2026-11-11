@@ -1,6 +1,12 @@
 "use client";
-import { apiUrl } from "@/lib/public-settings";
-import { archivePath, type GuildSection } from "@/lib/guild-navigation";
+import { apiUrl, siteHref } from "@/lib/public-settings";
+import {
+  archivePath,
+  groupForSection,
+  type GuildSection,
+} from "@/lib/guild-navigation";
+import { GuildIcon } from "@/components/guild-icon";
+import { guildSectionIcons } from "@/components/section-icons";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
 import { MemberLink } from "./member-portrait";
@@ -51,6 +57,7 @@ export function Dashboard({
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members;
+  const group = groupForSection(section);
   const trophies = awards(m);
   const withoutLogs = m.filter((member) => !member.logs);
   const cards = [
@@ -156,6 +163,22 @@ export function Dashboard({
         id={archivePath(section ?? "overview")}
         aria-label="Archivo de la hermandad"
       >
+        {group && group.sections.length > 1 && (
+          <nav
+            aria-label={"Apartados de " + group.label}
+            className="archive-links"
+          >
+            {group.sections.map(([id, label]) => (
+              <a
+                key={id}
+                href={siteHref(archivePath(id))}
+                aria-current={section === id ? "page" : undefined}
+              >
+                <GuildIcon name={guildSectionIcons[id]} size={19} /> {label}
+              </a>
+            ))}
+          </nav>
+        )}
         {section === "gallery" && <CoverGallery members={m} />}
         {(!section || section === "overview") && (
           <>
@@ -179,14 +202,7 @@ export function Dashboard({
             </div>
           </>
         )}
-        {section === "race" && (
-          <>
-            <LevelingRace members={m} />
-            <div style={{ marginTop: 22 }}>
-              <HistoryChart members={m} />
-            </div>
-          </>
-        )}
+        {section === "race" && <LevelingRace members={m} />}
         {section === "history" && (
           <>
             <HistoryChart members={m} />
