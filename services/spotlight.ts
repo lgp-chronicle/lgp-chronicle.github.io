@@ -9,7 +9,8 @@ export function guildSpotlight(
   members: Member[],
   stamp: string,
 ) {
-  const roster = describeMembers(members);
+  const now = Date.parse(stamp);
+  const roster = describeMembers(members, now);
   const day = stamp.slice(0, 10);
   db.exec(`CREATE TABLE IF NOT EXISTS guild_spotlights (
     day TEXT NOT NULL, member_id TEXT NOT NULL, PRIMARY KEY(day, member_id)
@@ -35,7 +36,7 @@ export function guildSpotlight(
     const remaining = roster.filter((m) => last.get(m.id) !== day);
     if (selected.length < 4 && remaining.length) {
       const medals = new Map<string, number>();
-      for (const award of awards(roster, Date.parse(stamp)))
+      for (const award of awards(roster, now))
         for (const id of award.memberIds)
           medals.set(id, (medals.get(id) ?? 0) + 1);
       const insert = db.prepare(

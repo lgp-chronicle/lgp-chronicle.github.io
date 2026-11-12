@@ -1,5 +1,6 @@
 import { knownProfession } from "../features/professions.ts";
 import { measurements } from "../features/observations.ts";
+import { hasRecentUpdate } from "../features/spotlight-freshness.ts";
 import {
   numeric,
   type Member,
@@ -186,12 +187,13 @@ function personal(m: Member, rows: Reading[]): MemberStrength {
   };
 }
 
-export function describeMembers(members: Member[]) {
+export function describeMembers(members: Member[], now: number) {
   const roster = members.filter(
     (m) =>
       m.inRoster !== false &&
       !m.membership?.leftAt &&
-      !m.membership?.pendingAbsence,
+      !m.membership?.pendingAbsence &&
+      hasRecentUpdate(m, now),
   );
   for (const m of members) delete m.strength;
   const sheets = roster.map((m) => {
