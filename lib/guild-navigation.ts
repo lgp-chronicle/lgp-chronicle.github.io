@@ -3,6 +3,7 @@ export const archiveGroups = [
     label: "Hermandad",
     sections: [
       ["overview", "Miembros"],
+      ["composicion", "Composición"],
       ["awards", "Salón de la fama"],
       ["compare", "Cara a cara"],
       ["gallery", "Galería"],

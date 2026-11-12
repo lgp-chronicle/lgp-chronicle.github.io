@@ -302,7 +302,7 @@ export function Distribution({ members }: { members: Member[] }) {
   const max = groups[0]?.[1];
   return (
     <section className="panel">
-      <h3>La composición de la hermandad</h3>
+      <h2 className="section-title">La composición de la hermandad</h2>
       <div className="toolbar">
         <Pick
           label="Distribución"

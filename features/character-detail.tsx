@@ -49,6 +49,7 @@ export function CharacterDetail({
         ? "a la ficha anterior"
         : {
             overview: "a la hermandad",
+            composicion: "a la composición de la hermandad",
             news: "al Heraldo",
             movimientos: "a altas y bajas",
             cronicas: "al historial de crónicas",

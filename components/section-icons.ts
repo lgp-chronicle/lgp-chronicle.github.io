@@ -3,6 +3,7 @@ import type { GuildIconName } from "./guild-icon";
 
 export const guildSectionIcons = {
   overview: "tabard",
+  composicion: "shield",
   race: "boot",
   history: "steps",
   awards: "crown",

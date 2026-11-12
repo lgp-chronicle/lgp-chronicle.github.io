@@ -227,15 +227,9 @@ export function Dashboard({
             </div>
           </>
         )}
+        {section === "composicion" && <Distribution members={m} />}
         {section === "race" && <LevelingRace members={m} />}
-        {section === "history" && (
-          <>
-            <HistoryChart members={m} />
-            <div style={{ marginTop: 22 }}>
-              <Distribution members={m} />
-            </div>
-          </>
-        )}
+        {section === "history" && <HistoryChart members={m} />}
         {section === "awards" && (
           <>
             <p className="eyebrow">
