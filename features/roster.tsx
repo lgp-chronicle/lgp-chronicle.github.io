@@ -184,6 +184,7 @@ export function Roster({ members }: { members: Member[] }) {
                   </dl>
                   <ChevronRight size={17} aria-hidden="true" />
                 </div>
+                {m.strength && <small className="roster-strength">{m.strength.title}</small>}
                 <ClassFrame member={m} />
               </a>
             );
@@ -229,7 +230,7 @@ export function Roster({ members }: { members: Member[] }) {
                 {columns.map(([key]) => (
                   <TableCell key={key}>
                     {key === "name" ? (
-                      <MemberLink member={m} />
+                      <MemberLink member={m} subtitle={m.strength?.title} />
                     ) : key === "observedAt" ? (
                       <span
                         title={

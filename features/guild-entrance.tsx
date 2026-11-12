@@ -41,7 +41,7 @@ function Guest({
 }) {
   const { image, cutout, avatar, onError, style } = useCharacterArt(
     member,
-    true,
+    "entrance",
   );
   const name = fullName(member);
   const [unreadable, setUnreadable] = useState<string>();

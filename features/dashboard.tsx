@@ -9,8 +9,9 @@ import { GuildIcon } from "@/components/guild-icon";
 import { guildSectionIcons } from "@/components/section-icons";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
-import { MemberLink } from "./member-portrait";
-import { HonorCard, HallAward } from "./honor-card";
+import { fullName, memberHref, MemberLink } from "./member-portrait";
+import { HallAward } from "./honor-card";
+import { GuildStrengths } from "./guild-strengths";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
@@ -25,7 +26,7 @@ import { HistoryChart, Distribution } from "./charts";
 import { Compare } from "./compare";
 import { Newspaper } from "./newspaper";
 import { leveling, display, awards, ago } from "./analytics";
-import { numeric, type GuildData, type Member } from "./types";
+import { color, numeric, type GuildData, type Member } from "./types";
 function leader(members: Member[], score: (m: Member) => unknown) {
   const valid = members.flatMap((member) => {
     const value = score(member);
@@ -67,25 +68,21 @@ export function Dashboard({
   const cards = [
     {
       label: "Por delante en nivel",
-      image: "corona",
       top: leader(m, (x) => x.data.level),
       unit: "nivel",
     },
     {
       label: "El equipo más brillante",
-      image: "ambar",
       top: leader(m, (x) => x.data.itemLevel),
       unit: "item level",
     },
     {
       label: "Pisando el acelerador",
-      image: "bota",
       top: leader(m, (x) => leveling(x).day),
       unit: "niveles / 24 h",
     },
     {
       label: "El terror del otro bando",
-      image: "espadas",
       top: leader(m, (x) => x.data.honorableKills),
       unit: "muertes honorables",
     },
@@ -136,27 +133,7 @@ export function Dashboard({
               {error}
             </p>
           )}
-          <div className="honor-gallery honors">
-            {cards.map(({ label, image, top, unit }) => (
-              <HonorCard
-                key={label}
-                title={label}
-                scene={image}
-                value={top?.value}
-                unit={unit}
-                winners={top?.winners ?? []}
-                note={
-                  top && top.registered < m.length
-                    ? "Datos de " +
-                      top.registered +
-                      " de " +
-                      m.length +
-                      " personajes"
-                    : undefined
-                }
-              />
-            ))}
-          </div>
+          <GuildStrengths data={data} />
           <ChronicleFeature story={data.chronicles?.[0]} />
           <MembershipNews members={m} asOf={data.generatedAt} />
           <ArmoryRumors members={m} />
@@ -193,18 +170,17 @@ export function Dashboard({
             <div style={{ marginTop: 24 }} className="grid-two">
               <Newspaper members={m} events={data.events.slice(0, 12)} />
               <section className="panel">
-                <p className="eyebrow">UN POCO DE GLORIA</p>
-                <h3>Los nombres del momento</h3>
-                {trophies.length ? (
-                  trophies
-                    .slice(0, 4)
-                    .map((a) => <HallAward award={a} members={m} key={a.id} />)
-                ) : (
-                  <Empty
-                    title="Las coronas no se regalan"
-                    text="Los premios aparecerán cuando haya suficientes datos comparables. Aquí nadie gana por defecto."
-                  />
-                )}
+                <h3>Récords de la hermandad</h3>
+                <dl className="guild-records">
+                  {cards.map(({label,top,unit})=><div key={label}><dt>{label}</dt>
+                    <dd>{top && top.value > 0 ? <>
+                      <strong>{display(top.value)} {unit}</strong>
+                      <span>{top.winners.map(p=><a key={p.id} href={memberHref(p)} style={{color:color(p)}}>{fullName(p)}</a>)}</span>
+                      {top.registered < m.length && <small>{top.registered} de {m.length} con datos</small>}
+                    </> : "Sin marca registrada"}</dd>
+                  </div>)}
+                </dl>
+                <a href={siteHref(archivePath("awards"))}>Ver el Salón de la fama →</a>
               </section>
             </div>
           </>

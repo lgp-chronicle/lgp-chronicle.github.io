@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { assetUrl } from "@/lib/public-settings";
 import { ClassFrame } from "./class-frame";
-import { CharacterArt } from "./character-art";
+import { CharacterArt, hasEntrancePortrait } from "./character-art";
 import { FittedName, fullName, memberHref } from "./member-portrait";
 import { display, type Award } from "./analytics";
 import { finishTitle } from "./race-course";
@@ -72,7 +72,11 @@ function Winner({ member, shared }: { member: Member; shared: boolean }) {
       style={{ "--class-tint": color(member) } as CSSProperties}
     >
       <span className="laureate-figure">
-        <CharacterArt member={member} />
+        {hasEntrancePortrait(member) ? (
+          <CharacterArt member={member} honor />
+        ) : (
+          <img className="honor-tabard" src={assetUrl("/guild/sello-la-ganga.png")} alt="" />
+        )}
       </span>
       <span className="laureate-plaque">
         <span className="laureate-name">

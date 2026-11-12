@@ -1,24 +1,14 @@
 import { useState, type CSSProperties } from "react";
 import { assetUrl } from "@/lib/public-settings";
-import archive from "../config/character-art.json";
+import { models } from "./portrait-availability";
 import type { Member } from "./types";
 
-type Frame = { x: number; top: number; height: number };
-type ArchivedModel = {
-  url: string;
-  modified: number;
-  frame: Frame;
-  entranceIssue?: string;
-};
-const models: Record<string, ArchivedModel> = archive;
+export { hasEntrancePortrait } from "./portrait-availability";
 
-export function hasEntrancePortrait(member: Member) {
-  const archived = models[member.id];
-  if (archived?.entranceIssue) return false;
-  return Boolean(archived || member.data.characterRender || member.data.avatar);
-}
-
-export function useCharacterArt(member: Member, entrance = false) {
+export function useCharacterArt(
+  member: Member,
+  mode: "current" | "entrance" | "honor" = "current",
+) {
   const archived = models[member.id];
   const live = member.data.characterRender || archived?.url;
   // Blizzard can update a character in place at the same URL after a gear change.
@@ -26,15 +16,16 @@ export function useCharacterArt(member: Member, entrance = false) {
     archived &&
     archived.url === live &&
     Date.parse(member.data.sourceModified ?? "") === archived.modified;
-  const local = sameSnapshot
-    ? assetUrl(
-        "/guild/personajes/" +
-          encodeURIComponent(member.id.slice("forever-eu-".length)) +
-          ".webp",
-      )
-    : undefined;
+  const local =
+    sameSnapshot || (mode === "honor" && archived && !archived.entranceIssue)
+      ? assetUrl(
+          "/guild/personajes/" +
+            encodeURIComponent(member.id.slice("forever-eu-".length)) +
+            ".webp",
+        )
+      : undefined;
   const cutout =
-    entrance && local
+    mode === "entrance" && local
       ? local.replace("/personajes/", "/formacion/")
       : undefined;
   const [failed, setFailed] = useState<string[]>([]);
@@ -61,8 +52,25 @@ export function useCharacterArt(member: Member, entrance = false) {
   };
 }
 
-export function CharacterArt({ member }: { member: Member }) {
-  const { image, avatar, style, onError } = useCharacterArt(member);
+export function CharacterArt({
+  member,
+  honor = false,
+}: {
+  member: Member;
+  honor?: boolean;
+}) {
+  const { image, avatar, style, onError } = useCharacterArt(
+    member,
+    honor ? "honor" : "current",
+  );
+  if (!image && honor)
+    return (
+      <img
+        className="honor-tabard"
+        src={assetUrl("/guild/sello-la-ganga.png")}
+        alt=""
+      />
+    );
   return (
     <span aria-hidden="true" className="banner-art" style={style}>
       {image ? (

@@ -131,6 +131,7 @@ export function attachMembership(db: DatabaseSync, members: Member[]) {
   }
   for (const m of members) {
     const row = rows.get(m.id);
+    if (rows.size) m.inRoster = Boolean(row && !row.missing_since && !row.left_at);
     if (!row || !row.eligible) continue;
     m.membership = {
       joinedAt: row.joined_at ?? undefined,

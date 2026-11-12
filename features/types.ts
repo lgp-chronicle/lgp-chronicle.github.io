@@ -99,6 +99,8 @@ export type Logs = {
 };
 export type Snapshot = { at: string; data: Profile };
 export type Member = {
+  inRoster?: boolean;
+  strength?: MemberStrength;
   welcomes?: { id: string; day: string; size: number; position: number; joinedAt: string }[];
   membership?: { joinedAt?: string; leftAt?: string; pendingAbsence?: boolean };
   id: string;
@@ -127,6 +129,7 @@ export type Activity = {
   delta?: number;
 };
 export type GuildData = {
+  spotlight?: { day: string; members: string[] };
   chronicles?: IllustratedChronicle[];
   trophyRoom?: TrophyRoom;
   members: Member[];
@@ -134,6 +137,14 @@ export type GuildData = {
   available: boolean;
   message?: string;
   generatedAt: string;
+};
+export type MemberStrength = {
+  title: string;
+  value?: number;
+  unit?: string;
+  note: string;
+  icon: import("../components/guild-icon").GuildIconName;
+  scene: "corona" | "ambar" | "bota" | "espadas";
 };
 export type TrophyRoom = {
   factions: Record<string, string>;

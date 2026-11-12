@@ -21,6 +21,7 @@ import { ClassFrame } from "./class-frame";
 import { CoverGallery } from "./cover-gallery";
 import { GuildIcon } from "@/components/guild-icon";
 import { finishTitle } from "./race-course";
+import { StrengthLine } from "./guild-strengths";
 export function CharacterDetail({
   member: m,
   members,
@@ -156,6 +157,10 @@ export function CharacterDetail({
           <TalentsPanel profile={p} memberId={m.id} />
         </TabsContent>
         <TabsContent value="attributes">
+          {m.strength && <section className="panel dossier-panel">
+            <div className="dossier-heading"><h2>Su punto fuerte</h2></div>
+            <StrengthLine strength={m.strength} />
+          </section>}
           {titles.length > 0 && (
             <section className="panel dossier-panel">
               <div className="dossier-heading">

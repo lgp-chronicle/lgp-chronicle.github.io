@@ -5,6 +5,31 @@
   gap: clamp(12px, 1.4vw, 21px);
   margin-block: 16px 24px;
 }
+.honor-tabard {
+  position: absolute; right: 9%; top: 18%; width: 25%; height: 65%; object-fit: contain;
+}
+.strength-edition { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; color: #dac8a9; font: 14px/1.4 var(--interface); }
+.strength-edition time {color: #f4d38c;}
+.strength-directory { border-block: 1px solid #7d633d; margin-bottom: 18px; }
+.strength-directory summary { cursor: pointer; padding: 10px 5px; color: #ffe1a2; font: 600 15px/1.4 var(--interface); }
+.strength-directory summary span { margin-left: .6em; color: #d7c4a3; font: 13px/1.4 var(--reading); }
+.strength-directory ul { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,265px),1fr)); margin: 0 0 10px; padding: 0; list-style: none; }
+.strength-directory li { border-top: 1px solid #5d4c36; }
+.strength-directory a { display: block; padding: 11px 9px; text-decoration: none; height: 100%; }
+.strength-directory a:hover {background: #382e20;}
+.strength-directory a:focus-visible, .strength-directory summary:focus-visible {outline: 2px solid #efc66f; outline-offset: -2px;}
+.strength-person {display: block; font: 700 20px/1.2 Almendra,Georgia,serif; margin: 0 0 5px;}
+.strength-line {display: flex; align-items: center; gap: 8px;}
+.strength-line strong, .strength-line small {display: block;}
+.strength-line strong {color: #f4dbab; font: 600 14px/1.35 var(--interface);}
+.strength-line small, .guild-records small {color: #d7c4a3; font: 12px/1.4 var(--reading);}
+.guild-records {margin: 12px 0 16px;}
+.guild-records > div {padding: 8px 0; border-bottom: 1px solid #645037;}
+.guild-records dt {color: #eed8ac; font-weight: 600;}
+.guild-records dd {margin: 2px 0 0;}
+.guild-records dd > span {display: flex; flex-wrap: wrap; gap: 3px 12px; font-size: 14px;}
+.data-table .member-label .banner-subtitle, .roster-strength {display: block; font: 12px/1.3 var(--interface); color: #d6c5a9;}
+.roster-strength {padding: 6px 14px 9px; background: #292219;}
 .honor-gallery:has(.honor-rest[open]) {
   align-items: start;
 }
