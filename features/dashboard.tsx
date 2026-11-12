@@ -18,7 +18,7 @@ import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
 import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
-import { MembershipNews } from "./membership-news";
+import { MembershipArchive, MembershipNews } from "./membership-news";
 import { TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
@@ -78,7 +78,7 @@ export function Dashboard({
   const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("overview")+"?ver=taberna")}
     onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === event.currentTarget.hash)
       document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"}); }}>
-    <GuildIcon name="campfire" size={20}/>Ver el tablón de la taberna →</a>;
+    <GuildIcon name="campfire" size={20}/>Tablón de la taberna →</a>;
   useEffect(() => {
     const y = window.history.state?.returnY;
     const trophy = archive.current?.querySelector<HTMLElement>(".trophy-case [data-selected]");
@@ -166,13 +166,18 @@ export function Dashboard({
               {error}
             </p>
           )}
-          <GuildStrengths data={data} />
-          {tavernLink}
-          <ChronicleFeature story={data.chronicles?.[0]} />
-          <FerrogardDiary />
+          <div className="home-honors"><GuildStrengths data={data} />{tavernLink}</div>
+          <div className="home-journal">
+            <div>
+              <LatestHeadlines events={data.events} members={m} />
+              <ChronicleFeature story={data.chronicles?.[0]} />
+            </div>
+            <div>
+              <ArmoryRumors members={m} />
+              <FerrogardDiary />
+            </div>
+          </div>
           <MembershipNews members={m} asOf={data.generatedAt} />
-          <ArmoryRumors members={m} />
-          <LatestHeadlines events={data.events} members={m} />
         </>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
@@ -199,6 +204,7 @@ export function Dashboard({
           </nav>
         )}
         {section === "gallery" && <CoverGallery members={m} />}
+        {section === "movimientos" && <MembershipArchive members={m} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
         {section === "overview" && (
           <>

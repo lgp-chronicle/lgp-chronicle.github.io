@@ -3,7 +3,8 @@ import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { originalCensusEnd, newMemberPeriod, newUntil } from "./membership";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { archivePath, searchable } from "@/lib/guild-navigation";
 import { siteHref } from "@/lib/public-settings";
@@ -27,6 +28,17 @@ import { display, ago } from "./analytics";
 import { color, type Member } from "./types";
 const matchesName = (member: Member, query: string) =>
   searchable(fullName(member)).includes(searchable(query));
+
+const shortDate = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric", month: "short", year: "numeric", timeZone: "UTC",
+});
+function JoinDate({ member }: { member: Member }) {
+  const joined = member.membership?.joinedAt ?? member.rosterJoinedAt;
+  if (joined) return <time dateTime={joined}>{shortDate.format(new Date(joined))}</time>;
+  return member.addedAt && member.addedAt <= originalCensusEnd
+    ? <span title="Ya figuraba en el censo inicial. Su fecha de entrada es desconocida.">Censo inicial</span>
+    : <span>Sin registrar</span>;
+}
 
 export function HomeMemberSearch({ members }: { members: Member[] }) {
   const [query, setQuery] = useEntryState<string>("homeMemberSearch", "");
@@ -107,6 +119,18 @@ export function Roster({
   initialSearch?: string;
 }) {
   const [layout, setLayout] = useEntryState<string>("layout", "table");
+  const [now, setNow] = useState(Date.now);
+  const nextExpiry = Math.min(...members.map(newUntil).filter(end => end > now));
+  useEffect(() => {
+    if (!Number.isFinite(nextExpiry)) return;
+    const timer = window.setTimeout(() => setNow(Date.now()), Math.max(1, nextExpiry - Date.now()));
+    return () => clearTimeout(timer);
+  }, [nextExpiry]);
+  function newBadge(m: Member) {
+    const remaining = newUntil(m) - now;
+    return remaining > 0 && remaining <= newMemberPeriod
+      ? <span className="new-member-mark">Nuevo</span> : null;
+  }
   const [search, setSearch] = useEntryState<string>(
       "rosterSearch",
       initialSearch,
@@ -117,6 +141,7 @@ export function Roster({
   const columns = [
     ["name", "Personaje"],
     ["level", "Nivel"],
+    ["joinedAt", "Ingreso"],
     ["className", "Clase"],
     ["spec", "Spec"],
     ["race", "Raza"],
@@ -129,6 +154,7 @@ export function Roster({
   const value = (m: Member, key: string): any =>
     key === "name"
       ? fullName(m)
+      : key === "joinedAt" ? m.membership?.joinedAt ?? m.rosterJoinedAt
       : key === "professions"
         ? m.data.professions?.map((p) => p.name).join(", ")
         : (m.data as any)[key];
@@ -244,6 +270,7 @@ export function Roster({
                   <div className="card-identity">
                     <span className="card-class">
                       {m.data.className ?? "Clase sin registrar"}
+                      {newBadge(m)}
                     </span>
                     <h4>
                       {m.name}
@@ -259,6 +286,9 @@ export function Roster({
                     <div>
                       <dt>Equipo</dt>
                       <dd>{display(m.data.itemLevel)}</dd>
+                    </div>
+                    <div>
+                      <dt>Ingreso</dt><dd><JoinDate member={m} /></dd>
                     </div>
                     <div>
                       <dt>Muertes honorables</dt>
@@ -315,7 +345,9 @@ export function Roster({
                 {columns.map(([key]) => (
                   <TableCell key={key}>
                     {key === "name" ? (
-                      <MemberLink member={m} subtitle={m.strength?.title} />
+                      <MemberLink member={m} subtitle={m.strength?.title} badge={newBadge(m)} />
+                    ) : key === "joinedAt" ? (
+                      <JoinDate member={m} />
                     ) : key === "observedAt" ? (
                       <span
                         title={

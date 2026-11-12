@@ -100,6 +100,7 @@ export type Logs = {
 export type Snapshot = { at: string; data: Profile };
 export type Member = {
   inRoster?: boolean;
+  rosterJoinedAt?: string;
   strength?: MemberStrength;
   welcomes?: { id: string; day: string; size: number; position: number; joinedAt: string }[];
   membership?: { joinedAt?: string; leftAt?: string; pendingAbsence?: boolean };
@@ -129,6 +130,7 @@ export type Activity = {
   delta?: number;
 };
 export type GuildData = {
+  membershipEvents?: Activity[];
   spotlight?: { day: string; members: string[] };
   chronicles?: IllustratedChronicle[];
   trophyRoom?: TrophyRoom;

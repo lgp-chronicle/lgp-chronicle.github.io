@@ -59,9 +59,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
             }).format(new Date(edition.day))}
           </time>
           <span>
-            Entre quienes se han actualizado en los últimos{" "}
-            {spotlightWindowDays} días, tienen prioridad los que llevan más
-            tiempo sin salir.
+            Entre los activos de los últimos {spotlightWindowDays} días, tienen prioridad quienes llevan más tiempo sin salir.
           </span>
         </p>
       )}
@@ -79,7 +77,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
       )}
       <details className="strength-directory">
         <summary>
-          Ver los puntos fuertes recientes{" "}
+          Puntos fuertes{" "}
           <span>
             {members.length} {members.length === 1 ? "personaje" : "personajes"}
           </span>

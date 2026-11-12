@@ -20,6 +20,7 @@ export const archiveGroups = [
     label: "El Heraldo",
     sections: [
       ["news", "El Heraldo"],
+      ["movimientos", "Altas y bajas"],
       ["cronicas", "Historial de crónicas"],
     ],
   },

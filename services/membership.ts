@@ -1,9 +1,6 @@
 import type { DatabaseSync } from "node:sqlite";
-import type { Member } from "../features/types.ts";
-import { groupArrivals, hasArmory } from "../features/membership.ts";
-
-// The last character of La Ganga's original census, before individual arrivals were tracked.
-const originalCensusEnd = "2026-11-10T08:57:01.451Z";
+import type { Activity, Member } from "../features/types.ts";
+import { groupArrivals, hasArmory, membershipStart, originalCensusEnd } from "../features/membership.ts";
 
 function prepare(db: DatabaseSync) {
   db.exec(`CREATE TABLE IF NOT EXISTS guild_membership (
@@ -13,7 +10,12 @@ function prepare(db: DatabaseSync) {
   CREATE TABLE IF NOT EXISTS guild_welcomes (
     member_id TEXT NOT NULL, joined_at TEXT NOT NULL, cover_id TEXT NOT NULL, day TEXT NOT NULL,
     size INTEGER NOT NULL, position INTEGER NOT NULL, PRIMARY KEY(member_id, joined_at)
+  );
+  CREATE TABLE IF NOT EXISTS guild_departures (
+    member_id TEXT NOT NULL, left_at TEXT NOT NULL, PRIMARY KEY(member_id, left_at)
   )`);
+  db.prepare(`INSERT OR IGNORE INTO guild_departures
+    SELECT id, left_at FROM guild_membership WHERE eligible = 1 AND left_at >= ?`).run(membershipStart);
 }
 
 type Row = {
@@ -73,6 +75,9 @@ export function recordRoster(
           arrivals.push({ ...member, membership: { joinedAt: joined } });
         }
       } else if (row && !row.left_at) {
+        if (row.eligible && row.missing_since && row.missing_since >= membershipStart) {
+          db.prepare("INSERT OR IGNORE INTO guild_departures VALUES (?,?)").run(member.id, row.missing_since);
+        }
         save.run(
           member.id,
           row.joined_at,
@@ -109,6 +114,19 @@ export function recordRoster(
   }
 }
 
+export function membershipNews(db: DatabaseSync): Activity[] {
+  prepare(db);
+  const rows = db.prepare(`SELECT member_id, joined_at AS at, 'join' AS kind
+      FROM guild_welcomes WHERE joined_at >= ?
+    UNION ALL SELECT member_id, left_at AS at, 'leave' AS kind FROM guild_departures WHERE left_at >= ?
+    ORDER BY at DESC, member_id, kind`).all(membershipStart, membershipStart) as
+    { member_id: string; at: string; kind: "join" | "leave" }[];
+  return rows.map(({ member_id, at, kind }) => ({
+    id: [kind, member_id, at].join("/"), characterId: member_id, at, kind,
+    text: kind === "join" ? "se incorpora a la hermandad." : "deja la hermandad.",
+  }));
+}
+
 export function attachMembership(db: DatabaseSync, members: Member[]) {
   prepare(db);
   const rows = new Map(
@@ -132,7 +150,11 @@ export function attachMembership(db: DatabaseSync, members: Member[]) {
   for (const m of members) {
     const row = rows.get(m.id);
     if (rows.size) m.inRoster = Boolean(row && !row.missing_since && !row.left_at);
-    if (!row || !row.eligible) continue;
+    if (!row) continue;
+    if (!row.eligible) {
+      if (row.joined_at) m.rosterJoinedAt = row.joined_at;
+      continue;
+    }
     m.membership = {
       joinedAt: row.joined_at ?? undefined,
       leftAt: row.left_at ?? undefined,

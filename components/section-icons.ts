@@ -7,6 +7,7 @@ export const guildSectionIcons = {
   history: "steps",
   awards: "crown",
   news: "dispatch",
+  movimientos: "tabard",
   cronicas: "journal",
   compare: "swords",
   logs: "journal",

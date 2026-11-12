@@ -1,5 +1,16 @@
 import type { Member } from "./types.ts";
 
+// First individually tracked arrival, Er Manu's original membership (UTC).
+export const membershipStart = "2026-11-12T02:30:18.111Z";
+export const originalCensusEnd = "2026-11-10T08:57:01.451Z";
+export const newMemberPeriod = 7 * 86400000;
+export function newUntil(m: Member) {
+  const joined = m.membership?.joinedAt;
+  if (!joined || joined < membershipStart || m.inRoster === false ||
+      m.membership?.leftAt || m.membership?.pendingAbsence || !hasArmory(m)) return 0;
+  return Date.parse(joined) + newMemberPeriod;
+}
+
 export function hasArmory(member: Member) {
   const p = member.data;
   const verified =

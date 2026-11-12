@@ -4,7 +4,7 @@ import { archivePath } from "@/lib/guild-navigation";
 import { useState, useEffect, type CSSProperties } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
 import type { Activity, Member } from "./types";
-import { MemberLink } from "./member-portrait";
+import { fullName, MemberLink } from "./member-portrait";
 import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { useEntryState } from "@/hooks/use-entry-state";
@@ -19,6 +19,7 @@ const categories: Record<string, string> = {
   itemLevel: "Equipo",
   honorableKills: "Honor",
   logs: "Raids",
+  membership: "Altas y bajas",
   other: "Otras noticias",
 };
 const categoryIcons: Record<string, GuildIconName> = {
@@ -29,9 +30,11 @@ const categoryIcons: Record<string, GuildIconName> = {
   itemLevel: "shield",
   honorableKills: "medal",
   logs: "journal",
+  membership: "tabard",
   other: "campfire",
 };
 const categoryOf = (e: Activity) =>
+  e.kind === "join" || e.kind === "leave" ? "membership" :
   e.kind === "gain" && e.metric && categories[e.metric]
     ? e.metric
     : categories[e.kind]
@@ -41,11 +44,9 @@ const categoryOf = (e: Activity) =>
 function NewsEntry({
   event: e,
   members,
-  showDate = false,
 }: {
   event: Activity;
   members: Member[];
-  showDate?: boolean;
 }) {
   const primary = members.find((m) => m.id === e.characterId);
   const secondId = e.kind === "overtake" ? rivalId(e) : e.otherCharacterId;
@@ -61,7 +62,6 @@ function NewsEntry({
     <article className="news-story" data-story={e.id}>
       <div className="story-meta">
         <time dateTime={e.at}>
-          {showDate && <small>{new Date(e.at).toLocaleDateString("es-ES", {day: "numeric", month: "short", timeZone: "UTC"})} · </small>}
           {new Date(e.at).toLocaleTimeString("es-ES", {
             hour: "2-digit",
             minute: "2-digit",
@@ -130,13 +130,44 @@ function NewsEntry({
   );
 }
 export function LatestHeadlines({ events, members }: { events: Activity[]; members: Member[] }) {
-  const latest = events.slice(0, 3);
+  const latest: Activity[] = [];
+  const seen = new Set<string>();
+  for (const e of events) {
+    const key = e.kind === "overtake" ? e.at + "/" + e.characterId : e.id;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    latest.push(e);
+    if (latest.length === 3) break;
+  }
   return <section className="news-paper latest-headlines" aria-labelledby="latest-title">
     <header>
       <h2 id="latest-title" className="paper-title">Últimos titulares</h2>
       <a href={siteHref(archivePath("news"))}>Leer El Heraldo →</a>
     </header>
-    {latest.length ? latest.map(event => <NewsEntry key={event.id} event={event} members={members} showDate />)
+    {latest.length ? <ul>{latest.map(e => {
+      const member = members.find(m => m.id === e.characterId);
+      const name = member && fullName(member);
+      const day = e.at.slice(0, 10);
+      let title = e.text;
+      let href = archivePath("news") + "?edicion=" + day;
+      if (e.kind === "overtake" && name) {
+        const rivals = events.filter(row => row.kind === "overtake" && row.characterId === e.characterId && row.at === e.at);
+        const rival = members.find(m => m.id === rivalId(e));
+        title = name + " adelanta a " + (rivals.length > 1 ? rivals.length + " compañeros" : rival ? fullName(rival) : "un compañero");
+      } else if (e.kind === "trophy" && e.id.startsWith("trophy/")) {
+        href = archivePath("awards") + "?trofeo=" + encodeURIComponent(e.id.slice(7));
+      } else if (categoryOf(e) === "membership") {
+        title = [name, e.text].filter(Boolean).join(" ");
+        href = archivePath("movimientos");
+      } else if (member && e.text.startsWith(member.name + " ")) {
+        title = name + e.text.slice(member.name.length);
+      }
+      return <li key={e.id} data-story={e.id}><a href={siteHref(href)}>
+        <GuildIcon name={categoryIcons[categoryOf(e)]} size={22}/>
+        <span>{title.replace(/ desde el último registro\.|\. \d+ niveles? más para la historia\./, "").replace(/\b1 puntos\b/g, "1 punto")}</span>
+        <time dateTime={e.at}>{new Date(e.at).toLocaleDateString("es-ES", {day:"numeric",month:"short",timeZone:"UTC"})}</time>
+      </a></li>;
+    })}</ul>
       : <p>El Heraldo aún espera su primera noticia.</p>}
   </section>;
 }
@@ -149,8 +180,11 @@ export function Newspaper({
   members: Member[];
   featured?: boolean;
 }) {
-  const queryDay = featured ? new URLSearchParams(window.location.hash.split("?")[1]).get("trofeos") : null;
+  const params = new URLSearchParams(location.hash.split("?")[1]);
+  const queryDay = featured ? params.get("trofeos") : null;
   const trophyDay = queryDay && /^\d{4}-\d{2}-\d{2}$/.test(queryDay) ? queryDay : undefined;
+  const requested = featured ? params.get("edicion") : null;
+  const editionDay = trophyDay ?? (requested && /^\d{4}-\d{2}-\d{2}$/.test(requested) ? requested : undefined);
   const [category, setCategory] = useEntryState<string>("newsCategory", trophyDay ? "trophy" : "all");
   const [limit, setLimit] = useEntryState<number>("newsLimit", 8);
   const [archivedDays, setArchivedDays] = useState<string[]>([]);
@@ -160,13 +194,13 @@ export function Newspaper({
     new Set([
       new Date().toISOString().slice(0, 10),
       ...archivedDays,
-      ...(trophyDay ? [trophyDay] : []),
+      ...(editionDay ? [editionDay] : []),
       ...events.map((e) => e.at.slice(0, 10)),
     ]),
   )
     .sort()
     .reverse();
-  const [day, setDay] = useEntryState<string>("newsDay", trophyDay ?? days[0]);
+  const [day, setDay] = useEntryState<string>("newsDay", editionDay ?? days[0]);
   useEffect(() => {
     const abort = new AbortController();
     fetch(apiUrl("/api/editions"), { signal: abort.signal })

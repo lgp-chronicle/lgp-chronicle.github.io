@@ -73,11 +73,13 @@ export function MemberLink({
   banner = false,
   shared = false,
   subtitle,
+  badge,
 }: {
   member: Member;
   banner?: boolean;
   shared?: boolean;
   subtitle?: string;
+  badge?: React.ReactNode;
 }) {
   const label = fullName(member);
   return (
@@ -96,6 +98,7 @@ export function MemberLink({
       )}
       <span className="member-label">
         {shared ? <FittedName name={label} given={member.name} /> : label}
+        {badge}
         {subtitle && <small className="banner-subtitle">{subtitle}</small>}
       </span>
       {banner && !shared && <ClassFrame member={member} />}

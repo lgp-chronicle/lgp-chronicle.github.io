@@ -1,9 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
-import { recordRoster, attachMembership } from "../services/membership.ts";
+import { recordRoster, attachMembership, membershipNews } from "../services/membership.ts";
 import {
   groupArrivals,
+  newUntil, newMemberPeriod, membershipStart,
   hasArmory,
   welcomeParties,
 } from "../features/membership.ts";
@@ -112,6 +113,34 @@ test("two distinct complete censuses confirm a departure, returning members and 
   } finally {
     db.close();
   }
+});
+
+test("Er Manu starts the register, confirmed departures persist across readmission and retries", () => {
+  const db = new DatabaseSync(":memory:");
+  try {
+    const core = member("veterano");
+    core.addedAt = "2026-11-10T08:56:44.000Z";
+    const er = { ...member("forever-eu-er-manu"), addedAt: membershipStart };
+    const low = { ...member("sin-armeria", {level:9}), addedAt: membershipStart };
+    const guild = [core, er, low];
+    const scan = (ids, at) => recordRoster(db, guild, new Set(ids), at);
+    scan(guild.map(m => m.id), membershipStart);
+    const copy = guild.map(({membership, ...m}) => ({...m}));
+    attachMembership(db, copy);
+    assert.equal(newUntil(copy[0]), 0);
+    assert.equal(newUntil(copy[1]), Date.parse(membershipStart) + newMemberPeriod);
+    assert.equal(newUntil(copy[2]), 0);
+    assert.equal(copy[2].rosterJoinedAt, membershipStart);
+    assert.deepEqual(membershipNews(db).map(e => [e.kind,e.characterId]), [["join",er.id]]);
+    scan([core.id], "2026-11-13T01:00:00Z");
+    assert.equal(membershipNews(db).length, 1);
+    scan([core.id], "2026-11-14T01:00:00Z");
+    scan([core.id,er.id], "2026-11-16T01:00:00Z");
+    scan([core.id,er.id], "2026-11-16T01:00:00Z");
+    assert.deepEqual(membershipNews(db).map(e => [e.kind,e.at]), [
+      ["join","2026-11-16T01:00:00Z"],["leave","2026-11-13T01:00:00Z"],["join",membershipStart],
+    ]);
+  } finally { db.close(); }
 });
 
 test("ninja loot totals item bonuses once, shares ties, counts zero-score rivals and excludes only Naisen Grandwell", () => {
