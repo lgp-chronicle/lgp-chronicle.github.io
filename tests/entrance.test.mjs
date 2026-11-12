@@ -8,14 +8,16 @@ import {
   coversForMember,
   drawCover,
   guildCovers,
+  sceneParticipants,
 } from "../lib/guild-covers.ts";
 import portraits from "../config/character-art.json" with { type: "json" };
 
 test("each illustrated party has distinct members with an armory or manual art reference", () => {
-  const included = Object.values(guildCovers).flatMap(({ cast }) =>
-    cast.map(coverMemberId),
+  const included = Object.values(guildCovers).flatMap((scene) =>
+    sceneParticipants(scene).map(coverMemberId),
   );
-  for (const { cast } of Object.values(guildCovers)) {
+  for (const scene of Object.values(guildCovers)) {
+    const cast = sceneParticipants(scene);
     assert.equal(new Set(cast).size, cast.length);
   }
   for (const id of new Set(included)) {
@@ -35,13 +37,16 @@ test("a character's gallery includes every appearance, including expeditions", (
     "humedales",
     "invocacion",
     "mapa",
+    "paella",
   ]);
   assert.deepEqual(coversForMember(coverMemberId("Juninho Delbosque")).sort(), [
+    "paella",
     "pique",
     "santuario",
   ]);
   assert.deepEqual(coversForMember("forever-eu-alexion-grandwell").sort(), [
     "halcon",
+    "paella",
     "rastro",
   ]);
 });

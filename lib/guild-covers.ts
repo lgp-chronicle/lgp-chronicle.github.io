@@ -7,6 +7,21 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  paella: {
+    title: "La paella de múrloc",
+    cast: ["Varón Dandy"],
+    guests: [
+      "Aditus Antrum", "Akimis Derechos", "Alexion Grandwell", "Armentak Akrom",
+      "Betadine Sagrado", "Calvix Uñanegra", "Chusticiero Maldito", "Clairex Fuenteterna",
+      "Dertak Reign", "Er Manu", "Ferrogard Escudoferreo", "Franz Martel",
+      "Hellbrios Realtrece", "Jukkz Shelby", "Juninho Delbosque", "Lua Nita",
+      "Lyrae Grandwell", "Naisen Grandwell", "Olynn Grandwell", "Rast Puñotormenta",
+      "Rompecraneos Roman", "Starshow Ofvalley", "Veshar Frostmind", "Viçent Wildfang",
+      "Vincie Quickhands",
+    ],
+    action: "prueba el arroz de su paella de múrloc mientras la hermandad brinda en el patio.",
+    date: "2026-11-12",
+  },
   campana: {
     title: "La primera campanada",
     cast: ["Varón Dandy", "Hellbrios Realtrece"],
@@ -166,10 +181,14 @@ export const coverIds = Object.keys(guildCovers) as Cover[];
 export type CoverScene = {
   title: string;
   cast: readonly string[];
+  guests?: readonly string[];
   action: string;
   date?: string;
   party?: WelcomeParty;
 };
+export function sceneParticipants(scene: CoverScene): readonly string[] {
+  return scene.guests ? [...scene.cast, ...scene.guests] : scene.cast;
+}
 export function coverCatalogue(members: Member[]): Record<string, CoverScene> {
   const scenes: Record<string, CoverScene> = { ...guildCovers };
   for (const party of welcomeParties(members)) {
@@ -193,7 +212,7 @@ export function coverCatalogue(members: Member[]): Record<string, CoverScene> {
 }
 export function coversForMember(memberId: string) {
   return coverIds.filter((id) =>
-    guildCovers[id].cast.some((name) => coverMemberId(name) === memberId),
+    sceneParticipants(guildCovers[id]).some((name) => coverMemberId(name) === memberId),
   );
 }
 const storageKey = "la-ganga:portadas:v1";

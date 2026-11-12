@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Expand, Link, X } from "lucide-react";
 import {
   coverMemberId,
   coverCatalogue,
+  sceneParticipants,
   type CoverScene,
 } from "@/lib/guild-covers";
 import { archivePath, withGalleryScene } from "@/lib/guild-navigation";
@@ -110,7 +111,7 @@ export function CoverGallery({
       !member ||
       (catalogue[id].party
         ? catalogue[id].party!.members.some((m) => m.id === member.id)
-        : catalogue[id].cast.some((name) => coverMemberId(name) === member.id)),
+        : sceneParticipants(catalogue[id]).some((name) => coverMemberId(name) === member.id)),
   );
   const opener = useRef<HTMLButtonElement | null>(null);
   const requested = new URLSearchParams(location.hash.split("?")[1]).get(
