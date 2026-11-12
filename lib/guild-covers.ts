@@ -7,6 +7,24 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  cisterna: {
+    title: "El pez de la cisterna",
+    cast: ["Franz Martel", "Olynn Grandwell"],
+    action: "intentan sacar un siluro que apenas cabe en la red.",
+    date: "2026-11-12",
+  },
+  cofre: {
+    title: "El botín del intendente",
+    cast: ["Vincie Quickhands", "Ferrogard Escudoferreo"],
+    action: "abren el cofre del almacén y se reparten el botín por pares.",
+    date: "2026-11-12",
+  },
+  invocacion: {
+    title: "La lección de Naisen",
+    cast: ["Naisen Grandwell", "Aditus Antrum"],
+    action: "repasan las runas del círculo mientras la súcubo de Naisen las pone a prueba.",
+    date: "2026-11-12",
+  },
   halcon: {
     title: "Un mensaje en la pata",
     cast: ["Alexion Grandwell", "Lyrae Grandwell"],

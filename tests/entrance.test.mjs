@@ -33,6 +33,7 @@ test("each illustrated party has distinct members with an armory or manual art r
 test("a character's gallery includes every appearance, including expeditions", () => {
   assert.deepEqual(coversForMember(coverMemberId("Naisen Grandwell")).sort(), [
     "humedales",
+    "invocacion",
     "mapa",
   ]);
   assert.deepEqual(coversForMember(coverMemberId("Juninho Delbosque")).sort(), [

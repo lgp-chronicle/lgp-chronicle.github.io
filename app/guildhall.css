@@ -23,6 +23,19 @@
   --hall-art: url("./art/halcon.webp");
   --hall-compact: url("./art/halcon-movil.webp");
 }
+.guildhall[data-cover="cisterna"] {
+  --hall-art: url("./art/cisterna.webp");
+  --hall-compact: url("./art/cisterna-movil.webp");
+  --compact-art-width: 100vw;
+}
+.guildhall[data-cover="cofre"] {
+  --hall-art: url("./art/cofre.webp");
+  --hall-compact: url("./art/cofre-movil.webp");
+}
+.guildhall[data-cover="invocacion"] {
+  --hall-art: url("./art/invocacion.webp");
+  --hall-compact: url("./art/invocacion-movil.webp");
+}
 .guildhall[data-cover="rastro"] {
   --hall-art: url("./art/rastro.webp");
   --hall-compact: url("./art/rastro-movil.webp");
@@ -54,10 +67,10 @@
   --hall-y: 41%;
 }
 @media (min-width: 681px) {
-  .guildhall[data-cover="pique"] {
+  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"]) {
     background: linear-gradient(95deg, #211c17e0, #30241be8), var(--hall-art) left center / cover;
   }
-  .guildhall[data-cover="pique"]::after {
+  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"])::after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -295,13 +308,13 @@
   }
 }
 @media (max-width: 520px) {
-  .guildhall:is([data-cover="halcon"], [data-cover="rastro"], [data-cover="farol"], [data-cover="prensa"]) {
+  .guildhall:is([data-cover="halcon"], [data-cover="rastro"], [data-cover="farol"], [data-cover="prensa"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"]) {
     background-color: #241c16;
     background-position: center top;
-    background-size: max(100%, 385px) auto;
+    background-size: var(--compact-art-width, max(100vw, 385px)) auto;
 
     &::before {
-      background: linear-gradient(transparent 77%, #241c16) center top / 100% max(55.56vw, 214px) no-repeat;
+      background: linear-gradient(transparent 77%, #241c16) center top / 100% calc(var(--compact-art-width, max(100vw, 385px)) / 1.8) no-repeat;
     }
     .guildhall-inner {
       padding: 0 0 5px 12px;
