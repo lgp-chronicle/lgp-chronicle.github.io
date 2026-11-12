@@ -7,6 +7,12 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  diario: {
+    title: "El diario de Ferrogard",
+    cast: ["Ferrogard Escudoferreo"],
+    action: "escribe en su diario a la luz de una vela, en la calma de su cuarto.",
+    date: "2026-11-12",
+  },
   cisterna: {
     title: "El pez de la cisterna",
     cast: ["Franz Martel", "Olynn Grandwell"],

@@ -7,6 +7,52 @@
 .chronicle-feature {
   margin-block: 20px;
 }
+.ferrogard-diary {
+  margin-block: 20px;
+}
+.ferrogard-diary > a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+  align-items: center;
+  background: linear-gradient(105deg, #261c18, #191820 46%);
+  border: 1px solid #927044;
+  color: #ffe5b2;
+  text-decoration: none;
+}
+.ferrogard-diary > a:focus-visible {
+  outline: 3px solid #ffdc85;
+  outline-offset: 3px;
+}
+.ferrogard-diary > a > div {
+  padding: clamp(16px, 3.4vw, 44px);
+}
+.ferrogard-diary h2 {
+  margin: 0 0 10px;
+  font: 700 clamp(24px, 2.7vw, 36px)/1.1 Almendra, Georgia, serif;
+}
+.ferrogard-diary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #f7d38c;
+  font: 600 14px/1.35 var(--interface);
+}
+.ferrogard-diary a:is(:hover, :focus-visible) span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ferrogard-diary img {
+  display: block;
+  width: 100%;
+  height: clamp(150px, 18vw, 244px);
+  object-fit: cover;
+  object-position: 69% 58%;
+  mask-image: linear-gradient(90deg, transparent, black 20%);
+}
+@media (max-width: 600px) {
+  .ferrogard-diary > a { grid-template-columns: 1fr; }
+  .ferrogard-diary img { grid-row: 1; height: auto; mask-image: none; }
+}
 .chronicle-brief {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;

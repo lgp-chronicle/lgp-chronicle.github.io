@@ -1,5 +1,5 @@
 "use client";
-import { apiUrl, siteHref } from "@/lib/public-settings";
+import { apiUrl, assetUrl, siteHref } from "@/lib/public-settings";
 import {
   archivePath,
   groupForSection,
@@ -20,7 +20,7 @@ import { CoverGallery } from "./cover-gallery";
 import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
 import { MembershipNews } from "./membership-news";
 import { TrophyRoom } from "./trophy-room";
-import { RefreshCw } from "lucide-react";
+import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
@@ -28,6 +28,25 @@ import { Compare } from "./compare";
 import { Newspaper } from "./newspaper";
 import { leveling, display, awards, ago } from "./analytics";
 import { color, numeric, type GuildData, type Member } from "./types";
+
+function FerrogardDiary() {
+  return (
+    <section className="ferrogard-diary" aria-labelledby="diary-title">
+      <a
+        href="https://discord.com/channels/1551288910569808112/1569452969064140830"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div>
+          <h2 id="diary-title">El diario de Ferrogard</h2>
+          <span>Leer en Discord <ExternalLink size={15} aria-hidden="true" /></span>
+        </div>
+        <img src={assetUrl("/guild/galeria/diario.webp")} width={768} height={256} loading="lazy" alt="" />
+      </a>
+    </section>
+  );
+}
+
 function leader(members: Member[], score: (m: Member) => unknown) {
   const valid = members.flatMap((member) => {
     const value = score(member);
@@ -143,6 +162,7 @@ export function Dashboard({
           <GuildStrengths data={data} />
           {tavernLink}
           <ChronicleFeature story={data.chronicles?.[0]} />
+          <FerrogardDiary />
           <MembershipNews members={m} asOf={data.generatedAt} />
           <ArmoryRumors members={m} />
         </>
@@ -231,6 +251,7 @@ export function Dashboard({
         {section === "news" && (
           <>
             <Newspaper members={m} events={data.events} featured />
+            <FerrogardDiary />
           </>
         )}
         {section === "compare" && (
