@@ -1,7 +1,7 @@
 "use client";
 import { apiUrl, siteHref } from "@/lib/public-settings";
 import { archivePath } from "@/lib/guild-navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
 import type { Activity, Member } from "./types";
 import { MemberLink } from "./member-portrait";
@@ -77,13 +77,16 @@ function NewsEntry({
               members.some((m) => m.id === w.id) ? (
                 <a
                   key={w.id}
-                  style={{ color: w.tint }}
+                  style={{ "--class-tint": w.tint } as CSSProperties}
                   href={siteHref("/character/" + encodeURIComponent(w.id))}
                 >
                   {w.name}
                 </a>
               ) : (
-                <span key={w.id} style={{ color: w.tint }}>
+                <span
+                  key={w.id}
+                  style={{ "--class-tint": w.tint } as CSSProperties}
+                >
                   {w.name}
                 </span>
               ),

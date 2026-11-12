@@ -702,9 +702,42 @@
   color: #3f352c;
 }
 .story-content {
+  --name-background: #211b17;
   min-width: 0;
   font-size: 14px;
   line-height: 1.55;
+}
+.trophy-news > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  font: 700 16px/1.35 var(--interface);
+}
+.trophy-news .guild-icon {
+  flex: none;
+}
+.trophy-news > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin-top: 4px;
+}
+.trophy-news > div > * {
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--name-background);
+  font: 650 13px/1.45 var(--reading);
+  overflow-wrap: anywhere;
+}
+.trophy-news a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.news-paper :is(.news-story a, .news-categories button, .news-more, [data-slot="select-trigger"]):focus-visible {
+  outline: 2px solid #52361c;
+  outline-offset: 2px;
 }
 .story-content p {
   font-size: 12px;
@@ -730,19 +763,25 @@
   stroke-width: 3;
 }
 .move-up {
-  color: #5d4f41;
+  color: #285c31;
 }
 .move-down {
   color: #a33226;
 }
 .story-content .member-link {
-  background: #332c24;
+  background: var(--name-background);
   color: #fff6da;
   padding: 2px 8px 2px 2px;
   border-radius: 15px 3px 3px 15px;
   font-size: 12px;
   gap: 5px;
   vertical-align: middle;
+}
+.trophy-news > div > *,
+.story-content .member-label {
+  color: #fff6da;
+  color: color-mix(in srgb, var(--class-tint, #fff6da) 70%, white);
+  color: oklch(from var(--class-tint, #fff6da) max(l, 0.72) c h);
 }
 .story-content .portrait {
   --size: 26px;
