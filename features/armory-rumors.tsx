@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GuildIcon } from "@/components/guild-icon";
 import { useEntryState } from "@/hooks/use-entry-state";
@@ -16,7 +16,7 @@ const editionLabel = new Intl.DateTimeFormat("es-ES", {
 });
 const today = () => Math.floor(Date.now() / dayMs);
 
-export function ArmoryRumors({ members }: { members: Member[] }) {
+export function ArmoryRumors({ members, activityLink }: { members: Member[]; activityLink: ReactNode }) {
   const [day, setDay] = useState(today);
   useEffect(() => {
     let timer: number;
@@ -34,15 +34,15 @@ export function ArmoryRumors({ members }: { members: Member[] }) {
       document.removeEventListener("visibilitychange", syncDay);
     };
   }, []);
-  return <RumorEdition key={day} members={members} day={day} />;
+  return <RumorEdition key={day} members={members} day={day} activityLink={activityLink} />;
 }
-function RumorEdition({ members, day }: { members: Member[]; day: number }) {
+function RumorEdition({ members, day, activityLink }: { members: Member[]; day: number; activityLink: ReactNode }) {
   const { cards, coverage } = useMemo(
     () => armoryStories(members, day),
     [members, day],
   );
   const [offset, setOffset] = useEntryState<number>("rumorOffset/" + day, 0);
-  if (!cards.length) return null;
+  if (!cards.length) return <section className="rumor-panel"><h2>La taberna</h2>{activityLink}</section>;
   const index = (day + offset) % cards.length,
     card = cards[index];
   const storyKey = [
@@ -60,12 +60,11 @@ function RumorEdition({ members, day }: { members: Member[]; day: number }) {
     <section className="rumor-panel" data-story="armory-rumors">
       <header>
         <div>
-          <h2>Cotilleos de la armería</h2>
+          <h2>La taberna</h2>
           <p className="rumor-edition">
-            <time dateTime={date.toISOString().slice(0, 10)}>
+            Cotilleos de la armería · <time dateTime={date.toISOString().slice(0, 10)}>
               {editionLabel.format(date)}
-            </time>{" "}
-            · Nueva edición a las 00:00 UTC
+            </time>
           </p>
         </div>
         {cards.length > 1 && (
@@ -88,6 +87,7 @@ function RumorEdition({ members, day }: { members: Member[]; day: number }) {
         card={card}
         coverage={coverage}
       />
+      <div className="tavern-activity-link">{activityLink}</div>
     </section>
   );
 }

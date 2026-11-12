@@ -142,6 +142,7 @@ export type GuildData = {
 };
 export type MemberStrength = {
   title: string;
+  shortNote?: string;
   value?: number;
   unit?: string;
   note: string;

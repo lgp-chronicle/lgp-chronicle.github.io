@@ -61,14 +61,15 @@ const scenes: Record<string, Scene> = {
   hps: "bota",
 };
 
-function Winner({ member, shared }: { member: Member; shared: boolean }) {
+function Winner({ member, shared, merit }: { member: Member; shared: boolean; merit?: string }) {
   const name = fullName(member);
   return (
     <a
       className="laureate"
-      href={memberHref(member)}
+      href={memberHref(member) + (merit ? "?tab=attributes" : "")}
       title={name}
       aria-label={"Ver ficha de " + name}
+      aria-description={merit}
       style={{ "--class-tint": color(member) } as CSSProperties}
     >
       <span className="laureate-figure">
@@ -86,6 +87,7 @@ function Winner({ member, shared }: { member: Member; shared: boolean }) {
           <small className="laureate-class">{member.data.className}</small>
         )}
         <ArrowUpRight className="laureate-arrow" size={16} aria-hidden="true" />
+        {merit && <span className="laureate-merit">{merit}</span>}
       </span>
       {!shared && <ClassFrame member={member} />}
     </a>
@@ -98,6 +100,7 @@ type HonorCardProps = {
   value?: number;
   unit?: string;
   note?: string;
+  merit?: string;
   winners: Member[];
   icon?: GuildIconName;
 };
@@ -107,6 +110,7 @@ export function HonorCard({
   value,
   unit,
   note,
+  merit,
   winners,
   icon,
 }: HonorCardProps) {
@@ -146,7 +150,7 @@ export function HonorCard({
           style={{ "--seats": Math.min(4, winners.length) } as CSSProperties}
         >
           {winners.slice(0, 4).map((member) => (
-            <Winner key={member.id} member={member} shared={shared} />
+            <Winner key={member.id} member={member} shared={shared} merit={merit} />
           ))}
         </div>
       ) : (

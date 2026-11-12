@@ -420,6 +420,12 @@
 .honors .honor-score span { font-size: 12px; line-height: 1.1; }
 .honors .honor-note { display: none; }
 .honors .laureate-plaque { padding: 4px 8px 5px 17px; gap: 2px; min-height: 37px; }
+.honors .laureate-merit {
+  grid-column: 1/-1;
+  grid-row: 3;
+  color: #ead6ac;
+  font: 500 12px/1.24 var(--interface);
+}
 .honors .laureate-name { font-size: clamp(15px, 6.1cqw, 20px); }
 .honors .laureate-class { font-size: 8px; }
 .honors .class-frame { --corner: 24px; --foot: 15px; }

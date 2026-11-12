@@ -59,7 +59,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
             }).format(new Date(edition.day))}
           </time>
           <span>
-            Entre los activos de los últimos {spotlightWindowDays} días, tienen prioridad quienes llevan más tiempo sin salir.
+            Méritos del día por tramo de nivel, oficio o progreso personal.
           </span>
         </p>
       )}
@@ -69,7 +69,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
           aria-label="Protagonistas del día"
         >
           {featured.map((m) => (
-            <HonorCard key={m.id} {...m.strength} winners={[m]} />
+            <HonorCard key={m.id} {...m.strength} winners={[m]} merit={m.strength.shortNote ?? m.strength.note} />
           ))}
         </div>
       ) : (
@@ -77,11 +77,9 @@ export function GuildStrengths({ data }: { data: GuildData }) {
       )}
       <details className="strength-directory">
         <summary>
-          Puntos fuertes{" "}
-          <span>
-            {members.length} {members.length === 1 ? "personaje" : "personajes"}
-          </span>
+          Ver los méritos de {members.length === 1 ? "1 personaje" : `los ${members.length} personajes`}
         </summary>
+        <p>La portada rota entre quienes han registrado cambios en los últimos {spotlightWindowDays} días. Tienen prioridad quienes llevan más tiempo sin aparecer.</p>
         <ul>
           {members
             .sort((a, b) => fullName(a).localeCompare(fullName(b), "es"))

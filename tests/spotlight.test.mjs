@@ -210,11 +210,13 @@ test("peers share a level bracket or the same trade, with real denominators, tie
     Date.parse(day(1)),
   );
   assert.equal(field[2].strength.value, 10);
+  assert.equal(field[2].strength.shortNote, "1.º de 6 · Nivel 10–19 · Empate");
   assert.match(
     field[2].strength.note,
     /Primer puesto compartido entre 6 personajes de nivel 10–19/,
   );
   assert.equal(traders[2].strength.value, 50);
+  assert.equal(traders[2].strength.shortNote, "1.º de 3 · Mismo oficio");
   assert.match(
     traders[2].strength.note,
     /Primer puesto entre 3 personajes del oficio/,

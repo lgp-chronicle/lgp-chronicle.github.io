@@ -17,7 +17,7 @@ import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
-import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
+import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
 import { TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
@@ -78,7 +78,7 @@ export function Dashboard({
   const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("overview")+"?ver=taberna")}
     onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === event.currentTarget.hash)
       document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"}); }}>
-    <GuildIcon name="campfire" size={20}/>Tablón de la taberna →</a>;
+    <GuildIcon name="campfire" size={20}/>Ver la actividad de los miembros →</a>;
   useEffect(() => {
     const y = window.history.state?.returnY;
     const trophy = archive.current?.querySelector<HTMLElement>(".trophy-case [data-selected]");
@@ -166,14 +166,13 @@ export function Dashboard({
               {error}
             </p>
           )}
-          <div className="home-honors"><GuildStrengths data={data} />{tavernLink}</div>
+          <div className="home-honors"><GuildStrengths data={data} /></div>
           <div className="home-journal">
             <div>
-              <LatestHeadlines events={data.events} members={m} />
-              <ChronicleFeature story={data.chronicles?.[0]} />
+              <LatestHeadlines events={data.events} members={m} chronicle={data.chronicles?.[0]} />
             </div>
             <div>
-              <ArmoryRumors members={m} />
+              <ArmoryRumors members={m} activityLink={tavernLink} />
               <FerrogardDiary />
             </div>
           </div>

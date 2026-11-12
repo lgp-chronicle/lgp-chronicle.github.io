@@ -229,6 +229,7 @@ export function describeMembers(members: Member[], now: number) {
             row,
             beaten,
             count: peers.length,
+            shortNote: `${higher + 1}.º de ${peers.length} · ${row.scope === "del oficio" ? "Mismo oficio" : row.scope.replace("de nivel ", "Nivel ")}${tied > 1 ? " · Empate" : ""}`,
             note: `${position} entre ${peers.length} personajes ${row.scope} con datos.`,
           },
         ];
@@ -243,7 +244,7 @@ export function describeMembers(members: Member[], now: number) {
     const best = ranked[0];
     const { title, value, unit, note, icon, scene } =
       best?.row ?? personal(m, rows);
-    m.strength = { title, value, unit, note: best?.note ?? note, icon, scene };
+    m.strength = { title, value, unit, note: best?.note ?? note, shortNote: best?.shortNote, icon, scene };
   }
   return roster;
 }

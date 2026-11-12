@@ -137,9 +137,9 @@ export function TavernBoard({
       <header className="tavern-heading">
         <GuildIcon name="campfire" size={45} />
         <div>
-          <h2 id="tavern-heading">El tablón de la taberna</h2>
+          <h2 id="tavern-heading">Actividad de los miembros</h2>
           <p>
-            Noticias de la armería hasta el{" "}
+            Días con cambios y últimas actualizaciones de la armería hasta el{" "}
             <time dateTime={asOf}>{date.format(now)}</time>.
           </p>
         </div>

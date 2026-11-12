@@ -8,7 +8,6 @@ import type { IllustratedChronicle } from "./types";
 import "../app/illustrated-chronicles.css";
 
 const archiveHref = siteHref(archivePath("cronicas"));
-const sectionTitle = "¿Qué está pasando en La Ganga?";
 const dates = new Intl.DateTimeFormat("es", {
   dateStyle: "long",
   timeZone: "UTC",
@@ -157,10 +156,7 @@ function ChronicleCard({
 export function ChronicleFeature({ story }: { story?: IllustratedChronicle }) {
   if (!story) return null;
   return (
-    <section
-      className="chronicle-feature"
-      aria-labelledby="chronicle-brief-title"
-    >
+    <div className="chronicle-feature">
       <a className="chronicle-brief" href={archiveHref}>
         <img
           src={assetUrl("/guild/sello-la-ganga.png")}
@@ -169,19 +165,18 @@ export function ChronicleFeature({ story }: { story?: IllustratedChronicle }) {
           alt=""
         />
         <div>
-          <h2 id="chronicle-brief-title">{sectionTitle}</h2>
-          <p>
+          <small>Archivo de crónicas ilustradas ·{" "}
             <time dateTime={story.day}>
               {shortDate.format(stamp(story.day))}
-            </time>{" "}
-            · {story.title}
-          </p>
+            </time>
+          </small>
+          <strong>{story.title}</strong>
         </div>
         <span>
-          Ver historial <ArrowRight size={15} aria-hidden="true" />
+          <ArrowRight size={17} aria-hidden="true" />
         </span>
       </a>
-    </section>
+    </div>
   );
 }
 

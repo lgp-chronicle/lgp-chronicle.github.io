@@ -3,7 +3,8 @@ import { apiUrl, siteHref } from "@/lib/public-settings";
 import { archivePath } from "@/lib/guild-navigation";
 import { useState, useEffect, type CSSProperties } from "react";
 import { Pick, Empty } from "@/components/guild-ui";
-import type { Activity, Member } from "./types";
+import type { Activity, Member, IllustratedChronicle } from "./types";
+import { ChronicleFeature } from "./illustrated-chronicles";
 import { fullName, MemberLink } from "./member-portrait";
 import { GuildIcon, type GuildIconName } from "@/components/guild-icon";
 import { ArrowUp, ArrowDown } from "lucide-react";
@@ -129,7 +130,7 @@ function NewsEntry({
     </article>
   );
 }
-export function LatestHeadlines({ events, members }: { events: Activity[]; members: Member[] }) {
+export function LatestHeadlines({ events, members, chronicle }: { events: Activity[]; members: Member[]; chronicle?: IllustratedChronicle }) {
   const latest: Activity[] = [];
   const seen = new Set<string>();
   for (const e of events) {
@@ -169,6 +170,7 @@ export function LatestHeadlines({ events, members }: { events: Activity[]; membe
       </a></li>;
     })}</ul>
       : <p>El Heraldo aún espera su primera noticia.</p>}
+    <ChronicleFeature story={chronicle} />
   </section>;
 }
 export function Newspaper({
