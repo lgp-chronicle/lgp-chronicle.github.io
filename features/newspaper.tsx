@@ -41,9 +41,11 @@ const categoryOf = (e: Activity) =>
 function NewsEntry({
   event: e,
   members,
+  showDate = false,
 }: {
   event: Activity;
   members: Member[];
+  showDate?: boolean;
 }) {
   const primary = members.find((m) => m.id === e.characterId);
   const secondId = e.kind === "overtake" ? rivalId(e) : e.otherCharacterId;
@@ -59,6 +61,7 @@ function NewsEntry({
     <article className="news-story" data-story={e.id}>
       <div className="story-meta">
         <time dateTime={e.at}>
+          {showDate && <small>{new Date(e.at).toLocaleDateString("es-ES", {day: "numeric", month: "short", timeZone: "UTC"})} · </small>}
           {new Date(e.at).toLocaleTimeString("es-ES", {
             hour: "2-digit",
             minute: "2-digit",
@@ -69,7 +72,7 @@ function NewsEntry({
       </div>
       {e.kind === "trophy" ? (
         <div className="story-content trophy-news">
-          <a href={siteHref(archivePath("awards"))}>
+          <a href={siteHref(archivePath("awards") + (e.id.startsWith("trophy/") ? "?trofeo=" + encodeURIComponent(e.id.slice(7)) : ""))}>
             <GuildIcon name="trophy" size={23} /> {e.text}
           </a>
           <div>
@@ -125,6 +128,17 @@ function NewsEntry({
       )}
     </article>
   );
+}
+export function LatestHeadlines({ events, members }: { events: Activity[]; members: Member[] }) {
+  const latest = events.slice(0, 3);
+  return <section className="news-paper latest-headlines" aria-labelledby="latest-title">
+    <header>
+      <h2 id="latest-title" className="paper-title">Últimos titulares</h2>
+      <a href={siteHref(archivePath("news"))}>Leer El Heraldo →</a>
+    </header>
+    {latest.length ? latest.map(event => <NewsEntry key={event.id} event={event} members={members} showDate />)
+      : <p>El Heraldo aún espera su primera noticia.</p>}
+  </section>;
 }
 export function Newspaper({
   events,

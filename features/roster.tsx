@@ -3,9 +3,10 @@ import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
 
-import type { CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { useEntryState } from "@/hooks/use-entry-state";
-import { searchable } from "@/lib/guild-navigation";
+import { archivePath, searchable } from "@/lib/guild-navigation";
+import { siteHref } from "@/lib/public-settings";
 import {
   ArrowDown,
   ArrowUp,
@@ -24,9 +25,92 @@ import {
 import { Pick, Empty } from "@/components/guild-ui";
 import { display, ago } from "./analytics";
 import { color, type Member } from "./types";
-export function Roster({ members }: { members: Member[] }) {
+const matchesName = (member: Member, query: string) =>
+  searchable(fullName(member)).includes(searchable(query));
+
+export function HomeMemberSearch({ members }: { members: Member[] }) {
+  const [query, setQuery] = useEntryState<string>("homeMemberSearch", "");
+  const [focused, setFocused] = useState(false);
+  const form = useRef<HTMLFormElement>(null);
+  const matches = query.trim()
+    ? members.filter((m) => matchesName(m, query))
+    : [];
+  const show = focused && Boolean(query.trim());
+  const roster = siteHref(
+    archivePath("overview") + "?buscar=" + encodeURIComponent(query.trim()),
+  );
+  return (
+    <form
+      role="search"
+      aria-label="Buscar en la hermandad"
+      className="home-member-search toolbar"
+      ref={form}
+      onFocus={() => setFocused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          form.current?.querySelector("input")?.focus();
+          setFocused(false);
+        }
+      }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!matches.length) return;
+        const destination =
+          matches.length === 1 ? ".member-link" : ".home-search-all";
+        form.current?.querySelector<HTMLAnchorElement>(destination)?.click();
+      }}
+    >
+      <label className="roster-search">
+        <Search size={16} aria-hidden="true" />
+        <input
+          type="search"
+          aria-label="Buscar personaje"
+          placeholder="Buscar personaje…"
+          value={query}
+          onClick={() => setFocused(true)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setFocused(true);
+          }}
+        />
+      </label>
+      {show && (
+        <div className="home-search-results">
+          {matches.length ? (
+            matches.slice(0, 5).map((m) => <MemberLink member={m} key={m.id} />)
+          ) : (
+            <p role="status">Ningún personaje con ese nombre.</p>
+          )}
+          <a
+            className="home-search-all"
+            href={matches.length ? roster : siteHref(archivePath("overview"))}
+          >
+            {matches.length
+              ? `Ver resultados en Miembros (${matches.length})`
+              : "Ver todos los miembros"}{" "}
+            →
+          </a>
+        </div>
+      )}
+    </form>
+  );
+}
+
+export function Roster({
+  members,
+  initialSearch = "",
+}: {
+  members: Member[];
+  initialSearch?: string;
+}) {
   const [layout, setLayout] = useEntryState<string>("layout", "table");
-  const [search, setSearch] = useEntryState<string>("rosterSearch", ""),
+  const [search, setSearch] = useEntryState<string>(
+      "rosterSearch",
+      initialSearch,
+    ),
     [cls, setCls] = useEntryState<string>("rosterClass", "all"),
     [sort, setSort] = useEntryState<string>("rosterSort", "level"),
     [asc, setAsc] = useEntryState<boolean>("ascending", false);
@@ -51,8 +135,7 @@ export function Roster({ members }: { members: Member[] }) {
   const filtered = members
     .filter(
       (m) =>
-        searchable(fullName(m)).includes(searchable(search)) &&
-        (cls === "all" || m.data.className === cls),
+        matchesName(m, search) && (cls === "all" || m.data.className === cls),
     )
     .sort((a, b) => {
       const x = value(a, sort),
@@ -184,14 +267,16 @@ export function Roster({ members }: { members: Member[] }) {
                   </dl>
                   <ChevronRight size={17} aria-hidden="true" />
                 </div>
-                {m.strength && <small className="roster-strength">{m.strength.title}</small>}
+                {m.strength && (
+                  <small className="roster-strength">{m.strength.title}</small>
+                )}
                 <ClassFrame member={m} />
               </a>
             );
           })}
         </div>
       ) : (
-        <Table className="data-table">
+        <Table className="data-table roster-table">
           <TableHeader>
             <TableRow>
               {columns.map(([key, label]) => (

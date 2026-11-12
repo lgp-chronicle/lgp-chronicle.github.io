@@ -22,6 +22,7 @@ export type EntranceMode = "auto" | "replay";
 export function initialEntrance(): EntranceMode | null {
   if (new URLSearchParams(window.location.search).get("presentacion") === "1")
     return "replay";
+  if (window.location.hash && !["#", "#/"].includes(window.location.hash)) return null;
   if (window.matchMedia(motionQuery).matches) return null;
   try {
     return sessionStorage.getItem(seenKey) ? null : "auto";

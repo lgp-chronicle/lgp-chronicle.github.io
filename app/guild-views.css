@@ -1346,3 +1346,40 @@
 }
 .talent-tree button.talent-link { width: 100%; text-align: left; cursor: pointer; }
 .wow-item-card .wow-talent-effect { color: #ffda75; white-space: pre-line; margin-top: 5px; }
+.honors-heading .home-member-search {
+  order: 2;
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  width: min(230px, 28vw);
+}
+.home-member-search .roster-search { width: 100%; }
+.home-search-results {
+  position: absolute;
+  inset: calc(100% + 3px) 0 auto;
+  display: grid;
+  padding: 4px;
+  background: #292219;
+  border: 1px solid #a9894f;
+  box-shadow: 0 8px 18px #100c09aa;
+}
+.home-search-results > * { padding: 6px; }
+.home-search-all { color: #f5d89b; font-size: 14px; text-decoration: underline; }
+.latest-headlines { margin-block: 20px; }
+.latest-headlines > header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; }
+.latest-headlines > header a { color: #493215; text-underline-offset: 3px; text-decoration: underline; }
+.latest-headlines .story-meta time small { display: block; }
+@media (max-width: 680px) {
+  .section-heading.honors-heading { flex-wrap: wrap; }
+  .honors-heading .home-member-search { order: 3; width: 100%; }
+  .roster-table :is(th, td):first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #29231c;
+    box-shadow: 2px 0 #70583c;
+  }
+  .roster-table th:first-child { background: #1e1a15; }
+  .roster-table td:first-child .member-link { width: clamp(110px, 36vw, 190px); }
+  .roster-table td:first-child .member-label { white-space: normal; overflow-wrap: anywhere; }
+}

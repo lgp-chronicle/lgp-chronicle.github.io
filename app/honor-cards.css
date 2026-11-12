@@ -401,3 +401,35 @@
 .ninja-evidence ul { margin: 5px 0; padding-left: 1.2rem; }
 .ninja-evidence a { text-decoration: underline; text-underline-offset: 2px; }
 .ninja-evidence p { margin: 8px 0 0; color: #d8c7ae; font-size: 13px; }
+
+.honor-gallery.honors {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(6px, 1vw, 14px);
+  margin-block: 10px 12px;
+}
+@media (min-width: 960px) {
+  .honor-gallery.honors { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.honors .honor-card { --scene-height: 112px; }
+.honors .honor-inscription { width: 68%; padding: 10px; }
+.honors .honor-title { gap: 4px; }
+.honors .honor-title > img { width: 21px; height: 21px; }
+.honors .honor-title h3 { font-size: clamp(15px, 6.5cqw, 20px); line-height: 1.06; }
+.honors .honor-score { margin: 7px 0 0; gap: 2px 5px; }
+.honors .honor-score b { font-size: clamp(25px, 12cqw, 35px); }
+.honors .honor-score span { font-size: 12px; line-height: 1.1; }
+.honors .honor-note { display: none; }
+.honors .laureate-plaque { padding: 4px 8px 5px 17px; gap: 2px; min-height: 37px; }
+.honors .laureate-name { font-size: clamp(15px, 6.1cqw, 20px); }
+.honors .laureate-class { font-size: 8px; }
+.honors .class-frame { --corner: 24px; --foot: 15px; }
+.honors .laureate .banner-art { --figure-center: 79%; --zoom: 1.46; inset-block-start: 4px; }
+@media (max-width: 520px) {
+  .honors .honor-card { --scene-height: 100px; }
+  .honors .honor-inscription { padding: 7px; }
+  .honors .honor-title > img { display: none; }
+  .honors .honor-score { flex-direction: column; }
+  .honors .laureate-arrow { display: none; }
+  .honors .laureate-plaque { padding-inline: 9px 4px; }
+  .honors .class-frame { --corner: 17px; --foot: 9px; }
+}

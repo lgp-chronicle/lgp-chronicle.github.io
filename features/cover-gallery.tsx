@@ -1,12 +1,12 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog } from "radix-ui";
-import { ArrowLeft, ArrowRight, Expand, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Expand, Link, X } from "lucide-react";
 import {
   coverMemberId,
   coverCatalogue,
   type CoverScene,
 } from "@/lib/guild-covers";
-import { archivePath } from "@/lib/guild-navigation";
+import { archivePath, withGalleryScene } from "@/lib/guild-navigation";
 import { assetUrl, siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
 import { fullName } from "./member-portrait";
@@ -16,6 +16,45 @@ import { paintedWelcome } from "./membership";
 function original(id: string) {
   const file = id === "mapa" ? "sala-de-la-ganga" : id;
   return new URL(`../app/art/${file}.webp`, import.meta.url).href;
+}
+
+function ShareScene({ id }: { id: string }) {
+  const [status, setStatus] = useState<"ready" | "copied" | "manual">("ready");
+  const url = new URL(location.pathname, location.origin);
+  url.hash = withGalleryScene(archivePath("gallery"), id);
+  return (
+    <div className="gallery-share">
+      <button
+        type="button"
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(url.href);
+            setStatus("copied");
+          } catch {
+            setStatus("manual");
+          }
+        }}
+      >
+        <Link size={16} aria-hidden="true" />{" "}
+        <span aria-live="polite">
+          {status === "copied" ? "Enlace copiado" : "Copiar enlace"}
+        </span>
+      </button>
+      {status === "manual" && (
+        <input
+          aria-label="Enlace para copiar"
+          readOnly
+          value={url.href}
+          ref={(el) => {
+            if (el) {
+              el.focus();
+              el.select();
+            }
+          }}
+        />
+      )}
+    </div>
+  );
 }
 
 function Caption({
@@ -73,12 +112,25 @@ export function CoverGallery({
         ? catalogue[id].party!.members.some((m) => m.id === member.id)
         : catalogue[id].cast.some((name) => coverMemberId(name) === member.id)),
   );
-  const [active, setActive] = useState<string | null>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
+  const requested = new URLSearchParams(location.hash.split("?")[1]).get(
+    "escena",
+  );
+  const active = requested && scenes.includes(requested) ? requested : null;
   const scene = active ? catalogue[active] : null;
+  function navigateScene(id: string | null, push = false) {
+    const oldURL = location.href;
+    const hash = siteHref(withGalleryScene(location.hash.slice(1), id));
+    if (push)
+      history.pushState({ ...history.state, galleryOpened: true }, "", hash);
+    else history.replaceState(history.state, "", hash);
+    window.dispatchEvent(
+      new HashChangeEvent("hashchange", { oldURL, newURL: location.href }),
+    );
+  }
   function step(direction: number) {
     if (active)
-      setActive(
+      navigateScene(
         scenes[
           (scenes.indexOf(active) + direction + scenes.length) % scenes.length
         ],
@@ -115,10 +167,14 @@ export function CoverGallery({
               <button
                 type="button"
                 className="gallery-thumbnail"
+                ref={(el) => {
+                  if (el && active === id && !opener.current)
+                    opener.current = el;
+                }}
                 aria-label={"Ampliar " + item.title}
                 onClick={(event) => {
                   opener.current = event.currentTarget;
-                  setActive(id);
+                  navigateScene(id, true);
                 }}
               >
                 {item.party ? (
@@ -156,7 +212,9 @@ export function CoverGallery({
       <Dialog.Root
         open={active !== null}
         onOpenChange={(open) => {
-          if (!open) setActive(null);
+          if (open) return;
+          if (history.state?.galleryOpened) history.back();
+          else navigateScene(null);
         }}
       >
         {active && scene && (
@@ -166,10 +224,13 @@ export function CoverGallery({
               className="gallery-viewer"
               onCloseAutoFocus={(event) => {
                 event.preventDefault();
-                opener.current?.focus({ preventScroll: true });
+                opener.current?.focus();
               }}
               onKeyDown={(event) => {
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                if (
+                  !(event.target instanceof HTMLInputElement) &&
+                  (event.key === "ArrowLeft" || event.key === "ArrowRight")
+                ) {
                   event.preventDefault();
                   step(event.key === "ArrowLeft" ? -1 : 1);
                 }
@@ -212,27 +273,30 @@ export function CoverGallery({
                     currentMember={member?.id}
                   />
                 </Dialog.Description>
-                {scenes.length > 1 && (
-                  <div className="gallery-paging">
-                    <button
-                      type="button"
-                      onClick={() => step(-1)}
-                      aria-label="Ilustración anterior"
-                    >
-                      <ArrowLeft />
-                    </button>
-                    <span aria-live="polite">
-                      {scenes.indexOf(active) + 1} / {scenes.length}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => step(1)}
-                      aria-label="Ilustración siguiente"
-                    >
-                      <ArrowRight />
-                    </button>
-                  </div>
-                )}
+                <div className="gallery-actions">
+                  <ShareScene key={active} id={active} />
+                  {scenes.length > 1 && (
+                    <div className="gallery-paging">
+                      <button
+                        type="button"
+                        onClick={() => step(-1)}
+                        aria-label="Ilustración anterior"
+                      >
+                        <ArrowLeft />
+                      </button>
+                      <span aria-live="polite">
+                        {scenes.indexOf(active) + 1} / {scenes.length}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => step(1)}
+                        aria-label="Ilustración siguiente"
+                      >
+                        <ArrowRight />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </Dialog.Content>
           </Dialog.Portal>

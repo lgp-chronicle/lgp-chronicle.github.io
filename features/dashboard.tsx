@@ -22,10 +22,10 @@ import { MembershipNews } from "./membership-news";
 import { TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
-import { Roster } from "./roster";
+import { HomeMemberSearch, Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
 import { Compare } from "./compare";
-import { Newspaper } from "./newspaper";
+import { LatestHeadlines, Newspaper } from "./newspaper";
 import { leveling, display, awards, ago } from "./analytics";
 import { color, numeric, type GuildData, type Member } from "./types";
 
@@ -81,13 +81,19 @@ export function Dashboard({
     <GuildIcon name="campfire" size={20}/>Ver el tablón de la taberna →</a>;
   useEffect(() => {
     const y = window.history.state?.returnY;
+    const trophy = archive.current?.querySelector<HTMLElement>(".trophy-case [data-selected]");
     if (typeof y === "number") window.scrollTo(0, y);
+    else if (trophy) {
+      trophy.scrollIntoView({block: "center"});
+      trophy.focus({preventScroll: true});
+    }
     else if (window.history.state?.menuFromTop) window.scrollTo(0, 0);
     else if (section === "overview" && new URLSearchParams(location.hash.split("?")[1]).get("ver") === "taberna")
       document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"});
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members;
+  const query = new URLSearchParams(location.hash.split("?")[1]);
   const group = groupForSection(section);
   const trophies = awards(m);
   const withoutLogs = m.filter((member) => !member.logs);
@@ -136,6 +142,7 @@ export function Dashboard({
             <div>
               <h2 className="section-title">Cuadro de honor</h2>
             </div>
+            <HomeMemberSearch members={m} />
             <button
               className="button outline"
               onClick={refresh}
@@ -165,10 +172,11 @@ export function Dashboard({
           <FerrogardDiary />
           <MembershipNews members={m} asOf={data.generatedAt} />
           <ArmoryRumors members={m} />
+          <LatestHeadlines events={data.events} members={m} />
         </>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
-      <section
+      {section && <section
         className="archive"
         ref={archive}
         id="guild-archive"
@@ -192,11 +200,11 @@ export function Dashboard({
         )}
         {section === "gallery" && <CoverGallery members={m} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
-        {(!section || section === "overview") && (
+        {section === "overview" && (
           <>
-            {section === "overview" && tavernLink}
-            <Roster members={m} />
-            {section === "overview" && <TavernBoard members={m} asOf={data.generatedAt} />}
+            {tavernLink}
+            <Roster members={m} initialSearch={query.get("buscar") ?? ""} />
+            <TavernBoard members={m} asOf={data.generatedAt} />
             <div style={{ marginTop: 24 }} className="grid-two">
               <Newspaper members={m} events={data.events.slice(0, 12)} />
               <section className="panel">
@@ -230,7 +238,7 @@ export function Dashboard({
               HONOR ETERNO. HASTA LA PRÓXIMA SINCRONIZACIÓN.
             </p>
             <h2 className="section-title">El salón de la fama</h2>
-            <TrophyRoom room={data.trophyRoom} members={m} />
+            <TrophyRoom room={data.trophyRoom} members={m} selectedId={query.get("trofeo")} />
             <h3 className="section-title">Premios actuales</h3>
             {trophies.length ? (
               <div className="honor-gallery hall-gallery">
@@ -325,7 +333,7 @@ export function Dashboard({
             </section>
           </>
         )}
-      </section>
+      </section>}
       {section !== "gallery" && section !== "cronicas" && (
         <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
           Los datos pertenecen a la última observación válida de cada fuente. No

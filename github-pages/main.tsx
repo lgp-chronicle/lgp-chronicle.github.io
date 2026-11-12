@@ -10,7 +10,7 @@ const CharacterDetail = lazy(() =>
   })),
 );
 import { apiUrl, siteHref } from "../lib/public-settings";
-import { sectionFromPath } from "../lib/guild-navigation";
+import { sectionFromPath, withGalleryScene } from "../lib/guild-navigation";
 import { browserCover, coverCatalogue } from "../lib/guild-covers";
 import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
@@ -56,7 +56,7 @@ function App() {
         !to ||
         !a ||
         a.target === "_blank" ||
-        (!to.startsWith("/character/") && !to.startsWith("/archivo/compare?"))
+        (!to.startsWith("/character/") && !to.startsWith("/archivo/compare?") && !to.startsWith("/archivo/awards?trofeo="))
       )
         return;
       const from = location.hash.slice(1) || "/";
@@ -71,7 +71,13 @@ function App() {
         "",
       );
     };
-    const route = () => {
+    const route = (event: HashChangeEvent) => {
+      const previous = new URL(event.oldURL).hash.slice(1);
+      const next = location.hash.slice(1) || "/";
+      if (withGalleryScene(previous, null) === withGalleryScene(next, null)) {
+        setPath(next);
+        return;
+      }
       if (menuFromTop === location.hash.slice(1))
         history.replaceState({ ...history.state, menuFromTop: true }, "");
       menuFromTop = undefined;
@@ -160,7 +166,7 @@ function App() {
             </main>
           ) : path === "/" || path === "" || section ? (
             <Dashboard
-              key={path + data.generatedAt}
+              key={withGalleryScene(path, null) + data.generatedAt}
               initial={data}
               section={section}
             />

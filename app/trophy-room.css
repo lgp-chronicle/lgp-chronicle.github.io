@@ -103,6 +103,12 @@
 .trophy-case li[data-earned] {
   background: linear-gradient(120deg, #392c1d, #27211c);
 }
+.trophy-case li[data-selected] {
+  outline: 2px solid #efc86c;
+  outline-offset: -2px;
+  background: #47361e;
+  scroll-margin-block: 76px 20px;
+}
 .trophy-case h4 {
   margin: 0;
   font: 600 16px/1.25 var(--interface);

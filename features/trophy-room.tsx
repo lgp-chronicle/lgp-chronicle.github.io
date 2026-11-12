@@ -23,11 +23,14 @@ const groupIcons = [
 export function TrophyRoom({
   room = emptyRoom,
   members,
+  selectedId,
 }: {
   room?: Room;
   members: Member[];
+  selectedId?: string | null;
 }) {
   const catalog = trophyCatalog(room.factions);
+  const selected = catalog.find(trophy => trophy.id === selectedId);
   const earned = Object.keys(room.unlocks).length;
   const roster = new Set(members.map((m) => m.id));
   return (
@@ -49,7 +52,7 @@ export function TrophyRoom({
         const entries = catalog.filter((t) => t.group === group);
         const count = entries.filter((t) => room.unlocks[t.id]).length;
         return (
-          <details key={group} className="trophy-case" open={i === 0}>
+          <details key={group} className="trophy-case" open={selected ? selected.group === group : i === 0}>
             <summary>
               <GuildIcon name={groupIcons[i]} size={28} />
               <strong>{group}</strong>
@@ -79,7 +82,9 @@ export function TrophyRoom({
               {entries.map((t) => {
                 const win = room.unlocks[t.id];
                 return (
-                  <li key={t.id} data-earned={win ? "" : undefined}>
+                  <li key={t.id} data-earned={win ? "" : undefined}
+                    data-selected={selected?.id === t.id || undefined}
+                    tabIndex={selected?.id === t.id ? -1 : undefined}>
                     <GuildIcon name={t.icon} size={32} />
                     <div>
                       <h4>{t.title}</h4>

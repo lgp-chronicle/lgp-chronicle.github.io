@@ -33,6 +33,14 @@ export const guildSections = archiveGroups.flatMap<
 export const groupForSection = (section?: GuildSection) =>
   archiveGroups.find((group) => group.sections.some(([id]) => id === section));
 export const archivePath = (section: GuildSection) => "/archivo/" + section;
+export function withGalleryScene(path: string, scene: string | null) {
+  const [base, query] = path.split("?");
+  const params = new URLSearchParams(query);
+  if (scene) params.set("escena", scene);
+  else if (params.has("escena")) params.delete("escena");
+  else return path;
+  return params.size ? base + "?" + params : base;
+}
 export const sectionFromPath = (path: string) =>
   guildSections.find(([id]) => archivePath(id) === path.split("?")[0])?.[0];
 

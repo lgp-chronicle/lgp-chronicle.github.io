@@ -162,6 +162,22 @@
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
+.gallery-actions, .gallery-share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gallery-actions { justify-content: flex-end; }
+.gallery-share button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-inline: 10px;
+  width: auto;
+  white-space: nowrap;
+}
+.gallery-share input { max-width: 100%; min-width: 0; color: #ffe6a8; background: #191510; }
 @media (max-width: 680px) {
   .gallery-grid {
     grid-template-columns: 1fr;
@@ -174,4 +190,5 @@
   .gallery-paging {
     align-self: flex-end;
   }
+  .gallery-actions { width: 100%; justify-content: space-between; }
 }
