@@ -44,14 +44,12 @@
 .ferrogard-diary img {
   display: block;
   width: 100%;
-  height: clamp(150px, 18vw, 244px);
-  object-fit: cover;
-  object-position: 69% 58%;
+  height: auto;
   mask-image: linear-gradient(90deg, transparent, black 20%);
 }
 @media (max-width: 600px) {
   .ferrogard-diary > a { grid-template-columns: 1fr; }
-  .ferrogard-diary img { grid-row: 1; height: auto; mask-image: none; }
+  .ferrogard-diary img { grid-row: 1; mask-image: none; }
 }
 .chronicle-brief {
   display: grid;
