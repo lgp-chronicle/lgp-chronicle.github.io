@@ -7,6 +7,30 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  halcon: {
+    title: "Un mensaje en la pata",
+    cast: ["Alexion Grandwell", "Lyrae Grandwell"],
+    action: "recogen el mensaje que acaba de traer el halcón a la torre.",
+    date: "2026-11-12",
+  },
+  rastro: {
+    title: "Tres garras en la nieve",
+    cast: ["Alexion Grandwell", "Rompecraneos Roman"],
+    action: "siguen unas huellas de tres garras al pie de la fortaleza.",
+    date: "2026-11-12",
+  },
+  farol: {
+    title: "El farol de Chusticiero",
+    cast: ["Chusticiero Maldito", "Veshar Frostmind"],
+    action: "se juegan la última moneda de cobre en la bodega.",
+    date: "2026-11-12",
+  },
+  prensa: {
+    title: "La primera sidra",
+    cast: ["Dertak Reign", "Viçent Wildfang"],
+    action: "llenan la primera jarra de sidra en el lagar de la fortaleza.",
+    date: "2026-11-12",
+  },
   mensajeria: {
     title: "El correo de medianoche",
     cast: ["Calvix Uñanegra", "Betadine Sagrado"],

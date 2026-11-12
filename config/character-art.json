@@ -19,6 +19,7 @@
   },
   "forever-eu-alexion-grandwell": {
     "entranceIssue": "race-mismatch",
+    "illustrationReference": "illustration-references/alexion-grandwell.webp",
     "url": "https://render.worldofwarcraft.com/forever-eu/character/133/6919813-main-raw.png",
     "frame": {
       "x": 48.4,

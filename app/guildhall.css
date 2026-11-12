@@ -19,6 +19,22 @@
   --hall-art: url("./art/mensajeria.webp");
   --hall-compact: url("./art/mensajeria-movil.webp");
 }
+.guildhall[data-cover="halcon"] {
+  --hall-art: url("./art/halcon.webp");
+  --hall-compact: url("./art/halcon-movil.webp");
+}
+.guildhall[data-cover="rastro"] {
+  --hall-art: url("./art/rastro.webp");
+  --hall-compact: url("./art/rastro-movil.webp");
+}
+.guildhall[data-cover="farol"] {
+  --hall-art: url("./art/farol.webp");
+  --hall-compact: url("./art/farol-movil.webp");
+}
+.guildhall[data-cover="prensa"] {
+  --hall-art: url("./art/prensa.webp");
+  --hall-compact: url("./art/prensa-movil.webp");
+}
 .guildhall[data-cover="embarcadero"] {
   --hall-art: url("./art/embarcadero.webp");
   --hall-compact: url("./art/embarcadero-movil.webp");
@@ -279,6 +295,24 @@
   }
 }
 @media (max-width: 520px) {
+  .guildhall:is([data-cover="halcon"], [data-cover="rastro"], [data-cover="farol"], [data-cover="prensa"]) {
+    background-color: #241c16;
+    background-position: center top;
+    background-size: max(100%, 385px) auto;
+
+    &::before {
+      background: linear-gradient(transparent 77%, #241c16) center top / 100% max(55.56vw, 214px) no-repeat;
+    }
+    .guildhall-inner {
+      padding: 0 0 5px 12px;
+    }
+    .guildhall-brand img {
+      width: clamp(70px, 21vw, 96px);
+    }
+    .guildhall-caption {
+      max-width: 64%;
+    }
+  }
   .guildhall-nav > div { padding: 3px; gap: 1px; }
   .guildhall-nav a {
     flex-direction: column;

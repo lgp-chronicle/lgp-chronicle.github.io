@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import test from "node:test";
 import { positions, raceStature } from "../features/entrance-formation.ts";
 import { silhouetteFrame } from "../features/entrance-frame.ts";
@@ -10,18 +11,23 @@ import {
 } from "../lib/guild-covers.ts";
 import portraits from "../config/character-art.json" with { type: "json" };
 
-test("each illustrated party has distinct members with verified portraits", () => {
+test("each illustrated party has distinct members with an armory or manual art reference", () => {
   const included = Object.values(guildCovers).flatMap(({ cast }) =>
     cast.map(coverMemberId),
   );
   for (const { cast } of Object.values(guildCovers)) {
     assert.equal(new Set(cast).size, cast.length);
   }
-  assert.ok(
-    included.every((id) => portraits[id] && !portraits[id].entranceIssue),
-  );
+  for (const id of new Set(included)) {
+    const portrait = portraits[id];
+    assert.ok(portrait, id);
+    if (portrait.entranceIssue) {
+      assert.ok(portrait.illustrationReference, id);
+      const file = new URL("../config/" + portrait.illustrationReference, import.meta.url);
+      assert.ok(existsSync(file), id);
+    }
+  }
   assert.ok(!included.includes("forever-eu-aloqes-dloqe"));
-  assert.ok(!included.includes("forever-eu-alexion-grandwell"));
 });
 
 test("a character's gallery includes every appearance, including expeditions", () => {
@@ -33,7 +39,10 @@ test("a character's gallery includes every appearance, including expeditions", (
     "pique",
     "santuario",
   ]);
-  assert.deepEqual(coversForMember("forever-eu-alexion-grandwell"), []);
+  assert.deepEqual(coversForMember("forever-eu-alexion-grandwell").sort(), [
+    "halcon",
+    "rastro",
+  ]);
 });
 
 test("the fortress shows every cover before repeating, including across cycles", () => {
