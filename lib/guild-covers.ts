@@ -7,6 +7,24 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  mensajeria: {
+    title: "El correo de medianoche",
+    cast: ["Calvix Uñanegra", "Betadine Sagrado"],
+    action: "atan y sellan el último paquete a la luz de una vela.",
+    date: "2026-11-12",
+  },
+  embarcadero: {
+    title: "La primera barca",
+    cast: ["Armentak Akrom", "Starshow Ofvalley"],
+    action: "sueltan amarras bajo la reja del embarcadero.",
+    date: "2026-11-12",
+  },
+  veta: {
+    title: "La veta de ámbar",
+    cast: ["Clairex Fuenteterna", "Lua Nita"],
+    action: "examinan una veta de ámbar bajo la fortaleza.",
+    date: "2026-11-12",
+  },
   pique: {
     title: "La última chapa",
     cast: ["Jukkz Shelby", "Juninho Delbosque"],

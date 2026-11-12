@@ -15,6 +15,18 @@
   --hall-compact: url("./art/fragua-movil.webp");
   --hall-y: 30%;
 }
+.guildhall[data-cover="mensajeria"] {
+  --hall-art: url("./art/mensajeria.webp");
+  --hall-compact: url("./art/mensajeria-movil.webp");
+}
+.guildhall[data-cover="embarcadero"] {
+  --hall-art: url("./art/embarcadero.webp");
+  --hall-compact: url("./art/embarcadero-movil.webp");
+}
+.guildhall[data-cover="veta"] {
+  --hall-art: url("./art/veta.webp");
+  --hall-compact: url("./art/veta-movil.webp");
+}
 .guildhall[data-cover="humedales"] {
   --hall-art: url("./art/humedales.webp");
   --hall-compact: url("./art/humedales-movil.webp");
