@@ -7,6 +7,18 @@ import {
 } from "../features/membership.ts";
 
 export const guildCovers = {
+  campana: {
+    title: "La primera campanada",
+    cast: ["Varón Dandy", "Hellbrios Realtrece"],
+    action: "ajustan el badajo de la campana antes de que despierte la fortaleza.",
+    date: "2026-11-12",
+  },
+  mandragora: {
+    title: "Una raíz con malas pulgas",
+    cast: ["Akimis Derechos", "Calvix Uñanegra", "Er Manu"],
+    action: "descubren por qué la maceta del invernadero no paraba de moverse.",
+    date: "2026-11-12",
+  },
   diario: {
     title: "El diario de Ferrogard",
     cast: ["Ferrogard Escudoferreo"],
