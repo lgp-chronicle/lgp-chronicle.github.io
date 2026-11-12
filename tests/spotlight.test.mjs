@@ -4,6 +4,7 @@ import { DatabaseSync } from "node:sqlite";
 import { guildSpotlight } from "../services/spotlight.ts";
 import { describeMembers } from "../services/member-strengths.ts";
 import { hasRecentUpdate } from "../features/spotlight-freshness.ts";
+import { tavernActivity } from "../features/tavern-activity.ts";
 
 const member = (id, data = {}) => ({
   id,
@@ -13,6 +14,54 @@ const member = (id, data = {}) => ({
   history: [],
 });
 const day = (n) => new Date(Date.UTC(2026, 10, n, 12)).toISOString();
+
+test("the tavern counts distinct UTC dates, shows the oldest known updates and separates undated members", () => {
+  const lastNight = "2026-11-11T23:48:00Z",
+    thisMorning = "2026-11-12T00:15:00Z";
+  const daily = member("daily", { sourceModified: lastNight });
+  daily.history = [
+    { at: day(8), data: { level: 13, sourceModified: day(8) } },
+    { at: day(11), data: { level: 13, sourceModified: day(8) } },
+    { at: thisMorning, data: { level: 14, sourceModified: lastNight } },
+    { at: day(12), data: { level: 14, sourceModified: lastNight } },
+  ];
+  const tie = member("tie", { sourceModified: day(12) });
+  tie.history = [{ at: day(6), data: { sourceModified: day(6) } }];
+  const ancient = member("old", {
+    sourceModified: day(1),
+    observedAt: day(12),
+  });
+  const unknown = member("unknown", {
+    sourceModified: undefined,
+    observedAt: day(12),
+  });
+  unknown.history = [{ at: day(12), data: { level: 1 } }];
+  const leaver = member("gone", { sourceModified: day(12) });
+  leaver.inRoster = false;
+  const board = tavernActivity([tie, unknown, ancient, daily, leaver], day(12));
+  assert.equal(board.days.length, 7);
+  assert.deepEqual(
+    board.active.map((r) => [r.member.id, r.activeDays.size]),
+    [
+      ["daily", 2],
+      ["tie", 2],
+    ],
+  );
+  assert.equal(
+    board.active[0].activeDays.has(Date.parse("2026-11-12T00:00:00Z")),
+    false,
+  );
+  assert.deepEqual(
+    board.oldest.map((r) => r.member.id),
+    ["old", "daily", "tie"],
+  );
+  assert.equal(board.oldest[1].last, Date.parse(lastNight));
+  assert.deepEqual(
+    board.unknown.map((r) => r.member.id),
+    ["unknown"],
+  );
+  assert.deepEqual(tavernActivity([], day(12)).active, []);
+});
 
 test("freshness uses the source modification date or a measured change, never a routine poll", () => {
   const now = Date.parse(day(12));

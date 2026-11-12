@@ -16,6 +16,8 @@ export async function readGuild(): Promise<GuildData> {
           'itemLevel',json_extract(data,'$.itemLevel'),
           'honorableKills',json_extract(data,'$.honorableKills'),
           'honor',json_extract(data,'$.honor'),
+          'sourceModified',CASE WHEN json_extract(data,'$.armoryVerified') IS NOT 0
+            THEN json_extract(data,'$.sourceModified') END,
           'observedAt',json_extract(data,'$.observedAt'),
           'resourceTimes',json_extract(data,'$.resourceTimes')
         ) AS data FROM character_snapshots ORDER BY at`,

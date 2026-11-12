@@ -12,6 +12,7 @@ import { useGuildTools } from "./webmcp";
 import { fullName, memberHref, MemberLink } from "./member-portrait";
 import { HallAward } from "./honor-card";
 import { GuildStrengths } from "./guild-strengths";
+import { TavernBoard } from "./tavern-board";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
@@ -55,10 +56,16 @@ export function Dashboard({
     [error, setError] = useState("");
   useGuildTools(data);
   const archive = useRef<HTMLElement>(null);
+  const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("overview")+"?ver=taberna")}
+    onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === event.currentTarget.hash)
+      document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"}); }}>
+    <GuildIcon name="campfire" size={20}/>Ver el tablón de la taberna →</a>;
   useEffect(() => {
     const y = window.history.state?.returnY;
     if (typeof y === "number") window.scrollTo(0, y);
     else if (window.history.state?.menuFromTop) window.scrollTo(0, 0);
+    else if (section === "overview" && new URLSearchParams(location.hash.split("?")[1]).get("ver") === "taberna")
+      document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"});
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members;
@@ -134,6 +141,7 @@ export function Dashboard({
             </p>
           )}
           <GuildStrengths data={data} />
+          {tavernLink}
           <ChronicleFeature story={data.chronicles?.[0]} />
           <MembershipNews members={m} asOf={data.generatedAt} />
           <ArmoryRumors members={m} />
@@ -166,7 +174,9 @@ export function Dashboard({
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
         {(!section || section === "overview") && (
           <>
+            {section === "overview" && tavernLink}
             <Roster members={m} />
+            {section === "overview" && <TavernBoard members={m} asOf={data.generatedAt} />}
             <div style={{ marginTop: 24 }} className="grid-two">
               <Newspaper members={m} events={data.events.slice(0, 12)} />
               <section className="panel">
