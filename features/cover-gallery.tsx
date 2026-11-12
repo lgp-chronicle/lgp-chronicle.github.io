@@ -2,36 +2,36 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog } from "radix-ui";
 import { ArrowLeft, ArrowRight, Expand, X } from "lucide-react";
 import {
-  coverIds,
   coverMemberId,
-  coversForMember,
-  guildCovers,
-  type Cover,
+  coverCatalogue,
+  type CoverScene,
 } from "@/lib/guild-covers";
 import { archivePath } from "@/lib/guild-navigation";
 import { assetUrl, siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
 import { fullName } from "./member-portrait";
+import { WelcomeArt } from "./welcome-art";
+import { paintedWelcome } from "./membership";
 
-function original(id: Cover) {
+function original(id: string) {
   const file = id === "mapa" ? "sala-de-la-ganga" : id;
   return new URL(`../app/art/${file}.webp`, import.meta.url).href;
 }
 
 function Caption({
-  id,
+  scene,
   members,
   currentMember,
 }: {
-  id: Cover;
+  scene: CoverScene;
   members: Member[];
   currentMember?: string;
 }) {
-  const { cast, action } = guildCovers[id];
+  const { cast, action } = scene;
   return (
     <>
       {cast.map((name, i) => {
-        const memberId = coverMemberId(name);
+        const memberId = scene.party?.members[i]?.id ?? coverMemberId(name);
         const member = members.find((m) => m.id === memberId);
         return (
           <Fragment key={memberId}>
@@ -65,10 +65,17 @@ export function CoverGallery({
   members: Member[];
   member?: Member;
 }) {
-  const scenes = member ? coversForMember(member.id) : coverIds;
-  const [active, setActive] = useState<Cover | null>(null);
+  const catalogue = coverCatalogue(members);
+  const scenes = Object.keys(catalogue).filter(
+    (id) =>
+      !member ||
+      (catalogue[id].party
+        ? catalogue[id].party!.members.some((m) => m.id === member.id)
+        : catalogue[id].cast.some((name) => coverMemberId(name) === member.id)),
+  );
+  const [active, setActive] = useState<string | null>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
-  const scene = active ? guildCovers[active] : null;
+  const scene = active ? catalogue[active] : null;
   function step(direction: number) {
     if (active)
       setActive(
@@ -102,7 +109,7 @@ export function CoverGallery({
       )}
       <div className="gallery-grid">
         {scenes.map((id, i) => {
-          const item = guildCovers[id];
+          const item = catalogue[id];
           return (
             <article key={id} className="gallery-card">
               <button
@@ -114,25 +121,29 @@ export function CoverGallery({
                   setActive(id);
                 }}
               >
-                <img
-                  src={assetUrl("/guild/galeria/" + id + ".webp")}
-                  alt=""
-                  width={768}
-                  height={256}
-                  loading={i < 2 ? "eager" : "lazy"}
-                />
+                {item.party ? (
+                  <WelcomeArt party={item.party} />
+                ) : (
+                  <img
+                    src={assetUrl("/guild/galeria/" + id + ".webp")}
+                    alt=""
+                    width={768}
+                    height={256}
+                    loading={i < 2 ? "eager" : "lazy"}
+                  />
+                )}
                 <Expand size={16} aria-hidden="true" />
               </button>
               <div className="gallery-caption">
                 <h3>{item.title}</h3>
-                {"date" in item && (
+                {item.date && (
                   <time dateTime={item.date}>
                     {item.date.split("-").reverse().join("/")}
                   </time>
                 )}
                 <p>
                   <Caption
-                    id={id}
+                    scene={item}
                     members={members}
                     currentMember={member?.id}
                   />
@@ -170,27 +181,33 @@ export function CoverGallery({
                   <X />
                 </Dialog.Close>
               </div>
-              <a
-                href={original(active)}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={"Abrir a tamaño original: " + scene.title}
-              >
-                <img
-                  className="gallery-original"
-                  src={original(active)}
-                  alt={scene.title}
-                />
-              </a>
+              {scene.party && active !== paintedWelcome ? (
+                <div className="welcome-original">
+                  <WelcomeArt party={scene.party} large />
+                </div>
+              ) : (
+                <a
+                  href={original(active)}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={"Abrir a tamaño original: " + scene.title}
+                >
+                  <img
+                    className="gallery-original"
+                    src={original(active)}
+                    alt={scene.title}
+                  />
+                </a>
+              )}
               <div className="gallery-viewer-footer">
                 <Dialog.Description>
-                  {"date" in scene && (
+                  {scene.date && (
                     <time dateTime={scene.date}>
                       {scene.date.split("-").reverse().join("/")} ·{" "}
                     </time>
                   )}
                   <Caption
-                    id={active}
+                    scene={scene}
                     members={members}
                     currentMember={member?.id}
                   />

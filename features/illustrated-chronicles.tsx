@@ -97,11 +97,9 @@ function ChronicleScene({
 
 function ChronicleCard({
   story,
-  featured = false,
   first = false,
 }: {
   story: IllustratedChronicle;
-  featured?: boolean;
   first?: boolean;
 }) {
   const max = Math.max(
@@ -109,36 +107,14 @@ function ChronicleCard({
     ...story.rows.flatMap((row) => [row.before, row.after]),
   );
   return (
-    <article
-      className="chronicle-card"
-      data-featured={featured || undefined}
-      aria-label={story.title}
-    >
+    <article className="chronicle-card" aria-label={story.title}>
       <header className="chronicle-mast">
-        {featured ? (
-          <h2>
-            <img src={assetUrl("/guild/sello-la-ganga.png")} alt="" />
-            {sectionTitle}
-          </h2>
-        ) : (
-          <time dateTime={story.day}>{dates.format(stamp(story.day))}</time>
-        )}
-        {featured && (
-          <a
-            href={archiveHref}
-            aria-label="Ver historial de todas las crónicas"
-          >
-            Ver historial <ArrowRight size={16} aria-hidden="true" />
-          </a>
-        )}
+        <time dateTime={story.day}>{dates.format(stamp(story.day))}</time>
       </header>
       <ChronicleScene story={story} first={first} />
       <div className="chronicle-ledger">
         <div className="chronicle-metric">
           <strong>{metricLabels[story.kind]}</strong>
-          {featured && (
-            <time dateTime={story.day}>{dates.format(stamp(story.day))}</time>
-          )}
         </div>
         <div className="chronicle-comparison">
           {(["before", "after"] as const).map((key) => {
@@ -181,8 +157,30 @@ function ChronicleCard({
 export function ChronicleFeature({ story }: { story?: IllustratedChronicle }) {
   if (!story) return null;
   return (
-    <section className="chronicle-feature">
-      <ChronicleCard story={story} featured first />
+    <section
+      className="chronicle-feature"
+      aria-labelledby="chronicle-brief-title"
+    >
+      <a className="chronicle-brief" href={archiveHref}>
+        <img
+          src={assetUrl("/guild/sello-la-ganga.png")}
+          width="36"
+          height="36"
+          alt=""
+        />
+        <div>
+          <h2 id="chronicle-brief-title">{sectionTitle}</h2>
+          <p>
+            <time dateTime={story.day}>
+              {shortDate.format(stamp(story.day))}
+            </time>{" "}
+            · {story.title}
+          </p>
+        </div>
+        <span>
+          Ver historial <ArrowRight size={15} aria-hidden="true" />
+        </span>
+      </a>
     </section>
   );
 }

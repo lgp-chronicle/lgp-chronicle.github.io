@@ -1,0 +1,180 @@
+.membership-news {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(230px, 1fr);
+  align-items: start;
+  gap: clamp(16px, 3vw, 38px);
+  margin: 24px 0 32px;
+}
+.membership-news header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #705633;
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+}
+.membership-news h2 {
+  margin: 0;
+  font:
+    700 clamp(20px, 2.2vw, 28px) / 1.2 Almendra,
+    Georgia,
+    serif;
+  color: #ffdea0;
+}
+.membership-news small,
+.membership-news time {
+  color: #d9c6a7;
+  font: 12px/1.35 var(--reading);
+}
+.membership-news p {
+  font: 14px/1.5 var(--interface);
+  color: #ddd0bb;
+  margin: 8px 0;
+}
+.arrival-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 12px;
+}
+.arrival-card {
+  display: grid;
+  grid-template-columns: minmax(80px, 44%) 1fr;
+  background: #292117;
+  border: 1px solid #79603d;
+  min-width: 0;
+}
+.arrival-art {
+  display: block;
+  min-height: 108px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-painting,
+.welcome-courtyard {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.welcome-painting img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 64% 46%;
+}
+.arrival-art > * {
+  position: absolute;
+  inset: 0;
+}
+.welcome-courtyard {
+  isolation: isolate;
+  background-size: cover;
+  background-position: center 60%;
+}
+.welcome-cast {
+  position: absolute;
+  inset: 3% 4% 0;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+.welcome-figure {
+  position: relative;
+  flex: 0 1 32%;
+  max-width: 45%;
+  overflow: hidden;
+}
+.welcome-figure .banner-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  --figure-center: 50%;
+}
+.welcome-figure img.banner-model {
+  max-width: none;
+  width: auto;
+  height: var(--model-height);
+  aspect-ratio: auto;
+}
+.welcome-figure .welcome-seal {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  inset: 20%;
+  object-fit: contain;
+}
+.arrival-caption {
+  min-width: 0;
+  align-self: center;
+  padding: 10px 14px;
+}
+.membership-news ul {
+  list-style: none;
+  margin: 3px 0;
+  padding: 0;
+}
+.membership-news li + li {
+  margin-top: 6px;
+}
+.membership-news li a {
+  font:
+    700 19px/1.15 Almendra,
+    Georgia,
+    serif;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.membership-news li a:hover {
+  text-decoration: underline;
+}
+.arrival-caption small {
+  display: block;
+}
+.departure-list time {
+  margin-left: 8px;
+}
+.membership-gallery {
+  display: inline-block;
+  margin-top: 8px;
+  font: 14px/1.4 var(--interface);
+  color: #efd198;
+  text-underline-offset: 3px;
+}
+.guildhall-welcome {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.guildhall:has(.guildhall-welcome) {
+  background: #211b14;
+}
+.guildhall-welcome .welcome-cast {
+  inset: 4% 7% 1% 35%;
+}
+.gallery-thumbnail > .welcome-courtyard,
+.gallery-thumbnail > .welcome-painting,
+.welcome-original {
+  aspect-ratio: 3/1;
+  height: auto;
+}
+.gallery-thumbnail .welcome-figure .banner-art img {
+  aspect-ratio: auto;
+}
+@media (max-width: 680px) {
+  .membership-news {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .guildhall-welcome .welcome-cast {
+    inset: 12% 0 17% 27%;
+  }
+  .arrival-art {
+    min-height: 95px;
+  }
+}

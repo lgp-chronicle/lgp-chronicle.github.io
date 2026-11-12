@@ -2,7 +2,8 @@ import { readGuild } from "./guild";
 import { overtakeEvents } from "../features/observations";
 import { characterId, campaigns, rosterEntry } from "../config/characters";
 import type { CharacterConfig } from "../config/characters";
-import { database, settings } from "../db/client";
+import { database, settings, sqlite } from "../db/client";
+import { recordRoster } from "./membership";
 import { blizzard, fetchGuildRoster } from "../providers/blizzard";
 import { warcraftLogs } from "../providers/warcraft-logs";
 import { ProviderError } from "../providers/http";
@@ -16,7 +17,7 @@ export function stable(value: any): string {
       Object.keys(value)
         .filter(
           (k) =>
-            !["observedAt", "resourceTimes", "sourceModified"].includes(k) &&
+            !["observedAt", "resourceTimes", "sourceModified", "armoryVerified"].includes(k) &&
             value[k] !== undefined,
         )
         .sort()
@@ -88,6 +89,7 @@ export async function sync(force = false) {
       race?: string;
       faction?: string;
     })[] = [];
+    let rosterIds: Set<string> | undefined;
     try {
       if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
       const roster = await fetchGuildRoster(s);
@@ -99,6 +101,9 @@ export async function sync(force = false) {
         race: m.race,
         faction: m.faction,
       }));
+      const ids = new Set(characters.map(characterId));
+      if (ids.size !== characters.length) throw new ProviderError("invalid-roster");
+      rosterIds = ids;
       console.log(`Guild roster: ${characters.length} members discovered.`);
     } catch (e) {
       if (e instanceof ProviderError && e.code === "rate-limited") {
@@ -177,6 +182,8 @@ export async function sync(force = false) {
           if (p.errors.some((x) => x.includes("rate-limited")))
             blizzardBlocked = true;
         } catch (e) {
+          if (e instanceof ProviderError && ["http-404", "identity-mismatch"].includes(e.code))
+            profile = { ...profile, armoryVerified: false };
           if (e instanceof ProviderError && e.code === "rate-limited") {
             blizzardBlocked = true;
             cooldownSeconds = Math.max(cooldownSeconds, e.retryAfter);
@@ -304,6 +311,7 @@ export async function sync(force = false) {
     const at = new Date().toISOString(),
       day = at.slice(0, 10);
     const after = (await readGuild()).members;
+    if (rosterIds) recordRoster(sqlite, after, rosterIds, new Date(now).toISOString(), before.length === 0);
     const overtakes = overtakeEvents(before, after, at);
     if (overtakes.length)
       await db.batch(

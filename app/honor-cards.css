@@ -370,3 +370,9 @@
     --zoom: 1.47;
   }
 }
+.ninja-evidence { border: 1px solid #705433; background: #292119; padding: 9px 14px; color: #eed8ae; font: 14px/1.45 var(--interface); }
+.ninja-evidence summary { cursor: pointer; color: #ffdf96; }
+.ninja-evidence strong { display: block; margin-top: 10px; }
+.ninja-evidence ul { margin: 5px 0; padding-left: 1.2rem; }
+.ninja-evidence a { text-decoration: underline; text-underline-offset: 2px; }
+.ninja-evidence p { margin: 8px 0 0; color: #d8c7ae; font-size: 13px; }

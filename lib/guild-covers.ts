@@ -1,3 +1,11 @@
+import type { Member } from "../features/types.ts";
+import { fullName } from "../features/member-name.ts";
+import {
+  paintedWelcome,
+  welcomeParties,
+  type WelcomeParty,
+} from "../features/membership.ts";
+
 export const guildCovers = {
   pique: {
     title: "La última chapa",
@@ -77,6 +85,34 @@ export type Cover = keyof typeof guildCovers;
 export const coverMemberId = (name: string) =>
   "forever-eu-" + name.toLocaleLowerCase("es").replaceAll(" ", "-");
 export const coverIds = Object.keys(guildCovers) as Cover[];
+export type CoverScene = {
+  title: string;
+  cast: readonly string[];
+  action: string;
+  date?: string;
+  party?: WelcomeParty;
+};
+export function coverCatalogue(members: Member[]): Record<string, CoverScene> {
+  const scenes: Record<string, CoverScene> = { ...guildCovers };
+  for (const party of welcomeParties(members)) {
+    scenes[party.id] = {
+      title:
+        party.id === paintedWelcome
+          ? "Una insignia para Er Manu"
+          : "Bienvenida de " + party.members.map(fullName).join(" · "),
+      cast: party.members.map(fullName),
+      action:
+        party.id === paintedWelcome
+          ? "cuelga su insignia en la puerta de la fortaleza."
+          : party.members.length === 1
+            ? "se incorpora a La Ganga."
+            : "se incorporan a La Ganga.",
+      date: party.day,
+      party,
+    };
+  }
+  return scenes;
+}
 export function coversForMember(memberId: string) {
   return coverIds.filter((id) =>
     guildCovers[id].cast.some((name) => coverMemberId(name) === memberId),
@@ -86,22 +122,22 @@ const storageKey = "la-ganga:portadas:v1";
 
 export function drawCover(
   storage?: Pick<Storage, "getItem" | "setItem">,
-): Cover {
-  let seen: Cover[] = [];
+  ids: readonly string[] = coverIds,
+): string {
+  let seen: string[] = [];
   try {
     const saved: unknown = JSON.parse(storage?.getItem(storageKey) ?? "[]");
     if (Array.isArray(saved)) {
-      seen = [
-        ...new Set(saved.filter((id): id is Cover => coverIds.includes(id))),
-      ];
+      seen = [...new Set(saved.filter((id): id is string => ids.includes(id)))];
     }
   } catch {
     // A blocked or stale browser store can still show a random cover.
   }
   const last = seen.at(-1);
-  if (seen.length === coverIds.length) seen = [];
-  const remaining = coverIds.filter((id) => !seen.includes(id) && id !== last);
-  const next = remaining[Math.floor(Math.random() * remaining.length)];
+  if (seen.length === ids.length) seen = [];
+  const remaining = ids.filter((id) => !seen.includes(id) && id !== last);
+  const next =
+    remaining[Math.floor(Math.random() * remaining.length)] ?? ids[0] ?? "mapa";
   try {
     storage?.setItem(storageKey, JSON.stringify([...seen, next]));
   } catch {
@@ -110,15 +146,15 @@ export function drawCover(
   return next;
 }
 
-export function browserCover(): Cover {
+export function browserCover(ids: string[] = coverIds): string {
   try {
     const requested = new URLSearchParams(window.location.search).get(
       "portada",
     );
-    const featured = coverIds.find((id) => id === requested);
+    const featured = ids.find((id) => id === requested);
     if (featured) return featured;
-    return drawCover(window.sessionStorage);
+    return drawCover(window.sessionStorage, ids);
   } catch {
-    return drawCover();
+    return drawCover(undefined, ids);
   }
 }

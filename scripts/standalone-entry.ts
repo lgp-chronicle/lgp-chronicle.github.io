@@ -3,6 +3,7 @@ import {sqlite} from '../db/client';
 import {sync} from '../services/sync';
 import {readGuild} from '../services/guild';
 import {archiveChronicles} from '../services/illustrated-chronicles';
+import {attachMembership} from '../services/membership';
 import {recordTrophies,trophyNews} from '../services/permanent-trophies';
 const mode=process.argv[2]||'export';
 let failed=false;
@@ -15,6 +16,7 @@ if(mode==='sync'){
 mkdirSync('public/data/editions',{recursive:true});
 const save=(file:string,value:unknown)=>{writeFileSync(file+'.tmp',JSON.stringify(value));renameSync(file+'.tmp',file)};
 const data=await readGuild();if(!data.available)throw Error('Stored guild data unavailable');
+attachMembership(sqlite,data.members);
 data.chronicles=archiveChronicles(sqlite,data.members);
 data.trophyRoom=recordTrophies(sqlite,data.members);
 const trophies=trophyNews(data.trophyRoom);

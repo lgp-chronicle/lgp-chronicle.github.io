@@ -86,9 +86,11 @@ export async function fetchGuildRoster(
     headers: { Authorization: `Bearer ${auth}` },
   });
   const j = (await r.json()) as Json;
-  if (!Array.isArray(j.members)) throw new ProviderError("invalid-roster");
+  if (!Array.isArray(j.members) || !j.members.length ||
+      j.members.some((m: any) => typeof m?.character?.name !== "string" || !m.character.name.trim()) ||
+      (numeric(j.member_count) && j.member_count !== j.members.length))
+    throw new ProviderError("invalid-roster");
   return j.members
-    .filter((m: any) => m.character?.name)
     .map((m: any) => {
       const classId = m.character.playable_class?.id;
       const raceId = m.character.playable_race?.id;
@@ -142,11 +144,13 @@ export async function blizzard(
   const { json: p, modified } = await read("");
   if (
     typeof p.name !== "string" ||
-    p.name.toLowerCase() !== c.name.toLowerCase()
+    p.name.toLowerCase() !== c.name.toLowerCase() ||
+    (typeof p.slug === "string" && p.slug.normalize("NFC").toLowerCase() !== characterSlug.normalize("NFC").toLowerCase())
   )
     throw new ProviderError("identity-mismatch");
   const data: Profile = {
     ...old,
+    armoryVerified: true,
     observedAt: now,
     resourceTimes: { ...old.resourceTimes, summary: now },
   };

@@ -6,7 +6,8 @@ import {
   sectionFromPath,
 } from "@/lib/guild-navigation";
 import { Play } from "lucide-react";
-import { coverMemberId, guildCovers } from "@/lib/guild-covers";
+import { coverMemberId, guildCovers, type CoverScene } from "@/lib/guild-covers";
+import { WelcomeArt } from "../features/welcome-art";
 import { Fragment } from "react";
 import { guildSectionIcons } from "./section-icons";
 import { GuildIcon } from "./guild-icon";
@@ -14,14 +15,15 @@ export function Shell({
   children,
   path = "/",
   cover = "mapa",
+  scene = guildCovers.mapa,
   onReplay,
 }: {
   children: React.ReactNode;
   path?: string;
-  cover?: keyof typeof guildCovers;
+  cover?: string;
+  scene?: CoverScene;
   onReplay?: () => void;
 }) {
-  const scene = guildCovers[cover];
   const { cast, action } = scene;
   const activeGroup = groupForSection(
     path.startsWith("/character/") ? "overview" : sectionFromPath(path),
@@ -29,6 +31,7 @@ export function Shell({
   return (
     <>
       <header className="guildhall" data-home={path === "/"} data-cover={cover}>
+        {scene.party && <div className="guildhall-welcome"><WelcomeArt party={scene.party} large /></div>}
         <div className="guildhall-inner">
           <a
             className="guildhall-brand"
@@ -45,7 +48,7 @@ export function Shell({
           </a>
         </div>
         <p className="guildhall-caption">
-          {"date" in scene && (
+          {scene.date && (
             <time dateTime={scene.date}>
               {scene.date.split("-").reverse().join("/")}
             </time>
@@ -55,7 +58,7 @@ export function Shell({
               {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
               <a
                 href={siteHref(
-                  "/character/" + encodeURIComponent(coverMemberId(name)),
+                  "/character/" + encodeURIComponent(scene.party?.members[i]?.id ?? coverMemberId(name)),
                 )}
               >
                 {name}

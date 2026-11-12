@@ -39,6 +39,7 @@ export type Talent = {
 };
 export type Profession = { name: string; skill?: number; max?: number };
 export type Profile = {
+  armoryVerified?: boolean;
   surname?: string;
   characterRender?: string;
   level?: number;
@@ -98,6 +99,8 @@ export type Logs = {
 };
 export type Snapshot = { at: string; data: Profile };
 export type Member = {
+  welcomes?: { id: string; day: string; size: number; position: number; joinedAt: string }[];
+  membership?: { joinedAt?: string; leftAt?: string; pendingAbsence?: boolean };
   id: string;
   name: string;
   realm: string;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Shell } from "../components/shell";
 const Dashboard = lazy(() =>
@@ -11,7 +11,7 @@ const CharacterDetail = lazy(() =>
 );
 import { apiUrl, siteHref } from "../lib/public-settings";
 import { sectionFromPath } from "../lib/guild-navigation";
-import { browserCover } from "../lib/guild-covers";
+import { browserCover, coverCatalogue } from "../lib/guild-covers";
 import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
 import "../app/globals.css";
@@ -22,8 +22,9 @@ import "../app/character-records.css";
 import "../app/guild-entrance.css";
 import "../app/guildhall.css";
 import "../app/cover-gallery.css";
+import "../app/membership.css";
 function App() {
-  const [cover] = useState(browserCover);
+  const selection = useRef<string | undefined>(undefined);
   const [entrance, setEntrance] = useState(initialEntrance);
   const closeEntrance = useCallback(() => setEntrance(null), []);
   const [path, setPath] = useState(location.hash.slice(1) || "/");
@@ -99,6 +100,9 @@ function App() {
       .then((raw) => {
         const d = raw as GuildData;
         if (!Array.isArray(d?.members)) throw Error();
+        const covers = coverCatalogue(d.members);
+        if (!selection.current || !covers[selection.current])
+          selection.current = browserCover(Object.keys(covers));
         setData(d);
       })
       .catch(() => {
@@ -128,7 +132,8 @@ function App() {
         fallback={<main className="page-width panel">Abriendo el portal…</main>}
       >
         <Shell
-          cover={cover}
+          cover={selection.current}
+          scene={selection.current && data ? coverCatalogue(data.members)[selection.current] : undefined}
           path={routePath}
           onReplay={
             data?.members.length ? () => setEntrance("replay") : undefined

@@ -1,6 +1,7 @@
 import { measurements } from "./observations.ts";
 import { finishLevel, finishTitle } from "./race-course.ts";
 import { raidActivity } from "./raid-activity.ts";
+import { ninjaLoot } from "./ninja-loot.ts";
 import {
   numeric,
   type Member,
@@ -264,6 +265,19 @@ export function awards(members: Member[], now = Date.now()): Award[] {
     (m) => raidActivity(m.logs, now)?.minutes,
   );
   const dated = members.filter((m) => m.addedAt);
+  const ninjaCandidates = members.flatMap(m => {
+    const scored = ninjaLoot(m);
+    return scored ? [{ m, points: scored.points }] : [];
+  });
+  const ninjaScore = Math.max(0, ...ninjaCandidates.map(x => x.points));
+  if (ninjaCandidates.length >= 2 && ninjaScore > 0) {
+    const winners = ninjaCandidates.filter(x => x.points === ninjaScore);
+    a.push({
+      id: "ninja-loot", title: "El looter más ninja", value: ninjaScore,
+      rule: "Más puntos de atributos ajenos a su especialización en el equipo puesto.",
+      memberIds: winners.map(x => x.m.id), names: winners.map(x => x.m.name),
+    });
+  }
   if (dated.length > 1) {
     const latest = dated.reduce((a, b) => (a.addedAt! > b.addedAt! ? a : b));
     const ties = dated.filter(

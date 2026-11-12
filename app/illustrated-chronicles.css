@@ -5,7 +5,42 @@
   font-display: swap;
 }
 .chronicle-feature {
-  margin-bottom: clamp(28px, 4vw, 54px);
+  margin-block: 20px;
+}
+.chronicle-brief {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-block: 1px solid #755b36;
+  background: #272119;
+  text-decoration: none;
+}
+.chronicle-brief h2 {
+  margin: 0;
+  font: 600 14px/1.25 var(--interface);
+  color: #d8bf92;
+}
+.chronicle-brief p {
+  margin: 3px 0 0;
+  font: 700 clamp(16px, 1.6vw, 21px)/1.22 Almendra, Georgia, serif;
+  color: #ffe5ab;
+}
+.chronicle-brief time {font: 13px/1.3 var(--reading); color: #d8bf92;}
+.chronicle-brief span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #f6d488;
+  font: 600 13px/1.3 var(--interface);
+}
+.chronicle-brief:hover span {text-decoration: underline;}
+.chronicle-brief:focus-visible {outline: 2px solid #ffdb82; outline-offset: 2px;}
+@media (max-width: 520px) {
+  .chronicle-brief {grid-template-columns: 28px minmax(0, 1fr); column-gap: 9px; row-gap: 5px;}
+  .chronicle-brief img {width: 28px; height: 28px;}
+  .chronicle-brief span {grid-column: 2;}
 }
 .chronicle-card {
   position: relative;

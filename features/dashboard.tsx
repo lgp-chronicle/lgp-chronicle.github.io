@@ -16,6 +16,7 @@ import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
 import { ChronicleArchive, ChronicleFeature } from "./illustrated-chronicles";
+import { MembershipNews } from "./membership-news";
 import { TrophyRoom } from "./trophy-room";
 import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
@@ -108,7 +109,6 @@ export function Dashboard({
     <main className="page-width guild-dashboard">
       {!section && (
         <>
-          <ChronicleFeature story={data.chronicles?.[0]} />
           <div className="section-heading honors-heading">
             <div>
               <h2 className="section-title">Cuadro de honor</h2>
@@ -157,6 +157,8 @@ export function Dashboard({
               />
             ))}
           </div>
+          <ChronicleFeature story={data.chronicles?.[0]} />
+          <MembershipNews members={m} asOf={data.generatedAt} />
           <ArmoryRumors members={m} />
         </>
       )}

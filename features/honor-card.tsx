@@ -8,9 +8,12 @@ import { FittedName, fullName, memberHref } from "./member-portrait";
 import { display, type Award } from "./analytics";
 import { finishTitle } from "./race-course";
 import { color, type Member } from "./types";
+import { ninjaLoot } from "./ninja-loot";
+import { wowheadUrl } from "./armory-data";
 
 type Scene = "corona" | "ambar" | "bota" | "espadas";
 const awardIcons: Record<string, GuildIconName> = {
+  "ninja-loot": "coin",
   [finishTitle.id]: "tabard",
   stamina: "stamina",
   intellect: "intellect",
@@ -31,6 +34,7 @@ const awardIcons: Record<string, GuildIconName> = {
   "boss-destroyer": "helmet",
 };
 const scenes: Record<string, Scene> = {
+  "ninja-loot": "ambar",
   stamina: "espadas",
   strength: "espadas",
   pvp: "espadas",
@@ -168,15 +172,55 @@ export function HallAward({
   const winners = members.filter((member) =>
     award.memberIds.includes(member.id),
   );
-  return (
+  const card = (
     <HonorCard
       title={award.title}
       value={award.value}
-      unit={award.id === finishTitle.id ? "nivel" : undefined}
+      unit={
+        award.id === finishTitle.id
+          ? "nivel"
+          : award.id === "ninja-loot"
+            ? "puntos fuera de spec"
+            : undefined
+      }
       note={award.rule}
       winners={winners}
       scene={scenes[award.id] ?? "corona"}
       icon={awardIcons[award.id]}
     />
+  );
+  if (award.id !== "ninja-loot") return card;
+  return (
+    <div className="ninja-award">
+      {card}
+      <details className="ninja-evidence">
+        <summary>Inspeccionar el botín</summary>
+        {winners.map((m) => (
+          <div key={m.id}>
+            <strong style={{ color: color(m) }}>
+              {fullName(m)} · {m.data.spec}
+            </strong>
+            <ul>
+              {ninjaLoot(m)?.items.map(({ item, bonuses }, i) => (
+                <li key={i}>
+                  <a
+                    href={wowheadUrl("item", item.id, item.name)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {item.name}
+                  </a>{" "}
+                  · {bonuses.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <p>
+          Un punto por cada +1 de un bonus fijo fuera de su rama. El aguante, la
+          armadura y los efectos temporales quedan fuera del recuento.
+        </p>
+      </details>
+    </div>
   );
 }
