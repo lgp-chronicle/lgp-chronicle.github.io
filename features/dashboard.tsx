@@ -17,7 +17,7 @@ import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
-import { ChronicleArchive, ChronicleFeature, DiaryShortcut, diaryHref } from "./illustrated-chronicles";
+import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
@@ -33,7 +33,7 @@ function FerrogardDiary() {
   return (
     <section className="ferrogard-diary" aria-labelledby="diary-title">
       <a
-        href={diaryHref}
+        href="https://discord.com/channels/1551288910569808112/1569452969064140830"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -172,10 +172,7 @@ export function Dashboard({
               <LatestHeadlines events={data.events} members={m} />
               <ArmoryRumors members={m} activityLink={tavernLink} />
             </div>
-            <div className="home-pair">
-              <ChronicleFeature story={data.chronicles?.[0]} />
-              <DiaryShortcut />
-            </div>
+            <FerrogardDiary />
           </div>
           <RecentTrophies room={data.trophyRoom} members={m} />
           <MembershipNews members={m} asOf={data.generatedAt} />
