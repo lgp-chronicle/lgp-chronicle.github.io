@@ -249,10 +249,35 @@
 .home-journal .rumor-body h3 { font-size: clamp(17px,1.5vw,21px); }
 .home-journal .rumor-icon { width: 42px; height: 42px; }
 .home-journal .rumor-answers { margin-top: 5px; }
-.home-journal .ferrogard-diary > a { grid-template-columns: minmax(0,1fr) clamp(105px,42%,300px); }
-.home-journal .ferrogard-diary > a > div { padding: 9px 14px; }
-.home-journal .ferrogard-diary h2 { font-size: clamp(18px,1.6vw,23px); margin-bottom: 2px; }
-.home-journal .ferrogard-diary img { grid-row: auto; height: 76px; object-fit: cover; object-position: 74% center; mask-image: linear-gradient(90deg,transparent,#000 16%); }
+.home-journal .ferrogard-diary > a {
+  --diary-height: clamp(120px, 14vw, 178px);
+  grid-template-columns: minmax(0, 1fr);
+  isolation: isolate;
+}
+.home-journal .ferrogard-diary > a > div {
+  grid-area: 1 / 1;
+  z-index: 1;
+  max-width: 54%;
+  padding: 14px clamp(14px, 3vw, 36px);
+}
+.home-journal .ferrogard-diary h2 {
+  font-size: clamp(22px, 2.4vw, 32px);
+  margin-bottom: 6px;
+}
+.home-journal .ferrogard-diary img {
+  grid-area: 1 / 1;
+  justify-self: end;
+  width: min(100%, calc(3 * var(--diary-height)));
+  height: var(--diary-height);
+  object-fit: cover;
+  object-position: 72% center;
+  mask-image: linear-gradient(90deg, transparent, #000 22%);
+}
+@media (max-width: 600px) {
+  .home-journal .ferrogard-diary img {
+    mask-image: linear-gradient(90deg, transparent, #0003 33%, #000 62%);
+  }
+}
 .guild-dashboard .membership-news { margin: 8px 0 14px; gap: 12px; }
 .guild-dashboard .membership-news h2 { font-size: 21px; }
 .guild-dashboard .membership-news header { margin-bottom: 6px; padding-bottom: 4px; }
@@ -263,7 +288,6 @@
 @media (max-width: 720px) {
   .home-journal { gap: 7px; }
   .home-pair { grid-template-columns: minmax(0,1fr); }
-  .home-journal .ferrogard-diary img { height: 67px; }
   .home-honors .strength-directory summary { font-size: 13px; }
   .home-honors .strength-edition { font-size: 12px; }
   .membership-archive li { grid-template-columns: auto minmax(0,1fr); }
