@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { guildCovers, coverMemberId } from "@/lib/guild-covers";
 import { archivePath } from "@/lib/guild-navigation";
 import { assetUrl, siteHref } from "@/lib/public-settings";
@@ -8,6 +8,7 @@ import type { IllustratedChronicle } from "./types";
 import "../app/illustrated-chronicles.css";
 
 const archiveHref = siteHref(archivePath("cronicas"));
+export const diaryHref = "https://discord.com/channels/1551288910569808112/1569452969064140830";
 const dates = new Intl.DateTimeFormat("es", {
   dateStyle: "long",
   timeZone: "UTC",
@@ -153,31 +154,27 @@ function ChronicleCard({
   );
 }
 
-export function ChronicleFeature({ story }: { story?: IllustratedChronicle }) {
-  if (!story) return null;
+function ReadingLink({ diary, title, action }: { diary?: boolean; title: string; action: string }) {
+  const heading = diary ? "diary-title" : "chronicle-brief-title";
   return (
-    <div className="chronicle-feature">
-      <a className="chronicle-brief" href={archiveHref}>
-        <img
-          src={assetUrl("/guild/sello-la-ganga.png")}
-          width="36"
-          height="36"
-          alt=""
-        />
+    <section className={"reading-shortcut " + (diary ? "diary-shortcut" : "chronicle-feature")} aria-labelledby={heading}>
+      <a href={diary ? diaryHref : archiveHref} target={diary ? "_blank" : undefined} rel={diary ? "noopener noreferrer" : undefined}>
+        <img src={assetUrl(diary ? "/guild/galeria/diario.webp" : "/guild/sello-la-ganga.png")} width="72" height="60" alt="" loading="lazy" />
         <div>
-          <small>Archivo de crónicas ilustradas ·{" "}
-            <time dateTime={story.day}>
-              {shortDate.format(stamp(story.day))}
-            </time>
-          </small>
-          <strong>{story.title}</strong>
+          <h2 id={heading}>{title}</h2>
+          <span>{action}</span>
         </div>
-        <span>
-          <ArrowRight size={17} aria-hidden="true" />
-        </span>
+        {diary ? <ExternalLink size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
       </a>
-    </div>
+    </section>
   );
+}
+export function DiaryShortcut() {
+  return <ReadingLink diary title="El diario de Ferrogard" action="Leer en Discord" />;
+}
+export function ChronicleFeature({ story }: { story?: IllustratedChronicle }) {
+  return <ReadingLink title={story?.title ?? "Crónicas ilustradas"}
+    action={"Ver historial de crónicas" + (story ? " · " + shortDate.format(stamp(story.day)) : "")} />;
 }
 
 export function ChronicleArchive({

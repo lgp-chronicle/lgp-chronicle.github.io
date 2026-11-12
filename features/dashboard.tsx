@@ -17,9 +17,9 @@ import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery } from "./cover-gallery";
-import { ChronicleArchive } from "./illustrated-chronicles";
+import { ChronicleArchive, ChronicleFeature, DiaryShortcut, diaryHref } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
-import { TrophyRoom } from "./trophy-room";
+import { RecentTrophies, TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { HomeMemberSearch, Roster } from "./roster";
@@ -33,7 +33,7 @@ function FerrogardDiary() {
   return (
     <section className="ferrogard-diary" aria-labelledby="diary-title">
       <a
-        href="https://discord.com/channels/1551288910569808112/1569452969064140830"
+        href={diaryHref}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -168,14 +168,16 @@ export function Dashboard({
           )}
           <div className="home-honors"><GuildStrengths data={data} /></div>
           <div className="home-journal">
-            <div>
-              <LatestHeadlines events={data.events} members={m} chronicle={data.chronicles?.[0]} />
-            </div>
-            <div>
+            <div className="home-pair">
+              <LatestHeadlines events={data.events} members={m} />
               <ArmoryRumors members={m} activityLink={tavernLink} />
-              <FerrogardDiary />
+            </div>
+            <div className="home-pair">
+              <ChronicleFeature story={data.chronicles?.[0]} />
+              <DiaryShortcut />
             </div>
           </div>
+          <RecentTrophies room={data.trophyRoom} members={m} />
           <MembershipNews members={m} asOf={data.generatedAt} />
         </>
       )}

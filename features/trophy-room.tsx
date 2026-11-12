@@ -20,6 +20,40 @@ const groupIcons = [
   "blacksmithing",
   "shield",
 ] as const;
+
+export function RecentTrophies({ room = emptyRoom, members }: { room?: Room; members: Member[] }) {
+  const latest = trophyCatalog(room.factions)
+    .flatMap(trophy => {
+      const win = room.unlocks[trophy.id];
+      return win?.winners.length ? [{trophy, win}] : [];
+    })
+    .sort((a, b) => b.win.at.localeCompare(a.win.at))
+    .slice(0, 3);
+  const roster = new Set(members.map(m => m.id));
+  return <section className="recent-trophies" aria-labelledby="recent-trophy-title">
+    <header>
+      <h2 id="recent-trophy-title">Últimos logros</h2>
+      <a href={siteHref(archivePath("awards"))}>Sala de trofeos →</a>
+    </header>
+    {latest.length ? <ul>{latest.map(({trophy, win}) => {
+      const href = siteHref(archivePath("awards") + "?trofeo=" + encodeURIComponent(trophy.id));
+      return <li key={trophy.id}>
+        <GuildIcon name={trophy.icon} size={28} />
+        <div>
+          <a className="recent-trophy-title" href={href}>{trophy.title}</a>
+          <div className="recent-winners">{win.winners.slice(0, 2).map(w =>
+            roster.has(w.id)
+              ? <a href={siteHref("/character/" + encodeURIComponent(w.id))} style={{color:w.tint}} key={w.id}>{w.name}</a>
+              : <span style={{color:w.tint}} key={w.id}>{w.name}</span>
+          )}
+          {win.winners.length > 2 && <a href={href}>y {win.winners.length - 2} más</a>}
+          </div>
+          <time dateTime={win.at}>{date.format(new Date(win.at))}</time>
+        </div>
+      </li>;
+    })}</ul> : <p>Todavía no se ha registrado ningún logro.</p>}
+  </section>;
+}
 export function TrophyRoom({
   room = emptyRoom,
   members,
