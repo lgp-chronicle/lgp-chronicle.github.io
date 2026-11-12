@@ -112,7 +112,7 @@ test("freshness uses the source modification date or a measured change, never a 
   assert.equal(fresh(revoked), false);
 });
 
-test("expiring mid-edition frees a place, outdated peers drop out and returning members qualify again", () => {
+test("expiring mid-edition frees a featured place and the guild ranking retains each current member's last known value", () => {
   const db = new DatabaseSync(":memory:");
   try {
     const retiring = member("old", {
@@ -124,7 +124,7 @@ test("expiring mid-edition frees a place, outdated peers drop out and returning 
     );
     const roster = [...players, retiring];
     assert.equal(guildSpotlight(db, roster, day(12)).members.length, 3);
-    assert.match(retiring.strength.note, /entre 3 personajes/);
+    assert.match(retiring.strength.note, /1.º en agilidad entre 3 miembros/);
     const later = new Date(Date.parse(day(12)) + 1).toISOString();
     const recruit = member("c", {
       sourceModified: day(12),
@@ -136,7 +136,7 @@ test("expiring mid-edition frees a place, outdated peers drop out and returning 
       new Set(["a", "b", "c"]),
     );
     assert.equal(retiring.strength, undefined);
-    assert.match(players[1].strength.note, /Primer puesto entre 3 personajes/);
+    assert.match(players[1].strength.note, /2.º en agilidad entre 4 miembros/);
     assert.deepEqual(guildSpotlight(db, roster, day(20)).members, []);
     retiring.data.sourceModified = day(20);
     assert.deepEqual(guildSpotlight(db, roster, day(20)).members, ["old"]);
@@ -190,7 +190,7 @@ test("every eligible member gets a turn within nine editions for a guild of 33, 
   }
 });
 
-test("peers share a level bracket or the same trade, with real denominators, ties and sparse sheets", () => {
+test("guild ranks use all levels with recorded values, tied scores and sparse sheets", () => {
   const field = [1, 2, 10, 10, 2, 1].map((n, i) =>
     member(String(i), { statistics: { Agilidad: n } }),
   );
@@ -210,18 +210,19 @@ test("peers share a level bracket or the same trade, with real denominators, tie
     Date.parse(day(1)),
   );
   assert.equal(field[2].strength.value, 10);
-  assert.equal(field[2].strength.shortNote, "1.º de 6 · Nivel 10–19 · Empate");
+  assert.equal(field[2].strength.shortNote, "2.º en agilidad (empate)");
   assert.match(
     field[2].strength.note,
-    /Primer puesto compartido entre 6 personajes de nivel 10–19/,
+    /2.º en agilidad \(empate\) entre 7 miembros/,
   );
   assert.equal(traders[2].strength.value, 50);
-  assert.equal(traders[2].strength.shortNote, "1.º de 3 · Mismo oficio");
+  assert.equal(traders[2].strength.shortNote, "1.º en cocina");
   assert.match(
     traders[2].strength.note,
-    /Primer puesto entre 3 personajes del oficio/,
+    /1.º en cocina entre 3 miembros/,
   );
-  assert.doesNotMatch(veteran.strength.note, /puesto/i);
+  assert.equal(veteran.strength.shortNote, "1.º en agilidad");
+  assert.equal(field[0].strength.shortNote, "6.º en agilidad (empate)");
   assert.equal(absent.strength, undefined);
   assert.equal(empty.strength.note, "Pícaro");
   const revoked = member("r", {

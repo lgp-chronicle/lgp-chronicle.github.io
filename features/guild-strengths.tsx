@@ -59,7 +59,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
             }).format(new Date(edition.day))}
           </time>
           <span>
-            Méritos del día por tramo de nivel, oficio o progreso personal.
+            El puesto de cada personaje dentro de La Ganga.
           </span>
         </p>
       )}
@@ -79,7 +79,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
         <summary>
           Ver los méritos de {members.length === 1 ? "1 personaje" : `los ${members.length} personajes`}
         </summary>
-        <p>La portada rota entre quienes han registrado cambios en los últimos {spotlightWindowDays} días. Tienen prioridad quienes llevan más tiempo sin aparecer.</p>
+        <p>Los puestos comparan a los miembros actuales con datos de esa estadística. La portada rota entre quienes han registrado cambios en los últimos {spotlightWindowDays} días.</p>
         <ul>
           {members
             .sort((a, b) => fullName(a).localeCompare(fullName(b), "es"))

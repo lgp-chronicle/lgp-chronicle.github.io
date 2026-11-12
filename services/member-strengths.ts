@@ -10,7 +10,7 @@ import {
 type Reading = MemberStrength & {
   value: number;
   pool: string;
-  scope: string;
+  metric: string;
   priority: number;
 };
 const attributes = [
@@ -31,7 +31,7 @@ function readings(m: Member): Reading[] {
     const name = known?.[1] ?? trade.name;
     rows.push({
       pool: "trade/" + name,
-      scope: "del oficio",
+      metric: name.toLocaleLowerCase("es"),
       title: name,
       scene: "ambar",
       icon: known?.[2] ?? "blacksmithing",
@@ -44,15 +44,12 @@ function readings(m: Member): Reading[] {
       priority: 4,
     });
   }
-  if (!numeric(p.level)) return rows;
-  const low = Math.floor(p.level / 10) * 10;
-  const scope = low === 60 ? "de nivel 60" : `de nivel ${low}–${low + 9}`;
   for (const [unit, title, icon] of attributes) {
     const value = p.statistics?.[unit];
     if (numeric(value) && value >= 0)
       rows.push({
-        pool: low + "/" + unit,
-        scope,
+        pool: "stat/" + unit,
+        metric: unit.toLocaleLowerCase("es"),
         title,
         value,
         unit: "de " + unit.toLocaleLowerCase("es"),
@@ -67,8 +64,8 @@ function readings(m: Member): Reading[] {
   ).size;
   if (Array.isArray(p.achievements))
     rows.push({
-      pool: low + "/exploration",
-      scope,
+      pool: "exploration",
+      metric: "exploración",
       title: "Cuaderno de viaje",
       value: explored,
       unit: explored === 1 ? "logro de exploración" : "logros de exploración",
@@ -79,8 +76,8 @@ function readings(m: Member): Reading[] {
     });
   if (numeric(p.honorableKills) && p.honorableKills >= 0)
     rows.push({
-      pool: low + "/honor",
-      scope,
+      pool: "honor",
+      metric: "muertes con honor",
       title: "Guardia de frontera",
       value: p.honorableKills,
       unit: p.honorableKills === 1 ? "muerte con honor" : "muertes con honor",
@@ -188,15 +185,14 @@ function personal(m: Member, rows: Reading[]): MemberStrength {
 }
 
 export function describeMembers(members: Member[], now: number) {
-  const roster = members.filter(
+  const current = members.filter(
     (m) =>
       m.inRoster !== false &&
       !m.membership?.leftAt &&
-      !m.membership?.pendingAbsence &&
-      hasRecentUpdate(m, now),
+      !m.membership?.pendingAbsence,
   );
   for (const m of members) delete m.strength;
-  const sheets = roster.map((m) => {
+  const sheets = current.map((m) => {
     const distinct = new Map<string, Reading>();
     for (const row of readings(m))
       if (row.value > (distinct.get(row.pool)?.value ?? -1))
@@ -209,28 +205,25 @@ export function describeMembers(members: Member[], now: number) {
       if (!pools.has(row.pool)) pools.set(row.pool, []);
       pools.get(row.pool)!.push(row.value);
     }
+  const roster: Member[] = [];
   for (const { m, rows } of sheets) {
+    if (!hasRecentUpdate(m, now)) continue;
+    roster.push(m);
     const ranked = rows
       .flatMap((row) => {
         const peers = pools.get(row.pool)!;
-        if (peers.length < 3 || row.value <= 0) return [];
+        if (peers.length < 2 || row.value <= 0) return [];
         const higher = peers.filter((v) => v > row.value).length;
         const tied = peers.filter((v) => v === row.value).length;
         const beaten = (peers.length - higher - tied) / (peers.length - 1);
-        if (beaten < 2 / 3) return [];
-        const position =
-          higher === 0
-            ? tied > 1
-              ? "Primer puesto compartido"
-              : "Primer puesto"
-            : `Puesto ${higher + 1}${tied > 1 ? " compartido" : ""}`;
+        const position = `${higher + 1}.º en ${row.metric}${tied > 1 ? " (empate)" : ""}`;
         return [
           {
             row,
             beaten,
             count: peers.length,
-            shortNote: `${higher + 1}.º de ${peers.length} · ${row.scope === "del oficio" ? "Mismo oficio" : row.scope.replace("de nivel ", "Nivel ")}${tied > 1 ? " · Empate" : ""}`,
-            note: `${position} entre ${peers.length} personajes ${row.scope} con datos.`,
+            shortNote: position,
+            note: `${position} entre ${peers.length} miembros con datos.`,
           },
         ];
       })
