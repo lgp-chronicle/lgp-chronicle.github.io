@@ -109,6 +109,7 @@ export function Shell({
           />{" "}
           La Ganga <span>· WoW Forever</span>
         </a>
+        <a href={siteHref("/fortaleza")}>Visitar la fortaleza</a>
         {onReplay && (
           <button type="button" className="entrance-replay" onClick={onReplay}>
             <Play size={15} aria-hidden="true" /> Ver la presentación

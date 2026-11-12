@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Shell } from "../components/shell";
+const Fortress = lazy(() => import("../features/fortress"));
 const Dashboard = lazy(() =>
   import("../features/dashboard").then((m) => ({ default: m.Dashboard })),
 );
@@ -96,6 +97,7 @@ function App() {
     };
   }, []);
   useEffect(() => {
+    if (dataRoute === "/fortaleza") return;
     const abort = new AbortController();
     setError(false);
     fetch(apiUrl("/api/guild"), { signal: abort.signal })
@@ -117,8 +119,8 @@ function App() {
     return () => abort.abort();
   }, [dataRoute, attempt]);
   useEffect(() => {
-    document.title = "La Ganga · Crónicas de la hermandad";
-  }, [path]);
+    document.title = routePath === "/fortaleza" ? "La fortaleza · La Ganga" : "La Ganga · Crónicas de la hermandad";
+  }, [routePath]);
 
   let id = "";
   const charPrefix = "/character/";
@@ -131,6 +133,9 @@ function App() {
   }
   const member = data?.members.find((m) => m.id === id);
   const section = sectionFromPath(path);
+  if (routePath === "/fortaleza") {
+    return <Suspense fallback={<main className="page-width panel">Abriendo la fortaleza…</main>}><Fortress /></Suspense>;
+  }
 
   return (
     <>

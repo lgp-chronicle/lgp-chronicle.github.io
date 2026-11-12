@@ -1,0 +1,66 @@
+.fortress {
+  min-height: 100svh;
+  padding: 0 clamp(8px, 2.8vw, 56px) 32px;
+  background: radial-gradient(ellipse at 54% 8%, #382d20, #15120f 68%);
+  color: #fbe4ac;
+}
+.fortress-bar, .fortress-scene { width: min(100%, 1760px); margin-inline: auto; }
+.fortress-bar {
+  min-height: 72px; display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 12px; align-items: center;
+}
+.fortress-bar h1 { font-size: clamp(20px, 2.3vw, 38px); line-height: 1.15; margin: 0; text-align: center; }
+.fortress-bar a, .fortress-bar button {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
+  width: fit-content; color: #f9dda4; background: none; border: 0; cursor: pointer;
+}
+.fortress-bar button { justify-self: end; }
+.fortress-scene { position: relative; isolation: isolate; border: 1px solid #977344; box-shadow: 0 6px 30px #08060490; }
+.fortress-painting { width: 100%; height: auto; display: block; }
+.fortress-scene video { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.fortress-scene video:not([src]) { visibility: hidden; }
+.fortress-doors { position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; }
+.fortress-doors rect { fill: transparent; pointer-events: all; cursor: pointer; }
+.fortress-doors a:hover rect { fill: #ffdc8c0d; }
+.fortress-place {
+  position: absolute; transform: translate(-50%, -18%); color: #fff0c6;
+  display: grid; grid-template-columns: auto auto; align-items: center; justify-content: center;
+  justify-items: center; gap: 0 5px; padding: 35px 6px 6px;
+  text-decoration: none; min-width: 9%; min-height: 70px;
+  filter: drop-shadow(0 2px 3px #291605);
+}
+.fortress-name {
+  grid-column: 1 / -1; grid-row: 1; white-space: nowrap;
+  padding: 4px 11px; font-size: clamp(12px, 1.18vw, 19px); line-height: 1.2;
+  background: linear-gradient(#3f3227f5, #211810f5);
+  border: 1px solid #cbab69; box-shadow: inset 0 0 0 2px #302115; color: #ffe8ad;
+}
+.fortress-pin { display: none; }
+.fortress-destination {
+  grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px;
+  background: #211810f5; white-space: nowrap; color: #fff0ce; font-size: 13px;
+  opacity: 0; pointer-events: none;
+}
+.fortress-place:is(:hover,:focus-visible) { z-index: 1; }
+.fortress-place:is(:hover,:focus-visible) .fortress-name { background: #5c391b; border-color: #ffe5a1; }
+.fortress-place:is(:hover,:focus-visible) .fortress-destination { opacity: 1; }
+.fortress :is(a,button):focus-visible { outline: 2px solid #ffe79d; outline-offset: 3px; }
+@media (max-width: 750px) {
+  .fortress { padding: 0 8px 18px; }
+  .fortress-bar { min-height: 56px; gap: 4px; }
+  .fortress-bar button span { display: none; }
+  .fortress-scene video { height: auto; aspect-ratio: 16/9; }
+  .fortress-scene nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; background: #756042; }
+  .fortress-place {
+    position: static; transform: none; filter: none; min-height: 58px; padding: 8px 10px;
+    display: grid; justify-content: start; justify-items: start; align-content: center;
+    background: #2a211a;
+  }
+  .fortress-name { grid-column: 2; grid-row: 1; padding: 0; font-size: clamp(13px, 3.7vw, 19px); }
+  .fortress-place .fortress-name, .fortress-place:is(:hover,:focus-visible) .fortress-name { border: none; background: none; box-shadow: none; }
+  .fortress-pin { display: flex; grid-row: 1; color: #c99b54; }
+  .fortress-destination { grid-column: 2; grid-row: 2; opacity: 1; background: none; padding: 0; white-space: normal; font-size: 12px; line-height: 1.15; }
+  .fortress-destination svg { display: none; }
+  .fortress-place:is(:hover,:focus-visible) { background: #47351f; }
+  .fortress-bar h1 { font-size: clamp(17px, 4.8vw, 26px); }
+}
