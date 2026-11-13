@@ -3,6 +3,17 @@ import test from "node:test";
 import { courseProgress, raceLanes } from "../features/race-course.ts";
 import { composition } from "../features/composition.ts";
 
+test("level-one bankers are excluded from every composition view until they level up", () => {
+  const member = { data: { level: 2, classId: 1, race: "Enano", spec: "Armas" } };
+  const banker = { data: { level: 1, classId: 8, race: "Gnomo", spec: "Fuego" } };
+  for (const kind of ["className", "race", "spec", "role"]) {
+    assert.deepEqual(composition([member, banker], kind), composition([member], kind));
+    assert.deepEqual(composition([banker], kind), composition([], kind));
+    const promoted = { data: { ...banker.data, level: 2 } };
+    assert.equal(composition([promoted], kind).rows.reduce((sum, row) => sum + row.count, 0), 1);
+  }
+});
+
 test("race segments account for every member of a race and retain legacy class colors", () => {
   const members = [
     { data: { race: "Enano", classId: 2 } },
@@ -33,6 +44,33 @@ test("roles count each member once, including unresolved feral builds and tied t
   assert.deepEqual(counts(profiles), [["DPS", 2], ["TANK", 1], ["HEAL", 2], ["Sin determinar", 4]]);
   assert.deepEqual(counts([{ classId: 3 }]), [["DPS", 1], ["TANK", 0], ["HEAL", 0]]);
   assert.deepEqual(counts([]), []);
+});
+
+test("role segments use active point totals, learned ranks and distinctive Forever feral talents", () => {
+  const feral = talents => ({ classId: 11, spec: "Combate feral", talents });
+  const profiles = [
+    feral([{ name: "Disciplina depredadora", spellId: 1328613, rank: 1, tree: "Combate feral" }]),
+    feral(["Mordisco primigenio · 1 punto"]),
+    feral(["Carga feral", "Furia salvaje"]),
+    feral(["Disciplina depredadora", "Mordisco primigenio"]),
+    feral([{ name: "Mordisco primigenio", rank: 0 }]),
+    { classId: 2, spec: "Reprensión", talentTrees: [{ name: "Protección", points: 18 }, { name: "Reprensión", points: 3 }] },
+    { classId: 7, talents: ["Enfoque de las mareas · 2 puntos", "Convección · 1 punto"] },
+    { classId: 1, spec: "Furia", talentTrees: [{name: "Armas", points: 0}, {name: "Furia", points: 0}] },
+  ];
+  const { rows, legend } = composition(profiles.map(data => ({ data })), "role");
+  const specs = (role, cls) => Object.fromEntries(rows.find(row => row.label === role).classes.get(cls).specs);
+  assert.deepEqual(specs("DPS", "Druida"), { "Combate feral": 1 });
+  assert.deepEqual(specs("TANK", "Druida"), { "Combate feral": 1 });
+  assert.deepEqual(specs("TANK", "Paladín"), { "Protección": 1 });
+  assert.deepEqual(specs("HEAL", "Chamán"), { "Recuperación": 1 });
+  assert.deepEqual(specs("Sin determinar", "Druida"), { "Combate feral": 3 });
+  assert.deepEqual(specs("Sin determinar", "Guerrero"), { "Sin especialización registrada": 1 });
+  assert.equal(new Map(legend).get("Druida"), "#ff984c");
+  for (const row of rows) {
+    assert.equal([...row.classes.values()].reduce((sum, entry) => sum + entry.count, 0), row.count);
+    for (const entry of row.classes.values()) assert.equal([...entry.specs.values()].reduce((a,b) => a+b, 0), entry.count);
+  }
 });
 
 test("the race uses one level scale, fits every portrait and stacks ties in their true position", () => {

@@ -2,15 +2,9 @@ import catalog from "../config/armory-catalog.json";
 import tooltipCatalog from "../config/item-tooltips.json";
 import talentTooltips from "../config/talent-tooltips.json";
 import type { Equipment, ItemProperties, Talent } from "./types";
+import { learnedTalent } from "./learned-talent";
 
-type KnownTalent = {
-  tree: string;
-  icon: number;
-  spellId?: number;
-  maxRank?: number;
-};
 type KnownEffects = { spells?: string[]; stats?: string[]; sets?: string[] };
-const talents: Record<string, Record<string, KnownTalent>> = catalog.talents;
 const icons: Record<string, string | number> = catalog.items;
 const effects: Record<string, KnownEffects> = catalog.itemEffects;
 const propertiesByItemLevel: Record<string, ItemProperties> = tooltipCatalog;
@@ -59,15 +53,7 @@ export function talentDisplay(
   memberId?: string,
   level?: number,
 ): Talent {
-  let talent: Talent;
-  if (typeof value === "string") {
-    const matched = value.match(/^(.+?)\s*·\s*(\d+)\s+puntos?$/i);
-    talent = matched
-      ? { name: matched[1].trim(), rank: Number(matched[2]) }
-      : { name: value };
-  } else talent = value;
-  const known = classId ? talents[classId]?.[talent.name] : undefined;
-  const max = talent.maxRank ?? known?.maxRank;
+  const talent = learnedTalent(value, classId);
   const tooltips: Record<string, Partial<Talent>> = talentTooltips;
   const signature = ":" + talent.name + ":" + talent.rank;
   const saved =
@@ -80,9 +66,5 @@ export function talentDisplay(
     cost: talent.cost ?? saved?.cost,
     cooldown: talent.cooldown ?? saved?.cooldown,
     range: talent.range ?? saved?.range,
-    spellId: talent.spellId ?? known?.spellId,
-    tree: talent.tree ?? known?.tree,
-    icon: talent.icon ?? catalogIcon(known?.icon),
-    maxRank: max !== undefined && max >= (talent.rank ?? 0) ? max : undefined,
   };
 }

@@ -288,28 +288,28 @@ export function HistoryChart({ members }: { members: Member[] }) {
   );
 }
 
-type RaceInspection = { race: string; pinned: boolean } | null;
-function RaceBar({ row, max, inspection, inspect }: {
+type BarInspection = { label: string; pinned: boolean } | null;
+function ClassBar({ row, max, inspection, inspect }: {
   row: DistributionRow;
   max: number;
-  inspection: RaceInspection;
-  inspect: Dispatch<SetStateAction<RaceInspection>>;
+  inspection: BarInspection;
+  inspect: Dispatch<SetStateAction<BarInspection>>;
 }) {
-  const open = inspection?.race === row.label;
+  const open = inspection?.label === row.label;
   const [highlight, setHighlight] = useState("");
   const timer = useRef<number | undefined>(undefined);
   const button = useRef<HTMLButtonElement>(null);
   const cancelClose = () => window.clearTimeout(timer.current);
   useEffect(() => () => window.clearTimeout(timer.current), []);
-  const close = () => inspect(active => active?.race === row.label ? null : active);
+  const close = () => inspect(active => active?.label === row.label ? null : active);
   function preview() {
     cancelClose();
-    inspect(active => active?.race === row.label ? active : { race: row.label, pinned: false });
+    inspect(active => active?.label === row.label ? active : { label: row.label, pinned: false });
   }
   function leave() {
     cancelClose();
     timer.current = window.setTimeout(() =>
-      inspect(active => active?.race === row.label && !active.pinned ? null : active), 140);
+      inspect(active => active?.label === row.label && !active.pinned ? null : active), 140);
   }
   const entries = [...row.classes.values()].sort((a, b) => a.label.localeCompare(b.label, "es"));
   const total = row.count + (row.count === 1 ? " personaje" : " personajes");
@@ -317,16 +317,16 @@ function RaceBar({ row, max, inspection, inspect }: {
     <Popover.Root open={open} onOpenChange={next => { if (!next) close(); }}>
       <Popover.Anchor asChild>
         <button ref={button} type="button" className="race-bar"
-          aria-label={row.label + ", " + total + ". Ver clases"}
+          aria-label={row.label + ", " + total + (entries.some(entry => entry.specs.size) ? ". Ver clases y especializaciones" : ". Ver clases")}
           aria-expanded={open} aria-haspopup="dialog"
           onPointerEnter={event => {
             if (event.pointerType !== "touch") preview();
           }}
           onPointerLeave={leave}
           onFocus={event => { if (event.currentTarget.matches(":focus-visible")) preview(); }}
-          onBlur={close}
+          onBlur={() => inspect(active => active?.label === row.label && !active.pinned ? null : active)}
           onClick={() => { cancelClose(); inspect(active =>
-            active?.race === row.label && active.pinned ? null : { race: row.label, pinned: true }); }}
+            active?.label === row.label && active.pinned ? null : { label: row.label, pinned: true }); }}
         >
           <span className="bar-track" aria-hidden="true">
             {entries.map(entry => (
@@ -347,7 +347,14 @@ function RaceBar({ row, max, inspection, inspect }: {
           <dl>{entries.map(entry => (
             <div key={entry.label} data-highlighted={highlight === entry.label || undefined}>
               <dt><i className="class-swatch" style={{ backgroundColor: entry.tint }} />{entry.label}</dt>
-              <dd>{entry.count}</dd>
+              <dd>
+                <span>{entry.count}</span>
+                {entry.specs.size > 0 && <ul className="role-specs" aria-label={"Especializaciones de " + entry.label}>
+                  {[...entry.specs].sort(([a], [b]) => a.localeCompare(b, "es")).map(([spec, count]) => (
+                    <li key={spec}><span>{spec}</span><b>{count}</b></li>
+                  ))}
+                </ul>}
+              </dd>
             </div>
           ))}</dl>
         </Popover.Content>
@@ -358,7 +365,8 @@ function RaceBar({ row, max, inspection, inspect }: {
 
 export function Distribution({ members }: { members: Member[] }) {
   const [kind, setKind] = useState<DistributionKind>("className");
-  const [inspection, inspect] = useState<RaceInspection>(null);
+  const [inspection, inspect] = useState<BarInspection>(null);
+  const stacked = kind === "race" || kind === "role";
   const { rows, max, legend } = useMemo(() => composition(members, kind), [members, kind]);
   return (
     <section className="panel">
@@ -376,13 +384,13 @@ export function Distribution({ members }: { members: Member[] }) {
           ]}
         />
       </div>
-      {kind === "role" && <p className="muted">Rol estimado según la clase y la especialización de la armería. Las ramas ambiguas figuran como «Sin determinar».</p>}
+      {kind === "role" && <p className="muted">El rol se estima a partir de los talentos activos y su distribución de puntos. Si la configuración admite varios roles, figura como «Sin determinar».</p>}
       {rows.length ? (
         <ul className="distribution-bars">
           {rows.map(row => (
             <li key={row.label}>
               <span>{row.label}</span>
-              {kind === "race" ? <RaceBar row={row} max={max} inspection={inspection} inspect={inspect} /> : (
+              {stacked && row.count > 0 ? <ClassBar row={row} max={max} inspection={inspection} inspect={inspect} /> : (
                 <span className="bar-track" aria-hidden="true">
                   <i style={{ width: (100 * row.count) / max + "%", backgroundColor: row.tint }} />
                 </span>
@@ -397,11 +405,12 @@ export function Distribution({ members }: { members: Member[] }) {
           text="La armería todavía no ha registrado este dato para la hermandad."
         />
       )}
-      {kind === "race" && legend.length > 0 && (
+      {stacked && legend.length > 0 && (
         <ul className="race-legend" aria-label="Colores de clase">
           {legend.map(([name, tint]) => <li key={name}><i className="class-swatch" style={{ backgroundColor: tint }} />{name}</li>)}
         </ul>
       )}
+      <p className="muted"><small>Los personajes de nivel 1 (banqueros) no cuentan.</small></p>
     </section>
   );
 }
