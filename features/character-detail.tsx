@@ -17,6 +17,7 @@ import { ExternalLink } from "lucide-react";
 import { EquipmentPanel, TalentsPanel } from "./armory-panels";
 import { fullName } from "./member-portrait";
 import { CharacterRecords } from "./character-records";
+import { CharacterCollections } from "./character-collections";
 import { ClassFrame } from "./class-frame";
 import { CoverGallery } from "./cover-gallery";
 import { GuildIcon } from "@/components/guild-icon";
@@ -35,7 +36,7 @@ export function CharacterDetail({
     l = leveling(m);
   const official = memberArmoryUrl(m.id, m.region);
   const [tab, setTab] = useState(
-    ["talents", "attributes", "history", "logs", "compare", "gallery"].includes(
+    ["talents", "attributes", "collections", "history", "logs", "compare", "gallery"].includes(
       initialTab ?? "",
     )
       ? initialTab!
@@ -146,6 +147,7 @@ export function CharacterDetail({
           ["armory", "Equipo"],
           ["talents", "Talentos"],
           ["attributes", "Estadísticas"],
+          ["collections", "Colecciones"],
           ["history", "Su historia"],
           ["logs", "Warcraft Logs"],
           ["compare", "Comparar"],
@@ -158,6 +160,7 @@ export function CharacterDetail({
         <TabsContent value="talents">
           <TalentsPanel profile={p} memberId={m.id} />
         </TabsContent>
+        <TabsContent value="collections"><CharacterCollections profile={p} armory={official} /></TabsContent>
         <TabsContent value="attributes">
           {m.strength && <section className="panel dossier-panel">
             <div className="dossier-heading"><h2>Su punto fuerte</h2></div>

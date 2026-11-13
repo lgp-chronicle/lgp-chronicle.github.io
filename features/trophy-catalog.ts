@@ -4,12 +4,15 @@ import { professions } from "./professions.ts";
 export const honorSteps = [1000, 5000, 10000, 25000, 50000, 100000];
 export const levelSteps = [40, 60];
 export const tradeSteps = [150, 225, 300];
+export const victorySteps = [1, 10, 50, 100, 500];
+export const collectionSteps = [1, 5, 10, 25, 50];
 export const groups = [
   "Hermandad y equipo",
   "Aventura",
   "Honor",
   "Profesiones",
   "Reputaciones",
+  "Colecciones",
 ] as const;
 type Trophy = {
   id: string;
@@ -48,6 +51,14 @@ export function trophyCatalog(factions: Record<string, string>): Trophy[] {
           group: groups[2],
         }) as const,
     ),
+    ...victorySteps.map((n): Trophy => ({
+      id: "bg-wins-" + n, title: n === 1 ? "Primera victoria en un campo de batalla" : n + " victorias en campos de batalla",
+      icon: "swords", group: "Honor",
+    })),
+    ...collectionSteps.flatMap((n): Trophy[] => [
+      { id: "mounts-" + n, title: n === 1 ? "Estrenar las riendas" : n + " monturas distintas", icon: "boot", group: "Colecciones" },
+      { id: "pets-" + n, title: n === 1 ? "Adopción en Azeroth" : n + " mascotas distintas", icon: "clue", group: "Colecciones" },
+    ]),
     {
       id: "five-trades",
       title: "Cinco profesiones al máximo a la vez",

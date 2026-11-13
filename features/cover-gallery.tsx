@@ -1,4 +1,5 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { ago } from "./analytics";
 import { Dialog } from "radix-ui";
 import { ArrowLeft, ArrowRight, Expand, Link, X } from "lucide-react";
 import {
@@ -96,6 +97,27 @@ function Caption({
       {action}
     </>
   );
+}
+
+export function RecentImages({ members }: { members: Member[] }) {
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const scenes = Object.entries(coverCatalogue(members)).flatMap(([id, scene]) =>
+    scene.publishedAt ? [{ id, scene, publishedAt: scene.publishedAt }] : [],
+  ).sort((a,b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)).slice(0, 3);
+  if (!scenes.length) return null;
+  return <section className="recent-art" aria-labelledby="recent-art-title">
+    <header><h2 id="recent-art-title">Últimas imágenes</h2><a href={siteHref(archivePath("gallery"))}>Ver galería →</a></header>
+    <ul>{scenes.map(({ id, scene, publishedAt }) => (
+      <li key={id}><a href={siteHref(withGalleryScene(archivePath("gallery"), id))}>
+        {scene.party ? <WelcomeArt party={scene.party} /> : <img src={assetUrl("/guild/galeria/" + id + ".webp")} alt="" width={768} height={256} loading="lazy" />}
+        <div><strong>{scene.title}</strong><time dateTime={publishedAt} title={new Date(publishedAt).toLocaleString("es-ES")}>{ago(publishedAt, now)}</time></div>
+      </a></li>
+    ))}</ul>
+  </section>;
 }
 
 export function CoverGallery({

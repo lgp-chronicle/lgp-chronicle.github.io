@@ -1,3 +1,11 @@
+.tavern-records { margin-top: 16px; }
+.tavern-records h3 { margin: 0 0 8px; font: 23px var(--heading); color: #ffe3a3; }
+.tavern-records > div { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(220px,100%),1fr)); gap: 8px; }
+.tavern-records article { background: linear-gradient(125deg,#352b1f,#231d19); border: 1px solid #78613b; padding: 12px; }
+.tavern-records h4 { color: #f3d590; font: 19px var(--heading); margin: 0; }
+.tavern-records p { margin: 4px 0; }
+.tavern-records small { color: #cfbda3; }
+.tavern-records ul { list-style: none; display: flex; flex-wrap: wrap; gap: 2px 8px; padding: 0; margin: 4px 0; }
 .tavern-board {
   margin-block: clamp(20px, 3vw, 36px);
   scroll-margin-top: 7rem;

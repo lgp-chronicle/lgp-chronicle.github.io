@@ -19,6 +19,7 @@ const groupIcons = [
   "medal",
   "blacksmithing",
   "shield",
+  "clue",
 ] as const;
 
 export function RecentTrophies({ room = emptyRoom, members }: { room?: Room; members: Member[] }) {

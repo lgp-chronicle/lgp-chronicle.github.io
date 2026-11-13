@@ -5,6 +5,7 @@ import type { CharacterConfig } from "../config/characters";
 import { database, settings, sqlite } from "../db/client";
 import { recordRoster } from "./membership";
 import { blizzard, fetchGuildRoster } from "../providers/blizzard";
+import { syncCollections } from "../providers/collections";
 import { warcraftLogs } from "../providers/warcraft-logs";
 import { ProviderError } from "../providers/http";
 import { changedEvents } from "../features/analytics";
@@ -68,6 +69,7 @@ export async function sync(force = false) {
   const before = (await readGuild()).members;
   const result: { name: string; status: string; errors: string[] }[] = [];
   let blizzardBlocked = false,
+    collectionsAvailable = true,
     logsBlocked = false,
     cooldownSeconds = 0;
   try {
@@ -176,6 +178,8 @@ export async function sync(force = false) {
           if (blizzardBlocked) throw new ProviderError("deferred-rate-limit");
           const p = await blizzard(c, s, rosterProfile);
           profile = p.data;
+          if (collectionsAvailable && !p.retryAfter && (profile.level ?? 0) >= 10)
+            collectionsAvailable = await syncCollections(c, profile, errors);
           errors.push(...p.errors.map((x) => "blizzard:" + x));
           profileOk = true;
           cooldownSeconds = Math.max(cooldownSeconds, p.retryAfter);

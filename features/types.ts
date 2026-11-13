@@ -38,7 +38,10 @@ export type Talent = {
   icon?: string;
 };
 export type Profession = { name: string; skill?: number; max?: number };
+export type CollectionKind = "mounts" | "pets";
+export type Collectible = { id: number; name: string; image?: string; family?: string };
 export type Profile = {
+  collections?: Partial<Record<CollectionKind, Collectible[]>>;
   armoryVerified?: boolean;
   surname?: string;
   characterRender?: string;

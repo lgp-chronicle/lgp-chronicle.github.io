@@ -1432,3 +1432,13 @@
   .roster-table td:first-child .member-link { width: clamp(110px, 36vw, 190px); }
   .roster-table td:first-child .member-label { white-space: normal; overflow-wrap: anywhere; }
 }
+.collection-panel ul, .battlefield-records { list-style: none; padding: 0; margin: 0; }
+.collection-panel li { display: flex; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 1px solid #695538; }
+.collection-panel li img { object-fit: cover; border-radius: 3px; background: #221c18; }
+.collection-panel small, .collection-panel time { display: block; color: #d8c3a7; font: 13px var(--interface); }
+.collection-panel h2 small { display: inline; font-size: .65em; }
+.collection-source { display: inline-block; margin-top: 10px; text-decoration: underline; color: #f4d696; }
+.battlefield-records li { display: grid; gap: 3px; padding: 6px 0; }
+.battlefield-records small { color: #ead7b9; }
+.victory-rate { display: inline-grid; position: relative; isolation: isolate; font: 13px var(--interface); padding: 3px 7px; color: #fff4db; background: #332a23; }
+.victory-rate i { position: absolute; z-index: -1; inset: 0 auto 0 0; background: #635426; }

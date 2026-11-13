@@ -336,5 +336,5 @@ export function ago(at?: string, now = Date.now()) {
       ? `Hace ${n} min`
       : n < 1440
         ? `Hace ${Math.floor(n / 60)} h`
-        : `Hace ${Math.floor(n / 1440)} días`;
+        : n < 2880 ? "Hace 1 día" : `Hace ${Math.floor(n / 1440)} días`;
 }

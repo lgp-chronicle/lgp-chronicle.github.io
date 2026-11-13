@@ -25,6 +25,26 @@ const slots = [
   "MAIN_HAND",
   "RANGED",
 ];
+test("new battlefield trophies replay early winners and collection trophies use owned species", () => {
+  const db = new DatabaseSync(":memory:");
+  try {
+    db.exec("CREATE TABLE character_snapshots(id INTEGER PRIMARY KEY,character_id TEXT,at TEXT,data TEXT)");
+    db.exec("CREATE TABLE trophy_register(id INTEGER PRIMARY KEY,cursor INTEGER,data TEXT)");
+    const at = "2026-11-12T09:00:00.000Z", later = "2026-11-13T10:00:00.000Z";
+    const members = ["a","b"].map(id => ({ id, name:id, region:"eu", data:{} }));
+    const pvp = { pvp_map_statistics: [{ world_map:{name:"Cuenca"}, match_statistics:{played:18,won:10,lost:8} }] };
+    const add = db.prepare("INSERT INTO character_snapshots(character_id,at,data) VALUES (?,?,?)");
+    add.run("a", at, JSON.stringify({surveyAt:at, pvp, resourceTimes:{pvp_summary:at}}));
+    db.prepare("INSERT INTO trophy_register VALUES (1,1,?)").run(JSON.stringify({factions:{},unlocks:{}}));
+    add.run("b", later, JSON.stringify({surveyAt:later, pvp, collections:{pets:[{id:44,name:"Siamés"}],mounts:[]},resourceTimes:{pvp_summary:later,pets:later,mounts:later}}));
+    const room = recordTrophies(db,members);
+    assert.deepEqual(room.unlocks["bg-wins-10"].winners.map(m=>m.id),["a"]);
+    assert.equal(room.unlocks["pets-1"].at,later);
+    assert.equal(room.unlocks["mounts-1"],undefined);
+    assert.deepEqual(recordTrophies(db,members),room);
+    assert.ok(trophyNews(room).some(e=>e.id==="trophy/bg-wins-10"));
+  } finally {db.close();}
+});
 test("full sets require every combat slot at the threshold in the same set, with correct two-handed and cosmetic exceptions", () => {
   const items = slots.map((slotType) => ({
     slotType,

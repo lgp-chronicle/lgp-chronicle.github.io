@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { blizzard } from "../providers/blizzard";
+import { readCollection, syncCollections } from "../providers/collections";
 import { memberArmoryUrl } from "../config/characters";
 import { itemDisplay, talentDisplay, wowheadUrl } from "../features/armory-data";
 import { awards } from "../features/analytics";
@@ -26,6 +27,29 @@ const response = (value: unknown, status = 200) =>
     status,
     headers: { "Content-Type": "application/json" },
   });
+test("Forever collections separate owned species, confirmed empty, and a failed refresh", async () => {
+  const render = (slug: string, count: number, pets: unknown[]) =>
+    "<script>var characterProfileInitialState = " + JSON.stringify({
+      character: { slug, region: "eu" }, pets: { petsCollected: count, pets },
+    }) + ";</script>";
+  const cat = { id: 44, name: "Siamés", collected: true };
+  const page = render(config.slug, 1, [cat, { id: 2, name: "Alce", collected: false }]);
+  assert.deepEqual(readCollection(page, "pets", config.slug, "eu").map(p => p.name), ["Siamés"]);
+  assert.deepEqual(readCollection(render(config.slug, 0, []), "pets", config.slug, "eu"), []);
+  assert.throws(() => readCollection(page, "pets", "otro", "eu"), /identity/);
+  assert.throws(() => readCollection(render(config.slug, 2, [cat]), "pets", config.slug, "eu"), /incomplete/);
+  const profile: Member["data"] = { collections: { mounts: [{ id: 1, name: "Caballo" }] }, resourceTimes: {} };
+  const errors: string[] = [];
+  const saved = globalThis.fetch;
+  globalThis.fetch = async input => String(input).endsWith("/pets") ? new Response(page) : response({}, 404);
+  try {
+    await syncCollections(config, profile, errors);
+    assert.deepEqual(profile.collections?.mounts, [{ id: 1, name: "Caballo" }]);
+    assert.equal(profile.collections?.pets?.[0].id, 44);
+    assert.equal(profile.resourceTimes?.mounts, undefined);
+    assert.ok(profile.resourceTimes?.pets);
+  } finally { globalThis.fetch = saved; }
+});
 test("Blizzard Classic namespace, accented name, advertised resources only and partial retention", async () => {
   const urls: string[] = [];
   const real = globalThis.fetch;

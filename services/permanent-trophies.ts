@@ -8,9 +8,12 @@ import {
   type TrophyRoom,
 } from "../features/types.ts";
 import { fullName } from "../features/member-name.ts";
+import { battlegroundWins } from "../features/battlegrounds.ts";
 import { knownProfession, professions } from "../features/professions.ts";
 import {
   honorSteps,
+  victorySteps,
+  collectionSteps,
   levelSteps,
   tradeSteps,
   trophyCatalog,
@@ -110,6 +113,12 @@ function evidence(
     if ((p.level ?? 0) >= n) add("level-" + n, "summary");
   for (const n of honorSteps)
     if ((p.honorableKills ?? 0) >= n) add("honor-" + n, "pvp_summary");
+  const wins = battlegroundWins(p);
+  for (const n of victorySteps) if (wins >= n) add("bg-wins-" + n, "pvp_summary");
+  for (const kind of ["mounts", "pets"] as const) {
+    const total = p.collections?.[kind]?.length ?? 0;
+    for (const n of collectionSteps) if (total >= n) add(kind + "-" + n, kind);
+  }
   for (const id of equipmentTrophies(p.equipment ?? [])) add(id, "equipment");
   const masters = new Set<string>();
   for (const t of p.professions ?? []) {
@@ -147,7 +156,7 @@ export function recordTrophies(
       .prepare("SELECT cursor,data FROM trophy_register WHERE id=1")
       .get();
     type LegacyRun = { start: string; last: string; members: string[] };
-    const saved: TrophyRoom & { legacyRun?: LegacyRun } = state
+    const saved: TrophyRoom & { legacyRun?: LegacyRun; version?: number } = state
       ? JSON.parse(String(state.data))
       : { factions: {}, unlocks: {} };
     const room: TrophyRoom = {
@@ -156,8 +165,11 @@ export function recordTrophies(
     };
     const retired = retiredTrophies.filter((id) => Object.hasOwn(room.unlocks, id));
     for (const id of retired) delete room.unlocks[id];
-    let legacyRun = saved.legacyRun;
-    let cursor = Number(state?.cursor ?? 0);
+    // Old snapshots already contain battlefield results. Replay them once for the new awards.
+    const backfill = !!state && saved.version !== 2;
+    const previousCursor = Number(state?.cursor ?? 0);
+    let legacyRun = backfill ? undefined : saved.legacyRun;
+    let cursor = backfill ? 0 : previousCursor;
     const roster = new Map(members.map((m) => [m.id, m]));
     const rows = db
       .prepare(
@@ -182,6 +194,7 @@ export function recordTrophies(
         legacyRun.members.push(member.id);
       }
       for (const { id, resource } of evidence(p, room.factions)) {
+        if (backfill && cursor <= previousCursor && !/^(bg-wins|mounts|pets)-/.test(id)) continue;
         const at =
           p.resourceTimes?.[resource] ?? p.observedAt ?? String(row.at);
         if (!Number.isFinite(Date.parse(at))) continue;
@@ -214,10 +227,10 @@ export function recordTrophies(
         unlock.winners.sort((a, b) => a.name.localeCompare(b.name, "es"));
       }
     }
-    if (!state || cursor !== state.cursor || retired.length > 0)
+    if (!state || backfill || cursor !== state.cursor || retired.length > 0)
       db.prepare(
         "INSERT INTO trophy_register VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET cursor=excluded.cursor,data=excluded.data",
-      ).run(cursor, JSON.stringify({ ...room, legacyRun }));
+      ).run(cursor, JSON.stringify({ ...room, legacyRun, version: 2 }));
     db.exec("COMMIT");
     return room;
   } catch (error) {

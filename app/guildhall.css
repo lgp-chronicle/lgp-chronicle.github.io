@@ -37,6 +37,21 @@
   --hall-compact: url("./art/campana-movil.webp");
   --compact-art-width: 100vw;
 }
+.guildhall[data-cover="acequia"] {
+  --hall-art: url("./art/acequia.webp");
+  --hall-compact: url("./art/acequia-movil.webp");
+  --compact-art-width: 100vw;
+}
+.guildhall[data-cover="grifon"] {
+  --hall-art: url("./art/grifon.webp");
+  --hall-compact: url("./art/grifon-movil.webp");
+  --compact-art-width: 100vw;
+}
+.guildhall[data-cover="ajedrez"] {
+  --hall-art: url("./art/ajedrez.webp");
+  --hall-compact: url("./art/ajedrez-movil.webp");
+  --compact-art-width: 100vw;
+}
 .guildhall[data-cover="paella"] {
   --hall-art: url("./art/paella.webp");
   --hall-compact: url("./art/paella-movil.webp");
@@ -86,10 +101,10 @@
   --hall-y: 41%;
 }
 @media (min-width: 681px) {
-  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"]) {
+  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"], [data-cover="acequia"], [data-cover="grifon"], [data-cover="ajedrez"]) {
     background: linear-gradient(95deg, #211c17e0, #30241be8), var(--hall-art) left center / cover;
   }
-  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"])::after {
+  .guildhall:is([data-cover="pique"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"], [data-cover="acequia"], [data-cover="grifon"], [data-cover="ajedrez"])::after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -327,7 +342,7 @@
   }
 }
 @media (max-width: 520px) {
-  .guildhall:is([data-cover="halcon"], [data-cover="rastro"], [data-cover="farol"], [data-cover="prensa"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"]) {
+  .guildhall:is([data-cover="halcon"], [data-cover="rastro"], [data-cover="farol"], [data-cover="prensa"], [data-cover="cisterna"], [data-cover="cofre"], [data-cover="invocacion"], [data-cover="diario"], [data-cover="campana"], [data-cover="mandragora"], [data-cover="paella"], [data-cover="acequia"], [data-cover="grifon"], [data-cover="ajedrez"]) {
     background-color: #241c16;
     background-position: center top;
     background-size: var(--compact-art-width, max(100vw, 385px)) auto;

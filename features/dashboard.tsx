@@ -16,7 +16,7 @@ import { TavernBoard } from "./tavern-board";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
-import { CoverGallery } from "./cover-gallery";
+import { CoverGallery, RecentImages } from "./cover-gallery";
 import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
@@ -174,6 +174,7 @@ export function Dashboard({
             </div>
             <FerrogardDiary />
           </div>
+          <RecentImages members={m} />
           <RecentTrophies room={data.trophyRoom} members={m} />
           <MembershipNews members={m} asOf={data.generatedAt} />
         </>

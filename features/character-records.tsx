@@ -4,6 +4,7 @@ import { assetUrl } from "@/lib/public-settings";
 import { ago, display } from "./analytics";
 import { numeric, type Profile } from "./types";
 import { knownProfession } from "./professions";
+import { battlegrounds } from "./battlegrounds";
 
 const attributes: Record<string, [string, GuildIconName]> = {
   Salud: ["Características", "health"],
@@ -189,6 +190,7 @@ function achievementGroup(name: string) {
 
 function ActivityRecords({ profile: p }: { profile: Profile }) {
   const achievements = p.achievements ?? [];
+  const maps = battlegrounds(p);
   return (
     <div className="record-spread">
       <section className="record-panel">
@@ -206,6 +208,13 @@ function ActivityRecords({ profile: p }: { profile: Profile }) {
           <RecordMetric label="Honor" value={p.honor} icon="medal" />
           <RecordMetric label="Rango PvP" value={p.pvpRank} icon="finish" />
         </dl>
+        <div className="record-body">
+          <h3><GuildIcon name="swords" size={20} />Campos de batalla</h3>
+          {maps.length ? <ul className="battlefield-records">{maps.map(map => <li key={map.name}>
+            <strong>{map.name}</strong><small>{map.played} {map.played === 1 ? "partida" : "partidas"} · {map.won} V / {map.lost} D</small>
+            {map.played > 0 && <span className="victory-rate"><i style={{width: Math.min(100, 100 * map.won / map.played) + "%"}} />{Math.round(100 * map.won / map.played)} % de victorias</span>}
+          </li>)}</ul> : <p className="muted">La armería aún no muestra partidas por campo.</p>}
+        </div>
         <div className="record-body">
           <h3>
             <GuildIcon name="finish" size={20} />

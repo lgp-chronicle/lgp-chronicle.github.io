@@ -1,3 +1,19 @@
+.recent-art { margin: 16px 0; }
+.recent-art header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.recent-art h2 { font: 24px var(--heading); color: #ffe4a5; margin: 0; }
+.recent-art header a { color: #f3d28b; font-size: 14px; }
+.recent-art ul { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 0; margin: 0; list-style: none; }
+.recent-art li a { display: block; overflow: hidden; border: 1px solid #806338; background: #292019; text-decoration: none; }
+.recent-art li a:hover, .recent-art li a:focus-visible { border-color: #f0cf7b; }
+.recent-art li a > :first-child { display: block; width: 100%; height: clamp(65px,7vw,100px); object-fit: cover; }
+.recent-art li a > div:last-child { padding: 5px 9px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; }
+.recent-art strong { font: 18px var(--heading); color: #ffe2a4; }
+.recent-art time { color: #dfccad; font: 13px var(--interface); }
+@media (max-width: 640px) {
+  .recent-art ul { grid-template-columns: 1fr; gap: 4px; }
+  .recent-art li a { display: grid; grid-template-columns: 29% 1fr; align-items: center; }
+  .recent-art li a > :first-child { height: 53px; }
+}
 .gallery-heading,
 .gallery-viewer-bar,
 .gallery-viewer-footer,

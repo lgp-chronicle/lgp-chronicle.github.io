@@ -40,6 +40,7 @@ test("a character's gallery includes every appearance, including expeditions", (
     "paella",
   ]);
   assert.deepEqual(coversForMember(coverMemberId("Juninho Delbosque")).sort(), [
+    "grifon",
     "paella",
     "pique",
     "santuario",
