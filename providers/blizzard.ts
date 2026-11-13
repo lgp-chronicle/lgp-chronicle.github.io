@@ -1,7 +1,7 @@
 import type { CharacterConfig } from "../config/characters";
 import { guildConfig } from "../config/characters";
 import type { Profile, Talent } from "../features/types";
-import { numeric } from "../features/types";
+import { classNames, numeric } from "../features/types";
 import { request, token, ProviderError } from "./http";
 type Json = Record<string, any>;
 const name = (v: any): string | undefined =>
@@ -36,18 +36,6 @@ function learnedTalents(tree: Json): Talent[] {
 
 const uniqueLines = (values: unknown[]): string[] =>
   [...new Set(values.filter((v): v is string => typeof v === "string" && !!v.trim()))];
-
-const CLASS_NAMES: Record<number, string> = {
-  1: "Guerrero",
-  2: "Paladín",
-  3: "Cazador",
-  4: "Pícaro",
-  5: "Sacerdote",
-  7: "Chamán",
-  8: "Mago",
-  9: "Brujo",
-  11: "Druida",
-};
 
 const RACE_NAMES: Record<number, string> = {
   1: "Humano",
@@ -101,7 +89,7 @@ export async function fetchGuildRoster(
         realm: guildConfig.realm,
         level: numeric(m.character.level) ? m.character.level : undefined,
         classId,
-        className: classId ? CLASS_NAMES[classId] : undefined,
+        className: classId ? classNames[classId] : undefined,
         raceId,
         race: raceId ? (RACE_NAMES[raceId] ?? name(m.character.playable_race)) : undefined,
         faction: m.character.faction?.type === "ALLIANCE" ? "Alianza" : m.character.faction?.type === "HORDE" ? "Horda" : undefined,

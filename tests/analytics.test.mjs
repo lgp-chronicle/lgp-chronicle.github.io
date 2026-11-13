@@ -1,6 +1,39 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { courseProgress, raceLanes } from "../features/race-course.ts";
+import { composition } from "../features/composition.ts";
+
+test("race segments account for every member of a race and retain legacy class colors", () => {
+  const members = [
+    { data: { race: "Enano", classId: 2 } },
+    { data: { race: "Enano", className: "Paladín" } },
+    { data: { race: "Enano", className: "Guerrero" } },
+    { data: { race: "Enano" } },
+    { data: { race: "Gnomo", classId: 8 } },
+    { data: { race: "Enano", classId: 2 }, inRoster: false },
+  ];
+  const { rows, max, legend } = composition(members, "race");
+  assert.equal(max, 4);
+  assert.deepEqual(rows.map(row => [row.label, row.count]), [["Enano", 4], ["Gnomo", 1]]);
+  assert.equal(rows[0].classes.get("Paladín").count, 2);
+  assert.equal(rows[0].classes.get("Clase desconocida").count, 1);
+  assert.equal(new Map(legend).get("Paladín"), "#f58cba");
+  for (const row of rows) assert.equal([...row.classes.values()].reduce((sum, entry) => sum + entry.count, 0), row.count);
+});
+
+test("roles count each member once, including unresolved feral builds and tied trees", () => {
+  const profiles = [
+    { classId: 9 }, { className: "Guerrero", spec: "Armas / Furia" },
+    { classId: 1, spec: "Protección" }, { classId: 5, spec: "Sagrado / Disciplina" },
+    { classId: 7, spec: "Recuperación" }, { classId: 2 },
+    { classId: 11, spec: "Combate feral" }, { classId: 2, spec: "Protección / Reprensión" },
+    { classId: 1, spec: "Armas / Desconocida" },
+  ];
+  const counts = profiles => composition(profiles.map(data => ({ data })), "role").rows.map(row => [row.label, row.count]);
+  assert.deepEqual(counts(profiles), [["DPS", 2], ["TANK", 1], ["HEAL", 2], ["Sin determinar", 4]]);
+  assert.deepEqual(counts([{ classId: 3 }]), [["DPS", 1], ["TANK", 0], ["HEAL", 0]]);
+  assert.deepEqual(counts([]), []);
+});
 
 test("the race uses one level scale, fits every portrait and stacks ties in their true position", () => {
   const levels = [61, 60, 34, 34, 33, 32, 21, 1, 1];

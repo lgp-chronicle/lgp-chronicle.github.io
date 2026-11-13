@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { Popover } from "radix-ui";
 import { Search, X } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -15,6 +16,7 @@ import { measurements, metricTime } from "./observations";
 import { color, numeric, type Member } from "./types";
 import { fullName } from "./member-portrait";
 import { searchable } from "@/lib/guild-navigation";
+import { composition, type DistributionRow, type DistributionKind } from "./composition";
 
 const metrics = [
   { value: "level", label: "Nivel" },
@@ -286,20 +288,78 @@ export function HistoryChart({ members }: { members: Member[] }) {
   );
 }
 
-export function Distribution({ members }: { members: Member[] }) {
-  const [kind, setKind] = useState<"className" | "race" | "spec">("className");
-  const counts = new Map<string, number>();
-  const tints = new Map<string, string>();
-  for (const member of members) {
-    const label = member.data[kind]?.trim();
-    if (!label) continue;
-    counts.set(label, (counts.get(label) ?? 0) + 1);
-    if (kind === "className") tints.set(label, color(member));
+type RaceInspection = { race: string; pinned: boolean } | null;
+function RaceBar({ row, max, inspection, inspect }: {
+  row: DistributionRow;
+  max: number;
+  inspection: RaceInspection;
+  inspect: Dispatch<SetStateAction<RaceInspection>>;
+}) {
+  const open = inspection?.race === row.label;
+  const [highlight, setHighlight] = useState("");
+  const timer = useRef<number | undefined>(undefined);
+  const button = useRef<HTMLButtonElement>(null);
+  const cancelClose = () => window.clearTimeout(timer.current);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  const close = () => inspect(active => active?.race === row.label ? null : active);
+  function preview() {
+    cancelClose();
+    inspect(active => active?.race === row.label ? active : { race: row.label, pinned: false });
   }
-  const groups = [...counts].sort(
-    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"),
+  function leave() {
+    cancelClose();
+    timer.current = window.setTimeout(() =>
+      inspect(active => active?.race === row.label && !active.pinned ? null : active), 140);
+  }
+  const entries = [...row.classes.values()].sort((a, b) => a.label.localeCompare(b.label, "es"));
+  const total = row.count + (row.count === 1 ? " personaje" : " personajes");
+  return (
+    <Popover.Root open={open} onOpenChange={next => { if (!next) close(); }}>
+      <Popover.Anchor asChild>
+        <button ref={button} type="button" className="race-bar"
+          aria-label={row.label + ", " + total + ". Ver clases"}
+          aria-expanded={open} aria-haspopup="dialog"
+          onPointerEnter={event => {
+            if (event.pointerType !== "touch") preview();
+          }}
+          onPointerLeave={leave}
+          onFocus={event => { if (event.currentTarget.matches(":focus-visible")) preview(); }}
+          onBlur={close}
+          onClick={() => { cancelClose(); inspect(active =>
+            active?.race === row.label && active.pinned ? null : { race: row.label, pinned: true }); }}
+        >
+          <span className="bar-track" aria-hidden="true">
+            {entries.map(entry => (
+              <i key={entry.label} style={{ width: (100 * entry.count) / max + "%", backgroundColor: entry.tint }}
+                onPointerEnter={() => setHighlight(entry.label)} onPointerLeave={() => setHighlight("")} />
+            ))}
+          </span>
+        </button>
+      </Popover.Anchor>
+      <Popover.Portal>
+        <Popover.Content side="top" align="center" sideOffset={2} collisionPadding={8}
+          className="race-breakdown" aria-label={"Desglose de " + row.label}
+          onOpenAutoFocus={event => event.preventDefault()} onCloseAutoFocus={event => event.preventDefault()}
+          onInteractOutside={event => { if (button.current?.contains(event.target as Node)) event.preventDefault(); }}
+          onPointerEnter={cancelClose} onPointerLeave={leave}
+        >
+          <strong>{row.label} · {total}</strong>
+          <dl>{entries.map(entry => (
+            <div key={entry.label} data-highlighted={highlight === entry.label || undefined}>
+              <dt><i className="class-swatch" style={{ backgroundColor: entry.tint }} />{entry.label}</dt>
+              <dd>{entry.count}</dd>
+            </div>
+          ))}</dl>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
-  const max = groups[0]?.[1];
+}
+
+export function Distribution({ members }: { members: Member[] }) {
+  const [kind, setKind] = useState<DistributionKind>("className");
+  const [inspection, inspect] = useState<RaceInspection>(null);
+  const { rows, max, legend } = useMemo(() => composition(members, kind), [members, kind]);
   return (
     <section className="panel">
       <h2 className="section-title">La composición de la hermandad</h2>
@@ -307,28 +367,27 @@ export function Distribution({ members }: { members: Member[] }) {
         <Pick
           label="Distribución"
           value={kind}
-          onChange={(v) => setKind(v as typeof kind)}
+          onChange={(v) => { inspect(null); setKind(v as DistributionKind); }}
           options={[
             { value: "className", label: "Clases" },
             { value: "race", label: "Razas" },
             { value: "spec", label: "Especializaciones" },
+            { value: "role", label: "Roles" },
           ]}
         />
       </div>
-      {groups.length ? (
+      {kind === "role" && <p className="muted">Rol estimado según la clase y la especialización de la armería. Las ramas ambiguas figuran como «Sin determinar».</p>}
+      {rows.length ? (
         <ul className="distribution-bars">
-          {groups.map(([label, count]) => (
-            <li key={label}>
-              <span>{label}</span>
-              <span className="bar-track" aria-hidden="true">
-                <i
-                  style={{
-                    width: (100 * count) / max + "%",
-                    backgroundColor: tints.get(label),
-                  }}
-                />
-              </span>
-              <b>{count}</b>
+          {rows.map(row => (
+            <li key={row.label}>
+              <span>{row.label}</span>
+              {kind === "race" ? <RaceBar row={row} max={max} inspection={inspection} inspect={inspect} /> : (
+                <span className="bar-track" aria-hidden="true">
+                  <i style={{ width: (100 * row.count) / max + "%", backgroundColor: row.tint }} />
+                </span>
+              )}
+              <b>{row.count}</b>
             </li>
           ))}
         </ul>
@@ -337,6 +396,11 @@ export function Distribution({ members }: { members: Member[] }) {
           title="Sin datos de composición"
           text="La armería todavía no ha registrado este dato para la hermandad."
         />
+      )}
+      {kind === "race" && legend.length > 0 && (
+        <ul className="race-legend" aria-label="Colores de clase">
+          {legend.map(([name, tint]) => <li key={name}><i className="class-swatch" style={{ backgroundColor: tint }} />{name}</li>)}
+        </ul>
       )}
     </section>
   );

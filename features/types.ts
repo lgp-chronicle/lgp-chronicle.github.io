@@ -175,6 +175,17 @@ export type IllustratedChronicle = {
   caption: string;
   rows: ChronicleRow[];
 };
+export const classNames: Record<number, string> = {
+  1: "Guerrero",
+  2: "Paladín",
+  3: "Cazador",
+  4: "Pícaro",
+  5: "Sacerdote",
+  7: "Chamán",
+  8: "Mago",
+  9: "Brujo",
+  11: "Druida",
+};
 export const classColors: Record<number, string> = {
   1: "#c79c6e",
   2: "#f58cba",
