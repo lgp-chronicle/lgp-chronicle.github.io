@@ -9,6 +9,13 @@ import {
 const november13Release = "2026-11-13T10:30:42Z";
 
 export const guildCovers = {
+  impostor: {
+    title: "El otro Alexion",
+    cast: ["Alexion Grandwell"],
+    action: "le quita la careta al espía no-muerto que se hacía pasar por él.",
+    date: "2026-11-13",
+    publishedAt: "2026-11-13T11:48:00Z",
+  },
   acequia: {
     title: "El agua vuelve al patio",
     cast: ["Viçent Wildfang", "Clairex Fuenteterna"],

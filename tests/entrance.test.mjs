@@ -47,6 +47,7 @@ test("a character's gallery includes every appearance, including expeditions", (
   ]);
   assert.deepEqual(coversForMember("forever-eu-alexion-grandwell").sort(), [
     "halcon",
+    "impostor",
     "paella",
     "rastro",
   ]);
