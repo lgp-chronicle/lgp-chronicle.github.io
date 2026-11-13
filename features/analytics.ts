@@ -2,6 +2,7 @@ import { measurements } from "./observations.ts";
 import { finishLevel, finishTitle } from "./race-course.ts";
 import { raidActivity } from "./raid-activity.ts";
 import { ninjaLoot } from "./ninja-loot.ts";
+import { armoryRecords } from "./armory-records.ts";
 import {
   numeric,
   type Member,
@@ -265,6 +266,13 @@ export function awards(members: Member[], now = Date.now()): Award[] {
     (m) => raidActivity(m.logs, now)?.minutes,
   );
   const dated = members.filter((m) => m.addedAt);
+  for (const record of armoryRecords(members, now)) {
+    a.push({
+      id: record.id, title: record.title, value: record.best,
+      rule: "Más " + record.unit + " entre " + record.coverage + " fichas recientes.",
+      names: record.winners.map(m => m.name), memberIds: record.winners.map(m => m.id),
+    });
+  }
   const ninjaCandidates = members.flatMap(m => {
     const scored = ninjaLoot(m);
     return scored ? [{ m, points: scored.points }] : [];

@@ -153,6 +153,7 @@ export type MemberStrength = {
   scene: "corona" | "ambar" | "bota" | "espadas";
 };
 export type TrophyRoom = {
+  battlefields?: Record<string, string>;
   factions: Record<string, string>;
   unlocks: Record<string, {
     batch: string;

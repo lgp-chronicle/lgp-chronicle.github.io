@@ -8,7 +8,7 @@ import {
   type TrophyRoom,
 } from "../features/types.ts";
 import { fullName } from "../features/member-name.ts";
-import { battlegroundWins } from "../features/battlegrounds.ts";
+import { battlegrounds } from "../features/battlegrounds.ts";
 import { knownProfession, professions } from "../features/professions.ts";
 import {
   honorSteps,
@@ -70,7 +70,7 @@ const legacySlots: Record<string, string> = {
   tabardo: "TABARD",
 };
 const properties: Record<string, { inventoryType?: string }> = itemProperties;
-const retiredTrophies = ["level-20", ...professions.map(([, , id]) => id + "-75")];
+const retiredTrophies = ["level-20", "mounts-1", "pets-1", ...professions.map(([, , id]) => id + "-75")];
 function itemSlot(item: Equipment) {
   const slot =
     item.slotType ?? legacySlots[item.slot?.toLowerCase()] ?? item.slot;
@@ -106,6 +106,7 @@ type Evidence = { id: string; resource: string };
 function evidence(
   p: StoredProfile,
   factions: Record<string, string>,
+  battlefields: Record<string, string>,
 ): Evidence[] {
   const found: Evidence[] = [];
   const add = (id: string, resource: string) => found.push({ id, resource });
@@ -113,7 +114,13 @@ function evidence(
     if ((p.level ?? 0) >= n) add("level-" + n, "summary");
   for (const n of honorSteps)
     if ((p.honorableKills ?? 0) >= n) add("honor-" + n, "pvp_summary");
-  const wins = battlegroundWins(p);
+  const maps = battlegrounds(p);
+  for (const map of maps) {
+    battlefields[map.id] = map.name;
+    for (const n of victorySteps)
+      if (map.won >= n) add(`bg-map-${map.id}-${n}`, "pvp_summary");
+  }
+  const wins = maps.reduce((sum, map) => sum + map.won, 0);
   for (const n of victorySteps) if (wins >= n) add("bg-wins-" + n, "pvp_summary");
   for (const kind of ["mounts", "pets"] as const) {
     const total = p.collections?.[kind]?.length ?? 0;
@@ -159,14 +166,16 @@ export function recordTrophies(
     const saved: TrophyRoom & { legacyRun?: LegacyRun; version?: number } = state
       ? JSON.parse(String(state.data))
       : { factions: {}, unlocks: {} };
+    const battlefields = saved.battlefields ?? {};
     const room: TrophyRoom = {
+      battlefields,
       factions: saved.factions,
       unlocks: saved.unlocks,
     };
     const retired = retiredTrophies.filter((id) => Object.hasOwn(room.unlocks, id));
     for (const id of retired) delete room.unlocks[id];
     // Old snapshots already contain battlefield results. Replay them once for the new awards.
-    const backfill = !!state && saved.version !== 2;
+    const backfill = !!state && (saved.version ?? 0) < 3;
     const previousCursor = Number(state?.cursor ?? 0);
     let legacyRun = backfill ? undefined : saved.legacyRun;
     let cursor = backfill ? 0 : previousCursor;
@@ -193,8 +202,9 @@ export function recordTrophies(
         legacyRun.last = captured;
         legacyRun.members.push(member.id);
       }
-      for (const { id, resource } of evidence(p, room.factions)) {
-        if (backfill && cursor <= previousCursor && !/^(bg-wins|mounts|pets)-/.test(id)) continue;
+      for (const { id, resource } of evidence(p, room.factions, battlefields)) {
+        if (backfill && cursor <= previousCursor && !id.startsWith("bg-map-") &&
+          !((saved.version ?? 0) < 2 && /^(bg-wins|mounts|pets)-/.test(id))) continue;
         const at =
           p.resourceTimes?.[resource] ?? p.observedAt ?? String(row.at);
         if (!Number.isFinite(Date.parse(at))) continue;
@@ -230,7 +240,7 @@ export function recordTrophies(
     if (!state || backfill || cursor !== state.cursor || retired.length > 0)
       db.prepare(
         "INSERT INTO trophy_register VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET cursor=excluded.cursor,data=excluded.data",
-      ).run(cursor, JSON.stringify({ ...room, legacyRun, version: 2 }));
+      ).run(cursor, JSON.stringify({ ...room, legacyRun, version: 3 }));
     db.exec("COMMIT");
     return room;
   } catch (error) {
@@ -241,7 +251,7 @@ export function recordTrophies(
 
 export function trophyNews(room: TrophyRoom): Activity[] {
   const news: Activity[] = [];
-  for (const trophy of trophyCatalog(room.factions)) {
+  for (const trophy of trophyCatalog(room.factions, room.battlefields)) {
     const win = room.unlocks[trophy.id];
     if (!win?.winners.length) continue;
     news.push({

@@ -20,10 +20,11 @@ const groupIcons = [
   "blacksmithing",
   "shield",
   "clue",
+  "swords",
 ] as const;
 
 export function RecentTrophies({ room = emptyRoom, members }: { room?: Room; members: Member[] }) {
-  const latest = trophyCatalog(room.factions)
+  const latest = trophyCatalog(room.factions, room.battlefields)
     .flatMap(trophy => {
       const win = room.unlocks[trophy.id];
       return win?.winners.length ? [{trophy, win}] : [];
@@ -64,9 +65,9 @@ export function TrophyRoom({
   members: Member[];
   selectedId?: string | null;
 }) {
-  const catalog = trophyCatalog(room.factions);
+  const catalog = trophyCatalog(room.factions, room.battlefields);
   const selected = catalog.find(trophy => trophy.id === selectedId);
-  const earned = Object.keys(room.unlocks).length;
+  const earned = catalog.filter(t => room.unlocks[t.id]).length;
   const roster = new Set(members.map((m) => m.id));
   return (
     <section className="trophy-room" aria-labelledby="trophy-room-title">
@@ -111,7 +112,7 @@ export function TrophyRoom({
               </p>
             )}
             {!entries.length && (
-              <p>Las facciones aparecerán al registrarse en la armería.</p>
+              <p>{group === "Campos de batalla" ? "Cada campo aparecerá con su primera partida registrada." : "Las facciones aparecerán al registrarse en la armería."}</p>
             )}
             <ul>
               {entries.map((t) => {

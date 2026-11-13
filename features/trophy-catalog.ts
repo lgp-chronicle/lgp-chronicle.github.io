@@ -5,7 +5,7 @@ export const honorSteps = [1000, 5000, 10000, 25000, 50000, 100000];
 export const levelSteps = [40, 60];
 export const tradeSteps = [150, 225, 300];
 export const victorySteps = [1, 10, 50, 100, 500];
-export const collectionSteps = [1, 5, 10, 25, 50];
+export const collectionSteps = [5, 10, 25, 50];
 export const groups = [
   "Hermandad y equipo",
   "Aventura",
@@ -13,6 +13,7 @@ export const groups = [
   "Profesiones",
   "Reputaciones",
   "Colecciones",
+  "Campos de batalla",
 ] as const;
 type Trophy = {
   id: string;
@@ -20,7 +21,7 @@ type Trophy = {
   icon: GuildIconName;
   group: (typeof groups)[number];
 };
-export function trophyCatalog(factions: Record<string, string>): Trophy[] {
+export function trophyCatalog(factions: Record<string, string>, battlefields: Record<string, string> = {}): Trophy[] {
   const equipment = [
     ["tabard", "El primer tabardo de La Ganga", "tabard"],
     ["gear-2", "Todo de verde o superior", "armor"],
@@ -56,9 +57,16 @@ export function trophyCatalog(factions: Record<string, string>): Trophy[] {
       icon: "swords", group: "Honor",
     })),
     ...collectionSteps.flatMap((n): Trophy[] => [
-      { id: "mounts-" + n, title: n === 1 ? "Estrenar las riendas" : n + " monturas distintas", icon: "boot", group: "Colecciones" },
-      { id: "pets-" + n, title: n === 1 ? "Adopción en Azeroth" : n + " mascotas distintas", icon: "clue", group: "Colecciones" },
+      { id: "mounts-" + n, title: n + " monturas distintas", icon: "boot", group: "Colecciones" },
+      { id: "pets-" + n, title: n + " mascotas distintas", icon: "clue", group: "Colecciones" },
     ]),
+    ...Object.entries(battlefields)
+      .sort(([, a], [, b]) => a.localeCompare(b, "es"))
+      .flatMap(([id, name]) => victorySteps.map((n): Trophy => ({
+        id: `bg-map-${id}-${n}`,
+        title: (n === 1 ? "Primera victoria" : n + " victorias") + " en " + name,
+        icon: "swords", group: "Campos de batalla",
+      }))),
     {
       id: "five-trades",
       title: "Cinco profesiones al máximo a la vez",

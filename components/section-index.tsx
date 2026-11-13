@@ -12,12 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const sectionIcons: Record<string, GuildIconName> = {
+const sectionIcons = {
   ...guildSectionIcons,
   armory: "shield",
   talents: "staff",
   attributes: "ruby",
-};
+  collections: "crate",
+} satisfies Record<string, GuildIconName>;
 
 export function SectionIndex({
   items,
@@ -26,13 +27,13 @@ export function SectionIndex({
   onChange,
   children,
 }: {
-  items: readonly (readonly [string, string])[];
+  items: readonly (readonly [keyof typeof sectionIcons, string])[];
   label: string;
   value?: string;
   onChange?: (id: string) => void;
   children: ReactNode;
 }) {
-  const [localValue, setLocalValue] = useState(items[0][0]);
+  const [localValue, setLocalValue] = useState<string>(items[0][0]);
   const selected = value ?? localValue;
   const select = onChange ?? setLocalValue;
   return (

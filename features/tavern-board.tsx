@@ -4,7 +4,7 @@ import { assetUrl } from "../lib/public-settings";
 import { color, type Member } from "./types";
 import { memberHref } from "./member-portrait";
 import { fullName } from "./member-name";
-import { battlegroundWins } from "./battlegrounds";
+import { armoryRecords } from "./armory-records";
 import { tavernActivity } from "./tavern-activity";
 import "../app/tavern-board.css";
 
@@ -119,19 +119,10 @@ function TavernList({
 }
 
 function TavernRecords({ members, now }: { members: Member[]; now: number }) {
-  const standings = [
-    { title: "Otra cola y lo dejo", unit: "victorias en campos de batalla", key: "pvp_summary", tab: "attributes", score: battlegroundWins },
-    { title: "El establo se queda pequeño", unit: "monturas distintas", key: "mounts", tab: "collections", score: (p: Member["data"]) => p.collections?.mounts?.length ?? 0 },
-    { title: "Se ha vuelto a casa con otra", unit: "mascotas distintas", key: "pets", tab: "collections", score: (p: Member["data"]) => p.collections?.pets?.length ?? 0 },
-  ].flatMap(record => {
-    const eligible = members.filter(m => m.inRoster !== false && !m.membership?.leftAt && (m.data.level ?? 0) >= 10 &&
-      Date.parse(m.data.resourceTimes?.[record.key] ?? "") >= now - 7 * 86400000);
-    const best = Math.max(0, ...eligible.map(m => record.score(m.data)));
-    return best ? [{ ...record, best, winners: eligible.filter(m => record.score(m.data) === best), coverage: eligible.length }] : [];
-  });
+  const standings = armoryRecords(members, now).filter(row => !row.id.startsWith("bg-map-"));
   if (!standings.length) return null;
   return <section className="tavern-records"><h3>Según se cuenta en la taberna…</h3>
-    <div>{standings.map(row => <article key={row.key}><h4>{row.title}</h4>
+    <div>{standings.map(row => <article key={row.id}><h4>{row.title}</h4>
       <p><b>{row.best}</b> {row.unit}</p>
       <ul>{row.winners.map(m => <li key={m.id}><a style={{color: color(m)}} href={memberHref(m) + "?tab=" + row.tab}>{fullName(m)}</a></li>)}</ul>
       <small>Entre {row.coverage} fichas consultadas en los últimos 7 días.</small>

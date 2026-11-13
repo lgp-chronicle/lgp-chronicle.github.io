@@ -6,6 +6,7 @@ import {archiveChronicles} from '../services/illustrated-chronicles';
 import {attachMembership,membershipNews} from '../services/membership';
 import {guildSpotlight} from '../services/spotlight';
 import {recordTrophies,trophyNews} from '../services/permanent-trophies';
+import {armoryNews} from '../services/armory-news';
 const mode=process.argv[2]||'export';
 let failed=false;
 if(mode==='sync'){
@@ -22,7 +23,7 @@ data.spotlight=guildSpotlight(sqlite,data.members,data.generatedAt);
 data.chronicles=archiveChronicles(sqlite,data.members);
 data.trophyRoom=recordTrophies(sqlite,data.members);
 data.membershipEvents=membershipNews(sqlite);
-const archiveEvents=[...trophyNews(data.trophyRoom),...data.membershipEvents];
+const archiveEvents=[...trophyNews(data.trophyRoom),...armoryNews(sqlite,data.members),...data.membershipEvents];
 const recentFirst=(a:{at:string},b:{at:string})=>b.at.localeCompare(a.at);
 data.events=[...data.events,...archiveEvents].sort(recentFirst).slice(0,250);
 save('public/data/guild.json',data);

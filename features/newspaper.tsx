@@ -18,6 +18,8 @@ const categories: Record<string, string> = {
   level: "Niveles",
   itemLevel: "Equipo",
   honorableKills: "Honor",
+  battlefields: "Campos de batalla",
+  collections: "Colecciones",
   logs: "Raids",
   membership: "Altas y bajas",
   other: "Otras noticias",
@@ -29,6 +31,8 @@ const categoryIcons: Record<string, GuildIconName> = {
   level: "steps",
   itemLevel: "shield",
   honorableKills: "medal",
+  battlefields: "swords",
+  collections: "crate",
   logs: "journal",
   membership: "tabard",
   other: "campfire",
@@ -40,6 +44,15 @@ const categoryOf = (e: Activity) =>
     : categories[e.kind]
       ? e.kind
       : "other";
+
+function storyCategories(event: Activity) {
+  const category = categoryOf(event);
+  if (category === "trophy") {
+    if (event.id.startsWith("trophy/bg-")) return [category, "battlefields"];
+    if (/^trophy\/(mounts|pets)-/.test(event.id)) return [category, "collections"];
+  }
+  return [category];
+}
 
 function NewsEntry({
   event: e,
@@ -239,12 +252,11 @@ export function Newspaper({
     }
   }, [archivedEvents]);
   const counts = rows.reduce<Record<string, number>>((counts, row) => {
-    const key = categoryOf(row);
-    counts[key] = (counts[key] ?? 0) + 1;
+    for (const key of storyCategories(row)) counts[key] = (counts[key] ?? 0) + 1;
     return counts;
   }, {});
   const visible = rows
-    .filter((row) => category === "all" || categoryOf(row) === category)
+    .filter((row) => category === "all" || storyCategories(row).includes(category))
     .filter(
       (row) =>
         !(

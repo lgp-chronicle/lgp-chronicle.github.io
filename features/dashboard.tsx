@@ -95,7 +95,7 @@ export function Dashboard({
   const m = data.members;
   const query = new URLSearchParams(location.hash.split("?")[1]);
   const group = groupForSection(section);
-  const trophies = awards(m);
+  const trophies = section === "awards" ? awards(m) : [];
   const withoutLogs = m.filter((member) => !member.logs);
   const cards = [
     {
@@ -240,11 +240,20 @@ export function Dashboard({
             <TrophyRoom room={data.trophyRoom} members={m} selectedId={query.get("trofeo")} />
             <h3 className="section-title">Premios actuales</h3>
             {trophies.length ? (
-              <div className="honor-gallery hall-gallery">
-                {trophies.map((a) => (
-                  <HallAward key={a.id} award={a} members={m} />
+              <>
+                {[
+                  { title: "Campos de batalla", entries: trophies.filter(a => a.id.startsWith("bg-")) },
+                  { title: "Colecciones", entries: trophies.filter(a => a.id === "mounts" || a.id === "pets") },
+                  { title: "Otros premios de la hermandad", entries: trophies.filter(a => !a.id.startsWith("bg-") && a.id !== "mounts" && a.id !== "pets") },
+                ].filter(group => group.entries.length).map(group => (
+                  <section key={group.title} aria-label={group.title}>
+                    <h4 className="eyebrow">{group.title}</h4>
+                    <div className="honor-gallery hall-gallery">
+                      {group.entries.map(a => <HallAward key={a.id} award={a} members={m} />)}
+                    </div>
+                  </section>
                 ))}
-              </div>
+              </>
             ) : (
               <section className="panel">
                 <Empty

@@ -13,6 +13,7 @@ import { wowheadUrl } from "./armory-data";
 
 type Scene = "corona" | "ambar" | "bota" | "espadas";
 const awardIcons: Record<string, GuildIconName> = {
+  mounts: "boot", pets: "clue", "bg-wins": "swords",
   "ninja-loot": "coin",
   [finishTitle.id]: "tabard",
   stamina: "stamina",
@@ -34,6 +35,7 @@ const awardIcons: Record<string, GuildIconName> = {
   "boss-destroyer": "helmet",
 };
 const scenes: Record<string, Scene> = {
+  mounts: "bota", pets: "ambar", "bg-wins": "espadas",
   "ninja-loot": "ambar",
   stamina: "espadas",
   strength: "espadas",
@@ -193,8 +195,8 @@ export function HallAward({
       }
       note={award.rule}
       winners={winners}
-      scene={scenes[award.id] ?? "corona"}
-      icon={awardIcons[award.id]}
+      scene={award.id.startsWith("bg-map-") ? "espadas" : scenes[award.id] ?? "corona"}
+      icon={award.id.startsWith("bg-map-") ? "finish" : awardIcons[award.id]}
     />
   );
   if (award.id !== "ninja-loot") return card;
