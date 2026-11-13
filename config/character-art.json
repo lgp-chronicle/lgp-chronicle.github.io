@@ -18,15 +18,13 @@
     "modified": 1794384237000
   },
   "forever-eu-alexion-grandwell": {
-    "entranceIssue": "race-mismatch",
-    "illustrationReference": "illustration-references/alexion-grandwell.webp",
     "url": "https://render.worldofwarcraft.com/forever-eu/character/133/6919813-main-raw.png",
     "frame": {
-      "x": 48.4,
-      "top": 35.2,
-      "height": 45.8
+      "x": 51,
+      "top": 25,
+      "height": 56.3
     },
-    "modified": 1794349455000
+    "modified": 1794563153000
   },
   "forever-eu-armentak-akrom": {
     "url": "https://render.worldofwarcraft.com/forever-eu/character/208/18617808-main-raw.png",
