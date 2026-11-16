@@ -33,7 +33,7 @@ export function GuildCollections({ members }: { members: Member[] }) {
       {(["mounts","pets"] as const).map(k => <article key={k}>
         <GuildIcon name={icons[k]} size={42} />
         <div className="collection-total-copy"><h3>{labels[k]}</h3>
-          <strong title={collections[k].coverage?`${collections[k].total} entre todos · ${collections[k].coverage} de ${collections[k].rosterSize} personajes con datos`:undefined}>{collections[k].coverage ? collections[k].distinct : "—"}{collections[k].progress&&<span className="collection-goal"> / {collections[k].progress.total}</span>}</strong>
+          <strong>{collections[k].coverage ? collections[k].distinct : "—"}{collections[k].progress&&<span className="collection-goal"> / {collections[k].progress.total}</span>}</strong>
           {collections[k].progress&&<div className="collection-completion">
             <progress max={collections[k].progress.total} value={collections[k].distinct} aria-label={labels[k]+": "+collections[k].distinct+" de "+collections[k].progress.total+" del catálogo conocido"}/>
             <p><b>{collections[k].progress.remaining===0?"Catálogo completado":collections[k].progress.remaining===1?"Nos falta 1":`Nos faltan ${collections[k].progress.remaining}`}</b><span>{collections[k].progress.percent.toLocaleString("es",{maximumFractionDigits:1})} %</span></p>
