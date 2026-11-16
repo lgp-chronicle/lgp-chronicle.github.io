@@ -17,7 +17,7 @@ import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery, RecentImages } from "./cover-gallery";
 import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
-import { hasArmory, isCurrentMember } from "./membership";
+import { isCurrentMember } from "./membership";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
@@ -33,10 +33,11 @@ function HomePulse({ members }: { members: Member[] }) {
   const adventurers = members.filter(m => m.data.level !== 1);
   const levels = adventurers.flatMap(m => numeric(m.data.level) ? [m.data.level] : []);
   const average = levels.length ? Math.round(levels.reduce((a, b) => a + b, 0) / levels.length * 10) / 10 : undefined;
+  const highest = levels.length ? Math.max(...levels) : undefined;
   return <dl className="home-pulse" aria-label="Resumen de la hermandad">
-    <div><GuildIcon name="tabard" size={32} /><dt>Aventureros</dt><dd>{adventurers.length}</dd></div>
-    <div><GuildIcon name="steps" size={32} /><dt>Nivel medio</dt><dd>{display(average)}</dd></div>
-    <div><GuildIcon name="helmet" size={32} /><dt>Con armería</dt><dd>{adventurers.filter(hasArmory).length}</dd></div>
+    <div><GuildIcon name="tabard" size={32} /><dt>Personajes<small>Sin bancos de nivel 1</small></dt><dd>{adventurers.length}</dd></div>
+    <div><GuildIcon name="steps" size={32} /><dt>Nivel medio<small>De los personajes del censo</small></dt><dd>{display(average)}</dd></div>
+    <div><GuildIcon name="finish" size={32} /><dt>Nivel más alto<small>La meta es el nivel 60</small></dt><dd>{display(highest)}<span> / 60</span></dd></div>
   </dl>;
 }
 
@@ -150,53 +151,51 @@ export function Dashboard({
         <div className="home-dashboard">
           <header className="home-dashboard-heading">
             <div>
-              <p className="eyebrow">El tablón de la fortaleza</p>
+              <p className="eyebrow">El tablón de La Ganga</p>
               <h2>La hermandad de un vistazo</h2>
               <span>Última lectura del archivo · {ago(data.generatedAt)}</span>
             </div>
             <div className="home-dashboard-tools">
               <HomeMemberSearch members={m} />
-            <button
-              className="button outline"
-              onClick={refresh}
-              disabled={busy}
-              aria-label={busy ? "Consultando el archivo" : "Consultar archivo"}
-              title="Consultar archivo"
-            >
-              <RefreshCw size={15} />
-              <span>{busy ? "Consultando…" : "Consultar archivo"}</span>
-            </button>
+              <button
+                className="button outline"
+                onClick={refresh}
+                disabled={busy}
+                aria-label={busy ? "Consultando el archivo" : "Consultar archivo"}
+                title="Consultar archivo"
+              >
+                <RefreshCw size={15} />
+                <span>{busy ? "Consultando…" : "Consultar archivo"}</span>
+              </button>
             </div>
           </header>
           <HomePulse members={m} />
-          <MembershipNews members={data.members} asOf={data.generatedAt} />
-          <section className="home-honors-panel" aria-labelledby="home-honors-title">
-          <div className="section-heading honors-heading">
-            <h2 id="home-honors-title" className="section-title">Cuadro de honor</h2>
-          </div>
-          {(!data.available || m.every((x) => !x.data.observedAt)) && (
-            <div className="notice">
-              {data.available
-                ? "La hermandad está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
-                : data.message}
+          <div className="home-dashboard-grid home-journal">
+            <MembershipNews members={data.members} asOf={data.generatedAt} />
+            <section className="home-honors-panel" aria-labelledby="home-honors-title">
+              <div className="section-heading honors-heading">
+                <h2 id="home-honors-title" className="section-title">Cuadro de honor</h2>
+              </div>
+              {(!data.available || m.every((x) => !x.data.observedAt)) && (
+                <div className="notice">
+                  {data.available
+                    ? "La hermandad está registrada. Esperando la primera sincronización con Blizzard y Warcraft Logs; los guiones indican datos aún no disponibles."
+                    : data.message}
+                </div>
+              )}
+              {error && (
+                <p role="alert" className="notice">
+                  {error}
+                </p>
+              )}
+              <div className="home-honors"><GuildStrengths data={data} /></div>
+            </section>
+            <div className="home-updates-grid">
+              <RecentImages members={data.members} />
+              <RecentTrophies room={data.trophyRoom} members={data.members} />
             </div>
-          )}
-          {error && (
-            <p role="alert" className="notice">
-              {error}
-            </p>
-          )}
-          <div className="home-honors"><GuildStrengths data={data} /></div>
-          </section>
-          <div className="home-updates-grid">
-            <RecentImages members={data.members} />
-            <RecentTrophies room={data.trophyRoom} members={data.members} />
-          </div>
-          <div className="home-journal">
-            <div className="home-pair">
-              <LatestHeadlines events={data.events} members={data.members} />
-              <ArmoryRumors members={m} activityLink={tavernLink} />
-            </div>
+            <LatestHeadlines events={data.events} members={data.members} />
+            <ArmoryRumors members={m} activityLink={tavernLink} />
             <FerrogardDiary />
           </div>
         </div>
