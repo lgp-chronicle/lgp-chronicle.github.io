@@ -42,6 +42,7 @@ export type CollectionKind = "mounts" | "pets";
 export type Collectible = { id: number; name: string; image?: string; family?: string };
 export type Profile = {
   collections?: Partial<Record<CollectionKind, Collectible[]>>;
+  collectionCatalogues?: Partial<Record<CollectionKind, number[]>>;
   armoryVerified?: boolean;
   surname?: string;
   characterRender?: string;

@@ -18,7 +18,7 @@ export function stable(value: any): string {
       Object.keys(value)
         .filter(
           (k) =>
-            !["observedAt", "resourceTimes", "sourceModified", "armoryVerified"].includes(k) &&
+            !["observedAt", "resourceTimes", "sourceModified", "armoryVerified", "collectionCatalogues"].includes(k) &&
             value[k] !== undefined,
         )
         .sort()

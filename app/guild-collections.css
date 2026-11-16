@@ -5,6 +5,16 @@
 .collection-totals article { display: flex; gap: 18px; padding: 22px; align-items: center; border: 1px solid #8d6f3c; border-top: 2px solid #d1a44e; background: linear-gradient(135deg,#372a1d,#251e17); }
 .collection-totals h3 { font: 700 22px Almendra,Georgia,serif; margin: 0; }
 .collection-totals strong { display: block; color: #ffd574; font: 700 42px/1.2 var(--interface); }
+.collection-total-copy { flex: 1; min-width: 0; width: 100%; }
+.collection-totals .collection-goal { color: #bca77e; font-size: .55em; font-weight: 400; }
+.collection-completion { margin: 8px 0 12px; }
+.collection-completion progress { display: block; width: 100%; height: 10px; border: 1px solid #8c6c36; border-radius: 2px; overflow: hidden; background: #16120e; accent-color: #ecc25b; }
+.collection-completion progress::-webkit-progress-bar { background: #16120e; }
+.collection-completion progress::-webkit-progress-value { background: linear-gradient(90deg,#b68a32,#f8d676); }
+.collection-completion progress::-moz-progress-bar { background: #ecc25b; }
+.collection-completion p { display: flex; justify-content: space-between; gap: 6px; }
+.collection-completion b { color: #edd19a; font-weight: 500; }
+.collection-completion small { display: block; margin-top: 5px; color: #b6a483; font: 11px/1.4 var(--reading); }
 .collection-totals p { margin: 3px 0 0; color: #c6b494; font: 12px/1.4 var(--reading); }
 .collections-kind { display: flex; gap: 8px; margin: 20px 0 14px; }
 .collections-body { display: grid; grid-template-columns: minmax(280px,.8fr) minmax(0,1.4fr); gap: 18px; align-items: start; }

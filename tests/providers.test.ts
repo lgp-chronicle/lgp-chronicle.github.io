@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { blizzard } from "../providers/blizzard";
-import { readCollection, syncCollections } from "../providers/collections";
+import { readCollection, readCollectionPage, syncCollections } from "../providers/collections";
 import { memberArmoryUrl } from "../config/characters";
 import { itemDisplay, talentDisplay, wowheadUrl } from "../features/armory-data";
 import { awards } from "../features/analytics";
@@ -35,6 +35,7 @@ test("Forever collections separate owned species, confirmed empty, and a failed 
   const cat = { id: 44, name: "Siamés", collected: true };
   const page = render(config.slug, 1, [cat, { id: 2, name: "Alce", collected: false }]);
   assert.deepEqual(readCollection(page, "pets", config.slug, "eu").map(p => p.name), ["Siamés"]);
+  assert.deepEqual(readCollectionPage(page,"pets",config.slug,"eu").catalogue,[2,44]);
   assert.deepEqual(readCollection(render(config.slug, 0, []), "pets", config.slug, "eu"), []);
   assert.throws(() => readCollection(page, "pets", "otro", "eu"), /identity/);
   assert.throws(() => readCollection(render(config.slug, 2, [cat]), "pets", config.slug, "eu"), /incomplete/);
@@ -49,6 +50,41 @@ test("Forever collections separate owned species, confirmed empty, and a failed 
     assert.equal(profile.resourceTimes?.mounts, undefined);
     assert.ok(profile.resourceTimes?.pets);
   } finally { globalThis.fetch = saved; }
+});
+test("collection catalogues bootstrap, discover unowned species automatically, and preserve discoveries on failed refresh", async () => {
+  const saved=globalThis.fetch;
+  let ids=[1,2],fail=false,calls=0;
+  globalThis.fetch=async input=>{
+    calls++;
+    const kind=String(input).endsWith("/pets")?"pets":"mounts";
+    if(fail)return response({},404);
+    return new Response("<script>var characterProfileInitialState = "+JSON.stringify({character:{slug:config.slug,region:"eu"},
+      [kind]:{[kind+"Collected"]:ids.includes(1)?1:0,[kind]:ids.map(id=>({id,name:"Especie "+id,collected:id===1}))}})+";</script>");
+  };
+  const now=new Date().toISOString();
+  const profile: Member["data"]={collections:{mounts:[],pets:[]},resourceTimes:{mounts:now,pets:now}};
+  const expire=()=>{const old=new Date(Date.now()-7*3600000).toISOString();profile.resourceTimes={mounts:old,pets:old};};
+  try{
+    await syncCollections(config,profile,[]);
+    assert.equal(calls,2,"Missing catalogues must bootstrap even with recently read ownership");
+    assert.deepEqual(profile.collectionCatalogues?.mounts,[1,2]);
+    await syncCollections(config,profile,[]);assert.equal(calls,2,"Reuse the six-hour cache");
+    ids=[1,2,3];expire();await syncCollections(config,profile,[]);
+    assert.deepEqual(profile.collectionCatalogues?.mounts,[1,2,3]);
+    assert.equal(profile.collections?.mounts?.length,1,"An unowned discovery is not a player acquisition");
+    ids=[2,3];expire();await syncCollections(config,profile,[]);
+    assert.deepEqual(profile.collectionCatalogues?.mounts,[1,2,3],"Keep promotional discoveries when they disappear from a page");
+    assert.deepEqual(profile.collections?.mounts,[]);
+    expire();const before=structuredClone(profile);fail=true;const errors:string[]=[];
+    await syncCollections(config,profile,errors);assert.deepEqual(profile,before);assert.equal(errors.length,2);
+    fail=false;ids=[];await syncCollections(config,profile,[]);assert.deepEqual(profile,before,"An unexpectedly empty catalogue must not replace valid data");
+  }finally{globalThis.fetch=saved;}
+});
+test("malformed unowned entries cannot silently corrupt catalogue totals",()=>{
+  const page=(entry:unknown)=>"<script>var characterProfileInitialState = "+JSON.stringify({character:{slug:config.slug,region:"eu"},
+    pets:{petsCollected:0,pets:[entry]}})+";</script>";
+  for(const entry of [{id:0,name:"x",collected:false},{id:2,name:"x"},{id:2,name:null,collected:false},null])
+    assert.throws(()=>readCollectionPage(page(entry),"pets",config.slug,"eu"),/invalid-collection/);
 });
 test("Blizzard Classic namespace, accented name, advertised resources only and partial retention", async () => {
   const urls: string[] = [];

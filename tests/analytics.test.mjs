@@ -48,6 +48,23 @@ test("duels distinguish empty collections and battlegrounds from missing data an
   assert.equal(empty.right,0);
 });
 
+test("collection progress uses discovered IDs, retains departed discoveries and never invents a denominator",()=>{
+  const now=Date.parse("2026-11-16T12:00:00Z"),stamp=new Date(now).toISOString();
+  const a={id:"a",name:"a",history:[],data:{level:20,collections:{mounts:[{id:1,name:"A"},{id:9,name:"Promo"}]},
+    collectionCatalogues:{mounts:[1,2,2]},resourceTimes:{mounts:stamp}}};
+  const departed={...a,id:"left",inRoster:false,data:{...a.data,collections:{mounts:[{id:3,name:"B"}]},collectionCatalogues:{mounts:[1,2,3]}}};
+  const progress=()=>guildCollection([a,departed],"mounts",now).progress;
+  assert.deepEqual(progress(),{collected:2,total:4,remaining:2,percent:50,consultedAt:stamp});
+  a.data.collectionCatalogues.mounts.push(4);
+  assert.equal(progress().total,5);assert.equal(progress().remaining,3);
+  assert.equal(guildCollection([{...a,data:{...a.data,collectionCatalogues:undefined}}],"mounts",now).progress,undefined);
+  assert.equal(guildCollection([{...a,data:{...a.data,collections:undefined}}],"mounts",now).progress,undefined);
+  assert.equal(guildCollection([{...a,data:{...a.data,resourceTimes:{mounts:"invalid"}}}],"mounts",now).progress,undefined);
+  assert.equal(guildCollection([{...a,data:{...a.data,armoryVerified:false}}],"mounts",now).progress,undefined);
+  const empty={...a,data:{...a.data,collections:{mounts:[]}}};
+  assert.equal(guildCollection([empty],"mounts",now).progress.percent,0);
+});
+
 test("specializations with the same name remain separate by class and mixed builds keep both icons", () => {
   const profiles = [
     { classId: 1, spec: "Protección", level: 40 },

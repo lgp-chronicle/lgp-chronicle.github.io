@@ -243,7 +243,7 @@ export function Dashboard({
           </>
         )}
         {section === "composicion" && <Distribution members={m} />}
-        {section === "collections" && <GuildCollections members={m} />}
+        {section === "collections" && <GuildCollections members={data.members} />}
         {section === "race" && <LevelingRace members={m} />}
         {section === "history" && <HistoryChart members={m} />}
         {section === "awards" && (

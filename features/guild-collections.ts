@@ -40,6 +40,23 @@ export function guildCollection(members: Member[], kind: CollectionKind, now: nu
   ranking.sort((a,b) => b.count - a.count || fullName(a.member).localeCompare(fullName(b.member), "es"));
   ranking.forEach((row,i) => { row.rank = i > 0 && row.count === ranking[i-1].count ? ranking[i-1].rank : i + 1; });
   const items = [...catalogue.values()].sort((a,b) => b.owners.length - a.owners.length || a.item.name.localeCompare(b.item.name,"es"));
+  // Discoveries remain known after a member leaves. Ownership still uses only the current roster.
+  const known = new Set<number>();
+  let consultedAt = 0;
+  for (const member of members) {
+    const ids = member.data.collectionCatalogues?.[kind];
+    const at = Date.parse(member.data.resourceTimes?.[kind] ?? "");
+    if (!ids?.length || !Number.isFinite(at) || at > now || member.data.armoryVerified === false) continue;
+    for (const id of ids) if (Number.isSafeInteger(id) && id > 0) known.add(id);
+    consultedAt = Math.max(consultedAt,at);
+  }
+  const progress = known.size && coverage ? (() => {
+    // Owned promotional species also belong to the known catalogue during migration.
+    for (const id of catalogue.keys()) known.add(id);
+    return { collected: items.length, total: known.size, remaining: known.size-items.length,
+      percent: items.length/known.size*100, consultedAt: new Date(consultedAt).toISOString() };
+  })() : undefined;
   return { kind, distinct: items.length, total, coverage, rosterSize: roster.length, items, ranking,
+    progress,
     singleOwner: items.filter(row => row.owners.length === 1).length };
 }
