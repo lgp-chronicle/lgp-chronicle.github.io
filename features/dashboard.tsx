@@ -7,10 +7,11 @@ import {
 import { GuildIcon } from "@/components/guild-icon";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
-import { fullName, memberHref, MemberLink } from "./member-portrait";
-import { HallAward } from "./honor-card";
+import { MemberLink } from "./member-portrait";
+import { CurrentAwards } from "./current-awards";
+import { GuildRecords } from "./guild-records";
 import { GuildStrengths } from "./guild-strengths";
-import { TavernBoard } from "./tavern-board";
+import { MemberActivity } from "./member-activity";
 import { LevelingRace } from "./leveling-race";
 import { SourceNotice } from "./source-notice";
 import { ArmoryRumors } from "./armory-rumors";
@@ -25,10 +26,10 @@ import { HomeMemberSearch, Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
 import { Compare } from "./compare";
 import { LatestHeadlines, Newspaper } from "./newspaper";
-import { leveling, display, awards, ago } from "./analytics";
-import { color, numeric, type GuildData, type Member } from "./types";
+import { display, awards, ago } from "./analytics";
+import { numeric, type GuildData, type Member } from "./types";
 import "../app/home-dashboard.css";
-import { hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness";
+import { hasRecentUpdate } from "./spotlight-freshness";
 import { useActivityClock } from "../hooks/use-activity-clock";
 import { KeenPanel } from "./keen-panel";
 import { GuildCollections } from "./guild-collections-panel";
@@ -63,22 +64,6 @@ function FerrogardDiary() {
   );
 }
 
-function leader(members: Member[], score: (m: Member) => unknown) {
-  const valid = members.flatMap((member) => {
-    const value = score(member);
-    return numeric(value) ? [{ member, value }] : [];
-  });
-  if (!valid.length) return null;
-  const max = Math.max(...valid.map((row) => row.value));
-  const winners = valid
-    .filter((row) => row.value === max)
-    .map((row) => row.member);
-  return {
-    winners,
-    value: max,
-    registered: valid.length,
-  };
-}
 export function Dashboard({
   initial,
   section,
@@ -92,11 +77,13 @@ export function Dashboard({
   useGuildTools(data);
   const now = useActivityClock();
   const archive = useRef<HTMLElement>(null);
-  const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("overview")+"?ver=taberna")}
-    onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === event.currentTarget.hash)
-      document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"}); }}>
+  const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("activity"))}>
     <GuildIcon name="campfire" size={20}/>Ver la actividad de los miembros →</a>;
   useEffect(() => {
+    if (section === "overview" && new URLSearchParams(location.hash.split("?")[1]).get("ver") === "taberna") {
+      location.replace(siteHref(archivePath("activity")));
+      return;
+    }
     const y = window.history.state?.returnY;
     const trophy = archive.current?.querySelector<HTMLElement>(".trophy-case [data-selected]");
     if (typeof y === "number") window.scrollTo(0, y);
@@ -105,8 +92,6 @@ export function Dashboard({
       trophy.focus({preventScroll: true});
     }
     else if (window.history.state?.menuFromTop) window.scrollTo(0, 0);
-    else if (section === "overview" && new URLSearchParams(location.hash.split("?")[1]).get("ver") === "taberna")
-      document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"});
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members.filter(isCurrentMember);
@@ -114,28 +99,6 @@ export function Dashboard({
   const query = new URLSearchParams(location.hash.split("?")[1]);
   const trophies = section === "awards" ? awards(m, now) : [];
   const withoutLogs = m.filter((member) => !member.logs);
-  const cards = [
-    {
-      label: "Por delante en nivel",
-      top: leader(active, (x) => x.data.level),
-      unit: "nivel",
-    },
-    {
-      label: "El equipo más brillante",
-      top: leader(active, (x) => x.data.itemLevel),
-      unit: "item level",
-    },
-    {
-      label: "Pisando el acelerador",
-      top: leader(active, (x) => leveling(x, now).day),
-      unit: "niveles / 24 h",
-    },
-    {
-      label: "El terror del otro bando",
-      top: leader(active, (x) => x.data.honorableKills),
-      unit: "muertes honorables",
-    },
-  ] as const;
   async function refresh() {
     setBusy(true);
     setError("");
@@ -202,6 +165,7 @@ export function Dashboard({
             </div>
             <LatestHeadlines events={data.events} members={data.members} />
             <ArmoryRumors members={active} activityLink={tavernLink} />
+            <GuildRecords members={m} now={now} home />
             <KeenPanel />
             <FerrogardDiary />
           </div>
@@ -220,28 +184,10 @@ export function Dashboard({
         {section === "overview" && (
           <>
             <MembershipNews members={data.members} asOf={data.generatedAt} />
-            {tavernLink}
             <Roster members={m} initialSearch={query.get("buscar") ?? ""} />
-            <TavernBoard members={m} asOf={data.generatedAt} />
-            <div style={{ marginTop: 24 }} className="grid-two">
-              <Newspaper members={data.members} events={data.events.slice(0, 12)} />
-              <section className="panel">
-                <h3>Récords de la hermandad</h3>
-                <p className="muted">Entre personajes con cambios en los últimos {spotlightWindowDays} días.</p>
-                <dl className="guild-records">
-                  {cards.map(({label,top,unit})=><div key={label}><dt>{label}</dt>
-                    <dd>{top && top.value > 0 ? <>
-                      <strong>{display(top.value)} {unit}</strong>
-                      <span>{top.winners.map(p=><a key={p.id} href={memberHref(p)} style={{color:color(p)}}>{fullName(p)}</a>)}</span>
-                      {top.registered < active.length && <small>{top.registered} de {active.length} con datos</small>}
-                    </> : "Sin marca registrada"}</dd>
-                  </div>)}
-                </dl>
-                <a href={siteHref(archivePath("awards"))}>Ver el Salón de la fama →</a>
-              </section>
-            </div>
           </>
         )}
+        {section === "activity" && <MemberActivity members={m} now={now} />}
         {section === "composicion" && <Distribution members={m} />}
         {section === "collections" && <GuildCollections members={data.members} />}
         {section === "race" && <LevelingRace members={m} />}
@@ -249,35 +195,12 @@ export function Dashboard({
         {section === "awards" && (
           <>
             <p className="eyebrow">
-              HONOR ETERNO. HASTA LA PRÓXIMA SINCRONIZACIÓN.
+              LAS HAZAÑAS DE LA GANGA
             </p>
             <h2 className="section-title">El salón de la fama</h2>
             <TrophyRoom room={data.trophyRoom} members={data.members} selectedId={query.get("trofeo")} />
-            <h3 className="section-title">Premios actuales</h3>
-            <p className="muted">Participan personajes con cambios en los últimos {spotlightWindowDays} días. Los títulos ya conquistados se conservan.</p>
-            {trophies.length ? (
-              <>
-                {[
-                  { title: "Campos de batalla", entries: trophies.filter(a => a.id.startsWith("bg-")) },
-                  { title: "Colecciones", entries: trophies.filter(a => a.id === "mounts" || a.id === "pets") },
-                  { title: "Otros premios de la hermandad", entries: trophies.filter(a => !a.id.startsWith("bg-") && a.id !== "mounts" && a.id !== "pets") },
-                ].filter(group => group.entries.length).map(group => (
-                  <section key={group.title} aria-label={group.title}>
-                    <h4 className="eyebrow">{group.title}</h4>
-                    <div className="honor-gallery hall-gallery">
-                      {group.entries.map(a => <HallAward key={a.id} award={a} members={m} />)}
-                    </div>
-                  </section>
-                ))}
-              </>
-            ) : (
-              <section className="panel">
-                <Empty
-                  title="Aquí se viene a ganarse el título"
-                  text="No hay premios calculables todavía. Cuando los datos lo permitan, la gloria cambiará de manos automáticamente."
-                />
-              </section>
-            )}
+            <GuildRecords members={m} now={now} />
+            <CurrentAwards awards={trophies} members={m} />
           </>
         )}
         {section === "news" && (

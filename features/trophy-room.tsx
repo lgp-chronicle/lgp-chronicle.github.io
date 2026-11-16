@@ -1,4 +1,6 @@
-import { ChevronDown } from "lucide-react";
+import { BellRing, ChevronDown } from "lucide-react";
+import { useActivityClock } from "../hooks/use-activity-clock";
+import { isNewTrophy, trophyNoticeDays } from "./trophy-freshness";
 import { GuildIcon } from "@/components/guild-icon";
 import { siteHref } from "@/lib/public-settings";
 import { archivePath } from "@/lib/guild-navigation";
@@ -66,6 +68,10 @@ export function TrophyRoom({
   selectedId?: string | null;
 }) {
   const catalog = trophyCatalog(room.factions, room.battlefields);
+  const now = useActivityClock();
+  const recent = catalog.filter(t=>room.unlocks[t.id]?.winners.length&&isNewTrophy(room.unlocks[t.id]?.at,now))
+    .sort((a,b)=>room.unlocks[b.id].at.localeCompare(room.unlocks[a.id].at));
+  const newIds = new Set(recent.map(t=>t.id));
   const selected = catalog.find(trophy => trophy.id === selectedId);
   const earned = catalog.filter(t => room.unlocks[t.id]).length;
   const roster = new Set(members.map((m) => m.id));
@@ -84,14 +90,19 @@ export function TrophyRoom({
           <b>{earned}</b> de {catalog.length} trofeos
         </span>
       </header>
+      {!!recent.length&&<details className="trophy-updates"><summary><BellRing size={20} aria-hidden="true"/><b>{recent.length} {recent.length===1?"trofeo nuevo":"trofeos nuevos"}</b><span>Ver novedades · {trophyNoticeDays} días</span><ChevronDown size={17}/></summary>
+        <div>{recent.map(t=><a key={t.id} href={siteHref(archivePath("awards")+"?trofeo="+encodeURIComponent(t.id))}><GuildIcon name={t.icon} size={24}/><span>{t.title}<small>{date.format(new Date(room.unlocks[t.id].at))}</small></span><span aria-hidden="true">↗</span></a>)}</div>
+      </details>}
       {groups.map((group, i) => {
         const entries = catalog.filter((t) => t.group === group);
         const count = entries.filter((t) => room.unlocks[t.id]).length;
+        const newCount = entries.filter(t=>newIds.has(t.id)).length;
         return (
           <details key={group} className="trophy-case" open={selected ? selected.group === group : i === 0}>
             <summary>
               <GuildIcon name={groupIcons[i]} size={28} />
               <strong>{group}</strong>
+              {newCount>0&&<em className="trophy-new-badge">{newCount} {newCount===1?"nuevo":"nuevos"}</em>}
               <span>
                 {count} / {entries.length}
               </span>
@@ -119,11 +130,12 @@ export function TrophyRoom({
                 const win = room.unlocks[t.id];
                 return (
                   <li key={t.id} data-earned={win ? "" : undefined}
+                    data-new={newIds.has(t.id)||undefined}
                     data-selected={selected?.id === t.id || undefined}
                     tabIndex={selected?.id === t.id ? -1 : undefined}>
                     <GuildIcon name={t.icon} size={32} />
                     <div>
-                      <h4>{t.title}</h4>
+                      <h4>{t.title}{newIds.has(t.id)&&<span className="trophy-new-badge">Nuevo</span>}</h4>
                       {win ? (
                         <>
                           <p className="trophy-names">

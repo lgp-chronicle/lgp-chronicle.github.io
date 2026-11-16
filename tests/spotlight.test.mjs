@@ -5,6 +5,25 @@ import { guildSpotlight } from "../services/spotlight.ts";
 import { describeMembers } from "../services/member-strengths.ts";
 import { hasRecentUpdate } from "../features/spotlight-freshness.ts";
 import { tavernActivity } from "../features/tavern-activity.ts";
+import { isNewTrophy } from "../features/trophy-freshness.ts";
+
+test("trophy notifications last exactly 72 hours and reject missing or future dates",()=>{
+  const now=Date.parse("2026-11-16T12:00:00Z"),stamp=offset=>new Date(now-offset).toISOString();
+  assert.equal(isNewTrophy(stamp(0),now),true);
+  assert.equal(isNewTrophy(stamp(3*86400000-1),now),true);
+  assert.equal(isNewTrophy(stamp(3*86400000),now),false);
+  assert.equal(isNewTrophy(stamp(-1),now),false);
+  assert.equal(isNewTrophy(undefined,now),false);
+  assert.equal(isNewTrophy("invalid",now),false);
+});
+
+test("activity directory separates rest from unknown dates and ignores level-one banks",()=>{
+  const now=Date.parse("2026-11-16T12:00:00Z");
+  const make=(id,age,level=20)=>({id,name:id,history:[],data:{level,sourceModified:age===undefined?undefined:new Date(now-age).toISOString()}});
+  const result=tavernActivity([make("active",5*86400000-1),make("resting",5*86400000),make("unknown"),make("bank",0,1)],new Date(now).toISOString());
+  assert.deepEqual(result.rows.map(r=>[r.member.id,r.state]),[["active","active"],["resting","resting"],["unknown","unknown"]]);
+  assert.equal(result.days.length,7);
+});
 import { awards } from "../features/analytics.ts";
 import { canIllustrateMember } from "../features/illustration-eligibility.ts";
 

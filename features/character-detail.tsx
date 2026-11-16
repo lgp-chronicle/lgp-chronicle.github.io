@@ -73,6 +73,7 @@ function CurrentCharacterDetail({
         ? "a la ficha anterior"
         : {
             overview: "a la hermandad",
+            activity: "a la actividad de la hermandad",
             composicion: "a la composición de la hermandad",
             collections: "a las colecciones de la hermandad",
             news: "al Heraldo",

@@ -30,7 +30,7 @@
 .home-dashboard .home-dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
-  grid-template-areas: "honors members" "honors headlines" "updates tavern" "keen keen" "diary diary";
+  grid-template-areas: "honors members" "honors headlines" "updates tavern" "records records" "keen keen" "diary diary";
   gap: 16px;
   margin: 0;
   align-items: stretch;
@@ -160,7 +160,7 @@
 @media (max-width: 900px) {
   .home-dashboard .home-dashboard-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas: "members members" "honors honors" "updates updates" "headlines tavern" "keen keen" "diary diary";
+    grid-template-areas: "members members" "honors honors" "updates updates" "headlines tavern" "records records" "keen keen" "diary diary";
   }
   .home-dashboard .membership-news { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: 18px; }
   .home-dashboard .departure-list { border-top: 0; border-left: 1px solid #84623760; padding: 0 0 0 16px; }
@@ -183,7 +183,7 @@
   .home-pulse dt small { min-height: 2.4em; font-size: 10px; max-width: none; }
   .home-pulse dd { font-size: 25px; }
   .home-pulse dd span { font-size: 11px; }
-  .home-dashboard .home-dashboard-grid { grid-template-columns: 1fr; grid-template-areas: "members" "honors" "updates" "headlines" "tavern" "keen" "diary"; gap: 14px; }
+  .home-dashboard .home-dashboard-grid { grid-template-columns: 1fr; grid-template-areas: "members" "honors" "updates" "headlines" "tavern" "records" "keen" "diary"; gap: 14px; }
   .home-dashboard :is(.home-honors-panel, .membership-news, .recent-art, .recent-trophies, .latest-headlines, .rumor-panel) { padding: 12px; }
   .home-dashboard :is(.recent-art, .recent-trophies, .latest-headlines, .rumor-panel) h2,
   .home-dashboard .honors-heading .section-title { font-size: 23px; }

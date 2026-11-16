@@ -1,4 +1,4 @@
-import { armorySignals } from "./spotlight-freshness.ts";
+import { armorySignals, hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness.ts";
 import { fullName } from "./member-name.ts";
 import type { Member } from "./types.ts";
 
@@ -14,6 +14,7 @@ export function tavernActivity(members: Member[], asOf: string) {
   const roster = members.filter(
     (m) =>
       m.inRoster !== false &&
+      m.data.level !== 1 &&
       !m.membership?.leftAt &&
       !m.membership?.pendingAbsence,
   );
@@ -25,7 +26,8 @@ export function tavernActivity(members: Member[], asOf: string) {
       last = Math.max(last, at);
       if (earliest >= days[0]) activeDays.add(Math.floor(at / dayMs) * dayMs);
     }
-    return { member, name: fullName(member), last, activeDays };
+    const state = hasRecentUpdate(member,now) ? "active" : Number.isFinite(last) && last <= now-spotlightWindowDays*dayMs ? "resting" : "unknown";
+    return { member, name: fullName(member), last, activeDays, state };
   });
   const active = rows
     .filter((r) => r.activeDays.size)
@@ -40,5 +42,5 @@ export function tavernActivity(members: Member[], asOf: string) {
   const unknown = rows
     .filter((r) => !Number.isFinite(r.last))
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
-  return { days, active, oldest, unknown };
+  return { days, rows, active, oldest, unknown };
 }

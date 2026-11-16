@@ -1,0 +1,50 @@
+.current-awards { margin-top: 30px; }
+.current-awards-heading { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:16px; }
+.current-awards-heading .eyebrow { font:10px var(--reading); color:#bda16b; margin:0 0 5px; letter-spacing:.14em; }
+.current-awards-heading h3 { font:700 clamp(27px,3vw,36px)/1.1 var(--heading); color:#f8d489; margin:0; }
+.current-awards-heading p:last-child,.current-awards-heading>span { color:#c7b69a; font:12px/1.4 var(--reading); margin:7px 0 0; }
+.current-awards-heading>span { white-space:nowrap; }.current-awards-heading b { color:#f3d58f; }
+.current-awards-tools { margin:0 0 18px; display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+.current-awards-filters { display:flex; flex-wrap:wrap; gap:6px; flex:1; }
+.current-awards-filters button { display:flex; align-items:center; gap:6px; padding:8px 10px; border:1px solid #725735; background:#251e16; color:#d9c5a1; font:13px var(--interface); cursor:pointer; }
+.current-awards-filters button[aria-pressed=true] { border-color:#ecc461; background:linear-gradient(#6c4e24,#48331b); color:#ffe5a1; box-shadow:inset 0 -2px #c69334; }
+.current-awards-filters small { color:#bfa376; font:11px var(--reading); }
+.current-awards-search { display:flex; align-items:center; gap:8px; padding:9px 10px; border:1px solid #705738; color:#c4a166; background:#211b15; }
+.current-awards-search input { width:160px; min-width:0; border:0; outline:0; color:#f2dbac; background:transparent; font:13px var(--reading); }
+.current-awards-search:focus-within { outline:2px solid #eac367; }
+.current-awards-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; align-items:start; }
+.current-award { min-width:0; border:1px solid #80633a; border-top:2px solid #c19a4b; background:#251e17; box-shadow:0 3px 10px #100d0940; overflow:clip; }
+.current-award>header { display:flex; align-items:center; gap:10px; min-height:66px; padding:12px 14px; background:linear-gradient(105deg,#3b2d1c,#251e17); }
+.current-award h4 { font:700 21px/1.1 var(--heading); color:#ffe2a1; margin:0; text-wrap:balance; }
+.current-award-stage { position:relative; height:128px; isolation:isolate; overflow:hidden; background:#30271a; }
+.current-award-stage::before { content:""; position:absolute; inset:0; z-index:-2; background:url('./art/atlas-honor.webp') left top/200% 200%; opacity:.7; }
+.current-award[data-category=equipment] .current-award-stage::before,.current-award[data-category=collections] .current-award-stage::before { background-position:right top; }
+.current-award[data-category=combat] .current-award-stage::before,.current-award[data-category=attributes] .current-award-stage::before { background-position:right bottom; }
+.current-award[data-category=world] .current-award-stage::before { background-position:left bottom; }
+.current-award-stage::after { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,#17130ee8,#17130e66 65%,transparent); }
+.current-award-score { position:relative; z-index:2; padding:20px 15px; width:54%; pointer-events:none; text-shadow:0 2px 4px #000; }
+.current-award-score b { display:block; color:#ffdfa0; font:700 39px/.95 var(--heading); font-variant-numeric:tabular-nums; }
+.current-award-score>span { display:block; margin-top:7px; color:#f2dfbd; font:12px/1.25 var(--reading); }
+.current-award-score>small { display:block; margin-top:8px; color:#d6bd8a; font:10px/1.2 var(--reading); }
+.current-award-cast { position:absolute; inset:0 0 0 45%; display:grid; grid-template-columns:repeat(var(--cast-count),minmax(0,1fr)); }
+.current-award-cast>a { position:relative; min-width:0; overflow:hidden; }
+.current-award-cast .banner-art { inset:4px 0 0; z-index:0; --figure-center:51%; --zoom:1.28; }
+.current-award-cast .banner-model { filter:brightness(1.08); }
+.current-award-seal { position:absolute; inset:15% 10%; width:80%; height:70%; object-fit:contain; opacity:.85; }
+.current-award[data-shared] .current-award-score { width:40%; padding:17px 10px 10px 14px; }
+.current-award[data-shared] .current-award-score b { font-size:34px; }
+.current-award[data-shared] .current-award-cast { left:38%; }
+.current-award[data-shared] .banner-art { --zoom:1.05; }
+.current-award-names { display:grid; grid-template-columns:repeat(var(--cast-count),minmax(0,1fr)); gap:8px; padding:10px 14px; min-height:47px; align-items:center; background:linear-gradient(110deg,#30271d,#211b15); border-top:1px solid #846332; }
+.current-award-names a { min-width:0; text-decoration:none; font:700 18px/1.15 var(--heading); }
+.current-award-names small { display:block; margin-top:3px; color:#b9aa92; font:10px var(--reading); }
+.current-award[data-shared] .current-award-names { gap:6px; padding-inline:8px; }.current-award[data-shared] .current-award-names a { font-size:14px; text-align:center; }
+.current-award details { padding:0 14px; border-top:1px solid #63503380; color:#c8b592; font:12px/1.4 var(--reading); }
+.current-award summary { cursor:pointer; padding:8px 0; color:#d4b777; }
+.current-award details[open] { padding-bottom:12px; }.current-award details p { margin:0 0 8px; }
+.current-award-ties>div { display:flex; flex-wrap:wrap; gap:6px 12px; }.current-award-rule ul { padding-left:16px; }
+.current-award a:hover { text-decoration:underline; }.current-awards :is(a,summary,button):focus-visible { outline:2px solid #f4d074; outline-offset:-2px; }
+.current-awards-empty { padding:28px; border:1px dashed #7f6139; color:#c9b99f; }
+.current-awards-earned { margin-top:24px; }.current-awards-earned>h4 { margin:0; color:#eacd91; font:23px var(--heading); }.current-awards-earned>p { font:12px var(--reading); color:#c6b497; }
+@media(max-width:1100px){.current-awards-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.current-awards-search { width:100%; }.current-awards-search input { width:100%; }}
+@media(max-width:620px){.current-awards-grid { grid-template-columns:1fr; }.current-awards-heading { align-items:start; flex-direction:column; gap:3px; }.current-awards-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; }.current-awards-filters button { justify-content:start; }.current-awards-filters small { margin-left:auto; }.current-award h4 { font-size:22px; }.current-award-stage { height:130px; }}

@@ -1,0 +1,13 @@
+.guild-record-strip { margin:22px 0; min-width:0; }
+.guild-record-strip>header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+.guild-record-strip h2 { margin:0; color:#f8d58f; font:700 23px/1.15 var(--heading); }
+.guild-record-strip header p { margin:5px 0 0; font:11px var(--reading); color:#bdac92; }.guild-record-strip header>a { white-space:nowrap; font:12px var(--reading); color:#e4c380; }
+.guild-record-strip>div { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; align-items:start; }
+.guild-record-strip article { min-width:0; min-height:136px; padding:13px; border:1px solid #77603c; border-top:2px solid #c19b52; background:linear-gradient(130deg,#36291c,#241d16); }
+.guild-record-strip h3 { display:flex; gap:7px; align-items:center; font:600 13px/1.2 var(--interface); margin:0; color:#dcc493; min-height:31px; }
+.guild-record-strip article>p { display:flex; flex-wrap:wrap; gap:7px; align-items:baseline; margin:9px 0; }
+.guild-record-strip article>p b { color:#ffe1a0; font:700 29px/1 var(--heading); }.guild-record-strip article>p span { color:#c6b695; font:11px var(--reading); }
+.record-winners { display:flex; flex-wrap:wrap; gap:4px 8px; font:12px/1.35 var(--reading); }.record-winners>span { color:#ac9c85; }.record-winners details { width:100%; }.record-winners summary { cursor:pointer; color:#cbb27c; }.record-winners details>div { display:grid; gap:5px; padding-top:6px; }
+.home-dashboard-grid>.guild-record-strip { grid-area:records; margin:0; }
+@media(max-width:800px){.guild-record-strip>div { grid-template-columns:repeat(2,minmax(0,1fr)); }}
+@media(max-width:450px){.guild-record-strip h2 { font-size:21px; }.guild-record-strip article { padding:10px; min-height:151px; }.guild-record-strip h3 { min-height:36px; font-size:12px; }.guild-record-strip article>p b { font-size:26px; }.guild-record-strip article>p span { font-size:10px; }}
