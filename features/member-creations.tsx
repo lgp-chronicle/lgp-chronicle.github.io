@@ -37,7 +37,7 @@ export function CreationsPreview() {
     <div>
       <a href={siteHref(archivePath("creations"))}><GuildIcon name="engineering" size={30}/><span><small>Olynn Grandwell</small><strong>Keen</strong><em>El addon de la hermandad</em></span><ArrowRight size={16}/></a>
       <a href={diaryUrl} target="_blank" rel="noopener noreferrer"><GuildIcon name="journal" size={30}/><span><small>Ferrogard Escudoferreo</small><strong>El diario de Ferrogard</strong><em>Leer sus crónicas</em></span><ExternalLink size={16}/></a>
-      <a href={siteHref(archivePath("videos"))}><GuildIcon name="spyglass" size={30}/><span><small>Vincie Quickhands</small><strong>El catalejo de Vincie</strong><em>{count ? count + (count === 1 ? " vídeo" : " vídeos") : "Relatos en movimiento"}</em></span><ArrowRight size={16}/></a>
+      <a href={siteHref(archivePath("videos"))}><GuildIcon name="spyglass" size={30}/><span><small>Vincie Quickhands</small><strong>Las historias de Vincie</strong><em>{count ? count + (count === 1 ? " vídeo" : " vídeos") : "Relatos en movimiento"}</em></span><ArrowRight size={16}/></a>
     </div>
   </section>;
 }

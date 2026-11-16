@@ -85,7 +85,7 @@ function CurrentCharacterDetail({
             compare: "al cara a cara",
             logs: "a Warcraft Logs",
             gallery: "a la galería",
-            videos: "al catalejo de Vincie",
+            videos: "a las historias de Vincie",
             creations: "a las creaciones de la hermandad",
           }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>

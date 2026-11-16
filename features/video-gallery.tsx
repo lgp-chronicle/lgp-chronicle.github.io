@@ -8,7 +8,6 @@ import { videoAuthor, videoEmbed, videoPoster, videoPublicationUrl, videosForMem
 import { useEntryState } from "../hooks/use-entry-state";
 import { useActivityClock } from "../hooks/use-activity-clock";
 import { fullName, memberHref } from "./member-portrait";
-import { CharacterArt } from "./character-art";
 import { color, type Member } from "./types";
 import { ago } from "./analytics";
 import "../app/video-gallery.css";
@@ -23,6 +22,14 @@ function Cast({ video, members }: { video: GuildVideo; members: Member[] }) {
 function Poster({ video }: { video: GuildVideo }) {
   const [failed, setFailed] = useState(false);
   return <img src={failed ? assetUrl("/guild/galeria/despensa.webp") : videoPoster(video)} alt="" loading="lazy" onError={() => setFailed(true)} />;
+}
+
+function VincieBanner() {
+  return <picture className="vincie-story-art">
+    <source media="(max-width: 600px)" srcSet={assetUrl("/guild/historias-vincie-movil.webp")} />
+    <img src={assetUrl("/guild/historias-vincie.webp")} width={2172} height={724}
+      alt="Vincie exagera una de sus hazañas en la taberna; Loqe ríe y Lua lo escucha con una sonrisa incrédula." />
+  </picture>;
 }
 
 function PublishVideo() {
@@ -76,12 +83,12 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
   }
   return <section className="video-gallery" aria-labelledby="video-gallery-title">
     <header className="cinema-heading">
-      <div><p className="eyebrow"><GuildIcon name="spyglass" size={20}/>Relatos en movimiento</p>
-        <h2 id="video-gallery-title" tabIndex={-1}>{member ? "Los relatos de " + fullName(member) : "El catalejo de Vincie"}</h2>
-        <p>Aventuras y recuerdos de los nuestros, vistos a través de su catalejo.</p>
+      <VincieBanner />
+      <div className="vincie-story-copy"><p className="eyebrow"><GuildIcon name="spyglass" size={20}/>Relatos en movimiento</p>
+        <h2 id="video-gallery-title" tabIndex={-1}>{member ? "Los relatos de " + fullName(member) : "Las historias de Vincie"}</h2>
+        <p>Grandes hazañas, según quien las cuenta.</p>
         <div className="cinema-byline">Por {author ? <a href={memberHref(author)} style={{ color: color(author) }}>{fullName(author)}</a> : <strong>Vincie Quickhands</strong>}</div>
       </div>
-      {author && <div className="cinema-author" aria-hidden="true"><CharacterArt member={author} honor /></div>}
     </header>
     <div className="cinema-toolbar">
       <span>{videos.length} {videos.length === 1 ? "vídeo" : "vídeos"}{member && <> · <a href={siteHref(archivePath("videos"))}>Ver todos los relatos</a></>}</span>
@@ -93,7 +100,7 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
       <span aria-live="polite">{visible.length} {visible.length === 1 ? "resultado" : "resultados"}</span>
     </div>}
     {requested && !active && <p role="status" className="notice">Este vídeo no está disponible en esta galería. <a href={siteHref(archivePath("videos"))}>Ver todos los vídeos</a></p>}
-    {videos.length === 0 ? <div className="cinema-empty"><GuildIcon name="spyglass" size={64}/><h3>{member ? "Aún no tiene relatos" : "El catalejo espera su primera aventura"}</h3><p>{member ? "Sus vídeos aparecerán aquí cuando se publiquen." : "Aquí guardaremos los relatos en movimiento de Vincie."}</p></div>
+    {videos.length === 0 ? <div className="cinema-empty"><GuildIcon name="journal" size={64}/><h3>{member ? "Aún no tiene relatos" : "La primera historia está por contar"}</h3><p>{member ? "Sus vídeos aparecerán aquí cuando se publiquen." : "Aquí guardaremos los relatos en movimiento de Vincie."}</p></div>
       : visible.length === 0 ? <div className="cinema-empty"><Search size={30}/><h3>No hay vídeos con ese filtro</h3><button type="button" className="button outline" onClick={() => { setSearch(""); setCast("all"); }}>Ver todas</button></div>
       : <div className="video-grid">{visible.map(v => <article className="video-card" key={v.id}>
         <button type="button" className="video-thumbnail" aria-label={"Ver " + v.title} onClick={e => { opener.current = e.currentTarget; navigate(v.id, true); }}><Poster video={v}/><span><Play size={26} fill="currentColor"/></span><small>Ver relato</small></button>
@@ -101,7 +108,7 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
       </article>)}</div>}
     <Dialog.Root open={Boolean(active)} onOpenChange={open => { if (!open) { if (history.state?.videoOpened) history.back(); else navigate(null); } }}>
       {active && <Dialog.Portal><Dialog.Overlay className="gallery-shade"/><Dialog.Content className="video-viewer" onCloseAutoFocus={event => { event.preventDefault(); (opener.current ?? document.getElementById("video-gallery-title"))?.focus(); }}>
-        <header><div><span>El catalejo de Vincie</span><Dialog.Title>{active.title}</Dialog.Title></div><Dialog.Close aria-label="Cerrar vídeo"><X/></Dialog.Close></header>
+        <header><div><span>Las historias de Vincie</span><Dialog.Title>{active.title}</Dialog.Title></div><Dialog.Close aria-label="Cerrar vídeo"><X/></Dialog.Close></header>
         <iframe key={active.id} src={videoEmbed(active)} title={active.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
         <div className="video-viewer-footer"><Dialog.Description>{active.description || "Un relato de Vincie Quickhands para La Ganga."}</Dialog.Description><Cast video={active} members={members}/><ShareVideo key={active.id} video={active}/></div>
       </Dialog.Content></Dialog.Portal>}
@@ -112,7 +119,6 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
 export function CinemaShortcut() {
   const video = videosForMember()[0];
   return <section className="cinema-shortcut"><a href={siteHref(withGalleryVideo(archivePath("videos"), video?.id ?? null))}>
-    <span className="cinema-shortcut-icon"><GuildIcon name="spyglass" size={40}/></span><div><small>Relatos de Vincie Quickhands</small><h2>{video ? video.title : "El catalejo de Vincie"}</h2><span>{video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
-    {video && <Poster video={video}/>}<Play className="cinema-shortcut-play" size={23}/>
+    <VincieBanner /><div className="vincie-story-copy"><small>Relatos de Vincie Quickhands</small><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}<span><Play size={15}/>{video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
   </a></section>;
 }

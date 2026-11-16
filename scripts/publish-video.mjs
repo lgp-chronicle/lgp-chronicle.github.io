@@ -16,4 +16,4 @@ const video = prepareVideo(inputs, guild.members.map(m => ({id: m.id, name: full
 const next = [...guildVideos.filter(v => v.id !== video.id), video];
 next.sort((a,b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 await writeFile(new URL("../config/videos.json", import.meta.url), JSON.stringify(next, null, 2) + "\n");
-console.log("Vídeo registrado. La publicación actualizará el catalejo y las fichas de sus protagonistas.");
+console.log("Vídeo registrado. La publicación actualizará las historias y las fichas de sus protagonistas.");

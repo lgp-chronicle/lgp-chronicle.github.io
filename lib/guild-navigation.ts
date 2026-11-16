@@ -8,6 +8,7 @@ export const archiveGroups = [
       ["collections", "Colecciones"],
       ["awards", "Salón de la fama"],
       ["compare", "Cara a cara"],
+      ["gallery", "Galería"],
     ],
   },
   {
@@ -30,8 +31,7 @@ export const archiveGroups = [
     label: "Creaciones",
     sections: [
       ["creations", "De la hermandad"],
-      ["gallery", "Ilustraciones"],
-      ["videos", "El catalejo de Vincie"],
+      ["videos", "Las historias de Vincie"],
     ],
   },
 ] as const;
