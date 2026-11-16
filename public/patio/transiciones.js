@@ -27,7 +27,7 @@
     movie.removeAttribute('src'); movie.load();
     clearTimeout(preloadTimer);
     if (!reduced.matches && !saveData) preloadTimer = setTimeout(() => {
-      const preload = () => { if (!leaving && !document.hidden) asset('puerta-v3-salida.' + (webm ? 'webm' : 'webp')).catch(() => {}); };
+      const preload = () => { if (!leaving && !document.hidden) asset('puerta-v4-salida.' + (webm ? 'webm' : 'webp')).catch(() => {}); };
       if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 4000 }); else preload();
     }, 2000);
   }
@@ -47,10 +47,10 @@
     try {
       if (!webm) throw Error('Use image frames');
       if (exit) {
-        const blob = await asset('puerta-v3-salida.webm');
+        const blob = await asset('puerta-v4-salida.webm');
         if (turn !== revision) return;
         movieURL = URL.createObjectURL(blob); movie.src = movieURL;
-      } else movie.src = 'puerta-v3-entrada.webm';
+      } else movie.src = 'puerta-v4-entrada.webm';
       movie.onended = ended;
       await movie.play();
       started();
@@ -58,7 +58,7 @@
       if (turn !== revision) return;
       // The same illustrated frames, with alpha, for non-WebM browsers.
       try {
-        const blob = await asset(exit ? 'puerta-v3-salida.webp' : 'puerta-v3-entrada.webp');
+        const blob = await asset(exit ? 'puerta-v4-salida.webp' : 'puerta-v4-entrada.webp');
         if (turn !== revision) return;
         const url = URL.createObjectURL(blob);
         movie.hidden = true; fallback.hidden = false;

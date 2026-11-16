@@ -291,8 +291,12 @@ const layoutPan=(function setupPan(scene,stage,pick,update){
     return [Math.max(0,stage.offsetWidth-scene.clientWidth),Math.max(0,stage.offsetHeight-scene.clientHeight)];
   }
   function layout(){
-    if(pick.value!=='patio'){scene.classList.remove('pannable');return}
+    const hint=get('pan-hint');
+    if(pick.value!=='patio'){scene.classList.remove('pannable');hint.hidden=true;return}
     const [w,h]=bounds();
+    hint.hidden=w<=1 && h<=1;
+    const label=nativePan.matches?'Desliza para explorar':'Arrastra para explorar';
+    if(hint.lastElementChild.textContent!==label)hint.lastElementChild.textContent=label;
     if(nativePan.matches){
       // Reassigning scroll offsets on every frame can cancel touch inertia.
       if(Math.abs(scene.scrollLeft-positionX*w)>1)scene.scrollLeft=positionX*w;
