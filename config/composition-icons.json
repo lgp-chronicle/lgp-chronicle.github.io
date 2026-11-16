@@ -1,0 +1,216 @@
+{
+  "classes": {
+    "1": {
+      "file": "class-warrior.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_warrior.jpg"
+    },
+    "2": {
+      "file": "class-paladin.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_paladin.jpg"
+    },
+    "3": {
+      "file": "class-hunter.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_hunter.jpg"
+    },
+    "4": {
+      "file": "class-rogue.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_rogue.jpg"
+    },
+    "5": {
+      "file": "class-priest.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_priest.jpg"
+    },
+    "7": {
+      "file": "class-shaman.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_shaman.jpg"
+    },
+    "8": {
+      "file": "class-mage.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_mage.jpg"
+    },
+    "9": {
+      "file": "class-warlock.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_warlock.jpg"
+    },
+    "11": {
+      "file": "class-druid.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/classicon_druid.jpg"
+    }
+  },
+  "races": {
+    "human": {
+      "file": "race-human.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_human_male.jpg"
+    },
+    "dwarf": {
+      "file": "race-dwarf.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_dwarf_male.jpg"
+    },
+    "gnome": {
+      "file": "race-gnome.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_gnome_male.jpg"
+    },
+    "nightelf": {
+      "file": "race-nightelf.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/achievement_character_nightelf_male.jpg"
+    },
+    "undead": {
+      "file": "race-undead.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_undead_male.jpg"
+    },
+    "orc": {
+      "file": "race-orc.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_orc_male.jpg"
+    },
+    "troll": {
+      "file": "race-troll.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_troll_male.jpg"
+    },
+    "tauren": {
+      "file": "race-tauren.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/race_tauren_male.jpg"
+    },
+    "skyborne": {
+      "file": "race-skyborne.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/character/242/3616754-avatar.jpg",
+      "note": "Retrato de un cielonato de la armería: imagen representativa de la raza."
+    }
+  },
+  "specs": {
+    "11:combate feral": {
+      "file": "spec-11-feral-combat.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132276.jpg",
+      "name": "Combate feral"
+    },
+    "9:afliccion": {
+      "file": "spec-9-affliction.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136145.jpg",
+      "name": "Aflicción"
+    },
+    "1:armas": {
+      "file": "spec-1-arms.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132292.jpg",
+      "name": "Armas"
+    },
+    "1:proteccion": {
+      "file": "spec-1-protection.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132341.jpg",
+      "name": "Protección"
+    },
+    "11:equilibrio": {
+      "file": "spec-11-balance.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136096.jpg",
+      "name": "Equilibrio"
+    },
+    "8:escarcha": {
+      "file": "spec-8-frost.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/135846.jpg",
+      "name": "Escarcha"
+    },
+    "4:asesinato": {
+      "file": "spec-4-assassination.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132292.jpg",
+      "name": "Asesinato"
+    },
+    "4:combate": {
+      "file": "spec-4-combat.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132090.jpg",
+      "name": "Combate"
+    },
+    "7:mejora": {
+      "file": "spec-7-enhancement.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136051.jpg",
+      "name": "Mejora"
+    },
+    "3:dominio de bestias": {
+      "file": "spec-3-beast-mastery.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132164.jpg",
+      "name": "Dominio de bestias"
+    },
+    "2:reprension": {
+      "file": "spec-2-retribution.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/135873.jpg",
+      "name": "Reprensión"
+    },
+    "9:demonologia": {
+      "file": "spec-9-demonology.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136172.jpg",
+      "name": "Demonología"
+    },
+    "1:furia": {
+      "file": "spec-1-fury.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132347.jpg",
+      "name": "Furia"
+    },
+    "3:supervivencia": {
+      "file": "spec-3-survival.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/132215.jpg",
+      "name": "Supervivencia"
+    },
+    "2:proteccion": {
+      "file": "spec-2-protection.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/135893.jpg",
+      "name": "Protección"
+    },
+    "8:arcano": {
+      "file": "spec-8-arcane.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/135932.jpg",
+      "name": "Arcano"
+    },
+    "2:sagrado": {
+      "file": "spec-2-holy.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/135920.jpg",
+      "name": "Sagrado"
+    },
+    "7:combate elemental": {
+      "file": "spec-7-elemental-combat.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136048.jpg",
+      "name": "Combate elemental"
+    },
+    "7:recuperacion": {
+      "file": "spec-7-restoration.jpg",
+      "url": "https://render.worldofwarcraft.com/forever-eu/icons/56/136052.jpg",
+      "name": "Recuperación"
+    },
+    "3:punteria": {
+      "file": "spec-3-marksmanship.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/ability_marksmanship.jpg",
+      "name": "Puntería"
+    },
+    "4:sutileza": {
+      "file": "spec-4-subtlety.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/ability_stealth.jpg",
+      "name": "Sutileza"
+    },
+    "5:disciplina": {
+      "file": "spec-5-discipline.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_holy_wordfortitude.jpg",
+      "name": "Disciplina"
+    },
+    "5:sagrado": {
+      "file": "spec-5-holy.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_holy_holybolt.jpg",
+      "name": "Sagrado"
+    },
+    "5:sombra": {
+      "file": "spec-5-shadow.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_shadow_shadowwordpain.jpg",
+      "name": "Sombra"
+    },
+    "8:fuego": {
+      "file": "spec-8-fire.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_fire_flamebolt.jpg",
+      "name": "Fuego"
+    },
+    "9:destruccion": {
+      "file": "spec-9-destruction.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_shadow_rainoffire.jpg",
+      "name": "Destrucción"
+    },
+    "11:recuperacion": {
+      "file": "spec-11-restoration.jpg",
+      "url": "https://render.worldofwarcraft.com/us/icons/56/spell_nature_healingtouch.jpg",
+      "name": "Recuperación"
+    }
+  }
+}

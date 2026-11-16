@@ -66,18 +66,18 @@ function activeBuild(classId: number, profile: Profile): { role: Role; spec: str
   return { role, spec };
 }
 
-export type DistributionCount = { label: string; count: number; tint?: string };
+export type DistributionCount = { label: string; count: number; tint?: string; classId?: number; classLabel?: string };
 type ClassCount = DistributionCount & { specs: Map<string, number> };
-export type DistributionRow = DistributionCount & { classes: Map<string, ClassCount> };
+export type DistributionRow = DistributionCount & { key: string; classes: Map<string, ClassCount> };
 
 export function composition(members: Member[], kind: DistributionKind) {
   const groups = new Map<string, DistributionRow>();
   const legend = new Map<string, string>();
-  function group(label: string, tint?: string) {
-    let row = groups.get(label);
+  function group(label: string, tint?: string, key = label) {
+    let row = groups.get(key);
     if (!row) {
-      row = { label, count: 0, tint, classes: new Map() };
-      groups.set(label, row);
+      row = { key, label, count: 0, tint, classes: new Map() };
+      groups.set(key, row);
     }
     return row;
   }
@@ -93,15 +93,21 @@ export function composition(members: Member[], kind: DistributionKind) {
       const build = kind === "role" ? activeBuild(id, data) : undefined;
       const row = group(build?.role ?? (data.race?.trim() || "Raza desconocida"));
       row.count++;
-      const entry = row.classes.get(name) ?? { label: name, tint, count: 0, specs: new Map<string, number>() };
+      const entry = row.classes.get(name) ?? { label: name, classId: id, tint, count: 0, specs: new Map<string, number>() };
       entry.count++;
       if (build) entry.specs.set(build.spec, (entry.specs.get(build.spec) ?? 0) + 1);
       row.classes.set(name, entry);
       legend.set(name, tint);
     } else if (kind === "className") {
-      group(name, tint).count++;
+      const row = group(name, tint);
+      row.classId = id;
+      row.count++;
     } else if (data.spec?.trim()) {
-      group(data.spec.trim()).count++;
+      const spec = data.spec.trim();
+      const row = group(spec, tint, id + ":" + normalized(spec));
+      row.classId = id;
+      row.classLabel = name;
+      row.count++;
     }
   }
   const rows = [...groups.values()];

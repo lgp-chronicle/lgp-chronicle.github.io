@@ -1,0 +1,125 @@
+.home-dashboard {
+  display: grid;
+  gap: 18px;
+  padding-block: 24px 8px;
+  --dashboard-border: #80643d;
+  --dashboard-panel: linear-gradient(135deg, #30271d, #241e17 70%);
+}
+.home-dashboard > *, .home-updates-grid > * { min-width: 0; }
+.home-dashboard-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.home-dashboard-heading .eyebrow { color: #c3a36b; font-size: 10px; margin: 0 0 4px; letter-spacing: .12em; }
+.home-dashboard-heading h2 { font: 700 clamp(23px, 2.5vw, 33px)/1.12 Almendra, Georgia, serif; color: #ffe0a0; margin: 0 0 5px; }
+.home-dashboard-heading > div > span { font: 12px var(--interface); color: #c8b79c; }
+.home-dashboard-tools { display: flex; align-items: center; gap: 8px; }
+.home-dashboard-tools .home-member-search { width: clamp(180px, 19vw, 260px); }
+.home-dashboard-tools .button { min-height: 40px; font-size: 12px; white-space: nowrap; }
+.home-pulse { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.home-pulse > div {
+  display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px;
+  padding: 13px 18px; border: 1px solid #79603c; background: var(--dashboard-panel);
+  box-shadow: inset 0 2px #e2b35324;
+}
+.home-pulse img { grid-column: 1; }
+.home-pulse dt { color: #d9c8aa; font: 13px var(--interface); }
+.home-pulse dd { margin: 0; color: #f6cc70; font: 600 29px/1 var(--interface); font-variant-numeric: tabular-nums; }
+.home-dashboard .membership-news {
+  margin: 0; padding: 14px 16px; gap: 20px;
+  border: 1px solid var(--dashboard-border); background: var(--dashboard-panel);
+}
+.home-dashboard .membership-news h2 { font-size: 20px; }
+.home-dashboard .membership-news header { border: 0; padding: 0; margin-bottom: 9px; }
+.home-dashboard .arrival-grid { gap: 9px; }
+.home-dashboard .arrival-card { grid-template-columns: 82px minmax(0, 1fr); border-color: #715a37; background: #201a14; }
+.home-dashboard .arrival-art { min-height: 64px; }
+.home-dashboard .arrival-caption { padding: 5px 9px; }
+.home-dashboard .arrival-caption a { font-size: 15px; }
+.home-dashboard .arrival-caption small, .home-dashboard .arrival-caption time { font-size: 11px; }
+.home-dashboard .departure-list { margin: 0; }
+.home-dashboard .departure-list li { padding: 5px 0; }
+.home-dashboard .departure-list a { font-size: 16px; }
+.home-dashboard .membership-gallery, .home-dashboard .membership-news summary { font-size: 12px; }
+.home-honors-panel { min-width: 0; padding-top: 2px; }
+.home-dashboard .honors-heading { margin: 0 0 10px; gap: 18px; }
+.home-dashboard .honors-heading .section-title { margin: 0; font: 700 clamp(25px, 2.5vw, 32px)/1.1 Almendra, Georgia, serif; color: #ffe0a0; }
+.home-dashboard .honors-heading::after { opacity: .55; }
+.home-dashboard .strength-edition { font-size: 12px; margin-bottom: 10px; color: #c9b89b; }
+.home-dashboard .home-honors .strength-directory { margin-bottom: 0; border-color: #725936; }
+.home-updates-grid { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr); gap: 16px; align-items: stretch; }
+.home-dashboard :is(.recent-art, .recent-trophies) {
+  margin: 0; padding: 14px 16px; border: 1px solid var(--dashboard-border); background: var(--dashboard-panel);
+}
+.home-dashboard :is(.recent-art, .recent-trophies) > header {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 32px; margin: 0 0 12px; padding: 0 0 9px; border-bottom: 1px solid #84623780;
+}
+.home-dashboard :is(.recent-art, .recent-trophies) h2 { font: 700 23px/1.1 Almendra, Georgia, serif; color: #ffe0a0; }
+.home-dashboard :is(.recent-art, .recent-trophies) header a { font: 12px var(--interface); white-space: nowrap; color: #dfbf79; }
+.home-dashboard .recent-art ul { gap: 10px; }
+.home-dashboard .recent-art li a { height: 100%; border-color: #725936; background: #1f1913; }
+.home-dashboard .recent-art li a > :first-child { height: auto; aspect-ratio: 3 / 1; object-fit: cover; }
+.home-dashboard .recent-art li a > div:last-child { padding: 9px 10px; display: block; }
+.home-dashboard .recent-art strong { display: block; font: 600 15px/1.25 var(--interface); min-height: 2.5em; }
+.home-dashboard .recent-art time { display: block; font-size: 11px; margin-top: 6px; color: #baa88a; }
+.home-dashboard .recent-trophies ul { grid-template-columns: 1fr; margin: 0; gap: 0; }
+.home-dashboard .recent-trophies li { padding: 8px 0; background: transparent; border: 0; border-bottom: 1px solid #755b393b; }
+.home-dashboard .recent-trophies li:first-child { padding-top: 0; }
+.home-dashboard .recent-trophies li:last-child { border-bottom: 0; padding-bottom: 0; }
+.home-dashboard .recent-trophies li > div { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 7px; }
+.home-dashboard .recent-trophies time { grid-column: 2; grid-row: 1; }
+.home-dashboard .recent-winners { grid-column: 1/-1; }
+.home-dashboard .recent-trophy-title { font-size: 14px; }
+.home-dashboard .recent-winners { font-size: 12px; }
+.home-dashboard .recent-trophies time { font-size: 10px; }
+.home-dashboard .home-journal { gap: 16px; margin: 0; }
+.home-dashboard .home-pair { gap: 16px; }
+.home-dashboard .home-pair > :is(.latest-headlines, .rumor-panel) {
+  border: 1px solid var(--dashboard-border); padding: 14px 16px;
+  background: var(--dashboard-panel); box-shadow: none;
+}
+.home-dashboard .latest-headlines::before, .home-dashboard .latest-headlines::after { display: none; }
+.home-dashboard .home-pair :is(.paper-title, .rumor-panel h2) { font: 700 23px/1.1 Almendra, Georgia, serif; color: #ffe0a0; border: 0; }
+.home-dashboard .latest-headlines > header { border-bottom: 1px solid #84623780; padding-bottom: 9px; margin-bottom: 2px; min-height: 32px; }
+.home-dashboard .latest-headlines header a { color: #dfbf79; font: 12px var(--interface); }
+.home-dashboard .latest-headlines li { border-color: #755b3960; }
+.home-dashboard .latest-headlines li:first-child { border-top: 0; }
+.home-dashboard .latest-headlines li a { color: #e9d9b9; font-size: 14px; min-height: 43px; }
+.home-dashboard .latest-headlines time { color: #baa88a; font-size: 11px; }
+.home-dashboard .rumor-panel > header { min-height: 32px; padding-bottom: 9px; }
+.home-dashboard .rumor-panel .rumor-date { font-size: 11px; color: #baa88a; }
+.home-dashboard .rumor-body h3 { font-size: 20px; }
+.home-dashboard .rumor-answers { gap: 6px; }
+.home-dashboard .rumor-answers button { font-size: 12px; }
+.home-dashboard .ferrogard-diary { margin: 0; }
+.home-dashboard .ferrogard-diary > a { border-color: var(--dashboard-border); }
+@media (max-width: 1000px) {
+  .home-dashboard-heading { align-items: flex-start; }
+  .home-dashboard-tools .button span { display: none; }
+  .home-dashboard-tools .button { min-width: 40px; }
+  .home-pulse > div { gap: 9px; padding: 12px; }
+  .home-updates-grid { grid-template-columns: minmax(0, 1.6fr) minmax(250px, 1fr); }
+  .home-dashboard .recent-art ul { grid-template-columns: 1fr; gap: 6px; }
+  .home-dashboard .recent-art li a { display: grid; grid-template-columns: 36% minmax(0, 1fr); align-items: center; }
+  .home-dashboard .recent-art li a > :first-child { height: 64px; aspect-ratio: auto; }
+  .home-dashboard .recent-art strong { min-height: 0; font-size: 14px; }
+  .home-dashboard .recent-art time { margin-top: 3px; }
+}
+@media (max-width: 720px) {
+  .home-dashboard { gap: 14px; padding-top: 18px; }
+  .home-dashboard-heading { flex-direction: column; gap: 12px; }
+  .home-dashboard-tools { width: 100%; }
+  .home-dashboard-tools .home-member-search { width: auto; flex: 1; }
+  .home-pulse { gap: 6px; }
+  .home-pulse > div { grid-template-columns: 1fr auto; gap: 5px; padding: 10px; }
+  .home-pulse img { width: 24px; height: 24px; }
+  .home-pulse dt { grid-column: 1/-1; grid-row: 2; font-size: 11px; white-space: nowrap; }
+  .home-pulse dd { grid-column: 2; grid-row: 1; font-size: 22px; }
+  .home-dashboard .membership-news { grid-template-columns: 1fr; gap: 14px; padding: 12px; }
+  .home-dashboard .membership-news > section + section { border-top: 1px solid #765b384f; padding-top: 10px; }
+  .home-dashboard .membership-news h2 { font-size: 19px; }
+  .home-dashboard .arrival-grid { grid-template-columns: 1fr; }
+  .home-updates-grid { grid-template-columns: 1fr; gap: 14px; }
+  .home-dashboard :is(.recent-art, .recent-trophies) { padding: 12px; }
+  .home-dashboard .home-pair { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 14px; }
+  .home-dashboard .recent-art li a { grid-template-columns: 32% minmax(0, 1fr); }
+  .home-dashboard .home-pair > :is(.latest-headlines, .rumor-panel) { padding: 12px; }
+}

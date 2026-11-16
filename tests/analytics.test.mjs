@@ -2,6 +2,27 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { courseProgress, raceLanes } from "../features/race-course.ts";
 import { composition } from "../features/composition.ts";
+import { distributionIcons, specIcons } from "../features/composition-icons.ts";
+import { existsSync } from "node:fs";
+
+test("specializations with the same name remain separate by class and mixed builds keep both icons", () => {
+  const profiles = [
+    { classId: 1, spec: "Protección", level: 40 },
+    { classId: 2, spec: "Protección", level: 40 },
+    { classId: 2, spec: "Sagrado", level: 30 },
+    { classId: 5, spec: "Sagrado", level: 30 },
+    { classId: 8, spec: "Arcano / Escarcha", level: 20 },
+  ];
+  const { rows } = composition(profiles.map(data => ({ data })), "spec");
+  assert.equal(rows.length, 5);
+  assert.equal(new Set(rows.map(row => row.key)).size, 5);
+  const protections = rows.filter(row => row.label === "Protección");
+  assert.equal(protections.length, 2);
+  assert.notEqual(protections[0].tint, protections[1].tint);
+  assert.equal(specIcons(8, "Arcano / Escarcha").length, 2);
+  for (const row of rows) for (const icon of distributionIcons(row, "spec"))
+    assert.ok(existsSync(new URL("../public" + icon, import.meta.url)), icon);
+});
 
 test("level-one bankers are excluded from every composition view until they level up", () => {
   const member = { data: { level: 2, classId: 1, race: "Enano", spec: "Armas" } };

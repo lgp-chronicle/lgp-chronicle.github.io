@@ -17,7 +17,7 @@ import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery, RecentImages } from "./cover-gallery";
 import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
-import { isCurrentMember } from "./membership";
+import { hasArmory, isCurrentMember } from "./membership";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
@@ -27,6 +27,18 @@ import { Compare } from "./compare";
 import { LatestHeadlines, Newspaper } from "./newspaper";
 import { leveling, display, awards, ago } from "./analytics";
 import { color, numeric, type GuildData, type Member } from "./types";
+import "../app/home-dashboard.css";
+
+function HomePulse({ members }: { members: Member[] }) {
+  const adventurers = members.filter(m => m.data.level !== 1);
+  const levels = adventurers.flatMap(m => numeric(m.data.level) ? [m.data.level] : []);
+  const average = levels.length ? Math.round(levels.reduce((a, b) => a + b, 0) / levels.length * 10) / 10 : undefined;
+  return <dl className="home-pulse" aria-label="Resumen de la hermandad">
+    <div><GuildIcon name="tabard" size={32} /><dt>Aventureros</dt><dd>{adventurers.length}</dd></div>
+    <div><GuildIcon name="steps" size={32} /><dt>Nivel medio</dt><dd>{display(average)}</dd></div>
+    <div><GuildIcon name="helmet" size={32} /><dt>Con armería</dt><dd>{adventurers.filter(hasArmory).length}</dd></div>
+  </dl>;
+}
 
 function FerrogardDiary() {
   return (
@@ -135,13 +147,15 @@ export function Dashboard({
   return (
     <main className="page-width guild-dashboard">
       {!section && (
-        <>
-          <MembershipNews members={data.members} asOf={data.generatedAt} />
-          <div className="section-heading honors-heading">
+        <div className="home-dashboard">
+          <header className="home-dashboard-heading">
             <div>
-              <h2 className="section-title">Cuadro de honor</h2>
+              <p className="eyebrow">El tablón de la fortaleza</p>
+              <h2>La hermandad de un vistazo</h2>
+              <span>Última lectura del archivo · {ago(data.generatedAt)}</span>
             </div>
-            <HomeMemberSearch members={m} />
+            <div className="home-dashboard-tools">
+              <HomeMemberSearch members={m} />
             <button
               className="button outline"
               onClick={refresh}
@@ -152,6 +166,13 @@ export function Dashboard({
               <RefreshCw size={15} />
               <span>{busy ? "Consultando…" : "Consultar archivo"}</span>
             </button>
+            </div>
+          </header>
+          <HomePulse members={m} />
+          <MembershipNews members={data.members} asOf={data.generatedAt} />
+          <section className="home-honors-panel" aria-labelledby="home-honors-title">
+          <div className="section-heading honors-heading">
+            <h2 id="home-honors-title" className="section-title">Cuadro de honor</h2>
           </div>
           {(!data.available || m.every((x) => !x.data.observedAt)) && (
             <div className="notice">
@@ -166,8 +187,11 @@ export function Dashboard({
             </p>
           )}
           <div className="home-honors"><GuildStrengths data={data} /></div>
-          <RecentImages members={data.members} />
-          <RecentTrophies room={data.trophyRoom} members={data.members} />
+          </section>
+          <div className="home-updates-grid">
+            <RecentImages members={data.members} />
+            <RecentTrophies room={data.trophyRoom} members={data.members} />
+          </div>
           <div className="home-journal">
             <div className="home-pair">
               <LatestHeadlines events={data.events} members={data.members} />
@@ -175,7 +199,7 @@ export function Dashboard({
             </div>
             <FerrogardDiary />
           </div>
-        </>
+        </div>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
       {section && <section

@@ -696,6 +696,19 @@
 .race-breakdown dd > span { text-align: right; }
 .role-specs { grid-column: 1 / -1; margin: 0 0 4px; padding: 0 0 0 16px; list-style: none; font-size: 12px; color: #cfc1ab; }
 .role-specs li { display: flex; justify-content: space-between; gap: 12px; font-weight: 400; }
+.composition-label { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.composition-label small { display: block; color: #cfc1ab; font-size: 11px; margin-top: 2px; }
+.composition-icons { display: inline-flex; flex: none; gap: 3px; vertical-align: middle; }
+.composition-icons img { width: 28px; height: 28px; object-fit: contain; border: 1px solid #9d814b88; border-radius: 3px; background: #191510; }
+.race-legend .composition-icons img, .race-breakdown .composition-icons img { width: 21px; height: 21px; }
+.role-specs li > span { display: flex; align-items: center; gap: 6px; }
+.role-specs li { align-items: center; padding-block: 3px; }
+@media (max-width: 520px) {
+  .distribution-bars > li { grid-template-columns: minmax(125px, 44%) 1fr 25px; gap: 8px; }
+  .composition-label { gap: 6px; font-size: 12px; }
+  .composition-icons img { width: 23px; height: 23px; }
+  .composition-label > .composition-icons { flex-wrap: wrap; max-width: 23px; }
+}
 .news-paper .paper-title {
   font-size: clamp(26px, 3vw, 39px);
   margin: 6px 0 10px;

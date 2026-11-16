@@ -17,6 +17,8 @@ import { color, numeric, type Member } from "./types";
 import { fullName } from "./member-portrait";
 import { searchable } from "@/lib/guild-navigation";
 import { composition, type DistributionRow, type DistributionKind } from "./composition";
+import { classIcon, classIconByName, distributionIcons, specIcons } from "./composition-icons";
+import { assetUrl } from "@/lib/public-settings";
 
 const metrics = [
   { value: "level", label: "Nivel" },
@@ -288,6 +290,12 @@ export function HistoryChart({ members }: { members: Member[] }) {
   );
 }
 
+function CompositionIcons({ files }: { files: string[] }) {
+  return <span className="composition-icons" aria-hidden="true">
+    {files.map(file => <img key={file} src={assetUrl(file)} alt="" width={28} height={28} />)}
+  </span>;
+}
+
 type BarInspection = { label: string; pinned: boolean } | null;
 function ClassBar({ row, max, inspection, inspect }: {
   row: DistributionRow;
@@ -346,12 +354,12 @@ function ClassBar({ row, max, inspection, inspect }: {
           <strong>{row.label} · {total}</strong>
           <dl>{entries.map(entry => (
             <div key={entry.label} data-highlighted={highlight === entry.label || undefined}>
-              <dt><i className="class-swatch" style={{ backgroundColor: entry.tint }} />{entry.label}</dt>
+              <dt style={{ color: entry.tint }}><CompositionIcons files={[classIcon(entry.classId)]} />{entry.label}</dt>
               <dd>
                 <span>{entry.count}</span>
-                {entry.specs.size > 0 && <ul className="role-specs" aria-label={"Especializaciones de " + entry.label}>
+                {entry.specs.size > 0 && <ul className="role-specs" style={{ color: entry.tint }} aria-label={"Especializaciones de " + entry.label}>
                   {[...entry.specs].sort(([a], [b]) => a.localeCompare(b, "es")).map(([spec, count]) => (
-                    <li key={spec}><span>{spec}</span><b>{count}</b></li>
+                    <li key={spec}><span><CompositionIcons files={specIcons(entry.classId, spec)} />{spec}</span><b>{count}</b></li>
                   ))}
                 </ul>}
               </dd>
@@ -388,8 +396,11 @@ export function Distribution({ members }: { members: Member[] }) {
       {rows.length ? (
         <ul className="distribution-bars">
           {rows.map(row => (
-            <li key={row.label}>
-              <span>{row.label}</span>
+            <li key={row.key}>
+              <span className="composition-label" style={{ color: row.tint }}>
+                <CompositionIcons files={distributionIcons(row, kind)} />
+                <span>{row.label}{row.classLabel && <small>{row.classLabel}</small>}</span>
+              </span>
               {stacked && row.count > 0 ? <ClassBar row={row} max={max} inspection={inspection} inspect={inspect} /> : (
                 <span className="bar-track" aria-hidden="true">
                   <i style={{ width: (100 * row.count) / max + "%", backgroundColor: row.tint }} />
@@ -407,7 +418,7 @@ export function Distribution({ members }: { members: Member[] }) {
       )}
       {stacked && legend.length > 0 && (
         <ul className="race-legend" aria-label="Colores de clase">
-          {legend.map(([name, tint]) => <li key={name}><i className="class-swatch" style={{ backgroundColor: tint }} />{name}</li>)}
+          {legend.map(([name, tint]) => <li key={name} style={{ color: tint }}><CompositionIcons files={[classIconByName(name)]} />{name}</li>)}
         </ul>
       )}
       <p className="muted"><small>Los personajes de nivel 1 (banqueros) no cuentan.</small></p>
