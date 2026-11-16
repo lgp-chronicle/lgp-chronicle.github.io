@@ -1,0 +1,25 @@
+/* The two painted leaves are rigid panels, hinged at their outside edges. */
+.fortress-gate{position:fixed;z-index:30;inset:0;perspective:120vw;overflow:hidden;pointer-events:auto;isolation:isolate}
+.fortress-gate::before{content:"";position:absolute;inset:0;background:#20150d;opacity:1;transition:opacity 1.25s ease}
+.gate-leaf{position:absolute;top:0;bottom:0;width:50.05%;background-size:cover;background-repeat:no-repeat;backface-visibility:hidden;will-change:transform;transition:transform 1.35s cubic-bezier(.32,.03,.2,1)}
+.gate-left{left:0;background-image:url(puerta-izquierda.webp);background-position:right center;transform-origin:left center}
+.gate-right{right:0;background-image:url(puerta-derecha.webp);background-position:left center;transform-origin:right center}
+.gate-leaf::after{content:"";position:absolute;inset:0;background:#140e08;opacity:0;transition:opacity 1.35s ease}
+.fortress-gate.is-open{pointer-events:none}
+.fortress-gate.is-open::before{opacity:0}
+.fortress-gate.is-open .gate-left{transform:rotateY(-103deg)}
+.fortress-gate.is-open .gate-right{transform:rotateY(103deg)}
+.fortress-gate.is-open .gate-leaf::after{opacity:.42}
+.gate-caption{position:absolute;left:12px;right:12px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px 18px;color:#ffe6af;text-shadow:0 2px 3px #140d06;font:15px/1.4 var(--interface,Georgia,serif);transition:opacity .2s}
+.gate-caption span{flex-basis:100%;text-align:center;font-size:clamp(20px,3vw,30px)}
+.gate-caption a,.gate-caption button{font:13px var(--interface,Georgia,serif);color:#ffdfa0;padding:8px 12px;background:#24190edb;border:1px solid #b48b4c;border-radius:3px;min-height:38px;text-decoration:none}
+.fortress-gate.is-open .gate-caption{opacity:0;pointer-events:none}
+.fortress-gate.is-leaving .gate-leaf,.fortress-gate.is-leaving::before{transition-duration:.52s}
+.fortress-gate.is-leaving .gate-caption{opacity:0;pointer-events:none}
+.fortress-gate.skip-motion,.fortress-gate.skip-motion *,.fortress-gate.skip-motion::before{transition:none!important}
+.entering-courtyard main{visibility:hidden}
+#guild-bar .menu-modes a{display:flex;align-items:center;min-height:34px;padding:5px 10px;border:1px solid transparent;border-radius:2px;font:600 12px/1.1 var(--interface);color:#38250e;white-space:nowrap}
+#guild-bar .menu-modes a:hover{background:#ffdf89;border-color:#aa7833}
+.no-script{position:fixed;z-index:40;bottom:10px;left:10px;right:10px;padding:16px;background:#201810;color:#ffe4a5;text-align:center}
+@media(max-aspect-ratio:1/1){.fortress-gate{perspective:150vh}}
+@media(prefers-reduced-motion:reduce){.fortress-gate,.fortress-gate *,.fortress-gate::before{transition:none!important}}

@@ -96,6 +96,7 @@ export function Shell({
         </p>
       </header>
       <div className="guild-navigation" ref={navigation}>
+      <div className="guild-nav-toolbar">
       <nav aria-label="Navegación principal" className="guildhall-nav">
         <div>
           <a
@@ -126,6 +127,11 @@ export function Shell({
           })}
         </div>
       </nav>
+      <div className="guild-menu-switch" role="group" aria-label="Tipo de menú">
+        <a href={siteHref("/")} aria-current="location">Clásico</a>
+        <a href={assetUrl("/patio/")}><GuildIcon name="keep" size={18} />Patio</a>
+      </div>
+      </div>
       {activeGroup && (
         <div className="guildhall-subnav">
           <nav className="archive-links" ref={submenu} aria-label={"Apartados de " + activeGroup.label}>

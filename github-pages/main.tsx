@@ -14,6 +14,7 @@ import { sectionFromPath, withGalleryScene } from "../lib/guild-navigation";
 import { browserCover, coverCatalogue } from "../lib/guild-covers";
 import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
+import { consumeCourtyardArrival } from "../lib/courtyard-arrival";
 import "../app/globals.css";
 import "../app/guild-views.css";
 import "../app/race-course.css";
@@ -23,7 +24,9 @@ import "../app/guild-entrance.css";
 import "../app/guildhall.css";
 import "../app/cover-gallery.css";
 import "../app/membership.css";
+import "../app/courtyard.css";
 function App() {
+  const [fromCourtyard, setFromCourtyard] = useState(consumeCourtyardArrival);
   const selection = useRef<string | undefined>(undefined);
   const [entrance, setEntrance] = useState(initialEntrance);
   const closeEntrance = useCallback(() => setEntrance(null), []);
@@ -134,6 +137,7 @@ function App() {
 
   return (
     <>
+      {fromCourtyard && <div className="courtyard-arrival" aria-hidden="true" onAnimationEnd={() => setFromCourtyard(false)} />}
       <Suspense
         fallback={<main className="page-width panel">Abriendo el portal…</main>}
       >
