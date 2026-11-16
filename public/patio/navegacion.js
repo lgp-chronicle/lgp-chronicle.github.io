@@ -49,5 +49,4 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
   scene.addEventListener('patio-view', hide);
   window.addEventListener('resize', hide);
   document.addEventListener('patio-departure', hide);
-  document.querySelector('.tools summary').textContent = 'Ajustes';
 }

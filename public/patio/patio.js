@@ -282,7 +282,7 @@ function setTorchLight(frame){
   }
 }
 function drawTorches(frame){for(const f of visibleFixtures)if(f.loaded)drawTorchCel(f.ctx,f.sheet,frame)}
-const scene=get('scene'),stage=get('stage'),pick=get('focus');
+const scene=get('scene'),stage=get('stage'),pick=Object.assign(new EventTarget(),{value:'patio'});
 const layoutPan=(function setupPan(scene,stage,pick,update){
   let positionX=.5,positionY=.5,gesture,frame=0,suppressClick=false;
   const nativePan=matchMedia('(pointer: coarse)');
@@ -640,13 +640,8 @@ function tick(now){
   draw(Math.floor(step),step);
   animation=requestAnimationFrame(tick);
 }
-function sync(){cancelAnimationFrame(animation);animation=0;previous=null;get('lighting').disabled=!ready;get('toggle').disabled=!ready;get('advance').disabled=!ready||playing;get('toggle').textContent=playing?'Pausar':'Reproducir';scene.syncNavigation?.(playing&&!document.hidden);if(ready&&playing&&!document.hidden)animation=requestAnimationFrame(tick)}
-get('lighting').onclick=()=>{
-  const off=get('stage').classList.toggle('lights-off');
-  get('lighting').setAttribute('aria-pressed',String(!off));
-  if(!off && ready)drawLighting(current%config.fotogramas);
-};
-get('toggle').onclick=()=>{playing=!playing;sync()};get('advance').onclick=()=>{const n=(current+1)%playbackFrames;elapsed=n*1000/config.fps+.001;draw(n)};if(get('zoom'))get('zoom').onclick=()=>{const on=get('scene').classList.toggle('detail');get('zoom').setAttribute('aria-pressed',String(on));get('zoom').textContent=on?'Ver el patio':'Acercar hoguera'};reduce.addEventListener('change',()=>{playing=!reduce.matches;sync()});document.addEventListener('visibilitychange',sync);
+function sync(){cancelAnimationFrame(animation);animation=0;previous=null;scene.syncNavigation?.(playing&&!document.hidden);if(ready&&playing&&!document.hidden)animation=requestAnimationFrame(tick)}
+reduce.addEventListener('change',()=>{playing=!reduce.matches;sync()});document.addEventListener('visibilitychange',sync);
 if(get('zoom')&&location.hash==='#detalle')get('zoom').click();
 let fireLoaded=false;
 addLayer(()=>showCampfire,async()=>{

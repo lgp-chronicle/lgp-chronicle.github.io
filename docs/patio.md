@@ -18,7 +18,7 @@ Los originales y prompts están en `design/patio`. `render-v4.js` renderiza fuer
 
 La transición espera a que esté disponible la pintura del patio. Las animaciones de ambiente se decodifican después, de una en una y solo si son visibles. La salida se precarga en un momento libre después de la entrada, y se libera el decodificador de vídeo al terminar. Con movimiento reducido o ahorro de datos no se descargan las películas. Los brillos y el audio siguen cargándose solo cuando se usan.
 
-El control de sonido está siempre visible abajo a la izquierda: botón para activar/silenciar, volumen y porcentaje, también antes de activar el audio. No hay reproducción automática. Ajustes contiene la pausa de las animaciones.
+El control de sonido está siempre visible abajo a la izquierda: botón para activar/silenciar, volumen y porcentaje, también antes de activar el audio. No hay reproducción automática ni menú de Ajustes. Las animaciones siguen respetando la reducción de movimiento del dispositivo y se detienen mientras la pestaña está oculta.
 
 En dispositivos táctiles el patio usa scroll nativo horizontal y vertical, con inercia y zoom del navegador. La escena tiene un pequeño margen de recorrido vertical. El foco provocado por un toque no recentra la imagen durante el gesto. El arrastre con ratón y la navegación por teclado se conservan. Si existe recorrido, un indicador muestra «Arrastra para explorar» con ratón y «Desliza para explorar» en dispositivos táctiles; se oculta cuando el patio cabe entero o se entra en una vista de detalle. En móvil, el selector **Clásico / Patio** ocupa una fila independiente con blancos táctiles de 40 px y el mismo orden en ambas vistas.
 
