@@ -4,7 +4,6 @@ import { siteHref } from "@/lib/public-settings";
 import { archivePath } from "@/lib/guild-navigation";
 import { groups, trophyCatalog } from "./trophy-catalog";
 import type { Member, TrophyRoom as Room } from "./types";
-import { isCurrentMember } from "./membership";
 import "../app/trophy-room.css";
 
 const emptyRoom: Room = { unlocks: {}, factions: {} };
@@ -32,7 +31,7 @@ export function RecentTrophies({ room = emptyRoom, members }: { room?: Room; mem
     })
     .sort((a, b) => b.win.at.localeCompare(a.win.at))
     .slice(0, 3);
-  const roster = new Set(members.filter(isCurrentMember).map(m => m.id));
+  const roster = new Set(members.map(m => m.id));
   return <section className="recent-trophies" aria-labelledby="recent-trophy-title">
     <header>
       <h2 id="recent-trophy-title">Últimos logros</h2>
@@ -69,7 +68,7 @@ export function TrophyRoom({
   const catalog = trophyCatalog(room.factions, room.battlefields);
   const selected = catalog.find(trophy => trophy.id === selectedId);
   const earned = catalog.filter(t => room.unlocks[t.id]).length;
-  const roster = new Set(members.filter(isCurrentMember).map((m) => m.id));
+  const roster = new Set(members.map((m) => m.id));
   return (
     <section className="trophy-room" aria-labelledby="trophy-room-title">
       <header className="trophy-room-header">

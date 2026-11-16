@@ -12,8 +12,6 @@ const dateLabel = new Intl.DateTimeFormat("es", {
   timeZone: "UTC",
 });
 function nameLink(m: Member) {
-  if (!isCurrentMember(m))
-    return <span className="former-member-name" style={{ color: color(m) }}>{fullName(m)}</span>;
   return (
     <a href={memberHref(m)} style={{ color: color(m) }}>
       {fullName(m)}

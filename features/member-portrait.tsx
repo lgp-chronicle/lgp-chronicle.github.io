@@ -85,7 +85,7 @@ export function MemberLink({
 }) {
   const label = fullName(member);
   if (!isCurrentMember(member))
-    return <span className="former-member-name" style={{ color: color(member) }}>{label}</span>;
+    return <a className="former-member-name" href={memberHref(member)} style={{ color: color(member) }}>{label}</a>;
   return (
     <a
       className={banner ? "member-link member-banner" : "member-link"}

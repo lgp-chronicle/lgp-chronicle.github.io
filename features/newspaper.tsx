@@ -91,7 +91,7 @@ function NewsEntry({
           </a>
           <div>
             {e.trophyWinners?.map((w) =>
-              members.some((m) => m.id === w.id && isCurrentMember(m)) ? (
+              members.some((m) => m.id === w.id) ? (
                 <a
                   key={w.id}
                   style={{ "--class-tint": w.tint } as CSSProperties}
