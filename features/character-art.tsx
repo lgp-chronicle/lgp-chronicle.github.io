@@ -22,7 +22,7 @@ export function useCharacterArt(
       ? assetUrl(
           "/guild/personajes/" +
             encodeURIComponent(member.id.slice("forever-eu-".length)) +
-            ".webp",
+            ".webp?v=" + archived.modified,
         )
       : undefined;
   const cutout =

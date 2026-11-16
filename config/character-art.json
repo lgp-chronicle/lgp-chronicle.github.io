@@ -135,14 +135,13 @@
     "modified": 1794355807000
   },
   "forever-eu-loqe-delabahía": {
-    "entranceIssue": "race-mismatch",
     "url": "https://render.worldofwarcraft.com/forever-eu/character/252/2833148-main-raw.png",
     "frame": {
-      "x": 48.9,
-      "top": 23.7,
-      "height": 60
+      "x": 50.9,
+      "top": 35.4,
+      "height": 47.1
     },
-    "modified": 1794161948000
+    "modified": 1794820330000
   },
   "forever-eu-lua-nita": {
     "url": "https://render.worldofwarcraft.com/forever-eu/character/69/12973637-main-raw.png",

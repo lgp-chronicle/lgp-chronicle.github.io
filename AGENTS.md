@@ -30,3 +30,7 @@ Consulta la armería actual para la armadura y el resto del equipo: las imágene
 ## Alexion Grandwell
 
 Alexion es un elfo de la noche, con pelo blanco y barba blanca corta, como en [su referencia manual](config/illustration-references/alexion-grandwell.webp). El 16 de noviembre la ficha vuelve a indicar correctamente la raza, pero sus imágenes de armería muestran otra vez un no-muerto. Si ocurre, conserva la identidad de elfo de la referencia manual y consulta los objetos de la ficha para actualizar su equipo; no reproduzcas la cara, el cuerpo ni el atuendo del modelo incorrecto.
+
+## Loqe Delabahía
+
+El 16 de noviembre de 2026 el usuario confirmó que la armería de Loqe Delabahía (`forever-eu-loqe-delabahía`) ya muestra correctamente su personaje, y se comprobó su modelo de enano. Ya no está excluido por el antiguo modelo de tauren. Usa su armería actual para las próximas ilustraciones, con las mismas reglas de actividad y equipo que el resto de integrantes.
