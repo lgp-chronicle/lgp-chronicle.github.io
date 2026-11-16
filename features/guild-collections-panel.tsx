@@ -32,18 +32,17 @@ export function GuildCollections({ members }: { members: Member[] }) {
     <div className="collection-totals">
       {(["mounts","pets"] as const).map(k => <article key={k}>
         <GuildIcon name={icons[k]} size={42} />
-        <div className="collection-total-copy"><h3>{labels[k]} distintas</h3>
-          <strong>{collections[k].coverage ? collections[k].distinct : "—"}{collections[k].progress&&<span className="collection-goal"> / {collections[k].progress.total}</span>}</strong>
+        <div className="collection-total-copy"><h3>{labels[k]}</h3>
+          <strong title={collections[k].coverage?`${collections[k].total} entre todos · ${collections[k].coverage} de ${collections[k].rosterSize} personajes con datos`:undefined}>{collections[k].coverage ? collections[k].distinct : "—"}{collections[k].progress&&<span className="collection-goal"> / {collections[k].progress.total}</span>}</strong>
           {collections[k].progress&&<div className="collection-completion">
             <progress max={collections[k].progress.total} value={collections[k].distinct} aria-label={labels[k]+": "+collections[k].distinct+" de "+collections[k].progress.total+" del catálogo conocido"}/>
             <p><b>{collections[k].progress.remaining===0?"Catálogo completado":collections[k].progress.remaining===1?"Nos falta 1":`Nos faltan ${collections[k].progress.remaining}`}</b><span>{collections[k].progress.percent.toLocaleString("es",{maximumFractionDigits:1})} %</span></p>
-            <small>Catálogo conocido · Consulta automática {ago(collections[k].progress.consultedAt).toLocaleLowerCase("es")}</small>
+            <small>Actualizado {ago(collections[k].progress.consultedAt).toLocaleLowerCase("es")}</small>
           </div>}
-          <p>{collections[k].coverage?`${collections[k].total} entre todos · ${collections[k].coverage} de ${collections[k].rosterSize} personajes con datos`:"Pendiente de colecciones de la armería"}</p></div>
+          {!collections[k].coverage&&<p>Pendiente de datos</p>}</div>
       </article>)}
     </div>
-    <p className="collections-note">El total usa las últimas colecciones conocidas de los miembros actuales. Los juguetes todavía no están disponibles en la armería de Forever.</p>
-    <p className="collections-note">El catálogo se amplía automáticamente al consultar la armería cada 6 horas. Incluye exclusivas y promociones; no todas las especies tienen por qué estar disponibles para cada personaje.</p>
+    <p className="collections-note" title="Se consulta automáticamente cada 6 horas. Algunas especies son exclusivas o promocionales; no todas están disponibles para cada personaje. Los juguetes aún no están disponibles en la armería de Forever.">Catálogo conocido de la armería · Se actualiza solo.</p>
     <div className="collections-kind" role="group" aria-label="Tipo de colección">
       {(["mounts","pets"] as const).map(k => <button key={k} className={kind===k?"button bronze":"button outline"} aria-pressed={kind===k}
         onClick={()=>{setKind(k);setQuery("");}}><GuildIcon name={icons[k]} size={22} />{labels[k]}</button>)}

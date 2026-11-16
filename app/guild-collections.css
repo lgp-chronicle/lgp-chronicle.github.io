@@ -7,7 +7,7 @@
 .collection-totals strong { display: block; color: #ffd574; font: 700 42px/1.2 var(--interface); }
 .collection-total-copy { flex: 1; min-width: 0; width: 100%; }
 .collection-totals .collection-goal { color: #bca77e; font-size: .55em; font-weight: 400; }
-.collection-completion { margin: 8px 0 12px; }
+.collection-completion { margin: 8px 0 0; }
 .collection-completion progress { display: block; width: 100%; height: 10px; border: 1px solid #8c6c36; border-radius: 2px; overflow: hidden; background: #16120e; accent-color: #ecc25b; }
 .collection-completion progress::-webkit-progress-bar { background: #16120e; }
 .collection-completion progress::-webkit-progress-value { background: linear-gradient(90deg,#b68a32,#f8d676); }
