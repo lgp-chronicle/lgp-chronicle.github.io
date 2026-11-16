@@ -53,6 +53,11 @@ export const videosForMember = (memberId?: string, now = Date.now(), videos = gu
   videos.filter(v => Date.parse(v.publishedAt) <= now && (!memberId || v.memberIds.includes(memberId)))
     .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt) || a.id.localeCompare(b.id));
 
+export function isNewVideo(video: Pick<GuildVideo, "publishedAt"> | undefined, now = Date.now()) {
+  const age = now - Date.parse(video?.publishedAt ?? "");
+  return age >= 0 && age < 48 * 60 * 60 * 1000;
+}
+
 export function resolveVideoMembers(names: string, members: { id: string; name: string; surname?: string }[]) {
   const requested = names.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
   if (!requested.length) throw new Error("Indica al menos un protagonista.");

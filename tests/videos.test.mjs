@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { prepareVideo, validateVideo, videoEmbed, videoAuthor, videosForMember, withGalleryVideo, youtubeIdFromUrl } from "../lib/guild-videos.ts";
+import { isNewVideo, prepareVideo, validateVideo, videoEmbed, videoAuthor, videosForMember, withGalleryVideo, youtubeIdFromUrl } from "../lib/guild-videos.ts";
 import { galleryBasePath } from "../lib/guild-navigation.ts";
 const members = [{id:"forever-eu-naisen-grandwell",name:"Naisen Grandwell"}, {id:"forever-eu-rast-puñotormenta",name:"Rast Puñotormenta"}];
 const input = {url:"https://youtu.be/M7lc1UVf-VE?si=ignored",title:"La expedición",characters:"Naisen Grandwell, Rast Puñotormenta",description:"Por los caminos de Azeroth."};
@@ -31,6 +31,24 @@ test("personal video archives retain historical appearances and exclude unpublis
   const now=Date.parse("2026-11-17T12:00:00Z");
   assert.deepEqual(videosForMember(undefined,now,[a,future,b]).map(v=>v.id),["new",a.id]);
   assert.deepEqual(videosForMember(members[0].id,now,[a,b]),[a]);
+});
+
+test("new-story badge lasts 48 elapsed hours, excludes future entries and does not restart on edits", () => {
+  const video = prepareVideo(input, members, [], "2026-11-16T12:00:00Z");
+  const published = Date.parse(video.publishedAt);
+  const expiry = published + 48 * 60 * 60 * 1000;
+  assert.equal(isNewVideo(video, published - 1), false);
+  assert.equal(isNewVideo(video, published), true);
+  assert.equal(isNewVideo(video, expiry - 1), true);
+  assert.equal(isNewVideo(video, expiry), false);
+  assert.equal(isNewVideo(undefined, published), false);
+  assert.equal(isNewVideo({ publishedAt: "invalid" }, published), false);
+  const revised = prepareVideo({ ...input, title: "Título corregido" }, members, [video], "2026-11-19T12:00:00Z");
+  assert.equal(isNewVideo(revised, Date.parse("2026-11-19T12:00:00Z")), false);
+  const next = { ...video, id: "next", youtubeId: "abcdefghijk", publishedAt: "2026-11-19T12:00:00Z" };
+  const future = { ...next, id: "future", publishedAt: "2026-11-22T12:00:00Z" };
+  const now = Date.parse("2026-11-19T13:00:00Z");
+  assert.equal(isNewVideo(videosForMember(undefined, now, [future, video, next])[0], now), true);
 });
 
 test("film links preserve character tabs, clear illustration selection and share the site's own route", () => {

@@ -4,7 +4,7 @@ import { Play, Search, Link, X, ArrowRight, Plus } from "lucide-react";
 import { GuildIcon } from "../components/guild-icon";
 import { archivePath, searchable } from "../lib/guild-navigation";
 import { siteHref, assetUrl } from "../lib/public-settings";
-import { videoAuthor, videoEmbed, videoPoster, videoPublicationUrl, videosForMember, withGalleryVideo, type GuildVideo } from "../lib/guild-videos";
+import { isNewVideo, videoAuthor, videoEmbed, videoPoster, videoPublicationUrl, videosForMember, withGalleryVideo, type GuildVideo } from "../lib/guild-videos";
 import { useEntryState } from "../hooks/use-entry-state";
 import { useActivityClock } from "../hooks/use-activity-clock";
 import { fullName, memberHref } from "./member-portrait";
@@ -117,8 +117,10 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
 }
 
 export function CinemaShortcut() {
-  const video = videosForMember()[0];
+  const now = useActivityClock();
+  const video = videosForMember(undefined, now)[0];
+  const hasNewStory = isNewVideo(video, now);
   return <section className="cinema-shortcut"><a href={siteHref(withGalleryVideo(archivePath("videos"), video?.id ?? null))}>
-    <VincieBanner /><div className="vincie-story-copy"><small>Relatos de Vincie Quickhands</small><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}<span><Play size={15}/>{video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
+    <VincieBanner /><div className="vincie-story-copy"><div className="vincie-story-meta"><small>Relatos de Vincie Quickhands</small>{hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}</div><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}<span><Play size={15}/>{hasNewStory ? "Ver nueva historia" : video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
   </a></section>;
 }

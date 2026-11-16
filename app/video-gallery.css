@@ -60,6 +60,9 @@
 .cinema-shortcut .vincie-story-copy { max-width:35%; }
 .cinema-shortcut h2 { font:700 30px/1.15 Almendra,Georgia,serif; color:#ffe2a2; margin:5px 0 8px; }
 .cinema-shortcut small { font:11px var(--reading); color:#c1aa7b; }
+.vincie-story-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px 10px; margin-bottom:8px; }
+.video-new-badge { display:inline-flex; align-items:center; gap:6px; width:max-content; padding:4px 8px; border:1px solid #ffe3a1; background:linear-gradient(#ffe09a,#e8b951); color:#30200c; box-shadow:0 2px 8px #130d0750; font:700 10px/1.2 var(--interface); text-shadow:none; white-space:nowrap; }
+.video-new-badge::before { content:""; width:5px; height:5px; flex:none; transform:rotate(45deg); background:currentColor; }
 .cinema-shortcut div > span { display:flex; align-items:center; gap:6px; font:12px var(--reading); }
 .cinema-shortcut .vincie-story-copy p { font:13px/1.4 var(--reading); color:#d7c39b; }
 @media(max-width:1000px) { .video-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }

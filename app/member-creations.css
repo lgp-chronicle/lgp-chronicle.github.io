@@ -24,6 +24,8 @@
 .creation-banner::after { content:""; position:absolute; inset:5px; border:1px solid #d8ad5740; pointer-events:none; }
 .creation-banner-copy { width:47%; padding:26px 30px; text-shadow:0 2px 5px #100a09; }
 .creation-banner-copy small { display:block; margin-bottom:9px; color:#edc877; font:11px var(--reading); letter-spacing:.05em; }
+.creation-banner-meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-bottom:9px; }
+.creation-banner-meta small { margin-bottom:0; }
 .creation-banner-copy h3 { margin:0; color:#ffdfa0; font:700 clamp(26px,2.8vw,38px)/1.05 Almendra,Georgia,serif; text-wrap:balance; }
 .creation-banner-copy p { color:#dfcfb8; font:13px/1.4 var(--reading); margin:10px 0 18px; max-width:30ch; }
 .creation-banner-action { display:inline-flex; align-items:center; gap:8px; color:#ffda86; font:600 13px var(--interface); border-bottom:1px solid #b68c4b; padding-bottom:4px; }
@@ -57,7 +59,8 @@
   .creation-banner::before,.creation-banner--diario::before { background:linear-gradient(0deg,#17120c 0%,#17120cee 19%,#17120c99 43%,#17120c08 78%); }
   .creation-banner--diario img { object-position:70% center; }
   .creation-banner-copy { width:100%; padding:20px; }
-  .creation-banner-copy small { margin-bottom:6px; font-size:10px; }
+  .creation-banner-copy small { font-size:10px; }
+  .creation-banner-meta { margin-bottom:6px; }
   .creation-banner-copy h3 { font-size:29px; text-wrap:initial; }
   .creation-banner-copy p { font-size:12px; margin:7px 0 12px; max-width:28ch; }
   .creation-banner-action { font-size:12px; }
