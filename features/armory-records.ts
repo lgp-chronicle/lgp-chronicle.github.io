@@ -1,6 +1,7 @@
 import { battlegrounds } from "./battlegrounds.ts";
 import { hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness.ts";
 import type { Member } from "./types.ts";
+import { isCurrentMember } from "./membership.ts";
 
 export function armoryRecords(members: Member[], now: number) {
   type RecordRow = {
@@ -9,7 +10,7 @@ export function armoryRecords(members: Member[], now: number) {
   };
   const records = new Map<string, RecordRow>();
   const cutoff = now - spotlightWindowDays * 86400000;
-  const active = members.filter(m => m.inRoster !== false && !m.membership?.leftAt &&
+  const active = members.filter(m => isCurrentMember(m) &&
     m.data.armoryVerified !== false && (m.data.level ?? 0) >= 10 && hasRecentUpdate(m, now));
   function observe(id: string, title: string, unit: string, member: Member, value: number, tab: RecordRow["tab"]) {
     const row = records.get(id) ?? { id, title, unit, tab, best: 0, winners: [], coverage: 0 };

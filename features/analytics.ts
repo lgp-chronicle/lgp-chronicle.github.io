@@ -4,6 +4,7 @@ import { raidActivity } from "./raid-activity.ts";
 import { ninjaLoot } from "./ninja-loot.ts";
 import { armoryRecords } from "./armory-records.ts";
 import { isCurrentMember } from "./membership.ts";
+import { hasRecentUpdate } from "./spotlight-freshness.ts";
 import {
   numeric,
   type Member,
@@ -102,7 +103,8 @@ export type Award = {
   rule: string;
 };
 export function awards(members: Member[], now = Date.now()): Award[] {
-  members = members.filter(isCurrentMember);
+  const current = members.filter(isCurrentMember);
+  members = current.filter(m => hasRecentUpdate(m, now));
   const a: Award[] = [];
   const add = (
     id: string,
@@ -318,7 +320,8 @@ export function awards(members: Member[], now = Date.now()): Award[] {
   );
   const atFinish = (level?: number) =>
     numeric(level) && Number.isInteger(level) && level >= finishLevel;
-  const finishers = members.filter(
+  // Reaching 60 is an earned title, not a rotating activity award.
+  const finishers = current.filter(
     (m) => atFinish(m.data.level) || m.history.some((s) => atFinish(s.data.level)),
   );
   if (finishers.length) {

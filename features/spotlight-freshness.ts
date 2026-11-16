@@ -1,10 +1,10 @@
 import { measurements } from "./observations.ts";
 import type { Member } from "./types.ts";
 
-export const spotlightWindowDays = 7;
+export const spotlightWindowDays = 5;
 
 // A dated Blizzard update is exact. A change between observations can only
-// be placed inside that interval, which matters at the edge of a week.
+// be placed inside that interval, which matters at the inactivity cutoff.
 export function armorySignals(member: Member, now: number) {
   const signals = new Map<number, number>();
   function record(at: number, earliest = at) {
@@ -57,11 +57,11 @@ export function hasRecentUpdate(member: Member, now: number) {
   const modified = Date.parse(member.data.sourceModified ?? "");
   if (
     member.data.armoryVerified !== false &&
-    cutoff <= modified &&
+    cutoff < modified &&
     modified <= now
   )
     return true;
   return [...armorySignals(member, now).values()].some(
-    (time) => time >= cutoff,
+    (time) => time > cutoff,
   );
 }

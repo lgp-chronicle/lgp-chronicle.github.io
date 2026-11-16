@@ -7,6 +7,7 @@ type ArchivedModel = {
   modified: number;
   frame: { x: number; top: number; height: number };
   entranceIssue?: string;
+  illustrationReference?: string;
 };
 export const models: Record<string, ArchivedModel> = archive;
 

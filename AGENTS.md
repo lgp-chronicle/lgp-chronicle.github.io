@@ -2,6 +2,14 @@
 
 Para cada ilustración nueva, consulta el censo vigente y vuelve a descargar el retrato y el modelo de la armería de cada protagonista. Contrasta el equipo de la misma ficha y respeta las correcciones visuales o referencias manuales del jugador si el modelo está defectuoso.
 
+## Actividad antes de elegir protagonistas
+
+Por indicación del usuario, los personajes con **5 días completos o más sin cambios registrados** quedan fuera del Cuadro de honor, los premios actuales y la selección automática para nuevas ilustraciones, portadas y escenas. Si no hay una fecha de actividad fiable, tampoco se eligen. Volver a consultar una ficha sin cambios no cuenta como actividad. Cuando vuelvan a registrar cambios, vuelven a ser candidatos.
+
+Antes de preparar imágenes, ejecuta `node scripts/illustration-candidates.mjs`: consulta el censo publicado y aplica el mismo filtro de actividad que la web, junto con la disponibilidad de armería y las correcciones manuales. El resultado incluye cuántas ilustraciones tiene cada candidato: combina azar y un reparto razonable **solo entre los candidatos activos**. Después vuelve a descargar e inspeccionar las referencias y el equipo como se indica arriba. La cifra no sustituye esa comprobación visual. Una petición explícita del usuario de retratar a alguien tiene prioridad sobre la selección automática.
+
+La regla no elimina ilustraciones históricas ni trofeos permanentes ya ganados. El calendario de actividad conserva su vista de siete días; el corte de elegibilidad es de cinco días.
+
 Al preparar una portada, un retrato o una escena de grupo, comprueba por separado si cada personaje lleva un objeto en la ranura de tabardo (`slotType: TABARD` o `slot: Tabardo`). También puedes confirmarlo con una captura o indicación del jugador.
 
 Siempre que lleve cualquier tabardo equipado, píntalo con la apariencia de la hermandad: tela amarilla y dos serpientes negras entrelazadas en el pecho. Aplica este diseño aunque el modelo de la armería muestre otro dibujo o una textura defectuosa, como ocurre con Franz Martel. Si el personaje no lleva tabardo, conserva visible su equipo de pecho.

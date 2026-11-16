@@ -1,0 +1,41 @@
+.guild-collections { padding-top: 8px; }
+.collections-heading .section-title { margin-bottom: 8px; }
+.collections-heading > p:last-child, .collections-note { color: #ccb998; font: 13px/1.5 var(--reading); }
+.collection-totals { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin: 20px 0 10px; }
+.collection-totals article { display: flex; gap: 18px; padding: 22px; align-items: center; border: 1px solid #8d6f3c; border-top: 2px solid #d1a44e; background: linear-gradient(135deg,#372a1d,#251e17); }
+.collection-totals h3 { font: 700 22px Almendra,Georgia,serif; margin: 0; }
+.collection-totals strong { display: block; color: #ffd574; font: 700 42px/1.2 var(--interface); }
+.collection-totals p { margin: 3px 0 0; color: #c6b494; font: 12px/1.4 var(--reading); }
+.collections-kind { display: flex; gap: 8px; margin: 20px 0 14px; }
+.collections-body { display: grid; grid-template-columns: minmax(280px,.8fr) minmax(0,1.4fr); gap: 18px; align-items: start; }
+.collections-body .panel { padding: 20px; }
+.collections-body h3 { font: 700 25px/1.15 Almendra,Georgia,serif; margin: 0; }
+.collection-ranking header { display: flex; align-items: center; gap: 9px; }
+.collection-ranking > p, .collection-catalogue header p { margin: 8px 0 14px; color: #c7b798; font: 12px/1.45 var(--reading); }
+.collection-ranking ol { margin: 0; padding: 0; list-style: none; }
+.collection-ranking-more summary { padding: 14px 0 2px; color: #e8c478; cursor: pointer; font: 13px var(--reading); }
+.collection-ranking-more[open] summary { padding-bottom: 14px; }
+.collection-ranking li { display: grid; grid-template-columns: 30px minmax(0,1fr) auto; gap: 4px 8px; padding: 11px 0; border-top: 1px solid #655034; align-items: center; }
+.collection-ranking li a { font: 600 15px var(--interface); }
+.collection-ranking strong { color: #ffda86; font-size: 18px; }
+.collection-rank { color: #ba9e68; font: 12px var(--reading); text-align: center; }
+.collection-ranking progress { grid-column: 2/-1; width: 100%; height: 5px; border: 0; background: #483a29; }
+.collection-ranking progress::-webkit-progress-bar { background: #483a29; }
+.collection-ranking progress::-webkit-progress-value { background: var(--class-color, currentColor); }
+.collection-catalogue header { display: flex; align-items: start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.collection-catalogue input { width: 200px; max-width: 100%; padding: 9px 11px; border: 1px solid #6c5638; border-radius: 3px; background: #201a14; color: #eed9ac; font: 13px var(--reading); }
+.collection-catalogue ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.collection-catalogue li { display: grid; grid-template-columns: 82px minmax(0,1fr); align-items: start; gap: 10px; border: 1px solid #665033; padding: 10px; background: #211a14; min-width: 0; }
+.collectible-art { position: relative; display: grid; place-items: center; height: 64px; background: #16120e; }
+.collectible-art > img:not(.guild-icon) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.collection-catalogue li strong { font: 600 14px/1.25 var(--interface); color: #f4d694; display: block; }
+.collection-catalogue li small { color: #c9b698; font: 11px var(--reading); display: block; margin-top: 5px; }
+.collection-catalogue summary { color: #d9b96e; cursor: pointer; font: 12px var(--reading); margin-top: 8px; }
+.collectible-owners { display: grid; gap: 6px; margin-top: 9px; font: 12px/1.3 var(--reading); overflow-wrap: anywhere; }
+@media(max-width:1100px) { .collection-catalogue ul { grid-template-columns: 1fr; } }
+@media(max-width:700px) {
+  .collection-totals { gap: 10px; }.collection-totals article { flex-direction: column; align-items: start; gap: 7px; padding: 14px; }
+  .collection-totals h3 { font-size: 20px; }.collection-totals strong { font-size: 34px; }
+  .collections-body { grid-template-columns: 1fr; }.collections-body .panel { padding: 16px; }
+  .collection-catalogue header label, .collection-catalogue input { width: 100%; }.collection-catalogue header { margin-bottom: 12px; }
+}

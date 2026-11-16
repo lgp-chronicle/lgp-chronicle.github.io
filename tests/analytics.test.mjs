@@ -4,6 +4,49 @@ import { courseProgress, raceLanes } from "../features/race-course.ts";
 import { composition } from "../features/composition.ts";
 import { distributionIcons, specIcons } from "../features/composition-icons.ts";
 import { existsSync } from "node:fs";
+import { guildCollection, collectionCount, sharedCollections } from "../features/guild-collections.ts";
+import { duelGroups } from "../features/duel-metrics.ts";
+
+test("guild collections deduplicate species and owners, preserve unknowns, and rank only recently active members", () => {
+  const now = Date.parse("2026-11-16T12:00:00Z"), stamp = new Date(now).toISOString();
+  const make = (id, ids, modified=stamp) => ({id,name:id,history:[],data:{level:20,sourceModified:modified,
+    resourceTimes:{mounts:stamp},collections:{mounts:ids.map(id=>({id,name:"Montura "+id}))}}});
+  const a=make("a",[1,1,2]), b=make("b",[2,3]);
+  const old=make("old",[4,5,6],new Date(now-5*86400000).toISOString());
+  const empty=make("empty",[]), unknown={...make("unknown",[]),data:{level:20}};
+  const bank={...make("bank",[7]),data:{...make("bank",[7]).data,level:1}};
+  const result=guildCollection([a,b,old,empty,unknown,bank,{...make("left",[9]),inRoster:false}],"mounts",now);
+  assert.equal(result.distinct,6); assert.equal(result.total,7); assert.equal(result.coverage,4); assert.equal(result.rosterSize,5);
+  assert.deepEqual(result.items.find(x=>x.item.id===2).owners.map(m=>m.id),["a","b"]);
+  assert.deepEqual(result.ranking.map(r=>[r.member.id,r.rank]),[["a",1],["b",1],["empty",3]]);
+  assert.equal(collectionCount(unknown.data,"mounts"),undefined);assert.equal(collectionCount(empty.data,"mounts"),0);
+  assert.equal(collectionCount({...a.data,armoryVerified:false},"mounts"),undefined);
+  assert.equal(sharedCollections(a.data,b.data,"mounts"),1);
+  assert.equal(sharedCollections(a.data,unknown.data,"mounts"),undefined);
+  a.data.resourceTimes.mounts=new Date(now-6*86400000).toISOString();
+  assert.deepEqual(guildCollection([a,b],"mounts",now).ranking.map(r=>r.member.id),["b"]);
+});
+
+test("duels distinguish empty collections and battlegrounds from missing data and compare normalized professions", () => {
+  const a={id:"a",name:"a",history:[],data:{level:40,collections:{mounts:[{id:1},{id:1}],pets:[]},
+    statistics:{Aguante:0,"Crítico con hechizos (%)":12},
+    professions:[{name:"Cooking",skill:150,max:150},{name:"Cocina",skill:100,max:150},{name:"Fishing",skill:75,max:75}],
+    pvp:{pvp_map_statistics:[{world_map:{id:489,name:"Garganta"},match_statistics:{played:4,won:3,lost:1}}]}}};
+  const b={id:"b",name:"b",history:[],data:{level:40,collections:{pets:[]},statistics:{Aguante:1}}};
+  const groups=duelGroups(a,b,0), row=label=>groups.flatMap(g=>g.rows).find(r=>r.label===label);
+  assert.deepEqual([row("Monturas distintas").left,row("Monturas distintas").right],[1,undefined]);
+  assert.deepEqual([row("Mascotas distintas").left,row("Mascotas distintas").right],[0,0]);
+  assert.equal(row("Coleccionables en total").right,undefined);
+  assert.deepEqual([row("Porcentaje de victorias").left,row("Porcentaje de victorias").right],[75,undefined]);
+  assert.equal(row("Campos de batalla jugados").crown,false);
+  assert.equal(row("Puntos de habilidad en total").left,225);
+  assert.equal(row("Profesiones a 300 puntos").left,0);
+  assert.equal(row("Cocina").left,150);
+  assert.equal(row("Crítico con hechizos").unit,"%");
+  b.data.pvp={pvp_map_statistics:[]};
+  const empty=duelGroups(a,b,0).flatMap(g=>g.rows).find(r=>r.label==="Victorias en campos de batalla");
+  assert.equal(empty.right,0);
+});
 
 test("specializations with the same name remain separate by class and mixed builds keep both icons", () => {
   const profiles = [
@@ -296,7 +339,7 @@ test("first data never creates a fictitious change event", () =>
   ));
 test("ties share awards", () => {
   const a = awards(
-    [member("a", [point(0, 20)]), member("b", [point(0, 20)])],
+    ["a", "b"].map(name => ({ ...member(name), data: { level: 20, sourceModified: point(0, 20).at } })),
     now,
   ).find((x) => x.id === "level");
   assert.deepEqual(a.names, ["a", "b"]);

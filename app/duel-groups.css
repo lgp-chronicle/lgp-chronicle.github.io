@@ -1,0 +1,19 @@
+.duel-last-update { display: block; color: #bca98b; font: 12px var(--reading); margin-top: 7px; }
+.duel-help { color: #cbb99a; font: 13px/1.5 var(--reading); margin: 20px 0 14px; }
+.duel-group { border: 1px solid #6b5334; margin-top: 10px; background: #231c15; }
+.duel-group > summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; padding: 12px 16px; background: linear-gradient(90deg,#3b2e1d,#292118); }
+.duel-group > summary::-webkit-details-marker { display: none; }
+.duel-group h4 { color: #f4d38c; font: 700 22px/1.1 Almendra,Georgia,serif; margin: 0; }
+.duel-group summary > small { color: #bda47a; font: 11px var(--reading); margin-left: auto; white-space: nowrap; }
+.duel-group summary > svg { color: #d9b66d; transition: transform .15s; }
+.duel-group[open] summary > svg { transform: rotate(180deg); }
+.duel-group .compare-row { margin-inline: 16px; padding-block: 12px; min-width: 0; gap: 10px; }
+.duel-group .compare-row > span { font: 13px/1.4 var(--reading); }
+.duel-group .compare-row > strong { font-size: 20px; overflow-wrap: anywhere; min-width: 0; }
+.duel-group-note { padding: 0 16px 12px; margin: 10px 0 0; color: #d0bd9b; font: 12px/1.5 var(--reading); }
+@media(max-width:600px) {
+  .duel-group > summary { padding: 11px; gap: 7px; }.duel-group h4 { font-size: 19px; }
+  .duel-group .compare-row { margin-inline: 10px; grid-template-columns: minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr); gap: 6px; }
+  .duel-group .compare-row > strong { font-size: 16px; }.duel-group .compare-row > span { font-size: 12px; }
+  .duel-group .duel-crown img { width: 16px; height: 16px; }
+}

@@ -28,6 +28,10 @@ import { LatestHeadlines, Newspaper } from "./newspaper";
 import { leveling, display, awards, ago } from "./analytics";
 import { color, numeric, type GuildData, type Member } from "./types";
 import "../app/home-dashboard.css";
+import { hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness";
+import { useActivityClock } from "../hooks/use-activity-clock";
+import { KeenPanel } from "./keen-panel";
+import { GuildCollections } from "./guild-collections-panel";
 
 function HomePulse({ members }: { members: Member[] }) {
   const adventurers = members.filter(m => m.data.level !== 1);
@@ -86,6 +90,7 @@ export function Dashboard({
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   useGuildTools(data);
+  const now = useActivityClock();
   const archive = useRef<HTMLElement>(null);
   const tavernLink = <a className="tavern-shortcut" href={siteHref(archivePath("overview")+"?ver=taberna")}
     onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === event.currentTarget.hash)
@@ -105,28 +110,29 @@ export function Dashboard({
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
   const m = data.members.filter(isCurrentMember);
+  const active = m.filter(member => hasRecentUpdate(member, now));
   const query = new URLSearchParams(location.hash.split("?")[1]);
-  const trophies = section === "awards" ? awards(m) : [];
+  const trophies = section === "awards" ? awards(m, now) : [];
   const withoutLogs = m.filter((member) => !member.logs);
   const cards = [
     {
       label: "Por delante en nivel",
-      top: leader(m, (x) => x.data.level),
+      top: leader(active, (x) => x.data.level),
       unit: "nivel",
     },
     {
       label: "El equipo más brillante",
-      top: leader(m, (x) => x.data.itemLevel),
+      top: leader(active, (x) => x.data.itemLevel),
       unit: "item level",
     },
     {
       label: "Pisando el acelerador",
-      top: leader(m, (x) => leveling(x).day),
+      top: leader(active, (x) => leveling(x, now).day),
       unit: "niveles / 24 h",
     },
     {
       label: "El terror del otro bando",
-      top: leader(m, (x) => x.data.honorableKills),
+      top: leader(active, (x) => x.data.honorableKills),
       unit: "muertes honorables",
     },
   ] as const;
@@ -195,7 +201,8 @@ export function Dashboard({
               <RecentTrophies room={data.trophyRoom} members={data.members} />
             </div>
             <LatestHeadlines events={data.events} members={data.members} />
-            <ArmoryRumors members={m} activityLink={tavernLink} />
+            <ArmoryRumors members={active} activityLink={tavernLink} />
+            <KeenPanel />
             <FerrogardDiary />
           </div>
         </div>
@@ -220,12 +227,13 @@ export function Dashboard({
               <Newspaper members={data.members} events={data.events.slice(0, 12)} />
               <section className="panel">
                 <h3>Récords de la hermandad</h3>
+                <p className="muted">Entre personajes con cambios en los últimos {spotlightWindowDays} días.</p>
                 <dl className="guild-records">
                   {cards.map(({label,top,unit})=><div key={label}><dt>{label}</dt>
                     <dd>{top && top.value > 0 ? <>
                       <strong>{display(top.value)} {unit}</strong>
                       <span>{top.winners.map(p=><a key={p.id} href={memberHref(p)} style={{color:color(p)}}>{fullName(p)}</a>)}</span>
-                      {top.registered < m.length && <small>{top.registered} de {m.length} con datos</small>}
+                      {top.registered < active.length && <small>{top.registered} de {active.length} con datos</small>}
                     </> : "Sin marca registrada"}</dd>
                   </div>)}
                 </dl>
@@ -235,6 +243,7 @@ export function Dashboard({
           </>
         )}
         {section === "composicion" && <Distribution members={m} />}
+        {section === "collections" && <GuildCollections members={m} />}
         {section === "race" && <LevelingRace members={m} />}
         {section === "history" && <HistoryChart members={m} />}
         {section === "awards" && (
@@ -245,6 +254,7 @@ export function Dashboard({
             <h2 className="section-title">El salón de la fama</h2>
             <TrophyRoom room={data.trophyRoom} members={data.members} selectedId={query.get("trofeo")} />
             <h3 className="section-title">Premios actuales</h3>
+            <p className="muted">Participan personajes con cambios en los últimos {spotlightWindowDays} días. Los títulos ya conquistados se conservan.</p>
             {trophies.length ? (
               <>
                 {[

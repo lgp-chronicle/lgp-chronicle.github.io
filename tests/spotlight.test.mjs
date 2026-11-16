@@ -5,6 +5,8 @@ import { guildSpotlight } from "../services/spotlight.ts";
 import { describeMembers } from "../services/member-strengths.ts";
 import { hasRecentUpdate } from "../features/spotlight-freshness.ts";
 import { tavernActivity } from "../features/tavern-activity.ts";
+import { awards } from "../features/analytics.ts";
+import { canIllustrateMember } from "../features/illustration-eligibility.ts";
 
 const member = (id, data = {}) => ({
   id,
@@ -68,11 +70,11 @@ test("freshness uses the source modification date or a measured change, never a 
   const fresh = (m) => hasRecentUpdate(m, now);
   assert.ok(
     fresh(
-      member("boundary", { sourceModified: new Date(day(5)).toUTCString() }),
+      member("recent", { sourceModified: new Date(day(8)).toUTCString() }),
     ),
   );
   const stale = member("old", {
-    sourceModified: new Date(Date.parse(day(5)) - 1).toISOString(),
+    sourceModified: day(7),
     observedAt: day(12),
     resourceTimes: { summary: day(12), equipment: day(12) },
   });
@@ -82,6 +84,8 @@ test("freshness uses the source modification date or a measured change, never a 
     data: { level: 14, itemLevel: 11 },
   }));
   assert.equal(fresh(stale), false);
+  stale.data.sourceModified = new Date(Date.parse(day(7)) + 1).toISOString();
+  assert.equal(fresh(stale), true, "just under five full days is still eligible");
   for (const sourceModified of [undefined, "invalid", day(13)]) {
     assert.equal(fresh(member("unknown", { sourceModified })), false);
   }
@@ -116,7 +120,7 @@ test("expiring mid-edition frees a featured place and the guild ranking retains 
   const db = new DatabaseSync(":memory:");
   try {
     const retiring = member("old", {
-      sourceModified: day(5),
+      sourceModified: new Date(Date.parse(day(7)) + 1).toISOString(),
       statistics: { Agilidad: 100 },
     });
     const players = ["a", "b"].map((id, i) =>
@@ -145,7 +149,7 @@ test("expiring mid-edition frees a featured place and the guild ranking retains 
   }
 });
 
-test("every eligible member gets a turn within nine editions for a guild of 33, including weekly players", () => {
+test("every active member gets a turn within nine editions for a guild of 33", () => {
   const db = new DatabaseSync(":memory:");
   try {
     const guild = Array.from({ length: 33 }, (_, i) =>
@@ -156,7 +160,7 @@ test("every eligible member gets a turn within nine editions for a guild of 33, 
     );
     const collected = new Set();
     for (let n = 1; n <= 9; n++) {
-      if (n === 8) guild.forEach((m) => (m.data.sourceModified = day(n)));
+      if (n === 5 || n === 9) guild.forEach((m) => (m.data.sourceModified = day(n)));
       const today = guildSpotlight(db, guild, day(n));
       assert.equal(new Set(today.members).size, 4);
       const waiting = guild.length - collected.size;
@@ -188,6 +192,24 @@ test("every eligible member gets a turn within nine editions for a guild of 33, 
   } finally {
     db.close();
   }
+});
+
+test("five inactive days exclude current awards and new art, and a genuine return restores eligibility", () => {
+  const now = Date.parse(day(12));
+  const a = member("a", { sourceModified: day(12), statistics: { Aguante: 30 } });
+  const b = member("b", { sourceModified: day(11), statistics: { Aguante: 20 } });
+  const old = member("old", { level: 60, sourceModified: day(7), armoryVerified: true,
+    characterRender: "https://example.com/model.png", statistics: { Aguante: 100 } });
+  const winner = () => awards([a, b, old], now).find(row => row.id === "stamina").memberIds;
+  assert.deepEqual(winner(), ["a"]);
+  assert.equal(canIllustrateMember(old, now), false);
+  assert.deepEqual(awards([a,b,old], now).find(row => row.id === "level-60").memberIds, ["old"]);
+  old.data.sourceModified = day(12);
+  assert.deepEqual(winner(), ["old"]);
+  assert.equal(canIllustrateMember(old, now), true);
+  old.membership = { pendingAbsence: true };
+  assert.equal(canIllustrateMember(old, now), false);
+  assert.deepEqual(winner(), ["a"]);
 });
 
 test("guild ranks use all levels with recorded values, tied scores and sparse sheets", () => {

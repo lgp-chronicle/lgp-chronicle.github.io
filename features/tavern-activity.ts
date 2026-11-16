@@ -1,14 +1,15 @@
-import { armorySignals, spotlightWindowDays } from "./spotlight-freshness.ts";
+import { armorySignals } from "./spotlight-freshness.ts";
 import { fullName } from "./member-name.ts";
 import type { Member } from "./types.ts";
 
 const dayMs = 86400000;
+const calendarDays = 7;
 export function tavernActivity(members: Member[], asOf: string) {
   const now = Date.parse(asOf);
   const today = Math.floor(now / dayMs);
   const days = Array.from(
-    { length: spotlightWindowDays },
-    (_, i) => (today - spotlightWindowDays + 1 + i) * dayMs,
+    { length: calendarDays },
+    (_, i) => (today - calendarDays + 1 + i) * dayMs,
   );
   const roster = members.filter(
     (m) =>

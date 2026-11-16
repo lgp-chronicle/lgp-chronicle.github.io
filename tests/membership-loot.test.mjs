@@ -171,6 +171,7 @@ test("Er Manu starts the register, confirmed departures persist across readmissi
 test("ninja loot totals item bonuses once, shares ties, counts zero-score rivals and excludes only Naisen Grandwell", () => {
   const gear = (id, spec, classId, details, effects = []) =>
     member(id, {
+      sourceModified: day,
       spec,
       classId,
       equipment: [{ name: "Botín", slot: "Cabeza", details, effects }],
@@ -190,7 +191,7 @@ test("ninja loot totals item bonuses once, shares ties, counts zero-score rivals
     "+90 poder de ataque",
     "+1 intelecto",
   ]);
-  const winner = (ms) => awards(ms).find((a) => a.id === "ninja-loot");
+  const winner = (ms) => awards(ms, Date.parse(day)).find((a) => a.id === "ninja-loot");
   assert.equal(ninjaLoot(mage).points, 10);
   assert.equal(ninjaLoot(hybrid).points, 0);
   assert.equal(ninjaLoot(immune), undefined);

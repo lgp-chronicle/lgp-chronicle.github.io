@@ -6,6 +6,7 @@ import { memberHref } from "./member-portrait";
 import { fullName } from "./member-name";
 import { armoryRecords } from "./armory-records";
 import { tavernActivity } from "./tavern-activity";
+import { spotlightWindowDays } from "./spotlight-freshness";
 import "../app/tavern-board.css";
 
 const date = new Intl.DateTimeFormat("es", {
@@ -125,7 +126,7 @@ function TavernRecords({ members, now }: { members: Member[]; now: number }) {
     <div>{standings.map(row => <article key={row.id}><h4>{row.title}</h4>
       <p><b>{row.best}</b> {row.unit}</p>
       <ul>{row.winners.map(m => <li key={m.id}><a style={{color: color(m)}} href={memberHref(m) + "?tab=" + row.tab}>{fullName(m)}</a></li>)}</ul>
-      <small>Entre {row.coverage} fichas consultadas en los últimos 7 días.</small>
+      <small>Entre {row.coverage} personajes con cambios en los últimos {spotlightWindowDays} días.</small>
     </article>)}</div></section>;
 }
 

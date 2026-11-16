@@ -200,10 +200,11 @@ test("equipment synchronization keeps spells, on-equip stats and conditional set
   } finally { globalThis.fetch = real; }
 });
 test("attribute awards distinguish namesakes, share ties and skip unknown scores", () => {
+  const now = Date.parse("2026-11-16T12:00:00Z");
   const player = (id: string, stamina?: number, intellect?: number) => ({
-    id, name: "Naisen", data: { statistics: { Aguante: stamina, Intelecto: intellect } }, history: [],
+    id, name: "Naisen", data: { sourceModified: new Date(now).toISOString(), statistics: { Aguante: stamina, Intelecto: intellect } }, history: [],
   } as unknown as Member);
-  const results = awards([player("a",80,17),player("b",73,17),player("c")]);
+  const results = awards([player("a",80,17),player("b",73,17),player("c")], now);
   assert.deepEqual(results.find(a => a.id === "stamina")?.memberIds,["a"]);
   assert.deepEqual(results.find(a => a.id === "intellect")?.memberIds,["a","b"]);
   assert.equal(results.some(a => a.id === "agility"),false);

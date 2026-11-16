@@ -10,6 +10,7 @@ import { fullName, memberHref } from "./member-portrait";
 import { display } from "./analytics";
 import { hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness";
 import { isCurrentMember } from "./membership";
+import { useActivityClock } from "../hooks/use-activity-clock";
 
 function numberLabel(s: MemberStrength) {
   return s.value === undefined
@@ -32,7 +33,7 @@ export function StrengthLine({ strength }: { strength: MemberStrength }) {
 }
 
 export function GuildStrengths({ data }: { data: GuildData }) {
-  const now = Date.now();
+  const now = useActivityClock();
   const members = data.members.filter(
     (m): m is Member & { strength: MemberStrength } =>
       isCurrentMember(m) && Boolean(m.strength) && hasRecentUpdate(m, now),

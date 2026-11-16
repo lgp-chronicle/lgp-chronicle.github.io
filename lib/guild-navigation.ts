@@ -4,6 +4,7 @@ export const archiveGroups = [
     sections: [
       ["overview", "Miembros"],
       ["composicion", "Composición"],
+      ["collections", "Colecciones"],
       ["awards", "Salón de la fama"],
       ["compare", "Cara a cara"],
       ["gallery", "Galería"],

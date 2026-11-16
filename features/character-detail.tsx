@@ -74,6 +74,7 @@ function CurrentCharacterDetail({
         : {
             overview: "a la hermandad",
             composicion: "a la composición de la hermandad",
+            collections: "a las colecciones de la hermandad",
             news: "al Heraldo",
             movimientos: "a altas y bajas",
             cronicas: "al historial de crónicas",

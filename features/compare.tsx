@@ -1,12 +1,15 @@
 "use client";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { Pick, Empty } from "@/components/guild-ui";
-import { display, leveling } from "./analytics";
+import { display, ago } from "./analytics";
 import { numeric, type Member } from "./types";
 import { GuildIcon } from "@/components/guild-icon";
 import { MemberLink, fullName } from "./member-portrait";
 import { duelPath, sectionFromPath } from "@/lib/guild-navigation";
 import { siteHref } from "@/lib/public-settings";
+import { duelGroups } from "./duel-metrics";
+import { ChevronDown } from "lucide-react";
+import "../app/duel-groups.css";
 export function Compare({
   members,
   initialPair,
@@ -25,38 +28,9 @@ export function Compare({
   const a = members.find((m) => m.id === left),
     b = members.find((m) => m.id === right);
   if (!a || !b) return <Empty />;
-  const rows: [string, (m: Member) => unknown][] = [
-    ["Nivel", (m) => m.data.level],
-    ["Item level", (m) => m.data.itemLevel],
-    ["Muertes honorables", (m) => m.data.honorableKills],
-    ...[
-      "Aguante",
-      "Intelecto",
-      "Fuerza",
-      "Agilidad",
-      "Espíritu",
-      "Armadura",
-    ].map((attribute): [string, (m: Member) => unknown] => [
-      attribute,
-      (m) => m.data.statistics?.[attribute],
-    ]),
-    [
-      "Profesiones",
-      (m) =>
-        m.data.professions
-          ?.map((p) => p.name + " " + display(p.skill))
-          .join(" · "),
-    ],
-    ["Bosses en logs", (m) => m.logs?.bosses],
-    ["Best Parse", (m) => m.logs?.bestParse],
-    ["Mejor DPS", (m) => m.logs?.bestDps],
-    ["Mejor HPS", (m) => m.logs?.bestHps],
-    ["Niveles / 24 h", (m) => leveling(m).day],
-    ["Niveles / 7 días", (m) => leveling(m).week],
-    ["Niveles / día observado", (m) => leveling(m).average],
-  ];
+  const groups = duelGroups(a,b);
   return (
-    <section className="panel">
+    <section className="panel duel-panel">
       {initialPair &&
         sectionFromPath(window.history.state?.origin ?? "") === "news" && (
           <a
@@ -103,13 +77,15 @@ export function Compare({
                   subtitle={m.data.className ?? "Clase por descubrir"}
                 />
               </h2>
+              <small className="duel-last-update">Último cambio: {ago(m.data.sourceModified)}</small>
             </div>
           </div>
         ))}
       </div>
-      {rows.map(([label, get]) => {
-        const leftValue = get(a),
-          rightValue = get(b);
+      <p className="duel-help">Despliega cada categoría para comparar. Una corona marca el valor más alto; «—» significa que falta el dato.</p>
+      {groups.map(group => <details className="duel-group" key={group.id} open={["general","collections","pvp"].includes(group.id)}>
+        <summary><GuildIcon name={group.icon} size={25}/><h4>{group.title}</h4><small>{group.rows.length} datos</small><ChevronDown size={17} aria-hidden="true"/></summary>
+        {group.rows.map(({label,left:leftValue,right:rightValue,unit,crown}) => {
         const comparable = numeric(leftValue) && numeric(rightValue);
         const marker = (
           <span className="duel-crown" role="img" aria-label="Mejor valor">
@@ -119,26 +95,24 @@ export function Compare({
         return (
           <div className="compare-row" key={label}>
             <strong>
-              {comparable && leftValue > rightValue && marker}
-              {display(leftValue)}
+              {crown && comparable && leftValue > rightValue && marker}
+              {display(leftValue)}{numeric(leftValue) && unit && " " + unit}
             </strong>
             <span>
               {label}
-              {comparable && leftValue === rightValue && (
+              {crown && comparable && leftValue === rightValue && (
                 <small className="tied-value">Empate</small>
               )}
             </span>
             <strong>
-              {comparable && rightValue > leftValue && marker}
-              {display(rightValue)}
+              {crown && comparable && rightValue > leftValue && marker}
+              {display(rightValue)}{numeric(rightValue) && unit && " " + unit}
             </strong>
           </div>
         );
-      })}
-      <p className="subheading" style={{ marginTop: 18 }}>
-        DPS y HPS son mejores registros; pueden corresponder a encuentros
-        distintos.
-      </p>
+        })}
+        {group.note && <p className="duel-group-note">{group.note}</p>}
+      </details>)}
     </section>
   );
 }
