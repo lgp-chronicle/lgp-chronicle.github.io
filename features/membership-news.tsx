@@ -1,6 +1,6 @@
 import { color, type Activity, type Member } from "./types";
 import { fullName, MemberLink, memberHref } from "./member-portrait";
-import { welcomeParties } from "./membership";
+import { isCurrentMember, welcomeParties } from "./membership";
 import { WelcomeArt } from "./welcome-art";
 import { siteHref } from "../lib/public-settings";
 import { archivePath, withGalleryScene } from "../lib/guild-navigation";
@@ -12,6 +12,8 @@ const dateLabel = new Intl.DateTimeFormat("es", {
   timeZone: "UTC",
 });
 function nameLink(m: Member) {
+  if (!isCurrentMember(m))
+    return <span className="former-member-name" style={{ color: color(m) }}>{fullName(m)}</span>;
   return (
     <a href={memberHref(m)} style={{ color: color(m) }}>
       {fullName(m)}
@@ -30,7 +32,7 @@ export function MembershipNews({
     .toISOString()
     .slice(0, 10);
   const parties = welcomeParties(members)
-    .filter((p) => p.day >= since)
+    .filter((p) => p.day >= since && p.members.every(isCurrentMember))
     .map((party) => ({
       party,
       current: party.members.filter(

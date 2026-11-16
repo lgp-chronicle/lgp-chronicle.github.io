@@ -122,7 +122,8 @@
 .membership-news li + li {
   margin-top: 6px;
 }
-.membership-news li a {
+.membership-news li a,
+.membership-news .former-member-name {
   font:
     700 19px/1.15 Almendra,
     Georgia,
@@ -138,6 +139,34 @@
 }
 .departure-list time {
   margin-left: 8px;
+}
+.character-departure {
+  padding-block: clamp(24px, 5vw, 64px);
+}
+.departure-notice {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: clamp(24px, 5vw, 56px);
+  text-align: center;
+  background: radial-gradient(ellipse at top, #46351e, #231e18 75%);
+}
+.departure-notice > svg {
+  color: #c9a350;
+  margin: 0 auto 16px;
+}
+.departure-notice h1 {
+  font: 400 clamp(28px, 4vw, 46px) / 1.15 var(--heading, Georgia, serif);
+  color: #ffdb83;
+  margin-block: 8px 18px;
+}
+.departure-notice > p:not(.eyebrow) {
+  max-width: 52ch;
+  margin: 0 auto 24px;
+  color: #e0cfb0;
+  font: 16px/1.65 var(--reading);
+}
+.departure-notice .button {
+  white-space: normal;
 }
 .membership-gallery {
   display: inline-block;

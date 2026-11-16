@@ -10,6 +10,7 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 import { useEntryState } from "@/hooks/use-entry-state";
 import { editionPlay, rivalId } from "./guild-stories";
 import { EditionPlay } from "./edition-play";
+import { isCurrentMember } from "./membership";
 
 const categories: Record<string, string> = {
   all: "Todo",
@@ -90,7 +91,7 @@ function NewsEntry({
           </a>
           <div>
             {e.trophyWinners?.map((w) =>
-              members.some((m) => m.id === w.id) ? (
+              members.some((m) => m.id === w.id && isCurrentMember(m)) ? (
                 <a
                   key={w.id}
                   style={{ "--class-tint": w.tint } as CSSProperties}
@@ -236,7 +237,7 @@ export function Newspaper({
   }, [day]);
   const rows =
     archivedEvents ?? events.filter((e) => e.at.slice(0, 10) === day);
-  const play = featured ? editionPlay(rows, members) : undefined;
+  const play = featured ? editionPlay(rows, members.filter(isCurrentMember)) : undefined;
   useEffect(() => {
     const id = window.history.state?.returnStory;
     if (id && archivedEvents) {

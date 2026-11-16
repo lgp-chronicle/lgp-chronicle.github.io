@@ -2,7 +2,8 @@ import type { CSSProperties } from "react";
 import { guildCovers, coverMemberId } from "@/lib/guild-covers";
 import { assetUrl } from "@/lib/public-settings";
 import portraitArchive from "../config/character-art.json";
-import type { IllustratedChronicle } from "./types";
+import type { IllustratedChronicle, Member } from "./types";
+import { isCurrentMember } from "./membership";
 import "../app/illustrated-chronicles.css";
 
 const dates = new Intl.DateTimeFormat("es", {
@@ -35,18 +36,20 @@ const stamp = (day: string) => new Date(day + "T00:00:00Z");
 function ChronicleScene({
   story,
   first,
+  current,
 }: {
   story: IllustratedChronicle;
   first: boolean;
+  current: Set<string>;
 }) {
   const painted =
     story.kind === "pvp" &&
     guildCovers.pique.cast.every((name) =>
-      story.rows.some((row) => row.id === coverMemberId(name)),
+      current.has(coverMemberId(name)) && story.rows.some((row) => row.id === coverMemberId(name)),
     );
   const portraits = painted
     ? []
-    : story.rows.filter(({ id }) => models[id] && !models[id].entranceIssue);
+    : story.rows.filter(({ id }) => current.has(id) && models[id] && !models[id].entranceIssue);
   return (
     <div className="chronicle-scene" data-kind={story.kind}>
       <div className="chronicle-painting" aria-hidden="true">
@@ -94,9 +97,11 @@ function ChronicleScene({
 function ChronicleCard({
   story,
   first = false,
+  current,
 }: {
   story: IllustratedChronicle;
   first?: boolean;
+  current: Set<string>;
 }) {
   const max = Math.max(
     1,
@@ -107,7 +112,7 @@ function ChronicleCard({
       <header className="chronicle-mast">
         <time dateTime={story.day}>{dates.format(stamp(story.day))}</time>
       </header>
-      <ChronicleScene story={story} first={first} />
+      <ChronicleScene story={story} first={first} current={current} />
       <div className="chronicle-ledger">
         <div className="chronicle-metric">
           <strong>{metricLabels[story.kind]}</strong>
@@ -152,9 +157,12 @@ function ChronicleCard({
 
 export function ChronicleArchive({
   stories,
+  members,
 }: {
   stories: IllustratedChronicle[];
+  members: Member[];
 }) {
+  const current = new Set(members.filter(isCurrentMember).map(m => m.id));
   return (
     <section className="chronicle-archive">
       <header>
@@ -166,7 +174,7 @@ export function ChronicleArchive({
       {stories.length ? (
         <div className="chronicle-shelf">
           {stories.map((story, i) => (
-            <ChronicleCard key={story.id} story={story} first={i === 0} />
+            <ChronicleCard key={story.id} story={story} first={i === 0} current={current} />
           ))}
         </div>
       ) : (

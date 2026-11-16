@@ -3,6 +3,7 @@ import { siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
+import { isCurrentMember } from "./membership";
 
 import { fullName } from "./member-name";
 export { fullName } from "./member-name";
@@ -46,6 +47,7 @@ export function FittedName({ name, given }: { name: string; given: string }) {
 
 export function Portrait({ member }: { member: Member }) {
   const [failed, setFailed] = useState<string>();
+  if (!isCurrentMember(member)) return null;
   const src = member.data.avatar;
   return (
     <span
@@ -82,6 +84,8 @@ export function MemberLink({
   badge?: React.ReactNode;
 }) {
   const label = fullName(member);
+  if (!isCurrentMember(member))
+    return <span className="former-member-name" style={{ color: color(member) }}>{label}</span>;
   return (
     <a
       className={banner ? "member-link member-banner" : "member-link"}

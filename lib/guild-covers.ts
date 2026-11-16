@@ -1,6 +1,7 @@
 import type { Member } from "../features/types.ts";
 import { fullName } from "../features/member-name.ts";
 import {
+  isCurrentMember,
   welcomeParties,
   type WelcomeParty,
 } from "../features/membership.ts";
@@ -248,8 +249,13 @@ export function sceneParticipants(scene: CoverScene): readonly string[] {
   return scene.guests ? [...scene.cast, ...scene.guests] : scene.cast;
 }
 export function coverCatalogue(members: Member[]): Record<string, CoverScene> {
-  const scenes: Record<string, CoverScene> = { ...guildCovers };
-  for (const party of welcomeParties(members)) {
+  const unavailable = new Set(members.filter(m => !isCurrentMember(m)).map(m => m.id));
+  const scenes: Record<string, CoverScene> = Object.fromEntries(
+    Object.entries(guildCovers).filter(([, scene]) =>
+      sceneParticipants(scene).every(name => !unavailable.has(coverMemberId(name))),
+    ),
+  );
+  for (const party of welcomeParties(members).filter(p => p.members.every(isCurrentMember))) {
     const painting = welcomePaintings[party.id];
     scenes[party.id] = {
       title:

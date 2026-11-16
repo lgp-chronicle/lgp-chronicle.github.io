@@ -14,6 +14,7 @@ import { color, type Member } from "./types";
 import { fullName } from "./member-portrait";
 import { WelcomeArt } from "./welcome-art";
 import { welcomePaintings } from "../lib/welcome-paintings";
+import { isCurrentMember } from "./membership";
 
 function original(id: string) {
   const file = welcomePaintings[id]?.art ?? (id === "mapa" ? "sala-de-la-ganga" : id);
@@ -77,7 +78,7 @@ function Caption({
         return (
           <Fragment key={memberId}>
             {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
-            {member && member.id === currentMember ? (
+            {member && (member.id === currentMember || !isCurrentMember(member)) ? (
               <span style={{ color: color(member) }}>{name}</span>
             ) : member ? (
               <a

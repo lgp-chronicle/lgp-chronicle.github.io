@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { assetUrl } from "@/lib/public-settings";
 import { models } from "./portrait-availability";
 import type { Member } from "./types";
+import { isCurrentMember } from "./membership";
 
 export { hasEntrancePortrait } from "./portrait-availability";
 
@@ -29,9 +30,9 @@ export function useCharacterArt(
       ? local.replace("/personajes/", "/formacion/")
       : undefined;
   const [failed, setFailed] = useState<string[]>([]);
-  const image = [cutout, local, live, member.data.avatar].find(
+  const image = isCurrentMember(member) ? [cutout, local, live, member.data.avatar].find(
     (src) => src && !failed.includes(src),
-  );
+  ) : undefined;
   const avatar = image && image === member.data.avatar;
   const frame = archived?.frame ?? { x: 50, top: 24, height: 57 };
   const style = {
@@ -63,6 +64,7 @@ export function CharacterArt({
     member,
     honor ? "honor" : "current",
   );
+  if (!isCurrentMember(member)) return null;
   if (!image && honor)
     return (
       <img

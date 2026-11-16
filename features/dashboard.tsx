@@ -139,6 +139,7 @@ export function Dashboard({
     <main className="page-width guild-dashboard">
       {!section && (
         <>
+          <MembershipNews members={data.members} asOf={data.generatedAt} />
           <div className="section-heading honors-heading">
             <div>
               <h2 className="section-title">Cuadro de honor</h2>
@@ -177,7 +178,6 @@ export function Dashboard({
           </div>
           <RecentImages members={data.members} />
           <RecentTrophies room={data.trophyRoom} members={data.members} />
-          <MembershipNews members={data.members} asOf={data.generatedAt} />
         </>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
@@ -205,9 +205,10 @@ export function Dashboard({
         )}
         {section === "gallery" && <CoverGallery members={data.members} />}
         {section === "movimientos" && <MembershipArchive members={data.members} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
-        {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
+        {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} members={data.members} />}
         {section === "overview" && (
           <>
+            <MembershipNews members={data.members} asOf={data.generatedAt} />
             {tavernLink}
             <Roster members={m} initialSearch={query.get("buscar") ?? ""} />
             <TavernBoard members={m} asOf={data.generatedAt} />

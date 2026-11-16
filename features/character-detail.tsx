@@ -13,7 +13,7 @@ import { color, type Member } from "./types";
 import { display, ago, leveling, awards } from "./analytics";
 import { memberArmoryUrl } from "@/config/characters";
 import { archivePath, sectionFromPath } from "@/lib/guild-navigation";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Footprints } from "lucide-react";
 import { EquipmentPanel, TalentsPanel } from "./armory-panels";
 import { fullName } from "./member-portrait";
 import { CharacterRecords } from "./character-records";
@@ -23,15 +23,38 @@ import { CoverGallery } from "./cover-gallery";
 import { GuildIcon } from "@/components/guild-icon";
 import { finishTitle } from "./race-course";
 import { StrengthLine } from "./guild-strengths";
-export function CharacterDetail({
-  member: m,
-  members,
-  initialTab,
-}: {
+import { isCurrentMember } from "./membership";
+
+type CharacterDetailProps = {
   member: Member;
   members: Member[];
   initialTab?: string | null;
-}) {
+};
+
+export function CharacterDetail(props: CharacterDetailProps) {
+  if (isCurrentMember(props.member)) return <CurrentCharacterDetail {...props} />;
+  const pending = props.member.membership?.pendingAbsence && !props.member.membership.leftAt;
+  return (
+    <main className="page-width character-departure">
+      <section className="panel departure-notice" aria-labelledby="departure-title">
+        <Footprints size={44} aria-hidden="true" />
+        <p className="eyebrow">El registro de la fortaleza</p>
+        <h1 id="departure-title">{pending ? "El escriba revisa el censo" : "Su camino tomó otro rumbo"}</h1>
+        <p>{pending
+          ? "El escriba aún debe confirmar el lugar de este aventurero entre nuestras filas. Su ficha queda en el archivo mientras termina el recuento."
+          : <><strong>{fullName(props.member)}</strong> ya no forma parte de La Ganga. Su nombre permanece en las crónicas, pero su estandarte ya no ondea en nuestra fortaleza.</>}
+        </p>
+        <a className="button bronze" href={siteHref(archivePath("overview"))}>Volver a la hermandad</a>
+      </section>
+    </main>
+  );
+}
+
+function CurrentCharacterDetail({
+  member: m,
+  members,
+  initialTab,
+}: CharacterDetailProps) {
   const p = m.data,
     l = leveling(m);
   const official = memberArmoryUrl(m.id, m.region);
@@ -283,7 +306,7 @@ export function CharacterDetail({
           <RaidActivity logs={m.logs} />
         </TabsContent>
         <TabsContent value="compare">
-          <Compare members={[m, ...members.filter((x) => x.id !== m.id)]} />
+          <Compare members={[m, ...members.filter((x) => x.id !== m.id && isCurrentMember(x))]} />
         </TabsContent>
         <TabsContent value="gallery">
           <CoverGallery members={members} member={m} />

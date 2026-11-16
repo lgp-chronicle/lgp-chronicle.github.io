@@ -8,7 +8,8 @@ import {
   hasArmory,
   welcomeParties,
 } from "../features/membership.ts";
-import { coverCatalogue, drawCover } from "../lib/guild-covers.ts";
+import { coverCatalogue, coverMemberId, sceneParticipants, drawCover } from "../lib/guild-covers.ts";
+import { hasEntrancePortrait } from "../features/portrait-availability.ts";
 import { awards } from "../features/analytics.ts";
 import { ninjaLoot } from "../features/ninja-loot.ts";
 
@@ -101,18 +102,42 @@ test("two distinct complete censuses confirm a departure, returning members and 
     scan(["old"], "2026-11-16");
     scan(["old"], "2026-11-17");
     assert.equal(view()[1].membership.leftAt, "2026-11-16");
+    assert.ok(welcomeParties(view()).some(p => p.id === id), "the arrival record stays in the archive");
+    assert.equal(coverCatalogue(view())[id], undefined, "a departed member's welcome is no longer displayed");
     assert.equal(view()[2].membership, undefined);
     scan(all, "2026-11-18");
     data = view();
     assert.equal(data[1].membership.joinedAt, "2026-11-18");
     assert.equal(data[1].welcomes.length, 2);
     assert.ok(welcomeParties(data).some((p) => p.id === id));
+    assert.ok(coverCatalogue(data)[id], "readmission restores the member's illustrations");
     guild[2].data.armoryVerified = true;
     scan(all, "2026-11-19");
     assert.equal(view()[2].welcomes.length, 1);
   } finally {
     db.close();
   }
+});
+
+test("departed members lose their portraits and all scenes they appear in", () => {
+  const betadine = { ...member("forever-eu-betadine-sagrado"), name: "Betadine" };
+  const before = coverCatalogue([betadine]);
+  assert.ok(before.jardin && before.mensajeria && before.paella);
+  assert.equal(hasEntrancePortrait(betadine), true);
+  for (const status of [
+    { inRoster: false },
+    { membership: { leftAt: "2026-11-15T02:55:40.719Z" } },
+    { membership: { pendingAbsence: true } },
+  ]) {
+    const departed = { ...betadine, ...status };
+    const catalogue = coverCatalogue([departed]);
+    assert.ok(catalogue.mapa, "unrelated illustrations remain available");
+    assert.ok(Object.values(catalogue).every(scene =>
+      sceneParticipants(scene).every(name => coverMemberId(name) !== betadine.id),
+    ));
+    assert.equal(hasEntrancePortrait(departed), false);
+  }
+  assert.ok(coverCatalogue([betadine]).jardin, "readmission restores the gallery");
 });
 
 test("Er Manu starts the register, confirmed departures persist across readmission and retries", () => {
