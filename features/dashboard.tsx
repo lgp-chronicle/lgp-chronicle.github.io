@@ -123,6 +123,7 @@ export function Dashboard({
           </header>
           <HomePulse members={m} />
           <div className="home-dashboard-grid home-journal">
+            <CreationsPreview />
             <MembershipNews members={data.members} asOf={data.generatedAt} />
             <section className="home-honors-panel" aria-labelledby="home-honors-title">
               <div className="section-heading honors-heading">
@@ -149,7 +150,6 @@ export function Dashboard({
             <LatestHeadlines events={data.events} members={data.members} />
             <ArmoryRumors members={active} activityLink={tavernLink} />
             <GuildRecords members={m} now={now} home />
-            <CreationsPreview />
           </div>
         </div>
       )}
