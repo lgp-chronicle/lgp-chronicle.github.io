@@ -14,7 +14,9 @@ El patio es una página estática independiente, incluida por Vite desde `public
 - `app/courtyard.css`, `components/shell.tsx`: selector integrado en la navegación clásica.
 - `lib/courtyard-arrival.ts`: consume una marca de sesión que dura como máximo 15 segundos para fundir la llegada desde el patio. No cambia rutas ni recuerda un modo de navegación.
 
-El original de las puertas y su prompt están en `design/patio`. La ilustración se generó tomando como referencia el patio aprobado; dos recortes WebP se animan como hojas rígidas. El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en las pruebas del patio. El movimiento de la llama utiliza la referencia acreditada en pantalla: [Campfire At Night · Pixabay/Pexels](https://www.pexels.com/video/campfire-at-night-855587/).
+Los originales de las puertas y del marco, sus prompts y `render-frames.js` están en `design/patio`. La entrada tiene 96 fotogramas renderizados a 48 fps, con hojas de madera de grosor real, herrajes elevados, sombras y avance de cámara a través del marco. Se reproduce como vídeo WebM con transparencia (unos 1,1 MB); la salida usa la secuencia inversa acelerada (unos 550 KB). Los navegadores sin VP9 usan los mismos fotogramas en WebP animado. No se deforman ni se giran recortes con CSS durante la reproducción.
+
+El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en las pruebas del patio. El movimiento de la llama utiliza la referencia acreditada en pantalla: [Campfire At Night · Pixabay/Pexels](https://www.pexels.com/video/campfire-at-night-855587/).
 
 ## Destinos
 
