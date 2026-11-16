@@ -1,0 +1,54 @@
+name: Publicar vídeo de Vincie
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Enlace de YouTube (vídeo No listado, con inserción permitida)
+        required: true
+        type: string
+      title:
+        description: Título del vídeo (máximo 160 caracteres)
+        required: true
+        type: string
+      characters:
+        description: Protagonistas con nombre completo, separados por comas
+        required: true
+        type: string
+      description:
+        description: Breve crónica del vídeo (opcional, máximo 1500 caracteres)
+        required: false
+        type: string
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: guild-video-publication
+  cancel-in-progress: false
+jobs:
+  publish-video:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validar enlace y protagonistas
+        run: node scripts/publish-video.mjs
+      - name: Guardar vídeo
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add config/videos.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Actualizar el catalejo de Vincie'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Publicar la web
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run publish.yml --ref main

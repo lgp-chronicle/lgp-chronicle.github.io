@@ -33,6 +33,14 @@ Edita `config/characters.ts`, añade nombre, reino, región y campaña. La sigui
 
 La frecuencia de ejecución se cambia en `.github/workflows/publish.yml`, campo `schedule`. `SYNC_INTERVAL_MINUTES` es un límite mínimo adicional para evitar consultas duplicadas, no el programador. Está en 10 minutos para permitir las ejecuciones previstas cada 15 minutos. Puedes lanzar una actualización desde Actions → Run workflow.
 
+## El catalejo de Vincie
+
+En **Creaciones → El catalejo de Vincie → Publicar un vídeo** hay un acceso al formulario de GitHub. Una persona con acceso de escritura al repositorio pulsa **Run workflow**, pega el enlace de YouTube y rellena título, protagonistas (nombres completos separados por comas) y una descripción opcional. Debe dejar seleccionada la rama `main`. No hace falta editar código, crear cuentas en la web ni compartir claves.
+
+El vídeo debe estar **No listado**, con inserción permitida. La web lo reproduce en la propia web, sin añadir enlaces de salida a YouTube; los botones de compartir generan enlaces a La Ganga. El reproductor nativo puede mostrar el logo/enlace de YouTube y un vídeo no listado sigue siendo accesible para quien conozca su enlace. No constituye contenido privado.
+
+El formulario valida enlace y personajes, guarda `config/videos.json` y lanza la publicación habitual. Repetir el mismo enlace actualiza su ficha sin duplicarlo ni cambiar la fecha de estreno. Para retirarlo, elimina su entrada de ese archivo y publica. El catálogo empieza vacío: no se muestran vídeos de ejemplo. Cada vídeo aparece también en **Galería → Vídeos** de sus protagonistas, y se conserva como archivo aunque después estén inactivos.
+
 ## Desarrollo local
 
 Requiere Node.js 24 y pnpm 11.19.0.

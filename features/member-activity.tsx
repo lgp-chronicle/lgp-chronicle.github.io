@@ -13,7 +13,6 @@ import "../app/member-activity.css";
 const weekday=new Intl.DateTimeFormat("es",{weekday:"short",timeZone:"UTC"});
 const date=new Intl.DateTimeFormat("es",{day:"numeric",month:"short",timeZone:"UTC"});
 const filters:{id:"all"|"active"|"resting"|"unknown";label:string;note:string;icon:GuildIconName}[]=[
-  {id:"all",label:"Toda la hermandad",note:"Sin bancos de nivel 1",icon:"tabard"},
   {id:"active",label:"Una misión más",note:"Cambios en los últimos 5 días",icon:"boot"},
   {id:"resting",label:"En la posada",note:"5 días o más sin novedades",icon:"campfire"},
   {id:"unknown",label:"Sin rastro todavía",note:"Sin fecha de actividad fiable",icon:"spyglass"},
@@ -25,10 +24,10 @@ export function MemberActivity({members,now}:{members:Member[];now:number}) {
     .sort((a,b)=>filter==="resting"?a.last-b.last||a.name.localeCompare(b.name,"es"):b.activeDays.size-a.activeDays.size||((Number.isFinite(b.last)?b.last:0)-(Number.isFinite(a.last)?a.last:0))||a.name.localeCompare(b.name,"es"));
   return <section className="member-activity" aria-labelledby="member-activity-title">
     <header className="member-activity-heading"><GuildIcon name="campfire" size={42}/><div><p className="eyebrow">El pulso de La Ganga</p><h2 id="member-activity-title">Actividad de los miembros</h2><p>Cambios en la armería, no tiempo de juego ni estado de conexión.</p></div></header>
-    <div className="activity-filters" role="group" aria-label="Filtrar actividad">{filters.map(f=><button key={f.id} type="button" aria-pressed={filter===f.id} onClick={()=>setFilter(f.id)}>
+    <div className="activity-filters" role="group" aria-label="Filtrar actividad">{filters.map(f=><button key={f.id} type="button" aria-pressed={filter===f.id} onClick={()=>setFilter(filter===f.id?"all":f.id)}>
       <GuildIcon name={f.icon} size={30}/><span><b>{f.label}</b><small>{f.note}</small></span><strong>{f.id==="all"?rows.length:rows.filter(r=>r.state===f.id).length}</strong>
     </button>)}</div>
-    <div className="activity-directory-heading"><div><h3>Los últimos 7 días</h3><p><i/>Día con cambios · UTC</p></div><label><Search size={15}/><span className="sr-only">Buscar en actividad</span><input type="search" placeholder="Buscar personaje…" value={query} onChange={e=>setQuery(e.target.value)}/></label></div>
+    <div className="activity-directory-heading"><div><h3>Los últimos 7 días</h3><p><i/>Día con cambios · UTC · Sin bancos de nivel 1</p></div>{filter!=="all"&&<button type="button" className="activity-clear" onClick={()=>setFilter("all")}>Quitar filtro</button>}<label><Search size={15}/><span className="sr-only">Buscar en actividad</span><input type="search" placeholder="Buscar personaje…" value={query} onChange={e=>setQuery(e.target.value)}/></label></div>
     <ul className="activity-directory">{matching.map(row=><li key={row.member.id} data-state={row.state}>
       <a className="activity-figure" href={memberHref(row.member)} aria-label={"Ver ficha de "+row.name}>
         {hasEntrancePortrait(row.member)?<CharacterArt member={row.member} honor/>:<img src={assetUrl("/guild/sello-la-ganga.png")} alt=""/>}

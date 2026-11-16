@@ -1,0 +1,69 @@
+.media-switch { display:flex; gap:8px; margin-bottom:22px; }
+.media-switch a { display:flex; align-items:center; gap:8px; padding:10px 16px; border:1px solid #816237; color:#cbb68e; background:#211b15; text-decoration:none; font:13px var(--interface); }
+.media-switch a[aria-current] { color:#271b09; border-color:#f6d274; background:linear-gradient(#ffe39b,#dba63b); box-shadow:inset 0 0 0 2px #8d5d2660; }
+.media-switch span { font:11px var(--reading); }
+.cinema-heading { position:relative; isolation:isolate; overflow:hidden; min-height:210px; border:1px solid #9b7540; background:radial-gradient(ellipse at 85% 80%,#815d293d,transparent 48%),linear-gradient(115deg,#33251a,#191613); display:flex; align-items:center; padding:30px; }
+.cinema-heading::after { content:""; position:absolute; inset:0; z-index:-1; opacity:.25; background:repeating-linear-gradient(110deg,transparent 0 55px,#e6b94e10 56px 57px); }
+.cinema-heading > div:first-child { max-width:76%; z-index:1; }
+.cinema-heading .eyebrow { display:flex; align-items:center; gap:8px; color:#d6b367; font:10px var(--reading); letter-spacing:.13em; text-transform:uppercase; margin:0 0 12px; }
+.cinema-heading h2 { font:700 clamp(30px,4vw,53px)/1.05 Almendra,Georgia,serif; color:#ffe3a0; margin:0 0 10px; }
+.cinema-heading p:not(.eyebrow) { font:14px/1.4 var(--reading); color:#caba9d; margin:0 0 18px; }
+.cinema-byline { font:12px var(--reading); color:#b6a68c; }
+.cinema-byline a { margin-left:4px; font-weight:600; text-underline-offset:3px; }
+.cinema-author { position:absolute; height:100%; width:220px; right:20px; bottom:0; opacity:.85; pointer-events:none; overflow:hidden; mask-image:linear-gradient(#000 75%,transparent); }
+.cinema-author .banner-art { position:absolute; inset:12px 0 0; z-index:0; --figure-center:50%; --zoom:1.1; }
+.cinema-author .banner-model { filter:brightness(1.05); }
+.cinema-toolbar { display:flex; justify-content:space-between; gap:12px; align-items:baseline; border-bottom:1px solid #806338; margin:0 0 20px; padding:14px 0; font:12px var(--reading); color:#bdaa89; }
+.video-publish { max-width:570px; text-align:right; }
+.video-publish summary { display:inline-flex; align-items:center; gap:5px; color:#e4c47e; cursor:pointer; }
+.video-publish > div { margin-top:15px; text-align:left; padding:18px; border:1px solid #806338; background:#2b2219; }
+.video-publish h3 { color:#f5da9e; font:700 21px Almendra,Georgia,serif; margin:0 0 12px; }
+.video-publish ol { padding-left:20px; margin:0; }
+.video-publish li { margin-block:7px; line-height:1.5; }
+.video-publish p { color:#c6b391; font:12px/1.5 var(--reading); }
+.video-publish .button { white-space:normal; font-size:12px; }
+.video-filters { display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap; }
+.video-filters label { display:flex; align-items:center; gap:9px; background:#1a1612; border:1px solid #655239; padding:0 12px; flex:1; min-width:180px; color:#bba36c; }
+.video-filters input { background:none; border:0; width:100%; min-width:0; padding:12px 0; color:#ffe4ac; font:13px var(--reading); }
+.video-filters select { max-width:100%; background:#1a1612; border:1px solid #655239; color:#dfc99f; padding:11px; font:13px var(--reading); }
+.video-filters > span { font:12px var(--reading); color:#bba987; }
+.video-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.video-card { min-width:0; border:1px solid #806338; background:linear-gradient(120deg,#30261d,#211b16); overflow:hidden; }
+.video-thumbnail { display:block; width:100%; padding:0; border:0; position:relative; aspect-ratio:16/9; overflow:hidden; background:#100d0a; cursor:pointer; color:#ffe7a6; }
+.video-thumbnail img { width:100%; height:100%; object-fit:cover; opacity:.85; transition:opacity .2s; }
+.video-thumbnail > span { display:grid; place-items:center; position:absolute; inset:0; margin:auto; width:57px; height:57px; border:1px solid #e5bc5d; border-radius:50%; background:#20170de8; box-shadow:0 3px 20px #0008; }
+.video-thumbnail > span svg { margin-left:3px; }
+.video-thumbnail small { position:absolute; right:8px; bottom:8px; padding:4px 8px; background:#17120be3; color:#e4d0a2; font:10px var(--reading); }
+.video-thumbnail:hover img { opacity:1; }
+.video-thumbnail:focus-visible { outline:3px solid #ffd371; outline-offset:-3px; }
+.video-caption { padding:17px; }
+.video-caption time { color:#c4a870; font:11px var(--reading); }
+.video-caption h3 { color:#ffe4a5; font:700 25px/1.15 Almendra,Georgia,serif; margin:8px 0; }
+.video-caption p { font:13px/1.5 var(--reading); color:#cdbc9e; margin:0 0 14px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.video-cast { display:flex; flex-wrap:wrap; gap:6px 12px; }
+.video-cast a { font:600 12px/1.4 var(--reading); text-decoration:underline; text-underline-offset:3px; text-decoration-color:#98815a66; }
+.cinema-empty { display:grid; justify-items:center; gap:12px; padding:54px 20px; text-align:center; border:1px dashed #74603d; background:radial-gradient(ellipse at 50% 0,#684b242b,transparent 70%); color:#bda26b; }
+.cinema-empty h3 { margin:0; color:#e7cc92; font:700 27px Almendra,Georgia,serif; }
+.cinema-empty p { margin:0; font:14px/1.5 var(--reading); color:#bfad8f; }
+.video-viewer { position:fixed; z-index:81; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:min(1100px,calc(100% - 24px)); max-height:calc(100dvh - 24px); overflow:auto; background:#201a15; border:1px solid #ad8745; box-shadow:0 16px 80px #000c; }
+.video-viewer > header { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:16px 20px; }
+.video-viewer header span { font:10px var(--reading); letter-spacing:.12em; text-transform:uppercase; color:#bda16a; }
+.video-viewer h2 { margin:4px 0 0; color:#ffe4a5; font:700 clamp(23px,3vw,33px)/1.15 Almendra,Georgia,serif; }
+.video-viewer button { display:flex; align-items:center; justify-content:center; gap:8px; background:#34291c; border:1px solid #806338; color:#eacb88; padding:9px 12px; min-height:40px; cursor:pointer; font:12px var(--reading); }
+.video-viewer > header button { width:40px; padding:8px; flex:none; }
+.video-viewer iframe { display:block; width:100%; min-height:200px; aspect-ratio:16/9; border:0; background:#080706; }
+.video-viewer-footer { padding:17px 20px; display:grid; gap:13px; }
+.video-viewer-footer > p { margin:0; color:#d0bea0; font:14px/1.5 var(--reading); white-space:pre-line; }
+.video-share { display:flex; flex-wrap:wrap; gap:8px; }
+.video-share input { width:100%; min-width:0; background:#15110e; color:#eacb88; padding:8px; }
+.cinema-shortcut > a { display:flex; align-items:center; min-height:116px; gap:20px; border:1px solid #947341; padding:22px; background:radial-gradient(ellipse at 85% 0,#81632c38,transparent 70%),#261f18; text-decoration:none; color:#edcc84; }
+.cinema-shortcut > a:hover { border-color:#f0cc70; }
+.cinema-shortcut-icon { display:grid; place-items:center; width:62px; height:62px; border:1px solid #9c793d; border-radius:50%; flex:none; }
+.cinema-shortcut h2 { font:700 30px/1.15 Almendra,Georgia,serif; color:#ffe2a2; margin:5px 0 8px; }
+.cinema-shortcut small { font:11px var(--reading); color:#c1aa7b; }
+.cinema-shortcut div > span { display:flex; align-items:center; gap:6px; font:12px var(--reading); }
+.cinema-shortcut img { width:140px; aspect-ratio:16/9; object-fit:cover; margin-left:auto; }
+.cinema-shortcut-play { margin-left:auto; flex:none; }
+@media(max-width:1000px) { .video-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .cinema-heading { padding:23px 18px; min-height:225px; } .cinema-heading > div:first-child { max-width:78%; } .cinema-heading h2 { font-size:32px; } .cinema-author { width:135px; right:-15px; opacity:.4; } .cinema-heading p:not(.eyebrow) { max-width:27ch; font-size:12px; } .video-grid { grid-template-columns:1fr; } .video-filters { gap:8px; } .video-filters label { flex-basis:100%; } .video-viewer > header,.video-viewer-footer { padding:13px; } .cinema-toolbar { flex-wrap:wrap; } .video-publish { text-align:left; } .cinema-shortcut > a { padding:18px; gap:12px; } .cinema-shortcut-icon { width:44px; height:44px; } .cinema-shortcut h2 { font-size:25px; } .cinema-shortcut img { display:none; } }
+@media(prefers-reduced-motion:reduce) { .video-thumbnail img { transition:none; } }

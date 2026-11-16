@@ -8,7 +8,6 @@ export const archiveGroups = [
       ["collections", "Colecciones"],
       ["awards", "Salón de la fama"],
       ["compare", "Cara a cara"],
-      ["gallery", "Galería"],
     ],
   },
   {
@@ -27,6 +26,14 @@ export const archiveGroups = [
       ["cronicas", "Historial de crónicas"],
     ],
   },
+  {
+    label: "Creaciones",
+    sections: [
+      ["creations", "De la hermandad"],
+      ["gallery", "Ilustraciones"],
+      ["videos", "El catalejo de Vincie"],
+    ],
+  },
 ] as const;
 
 export type GuildSection =
@@ -37,6 +44,13 @@ export const guildSections = archiveGroups.flatMap<
 export const groupForSection = (section?: GuildSection) =>
   archiveGroups.find((group) => group.sections.some(([id]) => id === section));
 export const archivePath = (section: GuildSection) => "/archivo/" + section;
+export function galleryBasePath(path: string) {
+  const [base, query] = path.split("?");
+  const params = new URLSearchParams(query);
+  params.delete("escena");
+  params.delete("video");
+  return params.size ? base + "?" + params : base;
+}
 export function withGalleryScene(path: string, scene: string | null) {
   const [base, query] = path.split("?");
   const params = new URLSearchParams(query);

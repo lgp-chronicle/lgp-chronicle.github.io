@@ -1,5 +1,5 @@
 "use client";
-import { apiUrl, assetUrl, siteHref } from "@/lib/public-settings";
+import { apiUrl, siteHref } from "@/lib/public-settings";
 import {
   archivePath,
   type GuildSection,
@@ -20,7 +20,7 @@ import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
 import { isCurrentMember } from "./membership";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
-import { ExternalLink, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
 import { HomeMemberSearch, Roster } from "./roster";
 import { HistoryChart, Distribution } from "./charts";
@@ -31,7 +31,8 @@ import { numeric, type GuildData, type Member } from "./types";
 import "../app/home-dashboard.css";
 import { hasRecentUpdate } from "./spotlight-freshness";
 import { useActivityClock } from "../hooks/use-activity-clock";
-import { KeenPanel } from "./keen-panel";
+import { CreationsPreview, MemberCreations, FerrogardDiary } from "./member-creations";
+import { VideoGallery } from "./video-gallery";
 import { GuildCollections } from "./guild-collections-panel";
 
 function HomePulse({ members }: { members: Member[] }) {
@@ -44,24 +45,6 @@ function HomePulse({ members }: { members: Member[] }) {
     <div><GuildIcon name="steps" size={32} /><dt>Nivel medio<small>De los personajes del censo</small></dt><dd>{display(average)}</dd></div>
     <div><GuildIcon name="finish" size={32} /><dt>Nivel más alto<small>La meta es el nivel 60</small></dt><dd>{display(highest)}<span> / 60</span></dd></div>
   </dl>;
-}
-
-function FerrogardDiary() {
-  return (
-    <section className="ferrogard-diary" aria-labelledby="diary-title">
-      <a
-        href="https://discord.com/channels/1551288910569808112/1569452969064140830"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div>
-          <h2 id="diary-title">El diario de Ferrogard</h2>
-          <span>Leer en Discord <ExternalLink size={15} aria-hidden="true" /></span>
-        </div>
-        <img src={assetUrl("/guild/galeria/diario.webp")} width={768} height={256} loading="lazy" alt="" />
-      </a>
-    </section>
-  );
 }
 
 export function Dashboard({
@@ -166,12 +149,11 @@ export function Dashboard({
             <LatestHeadlines events={data.events} members={data.members} />
             <ArmoryRumors members={active} activityLink={tavernLink} />
             <GuildRecords members={m} now={now} home />
-            <KeenPanel />
-            <FerrogardDiary />
+            <CreationsPreview />
           </div>
         </div>
       )}
-      {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
+      {!["gallery", "cronicas", "videos", "creations"].includes(section ?? "") && <SourceNotice members={m} />}
       {section && <section
         className="archive"
         ref={archive}
@@ -179,6 +161,8 @@ export function Dashboard({
         aria-label="Archivo de la hermandad"
       >
         {section === "gallery" && <CoverGallery members={data.members} />}
+        {section === "videos" && <VideoGallery members={data.members} />}
+        {section === "creations" && <MemberCreations members={data.members} />}
         {section === "movimientos" && <MembershipArchive members={data.members} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} members={data.members} />}
         {section === "overview" && (
@@ -206,7 +190,7 @@ export function Dashboard({
         {section === "news" && (
           <>
             <Newspaper members={data.members} events={data.events} featured />
-            <FerrogardDiary />
+            <FerrogardDiary members={data.members} />
           </>
         )}
         {section === "compare" && (
@@ -281,7 +265,7 @@ export function Dashboard({
           </>
         )}
       </section>}
-      {section !== "gallery" && section !== "cronicas" && (
+      {!["gallery", "cronicas", "videos", "creations"].includes(section ?? "") && (
         <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
           Los datos pertenecen a la última observación válida de cada fuente. No
           representan necesariamente el estado actual dentro del juego.

@@ -19,7 +19,7 @@ import { fullName } from "./member-portrait";
 import { CharacterRecords } from "./character-records";
 import { CharacterCollections } from "./character-collections";
 import { ClassFrame } from "./class-frame";
-import { CoverGallery } from "./cover-gallery";
+import { MediaGallery } from "./media-gallery";
 import { GuildIcon } from "@/components/guild-icon";
 import { finishTitle } from "./race-course";
 import { StrengthLine } from "./guild-strengths";
@@ -85,6 +85,8 @@ function CurrentCharacterDetail({
             compare: "al cara a cara",
             logs: "a Warcraft Logs",
             gallery: "a la galería",
+            videos: "al catalejo de Vincie",
+            creations: "a las creaciones de la hermandad",
           }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>
     award.memberIds.includes(m.id),
@@ -176,7 +178,7 @@ function CurrentCharacterDetail({
           ["history", "Su historia"],
           ["logs", "Warcraft Logs"],
           ["compare", "Comparar"],
-          ["gallery", "Ilustraciones"],
+          ["gallery", "Galería"],
         ]}
       >
         <TabsContent value="armory">
@@ -311,7 +313,7 @@ function CurrentCharacterDetail({
           <Compare members={[m, ...members.filter((x) => x.id !== m.id && isCurrentMember(x))]} />
         </TabsContent>
         <TabsContent value="gallery">
-          <CoverGallery members={members} member={m} />
+          <MediaGallery members={members} member={m} />
         </TabsContent>
       </SectionIndex>
       <details className="dossier-source">

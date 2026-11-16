@@ -15,4 +15,6 @@ export const guildSectionIcons = {
   compare: "swords",
   logs: "journal",
   gallery: "painting",
+  videos: "spyglass",
+  creations: "engineering",
 } satisfies Record<GuildSection, GuildIconName>;

@@ -10,7 +10,7 @@ const CharacterDetail = lazy(() =>
   })),
 );
 import { apiUrl, siteHref } from "../lib/public-settings";
-import { sectionFromPath, withGalleryScene } from "../lib/guild-navigation";
+import { sectionFromPath, galleryBasePath } from "../lib/guild-navigation";
 import { browserCover, coverCatalogue } from "../lib/guild-covers";
 import type { GuildData } from "../features/types";
 import { GuildEntrance, initialEntrance } from "../features/guild-entrance";
@@ -77,7 +77,7 @@ function App() {
     const route = (event: HashChangeEvent) => {
       const previous = new URL(event.oldURL).hash.slice(1);
       const next = location.hash.slice(1) || "/";
-      if (withGalleryScene(previous, null) === withGalleryScene(next, null)) {
+      if (galleryBasePath(previous) === galleryBasePath(next)) {
         setPath(next);
         return;
       }
@@ -170,7 +170,7 @@ function App() {
             </main>
           ) : path === "/" || path === "" || section ? (
             <Dashboard
-              key={withGalleryScene(path, null) + data.generatedAt}
+              key={galleryBasePath(path) + data.generatedAt}
               initial={data}
               section={section}
             />
