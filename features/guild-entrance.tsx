@@ -10,6 +10,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import { assetUrl } from "@/lib/public-settings";
 import { hasEntrancePortrait, useCharacterArt } from "./character-art";
+import { isCurrentMember } from "./membership";
 import { measureEntranceFrame } from "./entrance-frame";
 import { positions, raceStature } from "./entrance-formation";
 import { fullName } from "./member-portrait";
@@ -161,7 +162,7 @@ export function GuildEntrance({
     setMissing((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   }, []);
   const ordered = members
-    .filter((m) => hasEntrancePortrait(m) && !missing.has(m.id))
+    .filter((m) => isCurrentMember(m) && hasEntrancePortrait(m) && !missing.has(m.id))
     .sort(
       (a, b) =>
         raceStature(b) - raceStature(a) ||

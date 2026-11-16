@@ -19,6 +19,7 @@ import { ArmoryRumors } from "./armory-rumors";
 import { CoverGallery, RecentImages } from "./cover-gallery";
 import { ChronicleArchive } from "./illustrated-chronicles";
 import { MembershipArchive, MembershipNews } from "./membership-news";
+import { isCurrentMember } from "./membership";
 import { RecentTrophies, TrophyRoom } from "./trophy-room";
 import { ExternalLink, RefreshCw } from "lucide-react";
 import { Empty } from "@/components/guild-ui";
@@ -92,7 +93,7 @@ export function Dashboard({
       document.getElementById("tablon-taberna")?.scrollIntoView({block:"start"});
     else if (section) archive.current?.scrollIntoView({ block: "start" });
   }, [section]);
-  const m = data.members;
+  const m = data.members.filter(isCurrentMember);
   const query = new URLSearchParams(location.hash.split("?")[1]);
   const group = groupForSection(section);
   const trophies = section === "awards" ? awards(m) : [];
@@ -169,14 +170,14 @@ export function Dashboard({
           <div className="home-honors"><GuildStrengths data={data} /></div>
           <div className="home-journal">
             <div className="home-pair">
-              <LatestHeadlines events={data.events} members={m} />
+              <LatestHeadlines events={data.events} members={data.members} />
               <ArmoryRumors members={m} activityLink={tavernLink} />
             </div>
             <FerrogardDiary />
           </div>
-          <RecentImages members={m} />
-          <RecentTrophies room={data.trophyRoom} members={m} />
-          <MembershipNews members={m} asOf={data.generatedAt} />
+          <RecentImages members={data.members} />
+          <RecentTrophies room={data.trophyRoom} members={data.members} />
+          <MembershipNews members={data.members} asOf={data.generatedAt} />
         </>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
@@ -202,8 +203,8 @@ export function Dashboard({
             ))}
           </nav>
         )}
-        {section === "gallery" && <CoverGallery members={m} />}
-        {section === "movimientos" && <MembershipArchive members={m} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
+        {section === "gallery" && <CoverGallery members={data.members} />}
+        {section === "movimientos" && <MembershipArchive members={data.members} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} />}
         {section === "overview" && (
           <>
@@ -211,7 +212,7 @@ export function Dashboard({
             <Roster members={m} initialSearch={query.get("buscar") ?? ""} />
             <TavernBoard members={m} asOf={data.generatedAt} />
             <div style={{ marginTop: 24 }} className="grid-two">
-              <Newspaper members={m} events={data.events.slice(0, 12)} />
+              <Newspaper members={data.members} events={data.events.slice(0, 12)} />
               <section className="panel">
                 <h3>Récords de la hermandad</h3>
                 <dl className="guild-records">
@@ -237,7 +238,7 @@ export function Dashboard({
               HONOR ETERNO. HASTA LA PRÓXIMA SINCRONIZACIÓN.
             </p>
             <h2 className="section-title">El salón de la fama</h2>
-            <TrophyRoom room={data.trophyRoom} members={m} selectedId={query.get("trofeo")} />
+            <TrophyRoom room={data.trophyRoom} members={data.members} selectedId={query.get("trofeo")} />
             <h3 className="section-title">Premios actuales</h3>
             {trophies.length ? (
               <>
@@ -266,7 +267,7 @@ export function Dashboard({
         )}
         {section === "news" && (
           <>
-            <Newspaper members={m} events={data.events} featured />
+            <Newspaper members={data.members} events={data.events} featured />
             <FerrogardDiary />
           </>
         )}

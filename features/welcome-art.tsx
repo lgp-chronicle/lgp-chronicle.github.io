@@ -1,7 +1,8 @@
 import { assetUrl } from "../lib/public-settings";
 import { CharacterArt, hasEntrancePortrait } from "./character-art";
 import { raceStature } from "./entrance-formation";
-import { paintedWelcome, type WelcomeParty } from "./membership";
+import type { WelcomeParty } from "./membership";
+import { welcomePaintings } from "../lib/welcome-paintings";
 
 export function WelcomeArt({
   party,
@@ -10,7 +11,8 @@ export function WelcomeArt({
   party: WelcomeParty;
   large?: boolean;
 }) {
-  if (party.id === paintedWelcome)
+  const painting = welcomePaintings[party.id];
+  if (painting)
     return (
       <picture className="welcome-painting" aria-hidden="true">
         {large && (
@@ -18,7 +20,7 @@ export function WelcomeArt({
             media="(max-width: 680px)"
             srcSet={
               new URL(
-                "../app/art/bienvenida-er-manu-movil.webp",
+                `../app/art/${painting.art}-movil.webp`,
                 import.meta.url,
               ).href
             }
@@ -29,9 +31,9 @@ export function WelcomeArt({
           loading={large ? "eager" : "lazy"}
           src={
             large
-              ? new URL("../app/art/bienvenida-er-manu.webp", import.meta.url)
+              ? new URL(`../app/art/${painting.art}.webp`, import.meta.url)
                   .href
-              : assetUrl("/guild/galeria/bienvenida-er-manu.webp")
+              : assetUrl("/guild/galeria/" + painting.art + ".webp")
           }
         />
       </picture>

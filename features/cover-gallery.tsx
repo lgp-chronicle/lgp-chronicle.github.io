@@ -13,10 +13,10 @@ import { assetUrl, siteHref } from "@/lib/public-settings";
 import { color, type Member } from "./types";
 import { fullName } from "./member-portrait";
 import { WelcomeArt } from "./welcome-art";
-import { paintedWelcome } from "./membership";
+import { welcomePaintings } from "../lib/welcome-paintings";
 
 function original(id: string) {
-  const file = id === "mapa" ? "sala-de-la-ganga" : id;
+  const file = welcomePaintings[id]?.art ?? (id === "mapa" ? "sala-de-la-ganga" : id);
   return new URL(`../app/art/${file}.webp`, import.meta.url).href;
 }
 
@@ -265,7 +265,7 @@ export function CoverGallery({
                   <X />
                 </Dialog.Close>
               </div>
-              {scene.party && active !== paintedWelcome ? (
+              {scene.party && !welcomePaintings[active] ? (
                 <div className="welcome-original">
                   <WelcomeArt party={scene.party} large />
                 </div>

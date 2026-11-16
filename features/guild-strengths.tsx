@@ -9,6 +9,7 @@ import {
 import { fullName, memberHref } from "./member-portrait";
 import { display } from "./analytics";
 import { hasRecentUpdate, spotlightWindowDays } from "./spotlight-freshness";
+import { isCurrentMember } from "./membership";
 
 function numberLabel(s: MemberStrength) {
   return s.value === undefined
@@ -34,7 +35,7 @@ export function GuildStrengths({ data }: { data: GuildData }) {
   const now = Date.now();
   const members = data.members.filter(
     (m): m is Member & { strength: MemberStrength } =>
-      Boolean(m.strength) && hasRecentUpdate(m, now),
+      isCurrentMember(m) && Boolean(m.strength) && hasRecentUpdate(m, now),
   );
   const sheet = new Map(members.map((m) => [m.id, m]));
   const edition = data.spotlight;

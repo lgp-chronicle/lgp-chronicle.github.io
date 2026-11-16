@@ -64,7 +64,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 64% 46%;
+  object-position: 80% 46%;
 }
 .arrival-art > * {
   position: absolute;
@@ -154,6 +154,16 @@
 .guildhall:has(.guildhall-welcome) {
   background: #211b14;
 }
+@media (min-width: 681px) {
+  .guildhall-welcome .welcome-painting img {
+    width: auto;
+    max-width: 100%;
+    margin-left: auto;
+    object-fit: contain;
+    object-position: right center;
+    mask-image: linear-gradient(90deg, transparent, black 25%);
+  }
+}
 .guildhall-welcome .welcome-cast {
   inset: 4% 7% 1% 35%;
 }
@@ -167,6 +177,22 @@
   aspect-ratio: auto;
 }
 @media (max-width: 680px) {
+  .guildhall:has(.welcome-painting) {
+    background: #241c16;
+  }
+  .guildhall-welcome:has(.welcome-painting) {
+    bottom: auto;
+    height: calc(100vw / 1.8);
+  }
+  .guildhall-welcome .welcome-painting img {
+    object-position: center top;
+  }
+  .guildhall:has(.welcome-painting) .guildhall-brand img {
+    width: clamp(70px, 21vw, 96px);
+  }
+  .guildhall:has(.welcome-painting) .guildhall-caption {
+    max-width: 64%;
+  }
   .membership-news {
     grid-template-columns: minmax(0, 1fr);
     gap: 18px;

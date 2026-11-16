@@ -1,10 +1,10 @@
 import type { Member } from "../features/types.ts";
 import { fullName } from "../features/member-name.ts";
 import {
-  paintedWelcome,
   welcomeParties,
   type WelcomeParty,
 } from "../features/membership.ts";
+import { welcomePaintings } from "./welcome-paintings.ts";
 
 const november13Release = "2026-11-13T10:30:42Z";
 
@@ -250,20 +250,17 @@ export function sceneParticipants(scene: CoverScene): readonly string[] {
 export function coverCatalogue(members: Member[]): Record<string, CoverScene> {
   const scenes: Record<string, CoverScene> = { ...guildCovers };
   for (const party of welcomeParties(members)) {
+    const painting = welcomePaintings[party.id];
     scenes[party.id] = {
       title:
-        party.id === paintedWelcome
-          ? "Una insignia para Er Manu"
-          : "Bienvenida de " + party.members.map(fullName).join(" · "),
+        painting?.title ?? "Bienvenida de " + party.members.map(fullName).join(" · "),
       cast: party.members.map(fullName),
       action:
-        party.id === paintedWelcome
-          ? "cuelga su insignia en la puerta de la fortaleza."
-          : party.members.length === 1
+        painting?.action ?? (party.members.length === 1
             ? "se incorpora a La Ganga."
-            : "se incorporan a La Ganga.",
+            : "se incorporan a La Ganga."),
       date: party.day,
-      publishedAt: party.id === paintedWelcome ? "2026-11-12T09:21:12+01:00" : party.members.map(m => m.membership!.joinedAt!).sort().at(-1),
+      publishedAt: painting?.publishedAt ?? party.members.flatMap(m => m.welcomes?.filter(w => w.id === party.id).map(w => w.joinedAt) ?? []).sort().at(-1),
       party,
     };
   }

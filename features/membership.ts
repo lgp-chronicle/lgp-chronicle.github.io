@@ -4,6 +4,9 @@ import type { Member } from "./types.ts";
 export const membershipStart = "2026-11-12T02:30:18.111Z";
 export const originalCensusEnd = "2026-11-10T08:57:01.451Z";
 export const newMemberPeriod = 7 * 86400000;
+export function isCurrentMember(member: Member) {
+  return member.inRoster !== false && !member.membership?.leftAt && !member.membership?.pendingAbsence;
+}
 export function newUntil(m: Member) {
   const joined = m.membership?.joinedAt;
   if (!joined || joined < membershipStart || m.inRoster === false ||

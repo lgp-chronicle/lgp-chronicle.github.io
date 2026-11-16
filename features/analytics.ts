@@ -3,6 +3,7 @@ import { finishLevel, finishTitle } from "./race-course.ts";
 import { raidActivity } from "./raid-activity.ts";
 import { ninjaLoot } from "./ninja-loot.ts";
 import { armoryRecords } from "./armory-records.ts";
+import { isCurrentMember } from "./membership.ts";
 import {
   numeric,
   type Member,
@@ -101,6 +102,7 @@ export type Award = {
   rule: string;
 };
 export function awards(members: Member[], now = Date.now()): Award[] {
+  members = members.filter(isCurrentMember);
   const a: Award[] = [];
   const add = (
     id: string,
