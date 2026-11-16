@@ -14,7 +14,13 @@ El patio es una página estática independiente, incluida por Vite desde `public
 - `app/courtyard.css`, `components/shell.tsx`: selector integrado en la navegación clásica.
 - `lib/courtyard-arrival.ts`: consume una marca de sesión que dura como máximo 15 segundos para fundir la llegada desde el patio. No cambia rutas ni recuerda un modo de navegación.
 
-Los originales de las puertas y del marco, sus prompts y `render-frames.js` están en `design/patio`. La entrada tiene 96 fotogramas renderizados a 48 fps, con hojas de madera de grosor real, herrajes elevados, sombras y avance de cámara a través del marco. Se reproduce como vídeo WebM con transparencia (unos 1,1 MB); la salida usa la secuencia inversa acelerada (unos 550 KB). Los navegadores sin VP9 usan los mismos fotogramas en WebP animado. No se deforman ni se giran recortes con CSS durante la reproducción.
+Los originales y prompts están en `design/patio`. `render-v3.js` renderiza fuera de la web 96 fotogramas a **1920 × 1080 y 48 fps**, con profundidad de madera, tiradores curvos, herrajes elevados y un pasaje de piedra. El encuadre cercano deja el marco decorativo fuera de plano. La web únicamente reproduce el vídeo WebM transparente (1,73 MB); la salida usa la secuencia inversa acelerada (918 KB). No ejecuta el renderer WebGL. Los navegadores sin VP9 descargan únicamente la alternativa WebP animada a 1280 × 720 y 24 fps. Los nombres `puerta-v3-*` evitan reutilizar vídeos anteriores de la caché.
+
+La transición espera a que esté disponible la pintura del patio. Las animaciones de ambiente se decodifican después, de una en una y solo si son visibles. La salida se precarga en un momento libre después de la entrada, y se libera el decodificador de vídeo al terminar. Con movimiento reducido o ahorro de datos no se descargan las películas. Los brillos y el audio siguen cargándose solo cuando se usan.
+
+El control de sonido está siempre visible abajo a la izquierda: botón para activar/silenciar, volumen y porcentaje, también antes de activar el audio. No hay reproducción automática. Ajustes contiene la pausa de las animaciones.
+
+En dispositivos táctiles el patio usa scroll nativo horizontal y vertical, con inercia y zoom del navegador. La escena tiene un pequeño margen de recorrido vertical. El foco provocado por un toque no recentra la imagen durante el gesto. El arrastre con ratón y la navegación por teclado se conservan. En móvil, el selector **Clásico / Patio** ocupa una fila independiente con blancos táctiles de 40 px y el mismo orden en ambas vistas.
 
 El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en las pruebas del patio. El movimiento de la llama utiliza la referencia acreditada en pantalla: [Campfire At Night · Pixabay/Pexels](https://www.pexels.com/video/campfire-at-night-855587/).
 
@@ -33,7 +39,7 @@ El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en
 | Estandarte | Composición de la hermandad |
 | Gato | Mascotas y monturas |
 
-Los enlaces usan `../#/…`, también al publicar bajo una subcarpeta. La barra mantiene los cuatro destinos principales del sitio. El selector antiguo de tarjetas del prototipo no forma parte de esta versión.
+Los enlaces usan `../#/…`, también al publicar bajo una subcarpeta. La barra mantiene los destinos principales del sitio, incluidas las creaciones de miembros. El selector antiguo de tarjetas del prototipo no forma parte de esta versión.
 
 ## Comprobación local
 

@@ -7,6 +7,12 @@
 .guild-menu-switch a:focus-visible{outline:2px solid #201509;outline-offset:2px}
 .courtyard-arrival{position:fixed;inset:0;z-index:100;pointer-events:none;background:#20150d;animation:arrive-from-courtyard .65s ease-out forwards}
 @keyframes arrive-from-courtyard{from{opacity:1}to{opacity:0}}
-@media(max-width:900px){.guild-nav-toolbar .guildhall-nav>div{width:100%;padding-right:164px}.guild-menu-switch{right:8px}.guild-menu-switch a{padding-inline:8px}}
-@media(max-width:520px){.guild-nav-toolbar .guildhall-nav>div{padding-right:80px}.guild-menu-switch{top:3px;right:4px;padding:1px;gap:0;flex-direction:column}.guild-menu-switch a{min-height:22px;font-size:10px;padding:2px 5px;width:66px}.guild-menu-switch .guild-icon{width:14px;height:14px}}
+@media(max-width:900px){
+  .guild-nav-toolbar{display:flex;flex-direction:column}
+  .guild-nav-toolbar::before{content:"Menú de La Ganga";position:absolute;left:14px;top:19px;color:#38250e;font:600 13px var(--interface)}
+  .guild-nav-toolbar .guildhall-nav>div{width:100%;padding:4px 8px 6px}
+  .guild-menu-switch{position:static;order:-1;align-self:flex-end;margin:5px 10px 3px;padding:2px;gap:2px}
+  .guild-menu-switch a{min-height:40px;min-width:76px;padding:6px 10px;font-size:13px}
+  .guild-menu-switch .guild-icon{display:none}
+}
 @media(prefers-reduced-motion:reduce){.courtyard-arrival{display:none}}

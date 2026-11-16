@@ -5,14 +5,16 @@
   const skip = document.getElementById('skip-gate');
   const main = document.querySelector('main');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let opened = false, leaving = false, skipMotion = reduced.matches, timer, revision = 0;
+  const saveData = navigator.connection?.saveData === true;
+  const webm = Boolean(movie.canPlayType('video/webm; codecs="vp9"'));
+  let opened = false, leaving = false, skipMotion = reduced.matches || saveData, timer, revision = 0, movieURL, preloadTimer;
   main.inert = true;
   const cache = new Map();
   function asset(name) {
     if (!cache.has(name)) cache.set(name, fetch(name).then(r => {
       if (!r.ok) throw Error('Transition unavailable');
       return r.blob();
-    }));
+    }).catch(error => { cache.delete(name); throw error; }));
     return cache.get(name);
   }
   function finishOpening() {
@@ -21,7 +23,13 @@
     main.inert = false; main.removeAttribute('aria-busy');
     window.dispatchEvent(new Event('patio-opened'));
     if (document.activeElement === skip) document.getElementById('scene').focus({ preventScroll: true });
-    if (!reduced.matches) asset('puerta-salida.webm').catch(() => {});
+    if (movieURL) { URL.revokeObjectURL(movieURL); movieURL = null; }
+    movie.removeAttribute('src'); movie.load();
+    clearTimeout(preloadTimer);
+    if (!reduced.matches && !saveData) preloadTimer = setTimeout(() => {
+      const preload = () => { if (!leaving && !document.hidden) asset('puerta-v3-salida.' + (webm ? 'webm' : 'webp')).catch(() => {}); };
+      if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 4000 }); else preload();
+    }, 2000);
   }
   async function playFilm(exit, done) {
     const turn = ++revision, duration = exit ? 800 : 2000;
@@ -37,11 +45,12 @@
     };
     const ended = () => { if (turn === revision) done(); };
     try {
-      if (!movie.canPlayType('video/webm; codecs="vp9"')) throw Error('Use image frames');
+      if (!webm) throw Error('Use image frames');
       if (exit) {
-        movie.src = URL.createObjectURL(await asset('puerta-salida.webm'));
+        const blob = await asset('puerta-v3-salida.webm');
         if (turn !== revision) return;
-      }
+        movieURL = URL.createObjectURL(blob); movie.src = movieURL;
+      } else movie.src = 'puerta-v3-entrada.webm';
       movie.onended = ended;
       await movie.play();
       started();
@@ -49,7 +58,7 @@
       if (turn !== revision) return;
       // The same illustrated frames, with alpha, for non-WebM browsers.
       try {
-        const blob = await asset(exit ? 'puerta-salida.webp' : 'puerta-entrada.webp');
+        const blob = await asset(exit ? 'puerta-v3-salida.webp' : 'puerta-v3-entrada.webp');
         if (turn !== revision) return;
         const url = URL.createObjectURL(blob);
         movie.hidden = true; fallback.hidden = false;
@@ -80,7 +89,7 @@
     if (!opened && !gate.hidden) document.getElementById('gate-status').textContent = 'El patio está tardando en cargar…';
   }, 8000);
   function navigate(url) {
-    clearTimeout(timer); movie.pause();
+    clearTimeout(timer); clearTimeout(preloadTimer); movie.pause();
     try {
       sessionStorage.setItem('la-ganga:desde-patio', JSON.stringify({ at: Date.now(), hash: url.hash }));
       sessionStorage.setItem('la-ganga:entrada', '1');
@@ -98,7 +107,7 @@
     if (leaving) return;
     leaving = true; revision++; clearTimeout(timer);
     document.dispatchEvent(new Event('patio-departure'));
-    if (reduced.matches || !opened) { navigate(url); return; }
+    if (reduced.matches || saveData || !opened) { navigate(url); return; }
     main.inert = true;
     gate.setAttribute('aria-label', 'Entrando en ' + (link.getAttribute('aria-label') || link.textContent.trim()));
     const deadline = setTimeout(() => navigate(url), 2500);

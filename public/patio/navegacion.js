@@ -1,7 +1,8 @@
 /* Navigation for the published courtyard. Classic always means the real homepage. */
 function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
   const get = id => document.getElementById(id), tip = get('place-tooltip');
-  let active = null, lastPointer = null, frameRequest = 0;
+  let active = null, lastPointer = null, frameRequest = 0, touchAt = -Infinity;
+  scene.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')touchAt=performance.now();},{passive:true});
   function hide() {
     if (active) get('place-' + active.id)?.classList.remove('is-active');
     active = null; tip.hidden = true; glow.hide();
@@ -34,6 +35,8 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
     });
     node.addEventListener('pointerleave', () => { if (active?.id === node.dataset.place) hide(); node.removeAttribute('aria-describedby'); });
     node.addEventListener('focus', () => {
+      // Touch focus must not recenter the scene underneath an ongoing swipe.
+      if(performance.now()-touchAt<1000)return;
       if (pick.value !== 'patio') { pick.value = 'patio'; pick.dispatchEvent(new Event('change')); }
       const p = places.find(p => p.id === node.dataset.place), r = node.getBoundingClientRect(), v = scene.getBoundingClientRect();
       if (r.left < v.left || r.right > v.right || r.top < v.top || r.bottom > v.bottom) pan.lookAt(...p.centre);

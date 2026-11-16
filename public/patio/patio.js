@@ -285,6 +285,7 @@ function drawTorches(frame){for(const f of visibleFixtures)if(f.loaded)drawTorch
 const scene=get('scene'),stage=get('stage'),pick=get('focus');
 const layoutPan=(function setupPan(scene,stage,pick,update){
   let positionX=.5,positionY=.5,gesture,frame=0,suppressClick=false;
+  const nativePan=matchMedia('(pointer: coarse)');
   const clamp=value=>Math.max(0,Math.min(1,value));
   function bounds(){
     return [Math.max(0,stage.offsetWidth-scene.clientWidth),Math.max(0,stage.offsetHeight-scene.clientHeight)];
@@ -292,6 +293,12 @@ const layoutPan=(function setupPan(scene,stage,pick,update){
   function layout(){
     if(pick.value!=='patio'){scene.classList.remove('pannable');return}
     const [w,h]=bounds();
+    if(nativePan.matches){
+      // Reassigning scroll offsets on every frame can cancel touch inertia.
+      if(Math.abs(scene.scrollLeft-positionX*w)>1)scene.scrollLeft=positionX*w;
+      if(Math.abs(scene.scrollTop-positionY*h)>1)scene.scrollTop=positionY*h;
+      scene.classList.toggle('pannable',w>1 || h>1);return;
+    }
     stage.style.setProperty('--pan-x','calc(-50% + '+((.5-positionX)*w)+'px)');
     stage.style.setProperty('--pan-y','calc(-50% + '+((.5-positionY)*h)+'px)');
     scene.classList.toggle('pannable',w>1 || h>1);
@@ -302,6 +309,7 @@ const layoutPan=(function setupPan(scene,stage,pick,update){
   }
   scene.addEventListener('pointerdown',e=>{
     suppressClick=false;
+    if(nativePan.matches)return;
     if(!e.isPrimary || e.button!==0 || !scene.classList.contains('pannable'))return;
     const [w,h]=bounds();
     gesture={id:e.pointerId,x:e.clientX,y:e.clientY,positionX,positionY,w,h,dragged:false};
@@ -320,6 +328,12 @@ const layoutPan=(function setupPan(scene,stage,pick,update){
   scene.addEventListener('pointerup',()=>{gesture=null;scene.classList.remove('dragging')});
   scene.addEventListener('pointercancel',()=>{gesture=null;scene.classList.remove('dragging')});
   scene.addEventListener('click',e=>{if(suppressClick){suppressClick=false;e.preventDefault();e.stopImmediatePropagation()}},true);
+  scene.addEventListener('scroll',()=>{
+    if(!nativePan.matches || pick.value!=='patio')return;
+    const [w,h]=bounds();positionX=w?scene.scrollLeft/w:.5;positionY=h?scene.scrollTop/h:.5;
+    if(!frame)frame=requestAnimationFrame(()=>{frame=0;update()});
+  },{passive:true});
+  nativePan.addEventListener('change',()=>{scene.scrollLeft=0;scene.scrollTop=0;update()});
   scene.addEventListener('keydown',e=>{
     if(pick.value!=='patio')return;
     const step={ArrowLeft:[-.18,0],ArrowRight:[.18,0],ArrowUp:[0,-.18],ArrowDown:[0,.18]}[e.key];
@@ -453,8 +467,13 @@ readFocus();
   }
   function show(){
     button.setAttribute('aria-pressed',String(playing));
-    button.textContent=playing?'Silenciar ambiente':'Activar ambiente';
-    volume.hidden=!playing;
+    button.setAttribute('aria-label',playing?'Silenciar ambiente':'Activar ambiente');
+    button.title=playing?'Silenciar ambiente':'Activar ambiente';
+    document.getElementById('sound-label').textContent=playing?'Silenciar':'Activar';
+  }
+  function showVolume(){
+    document.getElementById('volume-value').textContent=volume.value+' %';
+    volume.setAttribute('aria-valuetext',volume.value+' por ciento');
   }
   function fade(value,seconds){
     const now=context.currentTime;
@@ -490,7 +509,8 @@ readFocus();
     }
   }
   button.addEventListener('click',()=>{playing=!playing;show();sync()});
-  volume.addEventListener('input',()=>{if(playing && context && !document.hidden)fade(masterLevel(),.06)});
+  volume.addEventListener('input',()=>{showVolume();if(playing && context && !document.hidden)fade(masterLevel(),.06)});
+  showVolume();
   document.addEventListener('visibilitychange',sync);
   document.getElementById('scene').addEventListener('patio-view',placeTavern);
 })(["audio/9339eec5bfcc320a.ogg","audio/1181642b1d043783.ogg"]);
