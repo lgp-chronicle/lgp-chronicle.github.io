@@ -8,7 +8,7 @@
 .tavern-records ul { list-style: none; display: flex; flex-wrap: wrap; gap: 2px 8px; padding: 0; margin: 4px 0; }
 .tavern-board {
   margin-block: clamp(20px, 3vw, 36px);
-  scroll-margin-top: 7rem;
+  scroll-margin-top: calc(var(--guild-navigation-height, 58px) + 16px);
 }
 .tavern-heading,
 .tavern-panel > header {

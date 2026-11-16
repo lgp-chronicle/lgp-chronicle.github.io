@@ -9,8 +9,30 @@ import { welcomePaintings } from "./welcome-paintings.ts";
 
 const november13Release = "2026-11-13T10:30:42Z";
 const november16Release = "2026-11-16T08:50:00Z";
+const november16ComicRelease = "2026-11-16T09:10:41Z";
 
 export const guildCovers = {
+  gallina: {
+    title: "Invocación de corral",
+    cast: ["Calvix Uñanegra", "Hellbrios Realtrece"],
+    action: "descubren que el círculo de invocación también acepta encargos del gallinero.",
+    date: "2026-11-16",
+    publishedAt: november16ComicRelease,
+  },
+  espuma: {
+    title: "La espuma contraataca",
+    cast: ["Wondelond Manastorm", "Armentak Akrom"],
+    action: "comprueban que enfriar una jarra con magia puede costar una barba de espuma.",
+    date: "2026-11-16",
+    publishedAt: november16ComicRelease,
+  },
+  cabra: {
+    title: "El sombrero no se negocia",
+    cast: ["Olynn Grandwell", "Akimis Derechos"],
+    action: "negocian con una cabra que ha confundido el sombrero de Olynn con la merienda.",
+    date: "2026-11-16",
+    publishedAt: november16ComicRelease,
+  },
   reyerta: {
     title: "Naisen acude a la Reyerta de Roman",
     cast: ["Naisen Grandwell", "Rompecraneos Roman"],

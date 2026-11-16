@@ -6,7 +6,7 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: clamp(290px, 25vw, 490px);
+  min-height: max(320px, calc(100vw / 3));
   background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
   border-top: 2px solid #a67b29;
 }
@@ -16,6 +16,24 @@
   --hall-compact: url("./art/reyerta-movil.webp");
   --compact-art-width: 100vw;
   --compact-art-ratio: 2.30939;
+}
+.guildhall[data-cover="gallina"] {
+  --hall-art: url("./art/gallina.webp");
+  --hall-compact: url("./art/gallina-movil.webp");
+  --hall-y: 0%;
+  --compact-art-ratio: 2.22652;
+}
+.guildhall[data-cover="espuma"] {
+  --hall-art: url("./art/espuma.webp");
+  --hall-compact: url("./art/espuma-movil.webp");
+  --hall-y: 0%;
+  --compact-art-ratio: 1.96409;
+}
+.guildhall[data-cover="cabra"] {
+  --hall-art: url("./art/cabra.webp");
+  --hall-compact: url("./art/cabra-movil.webp");
+  --hall-y: 0%;
+  --compact-art-ratio: 2.22652;
 }
 .guildhall[data-cover="claustro"] {
   --hall-y: 0%;
@@ -248,10 +266,13 @@
   font: 400 clamp(12px, 0.9vw, 15px) / 1.3 var(--interface);
   text-shadow: 0 1px 2px #100b06;
 }
-.guildhall-nav {
+.guild-navigation {
   position: sticky;
   z-index: 15;
   top: 0;
+  box-shadow: 0 3px 9px #0b090777;
+}
+.guildhall-nav {
   border-block: 1px solid #f4d889;
   border-bottom-color: #77501e;
   background: linear-gradient(
@@ -304,27 +325,44 @@
   outline-offset: 2px;
 }
 .guildhall-nav a:active { box-shadow: inset 0 2px 4px #38250e99; }
+.guildhall-subnav {
+  background: linear-gradient(#30271c, #211b14);
+  border-bottom: 1px solid #98713a;
+  box-shadow: inset 0 1px #ffdf8a21;
+}
 .archive-links {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0 14px;
-  margin-bottom: 18px;
-  border-bottom: 1px solid #816332;
+  width: fit-content;
+  max-width: 100%;
+  gap: 4px;
+  margin: 0 auto;
+  padding: 3px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #a58041 #211b14;
 }
 .archive-links a {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   min-height: 44px;
-  padding-inline: 3px;
+  padding: 8px 14px;
+  white-space: nowrap;
   border-bottom: 2px solid transparent;
   color: #ded0b3;
   font: 600 14px/1.25 var(--interface);
 }
-.archive-links a:is(:hover, [aria-current]) { color: #ffdc84; border-color: #d7a546; }
+.archive-links a:is(:hover, [aria-current]) {
+  color: #ffdc84;
+  border-color: #d7a546;
+  background: #c4933420;
+}
 .archive-links a:focus-visible { outline: 2px solid #ffdc84; outline-offset: -2px; }
 @media (max-width: 680px) {
-  .guildhall:is([data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"]) {
+  .guildhall:is([data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"], [data-cover="gallina"], [data-cover="espuma"], [data-cover="cabra"]) {
     background-color: #241c16;
     background-position: center top;
     background-size: 100% auto;
@@ -406,19 +444,21 @@
     font-size: clamp(11px, 3vw, 14px);
   }
   .guildhall-nav .guild-icon { width: 21px; height: 21px; }
-  .archive-links { gap: 0 7px; }
-  .archive-links a { font-size: 13px; }
-}
-@media (max-width: 420px) {
-  .archive-links:has(> a:nth-child(4)) {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .archive-links { gap: 2px; }
+  .archive-links a { font-size: 13px; padding-inline: 11px; }
 }
 
 .archive,
 [data-story] {
-  scroll-margin-top: 62px;
+  scroll-margin-top: calc(var(--guild-navigation-height, 58px) + 14px);
+}
+.character-dossier .section-index {
+  position: sticky;
+  top: var(--guild-navigation-height, 58px);
+  z-index: 14;
+  padding-block: 5px;
+  background: #231d16;
+  box-shadow: 0 3px 7px #100c0866;
 }
 .race-last .rank-up {
   color: #83d897;

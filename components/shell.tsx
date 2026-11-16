@@ -1,3 +1,5 @@
+"use client";
+
 import { siteHref, assetUrl } from "@/lib/public-settings";
 import {
   archiveGroups,
@@ -8,7 +10,7 @@ import {
 import { Play } from "lucide-react";
 import { coverMemberId, guildCovers, type CoverScene } from "@/lib/guild-covers";
 import { WelcomeArt } from "../features/welcome-art";
-import { Fragment } from "react";
+import { Fragment, useLayoutEffect, useRef } from "react";
 import { guildSectionIcons } from "./section-icons";
 import { GuildIcon } from "./guild-icon";
 import { CoverAction } from "./cover-action";
@@ -29,6 +31,30 @@ export function Shell({
   const activeGroup = groupForSection(
     path.startsWith("/character/") ? "overview" : sectionFromPath(path),
   );
+  const section = sectionFromPath(path);
+  const navigation = useRef<HTMLDivElement>(null);
+  const submenu = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const node = navigation.current;
+    if (!node) return;
+    const measure = () => document.documentElement.style.setProperty(
+      "--guild-navigation-height", Math.ceil(node.getBoundingClientRect().height) + "px",
+    );
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--guild-navigation-height");
+    };
+  }, [activeGroup]);
+  useLayoutEffect(() => {
+    const nav = submenu.current;
+    const selected = nav?.querySelector<HTMLElement>("[aria-current]");
+    if (nav && selected) {
+      nav.scrollLeft = selected.offsetLeft - (nav.clientWidth - selected.offsetWidth) / 2;
+    }
+  }, [path]);
   return (
     <>
       <header className="guildhall" data-home={path === "/"} data-cover={cover}>
@@ -69,6 +95,7 @@ export function Shell({
           <CoverAction scene={scene} />
         </p>
       </header>
+      <div className="guild-navigation" ref={navigation}>
       <nav aria-label="Navegación principal" className="guildhall-nav">
         <div>
           <a
@@ -99,6 +126,19 @@ export function Shell({
           })}
         </div>
       </nav>
+      {activeGroup && (
+        <div className="guildhall-subnav">
+          <nav className="archive-links" ref={submenu} aria-label={"Apartados de " + activeGroup.label}>
+            {activeGroup.sections.map(([id, label]) => (
+              <a key={id} href={siteHref(archivePath(id))}
+                aria-current={section === id ? "page" : undefined}>
+                <GuildIcon name={guildSectionIcons[id]} size={19} /> {label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
+      </div>
       {children}
       <footer>
         <a className="footer-brand" href={siteHref("/")}>

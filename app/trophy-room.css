@@ -107,7 +107,7 @@
   outline: 2px solid #efc86c;
   outline-offset: -2px;
   background: #47361e;
-  scroll-margin-block: 76px 20px;
+  scroll-margin-block: calc(var(--guild-navigation-height, 58px) + 20px) 20px;
 }
 .trophy-case h4 {
   margin: 0;

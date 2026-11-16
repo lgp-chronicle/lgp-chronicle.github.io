@@ -2,11 +2,9 @@
 import { apiUrl, assetUrl, siteHref } from "@/lib/public-settings";
 import {
   archivePath,
-  groupForSection,
   type GuildSection,
 } from "@/lib/guild-navigation";
 import { GuildIcon } from "@/components/guild-icon";
-import { guildSectionIcons } from "@/components/section-icons";
 import { useEffect, useRef, useState } from "react";
 import { useGuildTools } from "./webmcp";
 import { fullName, memberHref, MemberLink } from "./member-portrait";
@@ -95,7 +93,6 @@ export function Dashboard({
   }, [section]);
   const m = data.members.filter(isCurrentMember);
   const query = new URLSearchParams(location.hash.split("?")[1]);
-  const group = groupForSection(section);
   const trophies = section === "awards" ? awards(m) : [];
   const withoutLogs = m.filter((member) => !member.logs);
   const cards = [
@@ -169,6 +166,8 @@ export function Dashboard({
             </p>
           )}
           <div className="home-honors"><GuildStrengths data={data} /></div>
+          <RecentImages members={data.members} />
+          <RecentTrophies room={data.trophyRoom} members={data.members} />
           <div className="home-journal">
             <div className="home-pair">
               <LatestHeadlines events={data.events} members={data.members} />
@@ -176,8 +175,6 @@ export function Dashboard({
             </div>
             <FerrogardDiary />
           </div>
-          <RecentImages members={data.members} />
-          <RecentTrophies room={data.trophyRoom} members={data.members} />
         </>
       )}
       {section !== "gallery" && section !== "cronicas" && <SourceNotice members={m} />}
@@ -187,22 +184,6 @@ export function Dashboard({
         id="guild-archive"
         aria-label="Archivo de la hermandad"
       >
-        {group && group.sections.length > 1 && (
-          <nav
-            aria-label={"Apartados de " + group.label}
-            className="archive-links"
-          >
-            {group.sections.map(([id, label]) => (
-              <a
-                key={id}
-                href={siteHref(archivePath(id))}
-                aria-current={section === id ? "page" : undefined}
-              >
-                <GuildIcon name={guildSectionIcons[id]} size={19} /> {label}
-              </a>
-            ))}
-          </nav>
-        )}
         {section === "gallery" && <CoverGallery members={data.members} />}
         {section === "movimientos" && <MembershipArchive members={data.members} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} members={data.members} />}
