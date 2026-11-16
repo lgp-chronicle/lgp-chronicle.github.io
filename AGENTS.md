@@ -18,3 +18,7 @@ La armería de Naisen Grandwell (`forever-eu-naisen-grandwell`) muestra una apar
 Conserva sus rasgos de gnomo, su piel cálida, nariz prominente, orejas grandes, pelo verde con tupé, cejas verdes espesas y bigote verde. No copies la cara ni la piel bugueadas del modelo de la armería.
 
 Consulta la armería actual para la armadura y el resto del equipo: las imágenes de referencia fijan la cara, no el atuendo. Si lleva casco, dibuja ese casco y conserva esta identidad en las partes visibles del rostro; no le quites el casco para mostrar el pelo. Esta corrección afecta solo a Naisen Grandwell, no a otros personajes de nombre parecido.
+
+## Alexion Grandwell
+
+Alexion es un elfo de la noche, con pelo blanco y barba blanca corta, como en [su referencia manual](config/illustration-references/alexion-grandwell.webp). El 16 de noviembre la ficha vuelve a indicar correctamente la raza, pero sus imágenes de armería muestran otra vez un no-muerto. Si ocurre, conserva la identidad de elfo de la referencia manual y consulta los objetos de la ficha para actualizar su equipo; no reproduzcas la cara, el cuerpo ni el atuendo del modelo incorrecto.

@@ -11,6 +11,7 @@ import { WelcomeArt } from "../features/welcome-art";
 import { Fragment } from "react";
 import { guildSectionIcons } from "./section-icons";
 import { GuildIcon } from "./guild-icon";
+import { CoverAction } from "./cover-action";
 export function Shell({
   children,
   path = "/",
@@ -24,7 +25,7 @@ export function Shell({
   scene?: CoverScene;
   onReplay?: () => void;
 }) {
-  const { cast, action } = scene;
+  const { cast } = scene;
   const activeGroup = groupForSection(
     path.startsWith("/character/") ? "overview" : sectionFromPath(path),
   );
@@ -55,7 +56,7 @@ export function Shell({
           )}
           {cast.map((name, i) => (
             <Fragment key={name}>
-              {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
+              {i > 0 && (i === cast.length - 1 ? scene.castJoiner ?? " y " : ", ")}
               <a
                 href={siteHref(
                   "/character/" + encodeURIComponent(scene.party?.members[i]?.id ?? coverMemberId(name)),
@@ -65,7 +66,7 @@ export function Shell({
               </a>
             </Fragment>
           ))}{" "}
-          {action}
+          <CoverAction scene={scene} />
         </p>
       </header>
       <nav aria-label="Navegación principal" className="guildhall-nav">

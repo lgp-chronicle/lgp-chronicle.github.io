@@ -10,6 +10,27 @@
   background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
   border-top: 2px solid #a67b29;
 }
+.guildhall[data-cover="reyerta"] {
+  --hall-y: 0%;
+  --hall-art: url("./art/reyerta.webp");
+  --hall-compact: url("./art/reyerta-movil.webp");
+  --compact-art-width: 100vw;
+  --compact-art-ratio: 2.30939;
+}
+.guildhall[data-cover="claustro"] {
+  --hall-y: 0%;
+  --hall-art: url("./art/claustro.webp");
+  --hall-compact: url("./art/claustro-movil.webp");
+  --compact-art-width: 100vw;
+  --compact-art-ratio: 1.9779;
+}
+.guildhall[data-cover="despensa"] {
+  --hall-y: 0%;
+  --hall-art: url("./art/despensa.webp");
+  --hall-compact: url("./art/despensa-movil.webp");
+  --compact-art-width: 100vw;
+  --compact-art-ratio: 2.06077;
+}
 .guildhall[data-cover="fragua"] {
   --hall-art: url("./art/fragua.webp");
   --hall-compact: url("./art/fragua-movil.webp");
@@ -303,6 +324,18 @@
 .archive-links a:is(:hover, [aria-current]) { color: #ffdc84; border-color: #d7a546; }
 .archive-links a:focus-visible { outline: 2px solid #ffdc84; outline-offset: -2px; }
 @media (max-width: 680px) {
+  .guildhall:is([data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"]) {
+    background-color: #241c16;
+    background-position: center top;
+    background-size: 100% auto;
+    min-height: max(290px, calc(100vw / var(--compact-art-ratio) + 96px));
+    &::before {
+      background: linear-gradient(transparent 82%, #241c16) center top / 100% calc(100vw / var(--compact-art-ratio)) no-repeat;
+    }
+    .guildhall-inner { padding: 0 0 5px 12px; }
+    .guildhall-brand img { width: clamp(70px, 21vw, 96px); }
+    .guildhall-caption { max-width: 66%; }
+  }
   .guildhall[data-cover="pique"][data-home] {
     min-height: 0;
     padding-top: 44.45vw;

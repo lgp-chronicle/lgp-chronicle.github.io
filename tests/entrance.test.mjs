@@ -38,6 +38,7 @@ test("a character's gallery includes every appearance, including expeditions", (
     "invocacion",
     "mapa",
     "paella",
+    "reyerta",
   ]);
   assert.deepEqual(coversForMember(coverMemberId("Juninho Delbosque")).sort(), [
     "grifon",
@@ -46,6 +47,7 @@ test("a character's gallery includes every appearance, including expeditions", (
     "santuario",
   ]);
   assert.deepEqual(coversForMember("forever-eu-alexion-grandwell").sort(), [
+    "claustro",
     "halcon",
     "impostor",
     "paella",

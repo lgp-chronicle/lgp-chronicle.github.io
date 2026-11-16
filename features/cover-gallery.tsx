@@ -14,6 +14,7 @@ import { color, type Member } from "./types";
 import { fullName } from "./member-portrait";
 import { WelcomeArt } from "./welcome-art";
 import { welcomePaintings } from "../lib/welcome-paintings";
+import { CoverAction } from "@/components/cover-action";
 
 function original(id: string) {
   const file = welcomePaintings[id]?.art ?? (id === "mapa" ? "sala-de-la-ganga" : id);
@@ -68,7 +69,7 @@ function Caption({
   members: Member[];
   currentMember?: string;
 }) {
-  const { cast, action } = scene;
+  const { cast } = scene;
   return (
     <>
       {cast.map((name, i) => {
@@ -76,7 +77,7 @@ function Caption({
         const member = members.find((m) => m.id === memberId);
         return (
           <Fragment key={memberId}>
-            {i > 0 && (i === cast.length - 1 ? " y " : ", ")}
+            {i > 0 && (i === cast.length - 1 ? scene.castJoiner ?? " y " : ", ")}
             {member && member.id === currentMember ? (
               <span style={{ color: color(member) }}>{name}</span>
             ) : member ? (
@@ -94,7 +95,7 @@ function Caption({
           </Fragment>
         );
       })}{" "}
-      {action}
+      <CoverAction scene={scene} />
     </>
   );
 }

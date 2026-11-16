@@ -8,8 +8,36 @@ import {
 import { welcomePaintings } from "./welcome-paintings.ts";
 
 const november13Release = "2026-11-13T10:30:42Z";
+const november16Release = "2026-11-16T08:50:00Z";
 
 export const guildCovers = {
+  reyerta: {
+    title: "Naisen acude a la Reyerta de Roman",
+    cast: ["Naisen Grandwell", "Rompecraneos Roman"],
+    castJoiner: " acude en auxilio de ",
+    action: "frente a Big Will, en ",
+    quest: {
+      name: "La Reyerta",
+      href: "https://www.wowhead.com/forever/es/quest=1719/la-reyerta",
+    },
+    actionSuffix: ", la prueba que forja a un guerrero.",
+    date: "2026-11-16",
+    publishedAt: november16Release,
+  },
+  claustro: {
+    title: "El huésped del claustro",
+    cast: ["Alexion Grandwell", "Lua Nita"],
+    action: "comparten la merienda con un pequeño dragón feérico que ha tomado el claustro por hogar.",
+    date: "2026-11-16",
+    publishedAt: november16Release,
+  },
+  despensa: {
+    title: "El golpe del queso",
+    cast: ["Nyxeth Shadowheart", "Vincie Quickhands"],
+    action: "siguen el rastro del queso perdido hasta el ladrón más pequeño de la fortaleza.",
+    date: "2026-11-16",
+    publishedAt: november16Release,
+  },
   impostor: {
     title: "El otro Alexion",
     cast: ["Alexion Grandwell"],
@@ -241,6 +269,9 @@ export type CoverScene = {
   cast: readonly string[];
   guests?: readonly string[];
   action: string;
+  castJoiner?: string;
+  quest?: { name: string; href: string };
+  actionSuffix?: string;
   date?: string;
   publishedAt?: string;
   party?: WelcomeParty;
