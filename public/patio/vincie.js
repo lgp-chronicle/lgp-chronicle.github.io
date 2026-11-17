@@ -7,6 +7,9 @@ function createVincie(stage){
  const shadow=layer('vincie-shadow',W,H+48),figure=layer('vincie'),ctx=figure.getContext('2d'),shade=shadow.getContext('2d');
  figure.setAttribute('aria-label','Vincie Quickhands, humano pícaro, limpiando su hoja y mirando a su alrededor. Apariencia del 17 de noviembre de 2026.');
  const cel=document.createElement('canvas');cel.width=W;cel.height=H;const frame=cel.getContext('2d');
+ // Only this swept arm/cloth area can change. The tabard and exposed belt
+ // always come from the same base, avoiding repaint shimmer on the torso.
+ const armArea=new Path2D('M270 181 L346 181 L351 280 L326 315 L293 318 L263 321 L250 331 L224 343 L174 344 L138 332 L133 293 L155 272 L183 261 L221 251 L248 233 L264 211 Z');
  let base,hands,eyes,head,lastKey='',lastTime=-1,seed=171126;
  const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
  const wipe=[0,1,2,3,4,5,6,7,8,9,10,11,12,13],wipeHolds=[.08,.10,.12,.14,.16,.18,.18,.16,.16,.15,.14,.13,.12,.08],wipeDuration=wipeHolds.reduce((a,b)=>a+b,0);
@@ -49,7 +52,7 @@ function createVincie(stage){
   shade.restore();
  }
  async function load(loadSprite){
-  const loaded=[];for(const url of ["img/a0082e069f731bec.webp","img/79bcf96cdee63570.webp","img/5f4b417c8b6a9761.webp","img/734237f5ef7e908f.webp","img/430744418b171067.webp"]){loaded.push(await loadSprite(url));await new Promise(r=>requestAnimationFrame(r));}
+  const loaded=[];for(const url of ["img/a0082e069f731bec.webp","img/b63475cde1880abd.webp","img/5f4b417c8b6a9761.webp","img/734237f5ef7e908f.webp","img/430744418b171067.webp"]){loaded.push(await loadSprite(url));await new Promise(r=>requestAnimationFrame(r));}
   [base,hands,eyes,head]=loaded;const bag=loaded[4],p=props.getContext('2d'),h=212,w=h*bag.width/bag.height;p.drawImage(bag,(180-w)/2,220-h,w,h);
   paintContact();paint(0);
  }
@@ -64,7 +67,9 @@ function createVincie(stage){
   const key=hand+':'+eye+':'+headIndex;
   if(key!==lastKey){
    frame.clearRect(0,0,W,H);frame.drawImage(base,0,0);
-   if(hand)frame.drawImage(hands,hand%4*210,Math.floor(hand/4)*134,210,134,130,210,210,134);
+   // Replace the entire painted arm, including the transparent space left
+   // behind when it moves. Overlaying only the wrist retained the old elbow.
+   if(hand){frame.save();frame.clip(armArea);frame.clearRect(120,172,236,188);frame.drawImage(hands,hand%4*236,Math.floor(hand/4)*188,236,188,120,172,236,188);frame.restore();}
    if(![0,7,8,15].includes(headIndex)){frame.clearRect(120,0,140,178);frame.drawImage(head,headIndex%4*140,Math.floor(headIndex/4)*178,140,178,120,0,140,178);}
    else if(eye)frame.drawImage(eyes,eye*52,0,52,24,150,77,52,24);lastKey=key;
   }
