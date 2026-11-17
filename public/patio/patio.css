@@ -171,3 +171,13 @@ main>.credit{position:absolute;z-index:1;right:max(8px,env(safe-area-inset-right
   #guild-bar .guild-brand{font-size:17px;gap:5px}
   #guild-bar .guild-brand img{width:30px;height:30px}
 }
+
+/* Player tooltip: immutable appearance date, real armory snapshot. */
+#place-tooltip.character-tooltip{max-width:min(330px,calc(100vw - 20px))}
+#place-tooltip.character-tooltip #place-detail{margin-top:2px}
+#place-tooltip.character-tooltip .tooltip-guild{color:#ffe6a3;margin:0 0 6px}
+#place-tooltip.character-tooltip .tooltip-level{color:#fff;margin-top:0}
+#place-tooltip.character-tooltip .tooltip-spec{color:#b9a7dc;margin-top:2px}
+#place-tooltip.character-tooltip .tooltip-faction{color:#8cbdff}
+#place-tooltip.character-tooltip time{display:block;margin-top:8px;padding-top:7px;border-top:1px solid #827f8b69;color:#bcb8b0;font-size:12px}
+.place-character:focus-visible path{stroke:#ffe3a1;stroke-width:3}

@@ -286,5 +286,25 @@
   {
     "file": "audio/puerta-cerrar-v1.ogg",
     "bytes": 5097
+  },
+  {
+    "file": "img/3ed153d11f3a114a.webp",
+    "bytes": 583020
+  },
+  {
+    "file": "img/bfce3d74596b2bf6.webp",
+    "bytes": 623644
+  },
+  {
+    "file": "img/e1b535ed474f468c.webp",
+    "bytes": 5658
+  },
+  {
+    "file": "img/c704aa7518a9e0fd.webp",
+    "bytes": 283462
+  },
+  {
+    "file": "img/44c93169c5a53a02.webp",
+    "bytes": 40230
   }
 ]

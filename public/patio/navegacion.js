@@ -1,5 +1,6 @@
 /* Navigation for the published courtyard. Classic always means the real homepage. */
 function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
+  places=[...places,naisen.place];
   const get = id => document.getElementById(id), tip = get('place-tooltip');
   let active = null, lastPointer = null, frameRequest = 0, touchAt = -Infinity;
   scene.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')touchAt=performance.now();},{passive:true});
@@ -20,8 +21,21 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
     if (scene.classList.contains('dragging') || event?.pointerType === 'touch') return;
     const place = places.find(p => p.id === node.dataset.place);
     if (active?.id !== place.id) { hide(); active = place; node.classList.add('is-active'); glow.select(place); }
-    get('place-name').textContent = place.name;
-    get('place-detail').textContent = place.detail;
+    const title=get('place-name'),detail=get('place-detail'),character=place.character;
+    title.textContent=place.name;title.style.color=character?.classColor||'';
+    tip.classList.toggle('character-tooltip',Boolean(character));
+    if(character){
+      const line=(text,className)=>{const span=document.createElement('span');span.textContent=text;span.className=className;return span};
+      const date=document.createElement('time');date.dateTime=character.appearanceDate;
+      date.textContent='Apariencia del '+character.appearanceLabel;
+      detail.replaceChildren(
+        line('<'+character.guild+'>','tooltip-guild'),
+        line('Nivel '+character.level+' · '+character.race+' · '+character.className+' (Jugador)','tooltip-level'),
+        line(character.spec,'tooltip-spec'),
+        line(character.faction+' · '+character.region+' · '+character.ruleset,'tooltip-faction'),date
+      );
+    }else detail.textContent=place.detail;
+    tip.querySelector('small').textContent=character?'Haz clic para ver la ficha':'Haz clic para entrar';
     tip.hidden = false; node.setAttribute('aria-describedby', 'place-tooltip');
     lastPointer = event ? { x: event.clientX, y: event.clientY } : null;
     positionTip(lastPointer, node);
