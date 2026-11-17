@@ -4,21 +4,13 @@ import { ArrowRight, Download, ExternalLink, MessageSquare, X, ZoomIn } from "lu
 import { GuildIcon, type GuildIconName } from "../components/guild-icon";
 import { archivePath } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
-import { fullName, memberHref, Portrait } from "./member-portrait";
-import { color, type Member } from "./types";
+import { CreationAuthor } from "./creation-author";
+import type { Member } from "./types";
 import "../app/creation-pages.css";
 
 const keenUrl = "https://www.curseforge.com/wow/addons/keen";
 const keenSuggestions = "https://discord.com/channels/1551288910569808112/1567877893797974076";
 const diaryUrl = "https://discord.com/channels/1551288910569808112/1569452969064140830";
-
-function Author({ members, id, name }: { members: Member[]; id: string; name: string }) {
-  const member = members.find(m => m.id === id);
-  return <div className="creation-author">
-    {member && <Portrait member={member} />}
-    <span>Una creación de <a href={member ? memberHref(member) : siteHref("/character/" + id)} style={member ? { color: color(member) } : undefined}>{member ? fullName(member) : name}</a></span>
-  </div>;
-}
 
 function CreationHero({ kind, title, eyebrow, description, image, mobile, members, authorId, author, children }: {
   kind: "keen" | "diary"; title: string; eyebrow: string; description: string; image: string; mobile: string;
@@ -29,9 +21,9 @@ function CreationHero({ kind, title, eyebrow, description, image, mobile, member
     <header className={"creation-hero creation-hero--" + kind}>
       <picture><source media="(max-width: 700px)" srcSet={mobile} /><img src={image} width={2172} height={724} alt="" /></picture>
       <div className="creation-hero-copy">
-        <p className="eyebrow"><GuildIcon name={kind === "keen" ? "engineering" : "journal"} size={24} />{eyebrow}</p>
+        <p className="eyebrow"><GuildIcon name={kind === "keen" ? "keen" : "journal"} size={24} />{eyebrow}</p>
         <h2>{title}</h2><p className="creation-intro">{description}</p>
-        <Author members={members} id={authorId} name={author} />
+        <CreationAuthor members={members} id={authorId} name={author} />
         <div className="creation-page-actions">{children}</div>
       </div>
     </header>
@@ -49,23 +41,39 @@ const keenFeatures: { icon: GuildIconName; title: string; description: string }[
   { icon: "swords", title: "Modo JcJ", description: "Cambia el equipo y activa tus recordatorios de combate." },
 ];
 
-const keenScreenshots = [
-  { id: "interfaz", title: "Los detalles que cuentan", caption: "Recordatorios, nombres y filtros de estadísticas.", alt: "Captura oficial de Keen con avisos de beneficios, nombres de personajes y el filtro de estadísticas.", width: 690, height: 302 },
-  { id: "hechizos", title: "Cada rango, en perspectiva", caption: "Comparador de eficiencia del libro de hechizos.", alt: "Captura oficial de Keen: tabla de rangos y gráfica que compara daño por segundo y daño por maná.", width: 785, height: 355 },
+type KeenScreenshot = { id: string; source: string; title: string; caption: string; alt: string; width: number; height: number; detail?: [number, number, number, number] };
+const keenScreenshots: KeenScreenshot[] = [
+  { id: "interfaz", source: "interfaz", title: "Los detalles que cuentan", caption: "Recordatorios, nombres y filtros de estadísticas.", alt: "Captura oficial de Keen con avisos de beneficios, nombres de personajes y el filtro de estadísticas.", width: 691, height: 302 },
+  { id: "hechizos", source: "hechizos", title: "Cada rango, en perspectiva", caption: "Comparador de eficiencia del libro de hechizos.", alt: "Captura oficial de Keen: tabla de rangos y gráfica que compara daño por segundo y daño por maná.", width: 785, height: 352 },
+  { id: "avisos", source: "interfaz", title: "Que no te falte nada", caption: "Avisos para beneficios y consumibles pendientes.", alt: "Detalle de los avisos Soul Shard y Demon Armor de Keen.", width: 691, height: 302, detail: [55, 20, 155, 88] },
+  { id: "misiones", source: "interfaz", title: "La siguiente misión", caption: "Marcas de misión junto a los personajes.", alt: "Detalle de una marca de misión sobre Master Mechanic Castpipe.", width: 691, height: 302, detail: [273, 0, 200, 120] },
+  { id: "placas", source: "interfaz", title: "Cada nombre, en su sitio", caption: "Nombres y placas con el aspecto clásico de WoW.", alt: "Detalle de las placas de salud y los nombres mostrados por Keen.", width: 691, height: 302, detail: [0, 140, 470, 162] },
+  { id: "filtros", source: "interfaz", title: "Busca por estadísticas", caption: "Filtra el equipo de la subasta por sus atributos.", alt: "Detalle del menú Keen: stats con filtros de atributos, hechizos y resistencias.", width: 691, height: 302, detail: [562, 165, 129, 137] },
 ];
+
+function KeenScreenshotImage({ shot, preview = false }: { shot: KeenScreenshot; preview?: boolean }) {
+  const src = assetUrl("/guild/keen/" + shot.source + ".webp");
+  if (!shot.detail) return <img src={src} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" />;
+  const [x, y, width, height] = shot.detail;
+  return <svg className={preview ? "keen-detail-preview" : "keen-detail-full"} viewBox={preview ? shot.detail.join(" ") : `0 0 ${shot.width} ${shot.height}`} role="img" aria-label={shot.alt} width={preview ? width : shot.width} height={preview ? height : shot.height}>
+    {preview && <defs><clipPath id={"keen-detail-" + shot.id}><rect x={x} y={y} width={width} height={height} /></clipPath></defs>}
+    <image href={src} width={shot.width} height={shot.height} clipPath={preview ? `url(#keen-detail-${shot.id})` : undefined} />
+    {!preview && <rect x={x + 1} y={y + 1} width={width - 2} height={height - 2} fill="none" stroke="#ffda78" strokeWidth={2} />}
+  </svg>;
+}
 
 function KeenScreenshots() {
   return <section className="keen-screenshots" aria-labelledby="keen-screenshots-title">
-    <div className="creation-section-heading"><div><p className="eyebrow">Dentro de Azeroth</p><h3 id="keen-screenshots-title">Así se ve en el juego</h3></div><span>Capturas oficiales · Pulsa para ampliar</span></div>
-    <div className="keen-screenshot-grid">{keenScreenshots.map(shot => <figure key={shot.id}>
+    <div className="creation-section-heading"><div><p className="eyebrow">Dentro de Azeroth</p><h3 id="keen-screenshots-title">Así se ve en el juego</h3></div><span>2 capturas oficiales y 4 detalles · Pulsa para ampliar</span></div>
+    <div className="keen-screenshot-grid">{keenScreenshots.map(shot => <figure key={shot.id} className={shot.detail ? "keen-screenshot-detail" : "keen-screenshot-complete"}>
       <Dialog.Root>
         <Dialog.Trigger asChild><button type="button" className="keen-screenshot-open" aria-label={"Ampliar: " + shot.title}>
-          <img src={assetUrl("/guild/keen/" + shot.id + ".webp")} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" />
+          <KeenScreenshotImage shot={shot} preview />
           <span><ZoomIn size={17} aria-hidden="true" />Ampliar</span>
         </button></Dialog.Trigger>
         <Dialog.Portal><Dialog.Overlay className="keen-image-shade" /><Dialog.Content className="keen-image-dialog">
           <header><Dialog.Title>{shot.title}</Dialog.Title><Dialog.Close className="button outline" aria-label="Cerrar captura"><X size={20} /></Dialog.Close></header>
-          <img src={assetUrl("/guild/keen/" + shot.id + ".webp")} alt={shot.alt} width={shot.width} height={shot.height} />
+          <KeenScreenshotImage shot={shot} />
           <Dialog.Description>{shot.caption}</Dialog.Description>
         </Dialog.Content></Dialog.Portal>
       </Dialog.Root>

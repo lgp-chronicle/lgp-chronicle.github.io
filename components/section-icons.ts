@@ -17,6 +17,6 @@ export const guildSectionIcons = {
   gallery: "painting",
   videos: "spyglass",
   creations: "engineering",
-  keen: "engineering",
+  keen: "keen",
   diario: "journal",
 } satisfies Record<GuildSection, GuildIconName>;

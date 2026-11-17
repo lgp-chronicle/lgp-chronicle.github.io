@@ -124,7 +124,7 @@ export function Dashboard({
           </header>
           <HomePulse members={m} />
           <div className="home-dashboard-grid home-journal">
-            <CreationsPreview />
+            <CreationsPreview members={m} />
             <MembershipNews members={data.members} asOf={data.generatedAt} />
             <section className="home-honors-panel" aria-labelledby="home-honors-title">
               <div className="section-heading honors-heading">

@@ -7,31 +7,31 @@ import { isNewVideo, videosForMember } from "../lib/guild-videos";
 import { useActivityClock } from "../hooks/use-activity-clock";
 import { KeenPanel } from "./keen-panel";
 import { CinemaShortcut } from "./video-gallery";
-import { color, type Member } from "./types";
-import { fullName } from "./member-portrait";
+import type { Member } from "./types";
+import { CreationAuthor } from "./creation-author";
 import "../app/member-creations.css";
 
 export function MemberCreations({ members }: { members: Member[] }) {
   return <section className="member-creations" aria-labelledby="creations-title">
     <header><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-title">Creaciones de la hermandad</h2><p>Entre aventura y aventura, también hay tiempo para crear.</p></header>
-    <CinemaShortcut />
-    <KeenPanel />
+    <CinemaShortcut members={members} />
+    <KeenPanel members={members} />
     <FerrogardDiary members={members} />
   </section>;
 }
 
 export function FerrogardDiary({ members }: { members: Member[] }) {
-  const ferrogard = members.find(m => m.id === "forever-eu-ferrogard-escudoferreo");
   return <a className="creator-diary creation-shortcut" href={siteHref(archivePath("diario"))}>
       <img src={new URL("../app/art/diario.webp", import.meta.url).href} alt="Ferrogard escribe de noche en su habitación, con su gorro de dormir." loading="lazy"/>
       <div><p className="eyebrow">Las crónicas de un aventurero</p><h2>El diario de Ferrogard</h2>
-        <p>Las aventuras de la hermandad, contadas por {ferrogard ? <span style={{color:color(ferrogard)}}>{fullName(ferrogard)}</span> : "Ferrogard"}.</p>
+        <p>Las aventuras de la hermandad, a la luz de una vela.</p>
+        <CreationAuthor members={members} id="forever-eu-ferrogard-escudoferreo" name="Ferrogard Escudoferreo" linked={false} />
         <span className="button outline">Abrir el diario <ArrowRight size={15}/></span>
       </div>
   </a>;
 }
 
-export function CreationsPreview() {
+export function CreationsPreview({ members }: { members: Member[] }) {
   const now = useActivityClock();
   const latestVideo = videosForMember(undefined, now)[0];
   const hasNewStory = isNewVideo(latestVideo, now);
@@ -110,8 +110,9 @@ export function CreationsPreview() {
               <img src={creation.image} alt="" loading="lazy" width={2172} height={724} draggable={false}/>
             </picture>
             <div className="creation-banner-copy">
-              <div className="creation-banner-meta"><small>{creation.author}</small>{creation.id === "vincie" && hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}</div>
+              {creation.id === "vincie" && hasNewStory && <div className="creation-banner-meta"><strong className="video-new-badge">Nueva historia</strong></div>}
               <h3>{creation.title}</h3><p>{creation.description}</p>
+              <CreationAuthor members={members} id={creation.id === "vincie" ? "forever-eu-vincie-quickhands" : creation.id === "diario" ? "forever-eu-ferrogard-escudoferreo" : "forever-eu-olynn-grandwell"} name={creation.author} linked={false} />
               <span className="creation-banner-action">{creation.action}{creation.external ? <ExternalLink size={15} aria-hidden="true"/> : <ArrowRight size={16} aria-hidden="true"/>}</span>
             </div>
           </a>

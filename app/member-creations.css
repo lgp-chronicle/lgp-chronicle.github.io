@@ -22,7 +22,7 @@
 .creation-slide { flex:0 0 80%; min-width:0; padding-left:14px; }
 .creation-banner { position:relative; isolation:isolate; display:flex; align-items:center; min-height:238px; overflow:hidden; border:1px solid #987440; border-top-color:#d2ac60; background:#201911; color:#ffe0a0; text-decoration:none; }
 .creation-banner picture { position:absolute; inset:0; z-index:-2; }
-.creation-banner img { width:100%; height:100%; display:block; object-fit:cover; object-position:right center; }
+.creation-banner picture img { width:100%; height:100%; display:block; object-fit:cover; object-position:right center; }
 .creation-banner::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,#17120cf5 0%,#17120cd9 25%,#17120c85 43%,#17120c12 67%),linear-gradient(0deg,#100b0740,transparent 35%); }
 .creation-banner::after { content:""; position:absolute; inset:5px; border:1px solid #d8ad5740; pointer-events:none; }
 .creation-banner-copy { width:47%; padding:26px 30px; text-shadow:0 2px 5px #100a09; }
@@ -35,7 +35,7 @@
 .creation-banner:hover { border-color:#f1c968; }
 .creation-banner:hover .creation-banner-action { color:#fff0c6; border-color:currentColor; }
 .creation-banner:focus-visible { outline:2px solid #ffe5a1; outline-offset:-4px; }
-.creation-banner--diario img { object-position:80% center; }
+.creation-banner--diario picture img { object-position:80% center; }
 .creation-banner--diario::before { background:linear-gradient(90deg,#17131cf5,#17131cdc 25%,#17131c80 45%,#17131c12 70%); }
 .creations-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:8px; }
 .creations-dots,.creations-arrows { display:flex; align-items:center; gap:6px; }
@@ -58,9 +58,9 @@
   .creations-track { margin-left:-10px; }
   .creation-slide { flex-basis:92%; padding-left:10px; }
   .creation-banner { min-height:280px; align-items:end; }
-  .creation-banner img { object-position:65% center; }
+  .creation-banner picture img { object-position:65% center; }
   .creation-banner::before,.creation-banner--diario::before { background:linear-gradient(0deg,#17120c 0%,#17120cee 19%,#17120c99 43%,#17120c08 78%); }
-  .creation-banner--diario img { object-position:70% center; }
+  .creation-banner--diario picture img { object-position:70% center; }
   .creation-banner-copy { width:100%; padding:20px; }
   .creation-banner-copy small { font-size:10px; }
   .creation-banner-meta { margin-bottom:6px; }

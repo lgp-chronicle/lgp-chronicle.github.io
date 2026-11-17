@@ -1,6 +1,7 @@
 import { assetUrl } from "@/lib/public-settings";
 
 export type GuildIconName =
+  | "keen"
   | "painting"
   | "keep"
   | "tabard"
@@ -79,7 +80,7 @@ export function GuildIcon({
   return (
     <img
       className={("guild-icon " + className).trim()}
-      src={assetUrl("/guild/iconos/" + name + ".webp")}
+      src={assetUrl(name === "keen" ? "/guild/keen/icon.png" : "/guild/iconos/" + name + ".webp")}
       width={size}
       height={size}
       alt=""

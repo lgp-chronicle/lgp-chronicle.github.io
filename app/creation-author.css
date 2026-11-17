@@ -1,0 +1,7 @@
+.creation-author { display:flex; gap:9px; align-items:center; font:12px/1.5 var(--reading); color:#baa98d; }
+.creation-author .portrait { width:34px; height:34px; flex:none; }
+.creation-author-copy { min-width:0; }
+.creation-author .creation-author-name { display:block; font:600 14px/1.3 var(--interface); text-decoration:none; }
+.creation-author a:hover { text-decoration:underline; }
+.creation-shortcut .creation-author,.cinema-shortcut .creation-author { margin:14px 0 18px; }
+.creation-banner-copy .creation-author { margin:0 0 12px; }

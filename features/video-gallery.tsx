@@ -10,6 +10,7 @@ import { useActivityClock } from "../hooks/use-activity-clock";
 import { fullName, memberHref } from "./member-portrait";
 import { color, type Member } from "./types";
 import { ago } from "./analytics";
+import { CreationAuthor } from "./creation-author";
 import "../app/video-gallery.css";
 
 function Cast({ video, members }: { video: GuildVideo; members: Member[] }) {
@@ -64,7 +65,6 @@ function ShareVideo({ video }: { video: GuildVideo }) {
 export function VideoGallery({ members, member }: { members: Member[]; member?: Member }) {
   const now = useActivityClock();
   const videos = videosForMember(member?.id, now);
-  const author = members.find(m => m.id === videoAuthor);
   const [search, setSearch] = useEntryState<string>("video-search", "");
   const [cast, setCast] = useEntryState<string>("video-cast", "all");
   const opener = useRef<HTMLButtonElement | null>(null);
@@ -88,7 +88,7 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
       <div className="vincie-story-copy"><p className="eyebrow"><GuildIcon name="spyglass" size={20}/>Relatos en movimiento</p>
         <h2 id="video-gallery-title" tabIndex={-1}>{member ? "Los relatos de " + fullName(member) : "Las historias de Vincie"}</h2>
         <p>Grandes hazañas, según quien las cuenta.</p>
-        <div className="cinema-byline">Por {author ? <a href={memberHref(author)} style={{ color: color(author) }}>{fullName(author)}</a> : <strong>Vincie Quickhands</strong>}</div>
+        <CreationAuthor members={members} id={videoAuthor} name="Vincie Quickhands" />
       </div>
     </header>
     <div className="cinema-toolbar">
@@ -117,11 +117,13 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
   </section>;
 }
 
-export function CinemaShortcut() {
+export function CinemaShortcut({ members }: { members: Member[] }) {
   const now = useActivityClock();
   const video = videosForMember(undefined, now)[0];
   const hasNewStory = isNewVideo(video, now);
   return <section className="cinema-shortcut"><a href={siteHref(archivePath("videos"))}>
-    <VincieBanner /><div className="vincie-story-copy"><div className="vincie-story-meta"><small>Relatos de Vincie Quickhands</small>{hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}</div><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}<span><Play size={15}/>{hasNewStory ? "Ver nueva historia" : video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
+    <VincieBanner /><div className="vincie-story-copy"><div className="vincie-story-meta"><small>Relatos en movimiento</small>{hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}</div><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}
+      <CreationAuthor members={members} id={videoAuthor} name="Vincie Quickhands" linked={false} />
+      <span className="cinema-shortcut-action"><Play size={15}/>{hasNewStory ? "Ver nueva historia" : video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
   </a></section>;
 }
