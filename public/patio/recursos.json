@@ -282,5 +282,9 @@
   {
     "file": "audio/puerta-abrir-v1.ogg",
     "bytes": 12077
+  },
+  {
+    "file": "audio/puerta-cerrar-v1.ogg",
+    "bytes": 5097
   }
 ]

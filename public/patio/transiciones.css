@@ -7,11 +7,31 @@
 .gate-caption{position:absolute;left:12px;right:12px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px 18px;color:#ffe6af;text-shadow:0 2px 3px #140d06;font:15px/1.4 var(--interface,Georgia,serif);transition:opacity .2s}
 .gate-caption span{flex-basis:100%;text-align:center;font-size:clamp(20px,3vw,30px)}
 .gate-caption a,.gate-caption button{font:13px var(--interface,Georgia,serif);color:#ffdfa0;padding:8px 12px;background:#24190edb;border:1px solid #b48b4c;border-radius:3px;min-height:38px;text-decoration:none}
-.fortress-gate.is-open .gate-caption{opacity:0;pointer-events:none}
+.fortress-gate.is-open .gate-caption{pointer-events:auto}
+.fortress-gate.is-open .gate-caption a{display:none}
 .fortress-gate.is-leaving::before{transition-duration:.75s}
 .fortress-gate.is-leaving .gate-caption{opacity:0;pointer-events:none}
 .entering-courtyard main{visibility:hidden}
 #guild-bar .menu-modes a{display:flex;align-items:center;min-height:34px;padding:5px 10px;border:1px solid transparent;border-radius:2px;font:600 12px/1.1 var(--interface);color:#38250e;white-space:nowrap}
 #guild-bar .menu-modes a:hover{background:#ffdf89;border-color:#aa7833}
 .no-script{position:fixed;z-index:40;bottom:10px;left:10px;right:10px;padding:16px;background:#201810;color:#ffe4a5;text-align:center}
-@media(prefers-reduced-motion:reduce){.fortress-gate,.fortress-gate *,.fortress-gate::before{transition:none!important}}
+.fortress-gate [hidden]{display:none!important}
+.gate-loading{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);width:min(420px,calc(100% - 36px));text-align:center;color:#ffe4ad;text-shadow:0 2px 3px #180b02;transition:opacity .18s ease;pointer-events:auto}
+.gate-loading::before{content:"";position:absolute;z-index:-1;inset:-30px -50px;background:radial-gradient(ellipse,#190c05b8,transparent 70%);pointer-events:none}
+.gate-seal{display:block;object-fit:contain;width:106px;height:auto;margin:0 auto 18px;filter:drop-shadow(0 4px 5px #100702);animation:seal-breath 3.2s ease-in-out infinite}
+.gate-loading h1{font:400 clamp(22px,4.5vw,32px)/1.15 var(--interface,Georgia,serif);margin:0 0 23px;color:#ffdfa1}
+.gate-progress{--loaded:0%;height:8px;max-width:260px;margin:auto;border:1px solid #a97b3e;border-radius:8px;background:#1a0e07;box-shadow:0 1px #e0ae6d55,inset 0 2px 3px #000b;overflow:hidden}
+.gate-progress i{position:relative;display:block;width:var(--loaded);height:100%;border-radius:8px;background:linear-gradient(#ffe4a6,#d8a239 45%,#a5631c);box-shadow:0 0 9px #ffb33577;transition:width .3s ease}
+.gate-progress i::after{content:"";position:absolute;right:0;top:0;width:30px;height:100%;background:linear-gradient(90deg,transparent,#fff2bd);opacity:.6;animation:gate-ember 1.8s ease-in-out infinite}
+.gate-loading p{min-height:42px;margin:15px auto 10px;max-width:340px;font:14px/1.5 var(--interface,Georgia,serif);color:#f7ddba}
+.gate-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.gate-actions button{cursor:pointer;min-height:44px;padding:9px 17px;border:1px solid #deb760;border-radius:3px;background:linear-gradient(#543619,#28170b);box-shadow:inset 0 0 0 2px #25170a,inset 0 3px #ffda8750,0 3px 6px #16090280;color:#ffe9b7;font:600 15px var(--interface,Georgia,serif)}
+.gate-actions button:hover{background:linear-gradient(#765023,#39220e)}
+.gate-actions #enter-silent{font-size:13px;background:#211309a6;border-color:#9e7542;font-weight:400}
+.fortress-gate button:focus-visible,.fortress-gate a:focus-visible{outline:2px solid #ffe4a5;outline-offset:4px}
+.gate-caption button:disabled{opacity:.65;cursor:default}
+.fortress-gate.is-opening .gate-loading,.fortress-gate.is-leaving .gate-loading{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes seal-breath{0%,100%{filter:drop-shadow(0 4px 5px #100702)}50%{filter:drop-shadow(0 3px 10px #d38b2455)}}
+@keyframes gate-ember{0%,100%{opacity:.3}50%{opacity:.9}}
+@media(max-height:500px){.gate-loading{top:43%}.gate-seal{width:62px;margin-bottom:8px}.gate-loading h1{font-size:22px;margin-bottom:12px}.gate-loading p{margin:10px auto 6px}.gate-caption{bottom:10px}}
+@media(prefers-reduced-motion:reduce){.fortress-gate,.fortress-gate *,.fortress-gate::before,.fortress-gate *::after{transition:none!important;animation:none!important}}

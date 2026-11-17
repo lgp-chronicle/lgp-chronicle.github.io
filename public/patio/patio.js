@@ -10,33 +10,49 @@ async function loadSprite(url){
   }
   const img=new Image();img.src=url;await img.decode();return img;
 }
-// Decode one visible sprite group at a time after the scene can be used.
-const pendingLayers=[];
-let loadingLayer=false;
-function addLayer(visible,load,first=false){const layer={visible,load};if(first)pendingLayers.unshift(layer);else pendingLayers.push(layer)}
-function refreshFrame(){const step=current;current=-1;draw(step,playing?elapsed*config.fps/1000:step)}
+// Prepare behind the gate, one group per paint. Hover art remains lazy.
+const pendingLayers=[],failedLayers=[];
+let loadingLayer=false,totalLayers=0,loadedLayers=0,scenePrepared=false,sceneRevealed=false,plateError=false;
+function addLayer(visible,load,first=false){const layer={visible,load};totalLayers++;if(first)pendingLayers.unshift(layer);else pendingLayers.push(layer)}
+function reportLoad(){
+  window.dispatchEvent(new CustomEvent('patio-load-progress',{detail:{
+    loaded:loadedLayers+(ready?1:0),total:totalLayers+1,error:plateError||failedLayers.length>0
+  }}));
+}
+function refreshFrame(){const step=Math.max(0,current);current=-1;draw(step,playing?elapsed*config.fps/1000:step)}
+function completeScene(){
+  if(scenePrepared||!ready||loadingLayer||pendingLayers.length||failedLayers.length)return;
+  scenePrepared=true;refreshFrame();
+  // Paint the complete scene underneath the opaque gate before starting
+  // the film, rather than uploading every visible surface on its first frame.
+  document.body.classList.remove('entering-courtyard');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    get('message').textContent='';window.dispatchEvent(new Event('patio-ready'));
+  }));
+}
 function scheduleLayers(){
-  if(!get('fortress-gate').hidden)return;
-  if(!ready || loadingLayer || document.hidden || !pendingLayers.some(layer=>layer.visible()))return;
+  if(!ready||loadingLayer||document.hidden)return;
+  if(!pendingLayers.length){completeScene();return}
   loadingLayer=true;
   const start=async()=>{
-    const index=document.hidden?-1:pendingLayers.findIndex(layer=>layer.visible());
+    let layer;
     try{
-      if(index>=0){
-        await pendingLayers.splice(index,1)[0].load();
-        // Present this group before starting another. At high refresh rates,
-        // waiting for the 24 fps scene tick batches several uploads together.
-        refreshFrame();
-      }
-    }catch(error){get('message').textContent='No se pudo cargar una animación del patio.';console.error(error)}
-    finally{loadingLayer=false;scheduleLayers()}
+      if(!document.hidden){layer=pendingLayers.shift();await layer.load();loadedLayers++;refreshFrame()}
+    }catch(error){if(layer)failedLayers.push(layer);console.error(error)}
+    finally{loadingLayer=false;reportLoad();scheduleLayers()}
   };
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     if(window.requestIdleCallback)requestIdleCallback(start,{timeout:160});else setTimeout(start,0);
   }));
 }
+window.patioScene={retry(){
+  pendingLayers.push(...failedLayers.splice(0));reportLoad();
+  if(!ready)preparePlate();else scheduleLayers();
+}};
 document.addEventListener('visibilitychange',scheduleLayers);
-window.addEventListener('patio-opened',scheduleLayers);
+function revealScene(){sceneRevealed=true;sync()}
+window.addEventListener('patio-entering',revealScene);
+window.addEventListener('patio-opened',revealScene);
 
 const skyEl=get('sky'),cloudA=get('cloud-a'),cloudB=get('cloud-b');
 let skyVisible=true,skyLoaded=false;
@@ -545,14 +561,14 @@ function draw(step,continuousStep=step){
 }
 function tick(now){
   animation=0;
-  if(!ready||!playing||document.hidden)return;
+  if(!ready||!sceneRevealed||!playing||document.hidden)return;
   if(previous!==null)elapsed=(elapsed+now-previous)%(playbackFrames*1000/config.fps);
   previous=now;
   const step=elapsed*config.fps/1000;
   draw(Math.floor(step),step);
   animation=requestAnimationFrame(tick);
 }
-function sync(){cancelAnimationFrame(animation);animation=0;previous=null;scene.syncNavigation?.(playing&&!document.hidden);if(ready&&playing&&!document.hidden)animation=requestAnimationFrame(tick)}
+function sync(){cancelAnimationFrame(animation);animation=0;previous=null;scene.syncNavigation?.(playing&&!document.hidden);if(ready&&sceneRevealed&&playing&&!document.hidden)animation=requestAnimationFrame(tick)}
 reduce.addEventListener('change',()=>{playing=!reduce.matches;sync()});document.addEventListener('visibilitychange',sync);
 if(get('zoom')&&location.hash==='#detalle')get('zoom').click();
 let fireLoaded=false;
@@ -573,6 +589,16 @@ async function decodePlate(){
     }
   }
 }
-decodePlate().then(()=>{
-  ready=true;draw(0);sync();window.dispatchEvent(new Event('patio-ready'));get('message').textContent='';scheduleLayers();
-}).catch(()=>{get('message').textContent='No se pudo cargar el patio. Puedes volver a la portada.'});
+let plateLoading=false;
+async function preparePlate(){
+  if(plateLoading)return;
+  if(plateError){
+    const plate=get('plate'),candidates=plate.srcset;
+    plate.removeAttribute('srcset');plate.srcset=candidates;
+  }
+  plateLoading=true;plateError=false;reportLoad();
+  try{await decodePlate();ready=true;draw(0);reportLoad();scheduleLayers()}
+  catch{plateError=true;reportLoad()}
+  finally{plateLoading=false}
+}
+preparePlate();
