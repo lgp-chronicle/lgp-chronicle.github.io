@@ -90,6 +90,7 @@ function CurrentCharacterDetail({
             creations: "a las creaciones de la hermandad",
             keen: "al taller de Olynn",
             diario: "al diario de Ferrogard",
+            wallpaper: "al fondo de La Ganga",
           }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>
     award.memberIds.includes(m.id),

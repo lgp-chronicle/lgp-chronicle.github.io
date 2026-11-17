@@ -5,6 +5,7 @@ import { GuildIcon, type GuildIconName } from "../components/guild-icon";
 import { archivePath } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
 import { CreationAuthor } from "./creation-author";
+import { guildWallpaper } from "../lib/guild-wallpaper";
 import type { Member } from "./types";
 import "../app/creation-pages.css";
 
@@ -124,5 +125,28 @@ export function FerrogardPage({ members }: { members: Member[] }) {
         <a className="diary-reading-link" href={diaryUrl} target="_blank" rel="noopener noreferrer">Abrir sus páginas <ArrowRight size={17} /></a>
       </div>
     </section>
+  </article>;
+}
+
+export function WallpaperPage({ members }: { members: Member[] }) {
+  return <article className="creation-page wallpaper-page">
+    <a className="back-link" href={siteHref(archivePath("creations"))}>← Todas las creaciones</a>
+    <header className="wallpaper-hero">
+      <img className="wallpaper-preview" src={guildWallpaper.image} alt="El patio de La Ganga, con Naisen leyendo junto a la hoguera." width={800} height={450} />
+      <div className="wallpaper-copy">
+        <p className="eyebrow"><GuildIcon name="keep" size={24} />Wallpaper Engine</p>
+        <h2>{guildWallpaper.title}</h2>
+        <p className="creation-intro">{guildWallpaper.description}</p>
+        <CreationAuthor members={members} id={guildWallpaper.authorId} name={guildWallpaper.author} />
+        <p className="wallpaper-request">«{guildWallpaper.requestNote}»</p>
+        <a className="button bronze" href={guildWallpaper.workshopUrl} target="_blank" rel="noopener noreferrer">Añadir desde Steam Workshop <ExternalLink size={16} /></a>
+        <small>Necesitas Wallpaper Engine para usar este fondo.</small>
+      </div>
+    </header>
+    <section className="wallpaper-guide" aria-labelledby="wallpaper-guide-title">
+      <div><p className="eyebrow">La Ganga, también en tu escritorio</p><h3 id="wallpaper-guide-title">Cómo añadirlo</h3></div>
+      <ol><li><span>1</span><div><strong>Abre Workshop</strong><p>Usa el botón de arriba para ir a la publicación.</p></div></li><li><span>2</span><div><strong>Pulsa «Suscribirse»</strong><p>Hazlo con la cuenta de Steam donde tienes Wallpaper Engine.</p></div></li><li><span>3</span><div><strong>Elige el fondo</strong><p>Ábrelo en Wallpaper Engine y ajusta el ambiente a tu gusto.</p></div></li></ol>
+    </section>
+    <p className="wallpaper-note"><GuildIcon name="campfire" size={24} />Un patio animado, ambiente opcional y nuevos compañeros que se irán sumando.</p>
   </article>;
 }

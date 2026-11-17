@@ -19,4 +19,5 @@ export const guildSectionIcons = {
   creations: "engineering",
   keen: "keen",
   diario: "journal",
+  wallpaper: "keep",
 } satisfies Record<GuildSection, GuildIconName>;

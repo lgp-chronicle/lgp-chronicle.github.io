@@ -34,6 +34,7 @@ export const archiveGroups = [
       ["keen", "Keen"],
       ["diario", "El diario de Ferrogard"],
       ["videos", "Las historias de Vincie"],
+      ["wallpaper", "Wallpaper Engine"],
     ],
   },
 ] as const;
