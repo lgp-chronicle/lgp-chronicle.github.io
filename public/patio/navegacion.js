@@ -1,6 +1,6 @@
 /* Navigation for the published courtyard. Classic always means the real homepage. */
 function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
-  places=[...places,naisen.place];
+  const findPlace = id => residents.place?.id === id ? residents.place : places.find(p => p.id === id);
   const get = id => document.getElementById(id), tip = get('place-tooltip');
   let active = null, lastPointer = null, frameRequest = 0, touchAt = -Infinity;
   scene.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')touchAt=performance.now();},{passive:true});
@@ -19,7 +19,8 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
   }
   function reveal(node, event) {
     if (scene.classList.contains('dragging') || event?.pointerType === 'touch') return;
-    const place = places.find(p => p.id === node.dataset.place);
+    const place = findPlace(node.dataset.place);
+    if (!place) return;
     if (active?.id !== place.id) { hide(); active = place; node.classList.add('is-active'); glow.select(place); }
     const title=get('place-name'),detail=get('place-detail'),character=place.character;
     title.textContent=place.name;title.style.color=character?.classColor||'';
@@ -52,7 +53,8 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
       // Touch focus must not recenter the scene underneath an ongoing swipe.
       if(performance.now()-touchAt<1000)return;
       if (pick.value !== 'patio') { pick.value = 'patio'; pick.dispatchEvent(new Event('change')); }
-      const p = places.find(p => p.id === node.dataset.place), r = node.getBoundingClientRect(), v = scene.getBoundingClientRect();
+      const p = findPlace(node.dataset.place), r = node.getBoundingClientRect(), v = scene.getBoundingClientRect();
+      if (!p) return;
       if (r.left < v.left || r.right > v.right || r.top < v.top || r.bottom > v.bottom) pan.lookAt(...p.centre);
       reveal(node);
     });
@@ -63,4 +65,5 @@ function setupCourtyardNavigation(places, scene, stage, pick, pan, glow) {
   scene.addEventListener('patio-view', hide);
   window.addEventListener('resize', hide);
   document.addEventListener('patio-departure', hide);
+  window.addEventListener('patio-resident-change', hide);
 }

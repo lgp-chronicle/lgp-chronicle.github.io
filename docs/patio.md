@@ -11,6 +11,8 @@ El patio es una página estática independiente, incluida por Vite desde `public
 - `sonido.js`: audio compartido de ambiente y puerta, activado inicialmente al 25 %. Recuerda volumen y silencio; respeta los bloqueos de reproducción automática del navegador.
 - `navegacion.js`: hover, tooltips, teclado y encuadre de las zonas.
 - `naisen.js`: versión ilustrada de Naisen del 17/11/2026, con lectura, ojos, respiración y gestos separados por pausas de 8–12 segundos. Se prepara detrás del portón y comparte pausa/movimiento reducido con el patio; usa un reloj independiente del reinicio de las otras capas.
+- `vincie.js`: Vincie Quickhands del 17/11/2026, limpiando su daga con pausas breves para mirar a ambos lados. Incluye la mochila y la postura/sombras aprobadas: pie adelantado, sombras de suela y del asiento separadas por la geometría del banco.
+- `personajes.js`: selector visible entre Naisen y Vincie. Elige uno al azar en cada entrada, sin recordar la elección anterior. Carga únicamente sus cinco recursos, conserva el personaje actual mientras prepara el siguiente y libera las imágenes/canvas retirados. El patio y el audio continúan sin reiniciarse. Ante error mantiene el anterior y permite reintentar; respeta movimiento reducido.
 - `transiciones.js` / `transiciones.css`: puertas pintadas, omisión con botón/Escape, salida y recuperación al volver con Atrás. Respeta la reducción de movimiento.
 - `img`, `audio`, `recursos.json`: recursos optimizados y catálogo de tamaños. Los nombres incluyen el hash del archivo; si se cambia una imagen, actualizar sus referencias.
 - `app/courtyard.css`, `components/shell.tsx`: selector integrado en la navegación clásica.
@@ -43,10 +45,13 @@ El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en
 | Estandarte | Composición de la hermandad |
 | Gato | Mascotas y monturas |
 | Naisen leyendo | Ficha de Naisen Grandwell |
+| Vincie limpiando su daga | Ficha de Vincie Quickhands |
 
 Naisen aparece en el banco con respaldo con su mochila y bastón. Su tooltip reproduce el aspecto de una ficha de jugador de WoW: nombre en color de brujo, `<La Ganga>`, nivel 34, gnomo, brujo, Demonología, Alianza, EU y JcJ. Incluye **Apariencia del 17/11/2026**: es una fecha fija de esta ilustración, no la fecha de visita ni un estado en vivo. Los datos proceden de la armería consultada ese día; no se inventa un rango de hermandad o estado JcJ activo. El enlace `../#/character/forever-eu-naisen-grandwell` abre la ficha con la transición del patio. Hover y foco muestran el tooltip; en táctil un toque abre directamente la ficha. Los cinco atlas optimizados suman 1.536.014 bytes y se decodifican por turnos durante la carga.
 
 El paquete actualizado de Wallpaper Engine se genera aparte a partir de su escena aprobada, conserva sus nubes y controles y no incluye enlaces ni transición de puertas. Esta publicación no reemplaza el fondo estable anterior ni publica automáticamente el paquete en Steam Workshop.
+
+El selector está abajo a la derecha en escritorio y sobre el sonido en móvil. El personaje visible tiene su propia silueta clicable, tooltip de jugador y ficha. Vincie figura como nivel 38, humano pícaro, Combate, con apariencia fechada el 17/11/2026. Cambiarlo oculta cualquier tooltip anterior. Sus cinco imágenes suman 432.834 bytes. Las fechas son del diseño aprobado y no representan una consulta en vivo de armería. La variante individual de Vincie para Wallpaper Engine conserva las mismas sombras y la misma animación; el selector es exclusivo de la web.
 
 Los enlaces usan `../#/…`, también al publicar bajo una subcarpeta. La barra mantiene los destinos principales del sitio, incluidas las creaciones de miembros. El selector antiguo de tarjetas del prototipo no forma parte de esta versión.
 

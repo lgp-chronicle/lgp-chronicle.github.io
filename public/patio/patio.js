@@ -299,8 +299,8 @@ function setTorchLight(frame){
 }
 function drawTorches(frame){for(const f of visibleFixtures)if(f.loaded)drawTorchCel(f.ctx,f.sheet,frame)}
 const scene=get('scene'),stage=get('stage'),pick=Object.assign(new EventTarget(),{value:'patio'});
-const naisen=createNaisen(stage);let naisenElapsed=0;
-addLayer(()=>true,()=>naisen.load(loadSprite));
+const residents=createCourtyardCharacters(stage);let residentElapsed=0;
+addLayer(()=>true,()=>residents.load(loadSprite));
 const layoutPan=(function setupPan(scene,stage,pick,update){
   let positionX=.5,positionY=.5,gesture,frame=0,suppressClick=false;
   const nativePan=matchMedia('(pointer: coarse)');
@@ -548,7 +548,7 @@ function drawLighting(frame){
 }
 function draw(step,continuousStep=step){
   drawStandard(continuousStep);
-  naisen.paint(naisenElapsed/1000);
+  residents.paint(residentElapsed/1000);
   if(step===current){scene.paintNavigation?.(continuousStep/config.fps);return;}
   current=step;
   drawAtmosphere(step);drawSign(step);drawSky(step);
@@ -567,7 +567,7 @@ function tick(now){
   if(!ready||!sceneRevealed||!playing||document.hidden)return;
   if(previous!==null){
     const delta=Math.min(250,now-previous);
-    elapsed=(elapsed+delta)%(playbackFrames*1000/config.fps);naisenElapsed+=delta;
+    elapsed=(elapsed+delta)%(playbackFrames*1000/config.fps);residentElapsed+=delta;
   }
   previous=now;
   const step=elapsed*config.fps/1000;
