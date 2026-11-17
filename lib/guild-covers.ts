@@ -13,6 +13,15 @@ const november16ComicRelease = "2026-11-16T09:10:41Z";
 const november17Release = "2026-11-17T08:45:17Z";
 
 export const guildCovers = {
+  desolace: {
+    title: "Bajo la luna de Desolace",
+    cast: ["Olynn Grandwell", "Rast Puñotormenta"],
+    castPrefix: "Multifer ",
+    castJoiner: " llega para rematar a un orco guerrero que luchaba ferozmente contra ",
+    action: "en Desolace.",
+    date: "2026-11-17",
+    publishedAt: "2026-11-17T09:29:00Z",
+  },
   carpinteros: {
     title: "Manitas de Forjaz",
     cast: ["Loqe Delabahía", "Rast Puñotormenta"],
@@ -313,6 +322,7 @@ export type CoverScene = {
   cast: readonly string[];
   guests?: readonly string[];
   action: string;
+  castPrefix?: string;
   castJoiner?: string;
   quest?: { name: string; href: string };
   actionSuffix?: string;

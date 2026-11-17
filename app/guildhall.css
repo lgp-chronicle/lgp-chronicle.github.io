@@ -10,6 +10,12 @@
   background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
   border-top: 2px solid #a67b29;
 }
+.guildhall[data-cover="desolace"] {
+  --hall-art: url("./art/desolace.webp");
+  --hall-compact: url("./art/desolace-movil.webp");
+  --hall-y: 0%;
+  --compact-art-ratio: 2.37845;
+}
 .guildhall[data-cover="carpinteros"] {
   --hall-art: url("./art/carpinteros.webp");
   --hall-compact: url("./art/carpinteros-movil.webp");
@@ -380,7 +386,7 @@
 }
 .archive-links a:focus-visible { outline: 2px solid #ffdc84; outline-offset: -2px; }
 @media (max-width: 680px) {
-  .guildhall:is([data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"], [data-cover="gallina"], [data-cover="espuma"], [data-cover="cabra"], [data-cover="carpinteros"], [data-cover="pan"], [data-cover="contrato"]) {
+  .guildhall:is([data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"], [data-cover="gallina"], [data-cover="espuma"], [data-cover="cabra"], [data-cover="carpinteros"], [data-cover="pan"], [data-cover="contrato"], [data-cover="desolace"]) {
     background-color: #241c16;
     background-position: center top;
     background-size: 100% auto;

@@ -80,6 +80,7 @@ export function Shell({
               {scene.date.split("-").reverse().join("/")}
             </time>
           )}
+          {scene.castPrefix}
           {cast.map((name, i) => (
             <Fragment key={name}>
               {i > 0 && (i === cast.length - 1 ? scene.castJoiner ?? " y " : ", ")}

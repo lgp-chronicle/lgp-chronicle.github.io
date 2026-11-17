@@ -72,6 +72,7 @@ function Caption({
   const { cast } = scene;
   return (
     <>
+      {scene.castPrefix}
       {cast.map((name, i) => {
         const memberId = scene.party?.members[i]?.id ?? coverMemberId(name);
         const member = members.find((m) => m.id === memberId);
