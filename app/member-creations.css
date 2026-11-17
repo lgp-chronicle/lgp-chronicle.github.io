@@ -1,4 +1,7 @@
 .member-creations { display:grid; gap:22px; }
+.creation-shortcut { display:block; text-decoration:none; color:inherit; }
+.creation-shortcut:hover { border-color:#eac66c; }
+.creation-shortcut:focus-visible { outline:2px solid #ffe5a1; outline-offset:3px; }
 .member-creations > header h2 { margin:4px 0 10px; color:#ffdf96; font:clamp(28px,3vw,44px)/1.1 var(--heading); }
 .member-creations > header > p:last-child { color:#c9b99b; margin:0 0 8px; font:14px var(--reading); }
 .creator-diary { position:relative; isolation:isolate; overflow:hidden; min-height:260px; border:1px solid #90703e; background:#1d1a20; display:flex; align-items:center; }

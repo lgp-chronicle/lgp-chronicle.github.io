@@ -1,9 +1,10 @@
-import { ExternalLink, MessageSquare } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { archivePath } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
 import "../app/keen-panel.css";
 
 export function KeenPanel() {
-  return <section className="keen-panel" aria-labelledby="keen-title">
+  return <a className="keen-panel creation-shortcut" href={siteHref(archivePath("keen"))} aria-labelledby="keen-title">
     <picture>
       <source media="(max-width: 600px)" srcSet={assetUrl("/guild/keen-olynn-movil.webp")} />
       <img src={assetUrl("/guild/keen-olynn.webp")} width={2172} height={724} loading="lazy"
@@ -13,16 +14,11 @@ export function KeenPanel() {
       <p className="eyebrow">Hecho en La Ganga · WoW Forever</p>
       <h2 id="keen-title">Keen <span>El taller de Olynn</span></h2>
       <p>Barras de recursos, recordatorios y mejoras de interfaz, a tu manera.
-        Un addon creado por <a className="keen-author" href={siteHref("/character/forever-eu-olynn-grandwell")}>Olynn Grandwell</a>.</p>
+        Un addon creado por <span className="keen-author">Olynn Grandwell</span>.</p>
       <div className="keen-actions">
-        <a className="button bronze" href="https://www.curseforge.com/wow/addons/keen" target="_blank" rel="noopener noreferrer">
-          Ver en CurseForge <ExternalLink size={14} aria-hidden="true" />
-        </a>
-        <a className="button outline" href="https://discord.com/channels/1551288910569808112/1567877893797974076" target="_blank" rel="noopener noreferrer">
-          <MessageSquare size={15} aria-hidden="true" /> Sugerencias en Discord
-        </a>
+        <span className="button bronze">Descubrir Keen <ArrowRight size={15} aria-hidden="true" /></span>
       </div>
-      <small>Propón mejoras y nuevas funciones directamente a Olynn.</small>
+      <small>Funciones, capturas y puesta en marcha.</small>
     </div>
-  </section>;
+  </a>;
 }

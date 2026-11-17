@@ -82,6 +82,7 @@ export function VideoGallery({ members, member }: { members: Member[]; member?: 
     window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL: location.href }));
   }
   return <section className="video-gallery" aria-labelledby="video-gallery-title">
+    {!member && <a className="back-link" href={siteHref(archivePath("creations"))}>← Todas las creaciones</a>}
     <header className="cinema-heading">
       <VincieBanner />
       <div className="vincie-story-copy"><p className="eyebrow"><GuildIcon name="spyglass" size={20}/>Relatos en movimiento</p>
@@ -120,7 +121,7 @@ export function CinemaShortcut() {
   const now = useActivityClock();
   const video = videosForMember(undefined, now)[0];
   const hasNewStory = isNewVideo(video, now);
-  return <section className="cinema-shortcut"><a href={siteHref(withGalleryVideo(archivePath("videos"), video?.id ?? null))}>
+  return <section className="cinema-shortcut"><a href={siteHref(archivePath("videos"))}>
     <VincieBanner /><div className="vincie-story-copy"><div className="vincie-story-meta"><small>Relatos de Vincie Quickhands</small>{hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}</div><h2>Las historias de Vincie</h2>{video && <p>{video.title}</p>}<span><Play size={15}/>{hasNewStory ? "Ver nueva historia" : video ? "Ver el último relato" : "Explorar sus relatos"} <ArrowRight size={14}/></span></div>
   </a></section>;
 }

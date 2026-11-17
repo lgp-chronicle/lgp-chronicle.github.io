@@ -88,6 +88,8 @@ function CurrentCharacterDetail({
             gallery: "a la galería",
             videos: "a las historias de Vincie",
             creations: "a las creaciones de la hermandad",
+            keen: "al taller de Olynn",
+            diario: "al diario de Ferrogard",
           }[sectionFromPath(origin ?? "") ?? "overview"];
   const titles = awards(members).filter((award) =>
     award.memberIds.includes(m.id),

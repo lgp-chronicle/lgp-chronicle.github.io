@@ -31,6 +31,8 @@ export const archiveGroups = [
     label: "Creaciones",
     sections: [
       ["creations", "De la hermandad"],
+      ["keen", "Keen"],
+      ["diario", "El diario de Ferrogard"],
       ["videos", "Las historias de Vincie"],
     ],
   },

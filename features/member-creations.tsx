@@ -3,15 +3,14 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink, Pause, Play } from "lucide-react";
 import { archivePath } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
-import { isNewVideo, videosForMember, withGalleryVideo } from "../lib/guild-videos";
+import { isNewVideo, videosForMember } from "../lib/guild-videos";
 import { useActivityClock } from "../hooks/use-activity-clock";
 import { KeenPanel } from "./keen-panel";
 import { CinemaShortcut } from "./video-gallery";
 import { color, type Member } from "./types";
-import { fullName, memberHref } from "./member-portrait";
+import { fullName } from "./member-portrait";
 import "../app/member-creations.css";
 
-const diaryUrl = "https://discord.com/channels/1551288910569808112/1569452969064140830";
 export function MemberCreations({ members }: { members: Member[] }) {
   return <section className="member-creations" aria-labelledby="creations-title">
     <header><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-title">Creaciones de la hermandad</h2><p>Entre aventura y aventura, también hay tiempo para crear.</p></header>
@@ -23,13 +22,13 @@ export function MemberCreations({ members }: { members: Member[] }) {
 
 export function FerrogardDiary({ members }: { members: Member[] }) {
   const ferrogard = members.find(m => m.id === "forever-eu-ferrogard-escudoferreo");
-  return <section className="creator-diary">
-      <img src={assetUrl("/guild/galeria/diario.webp")} alt="Ferrogard escribe de noche en su habitación, con su gorro de dormir." loading="lazy"/>
+  return <a className="creator-diary creation-shortcut" href={siteHref(archivePath("diario"))}>
+      <img src={new URL("../app/art/diario.webp", import.meta.url).href} alt="Ferrogard escribe de noche en su habitación, con su gorro de dormir." loading="lazy"/>
       <div><p className="eyebrow">Las crónicas de un aventurero</p><h2>El diario de Ferrogard</h2>
-        <p>Las aventuras de la hermandad, contadas por {ferrogard ? <a href={memberHref(ferrogard)} style={{color:color(ferrogard)}}>{fullName(ferrogard)}</a> : "Ferrogard"}.</p>
-        <a className="button outline" href={diaryUrl} target="_blank" rel="noopener noreferrer">Leer en Discord <ExternalLink size={15}/></a>
+        <p>Las aventuras de la hermandad, contadas por {ferrogard ? <span style={{color:color(ferrogard)}}>{fullName(ferrogard)}</span> : "Ferrogard"}.</p>
+        <span className="button outline">Abrir el diario <ArrowRight size={15}/></span>
       </div>
-  </section>;
+  </a>;
 }
 
 export function CreationsPreview() {
@@ -37,9 +36,9 @@ export function CreationsPreview() {
   const latestVideo = videosForMember(undefined, now)[0];
   const hasNewStory = isNewVideo(latestVideo, now);
   const creations = [
-    { id: "vincie", author: "Vincie Quickhands", title: "Las historias de Vincie", description: "Grandes aventuras. Y alguna que otra exageración.", action: hasNewStory ? "Ver nueva historia" : latestVideo ? "Ver sus relatos" : "Explorar sus relatos", image: assetUrl("/guild/historias-vincie.webp"), mobile: assetUrl("/guild/historias-vincie-movil.webp"), href: siteHref(hasNewStory && latestVideo ? withGalleryVideo(archivePath("videos"), latestVideo.id) : archivePath("videos")), external: false },
-    { id: "diario", author: "Ferrogard Escudoferreo", title: "El diario de Ferrogard", description: "Las aventuras de La Ganga, a la luz de una vela.", action: "Leer en Discord", image: new URL("../app/art/diario.webp", import.meta.url).href, mobile: new URL("../app/art/diario-movil.webp", import.meta.url).href, href: diaryUrl, external: true },
-    { id: "keen", author: "Olynn Grandwell", title: "Keen · El taller de Olynn", description: "Un poco de ingenio para tus aventuras en Azeroth.", action: "Conocer el addon", image: assetUrl("/guild/keen-olynn.webp"), mobile: assetUrl("/guild/keen-olynn-movil.webp"), href: siteHref(archivePath("creations")), external: false },
+    { id: "vincie", author: "Vincie Quickhands", title: "Las historias de Vincie", description: "Grandes aventuras. Y alguna que otra exageración.", action: hasNewStory ? "Ver nueva historia" : "Explorar sus relatos", image: assetUrl("/guild/historias-vincie.webp"), mobile: assetUrl("/guild/historias-vincie-movil.webp"), href: siteHref(archivePath("videos")), external: false },
+    { id: "diario", author: "Ferrogard Escudoferreo", title: "El diario de Ferrogard", description: "Las aventuras de La Ganga, a la luz de una vela.", action: "Abrir el diario", image: new URL("../app/art/diario.webp", import.meta.url).href, mobile: new URL("../app/art/diario-movil.webp", import.meta.url).href, href: siteHref(archivePath("diario")), external: false },
+    { id: "keen", author: "Olynn Grandwell", title: "Keen · El taller de Olynn", description: "Un poco de ingenio para tus aventuras en Azeroth.", action: "Conocer el addon", image: assetUrl("/guild/keen-olynn.webp"), mobile: assetUrl("/guild/keen-olynn-movil.webp"), href: siteHref(archivePath("keen")), external: false },
   ];
   const region = useRef<HTMLElement>(null);
   const [carouselRef, api] = useEmblaCarousel({ loop: true, align: "start" });

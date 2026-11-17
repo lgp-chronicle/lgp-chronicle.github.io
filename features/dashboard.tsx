@@ -34,6 +34,7 @@ import { useActivityClock } from "../hooks/use-activity-clock";
 import { CreationsPreview, MemberCreations, FerrogardDiary } from "./member-creations";
 import { VideoGallery } from "./video-gallery";
 import { GuildCollections } from "./guild-collections-panel";
+import { KeenPage, FerrogardPage } from "./creation-pages";
 
 function HomePulse({ members }: { members: Member[] }) {
   const adventurers = members.filter(m => m.data.level !== 1);
@@ -153,7 +154,7 @@ export function Dashboard({
           </div>
         </div>
       )}
-      {!["gallery", "cronicas", "videos", "creations"].includes(section ?? "") && <SourceNotice members={m} />}
+      {!["gallery", "cronicas", "videos", "creations", "keen", "diario"].includes(section ?? "") && <SourceNotice members={m} />}
       {section && <section
         className="archive"
         ref={archive}
@@ -163,6 +164,8 @@ export function Dashboard({
         {section === "gallery" && <CoverGallery members={data.members} />}
         {section === "videos" && <VideoGallery members={data.members} />}
         {section === "creations" && <MemberCreations members={data.members} />}
+        {section === "keen" && <KeenPage members={data.members} />}
+        {section === "diario" && <FerrogardPage members={data.members} />}
         {section === "movimientos" && <MembershipArchive members={data.members} events={data.membershipEvents ?? data.events.filter(e => e.kind === "join" || e.kind === "leave")} />}
         {section === "cronicas" && <ChronicleArchive stories={data.chronicles ?? []} members={data.members} />}
         {section === "overview" && (
@@ -265,7 +268,7 @@ export function Dashboard({
           </>
         )}
       </section>}
-      {!["gallery", "cronicas", "videos", "creations"].includes(section ?? "") && (
+      {!["gallery", "cronicas", "videos", "creations", "keen", "diario"].includes(section ?? "") && (
         <p className="subheading" style={{ marginTop: 28, fontSize: 12 }}>
           Los datos pertenecen a la última observación válida de cada fuente. No
           representan necesariamente el estado actual dentro del juego.
