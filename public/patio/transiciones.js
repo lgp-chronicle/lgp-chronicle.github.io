@@ -7,7 +7,7 @@
   const webm=Boolean(movie.canPlayType('video/webm; codecs="vp9"'));
   let opened=false,leaving=false,skipMotion=reduced.matches||saveData,timer,revision=0,movieURL,preloadTimer;
   let sceneReady=false,sceneError=false,sceneProgress=0,filmReady=false,audioArmed=false,entryFormat=webm?'webm':'webp';
-  let updateQueued=false;
+  let updateQueued=false,audioWaitTimer,audioWaitExpired=false;
   main.inert=true;main.setAttribute('aria-busy','true');
   const cache=new Map();
   function asset(name){
@@ -21,17 +21,22 @@
     if(sceneReady&&filmReady&&!audioArmed){audioArmed=true;window.patioSound?.beginEntrance()}
     const sound=window.patioSound?.entranceState()||'error';
     const soundReady=sound==='ready'||sound==='muted';
+    const waitingForSound=sceneReady&&filmReady&&!soundReady&&sound!=='blocked'&&sound!=='error';
+    if(waitingForSound&&!audioWaitTimer&&!audioWaitExpired&&!document.hidden){
+      audioWaitTimer=setTimeout(()=>{audioWaitTimer=null;audioWaitExpired=true;updateSoon()},8000);
+    }else if(!waitingForSound||document.hidden){clearTimeout(audioWaitTimer);audioWaitTimer=null;audioWaitExpired=false}
     const value=Math.round(sceneProgress*80+(filmReady?10:0)+(soundReady?10:['prepared','blocked','starting'].includes(sound)?5:0));
     progress.style.setProperty('--loaded',value+'%');progress.setAttribute('aria-valuenow',String(value));
     enterButton.hidden=!(sceneReady&&filmReady&&sound==='blocked');
-    silentButton.hidden=!(sceneReady&&filmReady&&(sound==='blocked'||sound==='error'));
-    retryButton.hidden=!(sceneError||sound==='error');
+    silentButton.hidden=!(sceneReady&&filmReady&&!soundReady);
+    retryButton.hidden=!(sceneError||sound==='error'||audioWaitExpired);
     gate.classList.toggle('needs-gesture',!enterButton.hidden);
     if(sceneError)status.textContent='Falta una parte del patio. Puedes reintentar la carga.';
     else if(!sceneReady)status.textContent='Preparando el patio y encendiendo sus luces…';
     else if(!filmReady)status.textContent='Preparando el portón…';
-    else if(sound==='error')status.textContent='No se ha podido cargar el ambiente.';
+    else if(sound==='error')status.textContent='No se ha podido iniciar el sonido. Puedes reintentar o entrar sin él.';
     else if(sound==='blocked')status.textContent='El patio está listo. Entra para activar su sonido.';
+    else if(audioWaitExpired)status.textContent='El sonido está tardando en arrancar. Puedes reintentar o entrar sin él.';
     else if(!soundReady)status.textContent='Escuchando la vida al otro lado…';
     else status.textContent='Bienvenido a La Ganga';
     if(sceneReady&&filmReady&&soundReady&&!document.hidden)enter();
@@ -98,7 +103,7 @@
     }
   }
   function enter(){
-    if(opened||leaving)return;opened=true;
+    if(opened||leaving)return;opened=true;clearTimeout(audioWaitTimer);
     document.body.classList.remove('entering-courtyard');window.dispatchEvent(new Event('patio-entering'));
     if(skipMotion||reduced.matches){finishOpening();return}
     skip.disabled=false;skip.textContent='Omitir animación';playFilm(false,finishOpening);
@@ -112,7 +117,7 @@
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!gate.hidden&&!leaving)skipOpening()});
   enterButton.addEventListener('click',()=>{window.patioSound?.unlockEntrance();updateSoon()});
   silentButton.addEventListener('click',()=>{window.patioSound?.enterSilently();updateSoon()});
-  retryButton.addEventListener('click',()=>{window.patioScene?.retry();window.patioSound?.prepareEntrance(!skipMotion);updateSoon()});
+  retryButton.addEventListener('click',()=>{clearTimeout(audioWaitTimer);audioWaitTimer=null;audioWaitExpired=false;window.patioScene?.retry();window.patioSound?.prepareEntrance(!skipMotion);updateSoon()});
   window.addEventListener('patio-load-progress',event=>{
     sceneProgress=event.detail.loaded/event.detail.total;sceneError=event.detail.error;updateSoon();
   });

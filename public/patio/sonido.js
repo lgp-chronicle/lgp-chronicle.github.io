@@ -44,16 +44,29 @@
     master=context.createGain();master.gain.value=0;master.connect(context.destination);
     ambientGain=context.createGain();ambientGain.connect(master);
     voices=context.createGain();pan=context.createStereoPanner();voices.connect(pan);pan.connect(ambientGain);
-    context.addEventListener('statechange',()=>{if(context.state==='running'&&wanted())playReady();show()});placeTavern();
+    context.addEventListener('statechange',()=>{try{if(context.state==='running'&&wanted())playReady()}catch(error){ambientError=error}show()});placeTavern();
   }
   function ramp(gain,value,seconds){
     if(!context||!gain)return;
-    const now=context.currentTime;gain.cancelAndHoldAtTime(now);gain.linearRampToValueAtTime(value,now+seconds);
+    const now=context.currentTime;
+    // Firefox lacks cancelAndHoldAtTime. Preserve the current level before
+    // cancelling automation so fades work there without blocking the gate.
+    if(typeof gain.cancelAndHoldAtTime==='function')gain.cancelAndHoldAtTime(now);
+    else{const current=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(current,now)}
+    gain.linearRampToValueAtTime(value,now+seconds);
   }
   async function decode(url){
-    const response=await fetch(url);
-    if(!response.ok)throw Error('Audio '+response.status);
-    return context.decodeAudioData(await response.arrayBuffer());
+    const controller=new AbortController();let timer;
+    try{
+      return await Promise.race([
+        (async()=>{
+          const response=await fetch(url,{signal:controller.signal});
+          if(!response.ok)throw Error('Audio '+response.status);
+          return context.decodeAudioData(await response.arrayBuffer());
+        })(),
+        new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error('Audio timeout'))},20000)})
+      ]);
+    }finally{clearTimeout(timer)}
   }
   function loadAmbience(){
     if(ambientBuffers)return Promise.resolve(ambientBuffers);
