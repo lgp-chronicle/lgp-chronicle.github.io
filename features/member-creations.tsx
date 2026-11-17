@@ -11,13 +11,35 @@ import type { Member } from "./types";
 import { CreationAuthor } from "./creation-author";
 import "../app/member-creations.css";
 
+const guildWallpaper = {
+  title: "El patio de La Ganga",
+  description: "La fortaleza de la hermandad, ahora en tu escritorio.",
+  image: assetUrl("/guild/wallpaper/patio.jpg"),
+  workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841368821",
+};
+
 export function MemberCreations({ members }: { members: Member[] }) {
   return <section className="member-creations" aria-labelledby="creations-title">
     <header><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-title">Creaciones de la hermandad</h2><p>Entre aventura y aventura, también hay tiempo para crear.</p></header>
     <CinemaShortcut members={members} />
     <KeenPanel members={members} />
     <FerrogardDiary members={members} />
+    <GuildWallpaper />
   </section>;
+}
+
+function GuildWallpaper() {
+  return <a className="creator-wallpaper creation-shortcut" href={guildWallpaper.workshopUrl} target="_blank" rel="noopener noreferrer">
+    <img src={guildWallpaper.image} alt="Vista previa del patio de La Ganga alrededor de la hoguera." width={800} height={450} loading="lazy" />
+    <div className="creator-wallpaper-copy">
+      <p className="eyebrow">Wallpaper Engine · Steam Workshop</p>
+      <h2>{guildWallpaper.title}</h2>
+      <p>{guildWallpaper.description}</p>
+      <p className="wallpaper-features">Fondo animado · Ambiente opcional</p>
+      <span className="button bronze">Añadir desde Steam Workshop <ExternalLink size={15} aria-hidden="true" /></span>
+      <small>Requiere Wallpaper Engine. Abre Workshop y pulsa «Suscribirse».</small>
+    </div>
+  </a>;
 }
 
 export function FerrogardDiary({ members }: { members: Member[] }) {
@@ -36,9 +58,10 @@ export function CreationsPreview({ members }: { members: Member[] }) {
   const latestVideo = videosForMember(undefined, now)[0];
   const hasNewStory = isNewVideo(latestVideo, now);
   const creations = [
-    { id: "vincie", author: "Vincie Quickhands", title: "Las historias de Vincie", description: "Grandes aventuras. Y alguna que otra exageración.", action: hasNewStory ? "Ver nueva historia" : "Explorar sus relatos", image: assetUrl("/guild/historias-vincie.webp"), mobile: assetUrl("/guild/historias-vincie-movil.webp"), href: siteHref(archivePath("videos")), external: false },
-    { id: "diario", author: "Ferrogard Escudoferreo", title: "El diario de Ferrogard", description: "Las aventuras de La Ganga, a la luz de una vela.", action: "Abrir el diario", image: new URL("../app/art/diario.webp", import.meta.url).href, mobile: new URL("../app/art/diario-movil.webp", import.meta.url).href, href: siteHref(archivePath("diario")), external: false },
-    { id: "keen", author: "Olynn Grandwell", title: "Keen · El taller de Olynn", description: "Un poco de ingenio para tus aventuras en Azeroth.", action: "Conocer el addon", image: assetUrl("/guild/keen-olynn.webp"), mobile: assetUrl("/guild/keen-olynn-movil.webp"), href: siteHref(archivePath("keen")), external: false },
+    { id: "vincie", authorId: "forever-eu-vincie-quickhands", author: "Vincie Quickhands", title: "Las historias de Vincie", description: "Grandes aventuras. Y alguna que otra exageración.", action: hasNewStory ? "Ver nueva historia" : "Explorar sus relatos", image: assetUrl("/guild/historias-vincie.webp"), mobile: assetUrl("/guild/historias-vincie-movil.webp"), href: siteHref(archivePath("videos")), external: false },
+    { id: "diario", authorId: "forever-eu-ferrogard-escudoferreo", author: "Ferrogard Escudoferreo", title: "El diario de Ferrogard", description: "Las aventuras de La Ganga, a la luz de una vela.", action: "Abrir el diario", image: new URL("../app/art/diario.webp", import.meta.url).href, mobile: new URL("../app/art/diario-movil.webp", import.meta.url).href, href: siteHref(archivePath("diario")), external: false },
+    { id: "keen", authorId: "forever-eu-olynn-grandwell", author: "Olynn Grandwell", title: "Keen · El taller de Olynn", description: "Un poco de ingenio para tus aventuras en Azeroth.", action: "Conocer el addon", image: assetUrl("/guild/keen-olynn.webp"), mobile: assetUrl("/guild/keen-olynn-movil.webp"), href: siteHref(archivePath("keen")), external: false },
+    { id: "wallpaper", authorId: null, author: "", title: guildWallpaper.title, description: guildWallpaper.description, action: "Añadir desde Steam Workshop", image: guildWallpaper.image, mobile: guildWallpaper.image, href: guildWallpaper.workshopUrl, external: true },
   ];
   const region = useRef<HTMLElement>(null);
   const [carouselRef, api] = useEmblaCarousel({ loop: true, align: "start" });
@@ -111,8 +134,9 @@ export function CreationsPreview({ members }: { members: Member[] }) {
             </picture>
             <div className="creation-banner-copy">
               {creation.id === "vincie" && hasNewStory && <div className="creation-banner-meta"><strong className="video-new-badge">Nueva historia</strong></div>}
+              {creation.id === "wallpaper" && <div className="creation-banner-meta"><small>Fondo animado · Wallpaper Engine</small></div>}
               <h3>{creation.title}</h3><p>{creation.description}</p>
-              <CreationAuthor members={members} id={creation.id === "vincie" ? "forever-eu-vincie-quickhands" : creation.id === "diario" ? "forever-eu-ferrogard-escudoferreo" : "forever-eu-olynn-grandwell"} name={creation.author} linked={false} />
+              {creation.authorId && <CreationAuthor members={members} id={creation.authorId} name={creation.author} linked={false} />}
               <span className="creation-banner-action">{creation.action}{creation.external ? <ExternalLink size={15} aria-hidden="true"/> : <ArrowRight size={16} aria-hidden="true"/>}</span>
             </div>
           </a>
