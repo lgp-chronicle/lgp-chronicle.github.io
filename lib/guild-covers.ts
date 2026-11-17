@@ -10,8 +10,30 @@ import { welcomePaintings } from "./welcome-paintings.ts";
 const november13Release = "2026-11-13T10:30:42Z";
 const november16Release = "2026-11-16T08:50:00Z";
 const november16ComicRelease = "2026-11-16T09:10:41Z";
+const november17Release = "2026-11-17T08:45:17Z";
 
 export const guildCovers = {
+  carpinteros: {
+    title: "Manitas de Forjaz",
+    cast: ["Loqe Delabahía", "Rast Puñotormenta"],
+    action: "descubren que las reformas del patio pedían un carpintero, no un hacha de guerra.",
+    date: "2026-11-17",
+    publishedAt: november17Release,
+  },
+  pan: {
+    title: "Pan para un regimiento",
+    cast: ["Aditus Antrum", "Franz Martel"],
+    action: "piden una merienda y acaban con pan suficiente para alimentar a toda la fortaleza.",
+    date: "2026-11-17",
+    publishedAt: november17Release,
+  },
+  contrato: {
+    title: "La letra pequeña",
+    cast: ["Calvix Uñanegra", "Ferrogard Escudoferreo"],
+    action: "negocian con un diablillo que exige galletas antes de devolverles la tinta.",
+    date: "2026-11-17",
+    publishedAt: november17Release,
+  },
   gallina: {
     title: "Invocación de corral",
     cast: ["Calvix Uñanegra", "Hellbrios Realtrece"],
