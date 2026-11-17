@@ -25,8 +25,10 @@
     if(waitingForSound&&!audioWaitTimer&&!audioWaitExpired&&!document.hidden){
       audioWaitTimer=setTimeout(()=>{audioWaitTimer=null;audioWaitExpired=true;updateSoon()},8000);
     }else if(!waitingForSound||document.hidden){clearTimeout(audioWaitTimer);audioWaitTimer=null;audioWaitExpired=false}
-    const value=Math.round(sceneProgress*80+(filmReady?10:0)+(soundReady?10:['prepared','blocked','starting'].includes(sound)?5:0));
+    const audioLoaded=soundReady||['prepared','blocked','starting'].includes(sound);
+    const value=Math.round(sceneProgress*80+(filmReady?10:0)+(audioLoaded?10:0));
     progress.style.setProperty('--loaded',value+'%');progress.setAttribute('aria-valuenow',String(value));
+    progress.hidden=sceneReady&&filmReady&&audioLoaded;
     enterButton.hidden=!(sceneReady&&filmReady&&sound==='blocked');
     silentButton.hidden=!(sceneReady&&filmReady&&!soundReady);
     retryButton.hidden=!(sceneError||sound==='error'||audioWaitExpired);
