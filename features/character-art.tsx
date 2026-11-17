@@ -3,37 +3,19 @@ import { assetUrl } from "@/lib/public-settings";
 import { models } from "./portrait-availability";
 import type { Member } from "./types";
 import { isCurrentMember } from "./membership";
+import { characterArtSources, type CharacterArtMode } from "./character-art-sources";
 
 export { hasEntrancePortrait } from "./portrait-availability";
 
 export function useCharacterArt(
   member: Member,
-  mode: "current" | "entrance" | "honor" = "current",
+  mode: CharacterArtMode = "current",
 ) {
   const archived = models[member.id];
-  const live = member.data.characterRender || archived?.url;
-  // Blizzard can update a character in place at the same URL after a gear change.
-  const sameSnapshot =
-    archived &&
-    archived.url === live &&
-    Date.parse(member.data.sourceModified ?? "") === archived.modified;
-  const local =
-    sameSnapshot || (mode === "honor" && archived && !archived.entranceIssue)
-      ? assetUrl(
-          "/guild/personajes/" +
-            encodeURIComponent(member.id.slice("forever-eu-".length)) +
-            ".webp?v=" + archived.modified,
-        )
-      : undefined;
-  const cutout =
-    mode === "entrance" && local
-      ? local.replace("/personajes/", "/formacion/")
-      : undefined;
+  const { sources, avatar: avatarSource, cutout } = characterArtSources(member, mode);
   const [failed, setFailed] = useState<string[]>([]);
-  const image = isCurrentMember(member) ? [cutout, local, live, member.data.avatar].find(
-    (src) => src && !failed.includes(src),
-  ) : undefined;
-  const avatar = image && image === member.data.avatar;
+  const image = sources.find(src => !failed.includes(src));
+  const avatar = image && image === avatarSource;
   const frame = archived?.frame ?? { x: 50, top: 24, height: 57 };
   const style = {
     "--model-x": -frame.x + "%",
@@ -56,9 +38,11 @@ export function useCharacterArt(
 export function CharacterArt({
   member,
   honor = false,
+  loading = "lazy",
 }: {
   member: Member;
   honor?: boolean;
+  loading?: "eager" | "lazy";
 }) {
   const { image, avatar, style, onError } = useCharacterArt(
     member,
@@ -79,7 +63,7 @@ export function CharacterArt({
         <img
           key={image}
           src={image}
-          loading="lazy"
+          loading={loading}
           decoding="async"
           alt=""
           className={avatar ? "banner-avatar" : "banner-model"}

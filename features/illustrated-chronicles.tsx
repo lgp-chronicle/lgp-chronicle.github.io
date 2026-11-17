@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { guildCovers, coverMemberId } from "@/lib/guild-covers";
-import { assetUrl } from "@/lib/public-settings";
-import portraitArchive from "../config/character-art.json";
+import { CharacterArt, hasEntrancePortrait } from "./character-art";
 import type { IllustratedChronicle, Member } from "./types";
 import { isCurrentMember } from "./membership";
 import "../app/illustrated-chronicles.css";
@@ -29,8 +28,6 @@ const captions = {
   pvp: "Duelo de honor",
   gear: "Desde la armería",
 };
-const models: Record<string, { entranceIssue?: string; url: string }> =
-  portraitArchive;
 const stamp = (day: string) => new Date(day + "T00:00:00Z");
 
 function ChronicleScene({
@@ -40,7 +37,7 @@ function ChronicleScene({
 }: {
   story: IllustratedChronicle;
   first: boolean;
-  current: Set<string>;
+  current: Map<string, Member>;
 }) {
   const painted =
     story.kind === "pvp" &&
@@ -49,7 +46,10 @@ function ChronicleScene({
     );
   const portraits = painted
     ? []
-    : story.rows.filter(({ id }) => current.has(id) && models[id] && !models[id].entranceIssue);
+    : story.rows.flatMap(({ id }) => {
+        const member = current.get(id);
+        return member && hasEntrancePortrait(member) ? [member] : [];
+      });
   return (
     <div className="chronicle-scene" data-kind={story.kind}>
       <div className="chronicle-painting" aria-hidden="true">
@@ -70,17 +70,10 @@ function ChronicleScene({
           </picture>
         ) : (
           <div className="chronicle-figures">
-            {portraits.map(({ id }) => (
-              <img
-                key={id}
-                alt=""
-                loading={first ? "eager" : "lazy"}
-                src={assetUrl(
-                  "/guild/formacion/" +
-                    encodeURIComponent(id.slice("forever-eu-".length)) +
-                    ".webp",
-                )}
-              />
+            {portraits.map(member => (
+              <span key={member.id} className="chronicle-figure">
+                <CharacterArt member={member} loading={first ? "eager" : "lazy"} />
+              </span>
             ))}
           </div>
         )}
@@ -101,7 +94,7 @@ function ChronicleCard({
 }: {
   story: IllustratedChronicle;
   first?: boolean;
-  current: Set<string>;
+  current: Map<string, Member>;
 }) {
   const max = Math.max(
     1,
@@ -162,7 +155,7 @@ export function ChronicleArchive({
   stories: IllustratedChronicle[];
   members: Member[];
 }) {
-  const current = new Set(members.filter(isCurrentMember).map(m => m.id));
+  const current = new Map(members.filter(isCurrentMember).map(m => [m.id, m]));
   return (
     <section className="chronicle-archive">
       <header>

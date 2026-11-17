@@ -24,6 +24,7 @@ import { GuildIcon } from "@/components/guild-icon";
 import { finishTitle } from "./race-course";
 import { StrengthLine } from "./guild-strengths";
 import { isCurrentMember } from "./membership";
+import { armoryImageUrl } from "./character-art-sources";
 
 type CharacterDetailProps = {
   member: Member;
@@ -108,7 +109,7 @@ function CurrentCharacterDetail({
       <header className="character-banner">
         <div className="avatar" style={{ color: color(m) }}>
           {p.avatar ? (
-            <img src={p.avatar} alt="" width={80} height={80} />
+            <img src={armoryImageUrl(p.avatar, p)} alt="" width={80} height={80} />
           ) : (
             m.name[0]
           )}

@@ -4,6 +4,7 @@ import { color, type Member } from "./types";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
 import { isCurrentMember } from "./membership";
+import { armoryImageUrl } from "./character-art-sources";
 
 import { fullName } from "./member-name";
 export { fullName } from "./member-name";
@@ -48,7 +49,7 @@ export function FittedName({ name, given }: { name: string; given: string }) {
 export function Portrait({ member }: { member: Member }) {
   const [failed, setFailed] = useState<string>();
   if (!isCurrentMember(member)) return null;
-  const src = member.data.avatar;
+  const src = armoryImageUrl(member.data.avatar, member.data);
   return (
     <span
       className="portrait"

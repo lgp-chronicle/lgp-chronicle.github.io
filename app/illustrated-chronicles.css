@@ -169,12 +169,19 @@
   align-items: flex-end;
   justify-content: center;
 }
-.chronicle-figures img {
+.chronicle-figure {
+  position: relative;
+  flex: 1 1 0;
   max-width: 52%;
   min-width: 0;
   height: 96%;
-  object-fit: contain;
-  object-position: bottom;
+  overflow: hidden;
+}
+.chronicle-figure .banner-art {
+  inset: 0;
+  z-index: 0;
+  --figure-center: 50%;
+  --zoom: 1;
 }
 .chronicle-copy {
   max-width: 43%;
