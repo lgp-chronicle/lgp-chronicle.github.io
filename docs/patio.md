@@ -7,7 +7,8 @@ El patio es una página estática independiente, incluida por Vite desde `public
 ## Archivos
 
 - `public/patio/index.html`: escena, zonas enlazadas y barra de navegación.
-- `patio.js` / `patio.css`: sprites, ambiente, disposición y luces pintadas. Las capas visibles se decodifican de una en una después de abrir las puertas; los realces se cargan al enfocarlos. El audio se activa manualmente.
+- `patio.js` / `patio.css`: sprites, disposición y luces pintadas. Las capas visibles se decodifican de una en una después de abrir las puertas; los realces se cargan al enfocarlos.
+- `sonido.js`: audio compartido de ambiente y puerta, activado inicialmente al 25 %. Recuerda volumen y silencio; respeta los bloqueos de reproducción automática del navegador.
 - `navegacion.js`: hover, tooltips, teclado y encuadre de las zonas.
 - `transiciones.js` / `transiciones.css`: puertas pintadas, omisión con botón/Escape, salida y recuperación al volver con Atrás. Respeta la reducción de movimiento.
 - `img`, `audio`, `recursos.json`: recursos optimizados y catálogo de tamaños. Los nombres incluyen el hash del archivo; si se cambia una imagen, actualizar sus referencias.
@@ -16,9 +17,11 @@ El patio es una página estática independiente, incluida por Vite desde `public
 
 Los originales y prompts están en `design/patio`. `render-v4.js` renderiza fuera de la web 96 fotogramas a **1920 × 1080 y 48 fps**, con profundidad de madera, tiradores curvos, herrajes elevados sin marco ni pasaje de piedra: solo las dos hojas de la puerta, con el patio directamente detrás. La web únicamente reproduce el vídeo WebM transparente (1,55 MB); la salida usa la secuencia inversa acelerada (805 KB). No ejecuta el renderer WebGL. Los navegadores sin VP9 descargan únicamente la alternativa WebP animada a 1280 × 720 y 24 fps. Los nombres `puerta-v4-*` evitan reutilizar vídeos anteriores de la caché.
 
-La transición espera a que esté disponible la pintura del patio. Las animaciones de ambiente se decodifican después, de una en una y solo si son visibles. La salida se precarga en un momento libre después de la entrada, y se libera el decodificador de vídeo al terminar. Con movimiento reducido o ahorro de datos no se descargan las películas. Los brillos y el audio siguen cargándose solo cuando se usan.
+La transición espera a que esté disponible la pintura del patio. Las animaciones de ambiente se decodifican después, de una en una y solo si son visibles. La salida se precarga en un momento libre después de la entrada, y se libera el decodificador de vídeo al terminar. Con movimiento reducido o ahorro de datos no se descargan las películas ni su efecto sonoro. Los brillos y el audio se cargan cuando se usan.
 
-El control de sonido está siempre visible abajo a la izquierda: botón para activar/silenciar, volumen y porcentaje, también antes de activar el audio. No hay reproducción automática ni menú de Ajustes. Las animaciones siguen respetando la reducción de movimiento del dispositivo y se detienen mientras la pestaña está oculta.
+El control de sonido está siempre visible abajo a la izquierda: botón para activar/silenciar, volumen y porcentaje. Desde el 17/11/2026, una primera visita intenta activar el sonido al 25 %; las siguientes respetan el volumen y el silencio guardados en `la-ganga:sonido-patio`. Si el navegador exige un gesto, se reintenta con el primer clic/toque o tecla, sin saltarse un silencio elegido por el visitante. El botón refleja si el audio puede reproducirse realmente. No hay menú de Ajustes. El audio se suspende al ocultar la pestaña o abandonar el patio.
+
+La apertura usa `audio/puerta-abrir-v1.ogg` (2 s, unos 12 KB), una adaptación de una grabación CC0 documentada en `design/patio/audio/CREDITOS.md`. Comparte el control de volumen y silencio con el ambiente. Se dispara al comenzar los fotogramas de apertura y se detiene al omitir/finalizar la transición; nunca se reproduce tarde después de desbloquear el audio. Un fallo al cargar el efecto no bloquea la entrada. El fondo de Wallpaper Engine es independiente de estos cambios.
 
 En dispositivos táctiles el patio usa scroll nativo horizontal y vertical, con inercia y zoom del navegador. La escena tiene un pequeño margen de recorrido vertical. El foco provocado por un toque no recentra la imagen durante el gesto. El arrastre con ratón y la navegación por teclado se conservan. Si existe recorrido, un indicador muestra «Arrastra para explorar» con ratón y «Desliza para explorar» en dispositivos táctiles; se oculta cuando el patio cabe entero o se entra en una vista de detalle. En móvil, el selector **Clásico / Patio** ocupa una fila independiente con blancos táctiles de 40 px y el mismo orden en ambas vistas.
 

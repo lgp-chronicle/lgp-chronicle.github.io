@@ -18,6 +18,7 @@
     return cache.get(name);
   }
   function finishOpening() {
+    window.patioSound?.stopDoor();
     revision++; clearTimeout(timer); movie.pause();
     gate.hidden = true; gate.setAttribute('aria-hidden', 'true');
     main.inert = false; main.removeAttribute('aria-busy');
@@ -40,6 +41,7 @@
     const started = () => {
       if (turn !== revision) return;
       gate.classList.toggle('is-open', !exit);
+      if (!exit) window.patioSound?.openDoor();
       clearTimeout(timer);
       timer = setTimeout(done, duration + 1200);
     };
@@ -75,9 +77,11 @@
     opened = true;
     document.body.classList.remove('entering-courtyard');
     if (skipMotion || reduced.matches) { finishOpening(); return; }
+    window.patioSound?.prepareDoor();
     playFilm(false, finishOpening);
   }
   function skipOpening() {
+    opened = true;
     skipMotion = true;
     document.body.classList.remove('entering-courtyard');
     finishOpening();
