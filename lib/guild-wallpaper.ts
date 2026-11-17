@@ -7,5 +7,22 @@ export const guildWallpaper = {
   author: "Naisen Grandwell",
   requestNote: "Iré añadiendo personajes a petición.",
   image: assetUrl("/guild/wallpaper/patio.jpg"),
-  workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841368821",
+  editions: [
+    {
+      id: "naisen",
+      character: "Naisen Grandwell",
+      description: "Un rato de lectura junto a la hoguera.",
+      image: assetUrl("/guild/wallpaper/patio.jpg"),
+      alt: "Naisen lee junto a la hoguera en el patio de La Ganga.",
+      workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841368821",
+    },
+    {
+      id: "vincie",
+      character: "Vincie Quickhands",
+      description: "Una daga reluciente y un ojo en cada rincón del patio.",
+      image: assetUrl("/guild/wallpaper/vincie.jpg"),
+      alt: "Vincie limpia su daga sentado junto a la hoguera, con su mochila al lado.",
+      workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841449495",
+    },
+  ],
 };
