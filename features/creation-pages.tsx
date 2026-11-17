@@ -46,7 +46,7 @@ const keenScreenshots: KeenScreenshot[] = [
   { id: "interfaz", source: "interfaz", title: "Los detalles que cuentan", caption: "Recordatorios, nombres y filtros de estadísticas.", alt: "Captura oficial de Keen con avisos de beneficios, nombres de personajes y el filtro de estadísticas.", width: 691, height: 302 },
   { id: "hechizos", source: "hechizos", title: "Cada rango, en perspectiva", caption: "Comparador de eficiencia del libro de hechizos.", alt: "Captura oficial de Keen: tabla de rangos y gráfica que compara daño por segundo y daño por maná.", width: 785, height: 352 },
   { id: "avisos", source: "interfaz", title: "Que no te falte nada", caption: "Avisos para beneficios y consumibles pendientes.", alt: "Detalle de los avisos Soul Shard y Demon Armor de Keen.", width: 691, height: 302, detail: [55, 20, 155, 88] },
-  { id: "misiones", source: "interfaz", title: "La siguiente misión", caption: "Marcas de misión junto a los personajes.", alt: "Detalle de una marca de misión sobre Master Mechanic Castpipe.", width: 691, height: 302, detail: [273, 0, 200, 120] },
+  { id: "eficiencia", source: "hechizos", title: "El rango que te conviene", caption: "Compara el daño por segundo y por maná de cada rango.", alt: "Detalle de la tabla de eficiencia de los rangos de hechizos de Keen.", width: 785, height: 352, detail: [14, 45, 370, 292] },
   { id: "placas", source: "interfaz", title: "Cada nombre, en su sitio", caption: "Nombres y placas con el aspecto clásico de WoW.", alt: "Detalle de las placas de salud y los nombres mostrados por Keen.", width: 691, height: 302, detail: [0, 140, 470, 162] },
   { id: "filtros", source: "interfaz", title: "Busca por estadísticas", caption: "Filtra el equipo de la subasta por sus atributos.", alt: "Detalle del menú Keen: stats con filtros de atributos, hechizos y resistencias.", width: 691, height: 302, detail: [562, 165, 129, 137] },
 ];
@@ -94,7 +94,7 @@ export function KeenPage({ members }: { members: Member[] }) {
       <div className="keen-feature-grid">{keenFeatures.map(feature => <div className="keen-feature" key={feature.title}>
         <GuildIcon name={feature.icon} size={38} /><div><h4>{feature.title}</h4><p>{feature.description}</p></div>
       </div>)}</div>
-      <p className="keen-extra"><GuildIcon name="clue" size={21} />También incluye filtros en la subasta, marcas de misión y una rueda de botones del minimapa.</p>
+      <p className="keen-extra"><GuildIcon name="clue" size={21} />También incluye filtros en la subasta, indicadores para las misiones de mazmorra y una rueda de botones del minimapa.</p>
     </section>
     <KeenScreenshots />
     <div className="keen-bottom-grid">
