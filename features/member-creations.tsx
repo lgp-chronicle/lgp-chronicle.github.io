@@ -1,4 +1,5 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { GuildIcon, type GuildIconName } from "../components/guild-icon";
 import { archivePath, type GuildSection } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
@@ -43,9 +44,48 @@ export function MemberCreations({ members }: { members: Member[] }) {
 }
 
 export function CreationsPreview({ members }: { members: Member[] }) {
+  const rail = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: false });
+  useEffect(() => {
+    const node = rail.current;
+    if (!node) return;
+    const update = () => {
+      const start = node.scrollLeft <= 2;
+      const end = node.scrollLeft + node.clientWidth >= node.scrollWidth - 2;
+      setEdges(current => current.start === start && current.end === end ? current : { start, end });
+    };
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    if (node.firstElementChild) observer.observe(node.firstElementChild);
+    node.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => { observer.disconnect(); node.removeEventListener("scroll", update); };
+  }, []);
+  const move = (direction: -1 | 1) => {
+    const node = rail.current;
+    if (!node) return;
+    const cards = node.querySelectorAll<HTMLElement>(".creation-card");
+    const step = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : node.clientWidth;
+    node.scrollBy({ left: direction * step, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  };
   return <section className="creations-preview" aria-labelledby="creations-preview-title">
-    <header className="creations-heading"><div><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-preview-title">Creaciones de la hermandad</h2></div><a href={siteHref(archivePath("creations"))}>Ver todas <ArrowRight size={14} aria-hidden="true" /></a></header>
-    <CreationsGrid members={members} compact />
+    <header className="creations-heading">
+      <div><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-preview-title">Creaciones de la hermandad</h2></div>
+      <div className="creations-controls">
+        <a href={siteHref(archivePath("creations"))}>Ver todas <ArrowRight size={14} aria-hidden="true" /></a>
+        <button className="button outline" type="button" aria-label="Creación anterior" aria-controls="creations-rail" disabled={edges.start} onClick={() => move(-1)}><ArrowLeft size={18} aria-hidden="true" /></button>
+        <button className="button outline" type="button" aria-label="Siguiente creación" aria-controls="creations-rail" disabled={edges.end} onClick={() => move(1)}><ArrowRight size={18} aria-hidden="true" /></button>
+      </div>
+    </header>
+    <div id="creations-rail" className="creations-rail" ref={rail} role="group" aria-label="Banners de las creaciones de la hermandad" tabIndex={0} onKeyDown={event => {
+      if (event.target !== event.currentTarget) return;
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        move(event.key === "ArrowLeft" ? -1 : 1);
+      }
+    }}>
+      <CreationsGrid members={members} compact />
+    </div>
   </section>;
 }
 

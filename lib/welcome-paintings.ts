@@ -6,6 +6,12 @@ type WelcomePainting = {
 };
 
 export const welcomePaintings: Partial<Record<string, WelcomePainting>> = {
+  "bienvenida-2026-11-17-forever-eu-chemaxtor-balarota": {
+    art: "bienvenida-chemaxtor",
+    title: "Aquí cabe otro cazador",
+    action: "cruza las puertas de La Ganga con todo su equipaje y ganas de quedarse. Ya hay sitio junto al fuego.",
+    publishedAt: "2026-11-18T10:25:07Z",
+  },
   "bienvenida-er-manu": {
     art: "bienvenida-er-manu",
     title: "Una insignia para Er Manu",
