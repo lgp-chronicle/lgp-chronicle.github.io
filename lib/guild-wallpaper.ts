@@ -24,5 +24,13 @@ export const guildWallpaper = {
       alt: "Vincie limpia su daga sentado junto a la hoguera, con su mochila al lado.",
       workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841449495",
     },
+    {
+      id: "roman",
+      character: "Rompecraneos Roman",
+      description: "Una siesta después de entrenar. Ronquidos, pompas y algún sobresalto.",
+      image: assetUrl("/guild/wallpaper/roman.jpg"),
+      alt: "Rompecraneos Roman duerme junto a la hoguera del patio con su mochila de guerrero.",
+      workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841877255",
+    },
   ],
 };

@@ -192,3 +192,16 @@ main>.credit{position:absolute;z-index:1;right:max(8px,env(safe-area-inset-right
 .resident-controls select:disabled{opacity:.65;cursor:wait}
 #resident-status:not(:empty){position:absolute;right:0;bottom:calc(100% + 6px);padding:7px 10px;border:1px solid #987343;border-radius:3px;background:#241b15f5;color:#ffe1a2;width:max-content;max-width:calc(100vw - 28px)}
 @media(max-width:670px){.resident-controls{left:10px;right:auto;bottom:max(92px,calc(env(safe-area-inset-bottom) + 58px));gap:8px;padding-left:10px}.resident-controls select{min-height:40px;font-size:12px}#resident-status:not(:empty){left:0;right:auto}}
+
+/* Keep the desktop invitation beside the character selector, clear of the scene controls. */
+.resident-panel{position:absolute;z-index:3;right:max(14px,env(safe-area-inset-right));bottom:max(36px,env(safe-area-inset-bottom));display:grid;gap:10px;width:320px;max-width:calc(100vw - 28px)}
+.resident-panel .resident-controls{position:relative;inset:auto;max-width:100%;justify-content:space-between;flex-wrap:wrap}
+.resident-panel #resident-status:not(:empty){position:static;flex-basis:100%;width:auto;max-width:100%;padding:5px 0 0;border:0;background:none}
+.wallpaper-cta{display:flex;align-items:center;gap:11px;min-height:66px;padding:11px 13px;border:1px solid #b68d46;border-radius:4px;background:linear-gradient(120deg,#38291af2,#241b15f2);box-shadow:inset 0 1px #f4d88938,0 2px 8px #160c0650;color:#ffe5a5;text-decoration:none}
+.wallpaper-cta>img{flex:none;object-fit:contain}
+.wallpaper-cta strong{display:block;font:600 13px/1.4 var(--interface,Georgia,serif)}
+.wallpaper-cta small{display:block;margin-top:4px;color:#d5b77e;font:11px/1.4 var(--reading,Arial,sans-serif)}
+.wallpaper-cta small span{margin-left:4px;color:#ffe5a5}
+.wallpaper-cta:hover{border-color:#efc871;background:linear-gradient(120deg,#50391df7,#302318f7)}
+.wallpaper-cta:focus-visible{outline:2px solid #ffe19a;outline-offset:3px}
+@media(max-width:670px){.resident-panel{left:10px;right:auto;bottom:max(92px,calc(env(safe-area-inset-bottom) + 58px));max-width:calc(100vw - 20px);gap:8px}.wallpaper-cta{min-height:60px;padding:9px 11px}.wallpaper-cta strong{font-size:12px}}

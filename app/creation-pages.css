@@ -68,7 +68,7 @@
 .wallpaper-author { flex:none; max-width:300px; }
 .wallpaper-request { color:#dcc8a2; font:italic 14px/1.6 var(--reading); margin:12px 0 0; }
 .wallpaper-copy>small { display:block; color:#b9aa8d; font:11px/1.5 var(--reading); margin-top:12px; }
-.wallpaper-catalog { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; margin-top:22px; }
+.wallpaper-catalog { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:20px; margin-top:22px; }
 .wallpaper-edition { display:flex; flex-direction:column; min-width:0; border:1px solid #92703a; background:#251e17; overflow:hidden; }
 .wallpaper-edition>img { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; background:#17120e; border-bottom:1px solid #92703a; }
 .wallpaper-edition-copy { display:flex; flex-direction:column; align-items:start; flex:1; padding:20px; }
