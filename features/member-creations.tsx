@@ -1,5 +1,6 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { GuildIcon, type GuildIconName } from "../components/guild-icon";
 import { archivePath, type GuildSection } from "../lib/guild-navigation";
 import { assetUrl, siteHref } from "../lib/public-settings";
@@ -17,13 +18,13 @@ const creations: { id: GuildSection; type: string; icon: GuildIconName; authorId
   { id: "wallpaper", type: "Wallpaper Engine · " + guildWallpaper.editions.length + " fondos", icon: "keep", authorId: guildWallpaper.authorId, author: guildWallpaper.author, title: guildWallpaper.title, description: "Naisen y Vincie, ya en tu escritorio. Más personajes a petición.", image: guildWallpaper.image, mobile: guildWallpaper.image },
 ];
 
-function CreationsGrid({ members, compact = false }: { members: Member[]; compact?: boolean }) {
+function CreationsGrid({ members, compact = false, activeIndex = 0 }: { members: Member[]; compact?: boolean; activeIndex?: number }) {
   const now = useActivityClock();
   const hasNewStory = isNewVideo(videosForMember(undefined, now)[0], now);
   return <div className={"creations-grid" + (compact ? " creations-grid--compact" : "")}>
-    {creations.map(creation => <a key={creation.id} className={"creation-card creation-card--" + creation.id} href={siteHref(archivePath(creation.id))}>
+    {creations.map((creation, index) => <a key={creation.id} className={"creation-card creation-card--" + creation.id} href={siteHref(archivePath(creation.id))} inert={compact && index !== activeIndex}>
       <div className="creation-card-scene">
-        <picture><source media="(max-width: 700px)" srcSet={creation.mobile} /><img src={creation.image} width={800} height={450} alt="" loading="lazy" /></picture>
+        <picture><source media="(max-width: 700px)" srcSet={creation.mobile} /><img src={creation.image} width={800} height={450} alt="" loading="lazy" draggable={false} /></picture>
         <span className="creation-card-kind"><GuildIcon name={creation.icon} size={20} />{creation.type}</span>
         {creation.id === "videos" && hasNewStory && <strong className="video-new-badge">Nueva historia</strong>}
         <h3>{creation.title}</h3>
@@ -44,47 +45,80 @@ export function MemberCreations({ members }: { members: Member[] }) {
 }
 
 export function CreationsPreview({ members }: { members: Member[] }) {
-  const rail = useRef<HTMLDivElement>(null);
-  const [edges, setEdges] = useState({ start: true, end: false });
+  const section = useRef<HTMLElement>(null);
+  const [viewport, carousel] = useEmblaCarousel({ loop: true, align: "start", duration: 28 });
+  const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
   useEffect(() => {
-    const node = rail.current;
-    if (!node) return;
-    const update = () => {
-      const start = node.scrollLeft <= 2;
-      const end = node.scrollLeft + node.clientWidth >= node.scrollWidth - 2;
-      setEdges(current => current.start === start && current.end === end ? current : { start, end });
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => {
+      setReducedMotion(preference.matches);
+      if (preference.matches) setPlaying(false);
     };
-    const observer = new ResizeObserver(update);
-    observer.observe(node);
-    if (node.firstElementChild) observer.observe(node.firstElementChild);
-    node.addEventListener("scroll", update, { passive: true });
-    update();
-    return () => { observer.disconnect(); node.removeEventListener("scroll", update); };
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateMotion();
+    updateVisibility();
+    preference.addEventListener("change", updateMotion);
+    document.addEventListener("visibilitychange", updateVisibility);
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting && entry.intersectionRatio >= 0.4), { threshold: 0.4 });
+    if (section.current) observer.observe(section.current);
+    return () => {
+      preference.removeEventListener("change", updateMotion);
+      document.removeEventListener("visibilitychange", updateVisibility);
+      observer.disconnect();
+    };
   }, []);
+
+  useEffect(() => {
+    if (!carousel) return;
+    const update = () => setActive(carousel.selectedScrollSnap());
+    const pause = () => setPlaying(false);
+    carousel.on("select", update).on("reInit", update).on("pointerDown", pause);
+    update();
+    return () => { carousel.off("select", update).off("reInit", update).off("pointerDown", pause); };
+  }, [carousel]);
+
+  useEffect(() => {
+    if (!carousel || !playing || hovered || !inView || !pageVisible) return;
+    const timer = window.setTimeout(() => carousel.scrollNext(reducedMotion), 6000);
+    return () => window.clearTimeout(timer);
+  }, [carousel, active, playing, hovered, inView, pageVisible, reducedMotion]);
+
   const move = (direction: -1 | 1) => {
-    const node = rail.current;
-    if (!node) return;
-    const cards = node.querySelectorAll<HTMLElement>(".creation-card");
-    const step = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : node.clientWidth;
-    node.scrollBy({ left: direction * step, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    setPlaying(false);
+    if (direction === 1) carousel?.scrollNext(reducedMotion);
+    else carousel?.scrollPrev(reducedMotion);
   };
-  return <section className="creations-preview" aria-labelledby="creations-preview-title">
+  return <section className="creations-preview" ref={section} aria-labelledby="creations-preview-title" aria-roledescription="carrusel"
+    onPointerEnter={event => { if (event.pointerType === "mouse") setHovered(true); }}
+    onPointerLeave={event => { if (event.pointerType === "mouse") setHovered(false); }}
+    onFocusCapture={event => { if (!(event.target instanceof HTMLElement && event.target.closest("[data-autoplay-control]"))) setPlaying(false); }}>
     <header className="creations-heading">
       <div><p className="eyebrow">Hecho por los nuestros</p><h2 id="creations-preview-title">Creaciones de la hermandad</h2></div>
       <div className="creations-controls">
         <a href={siteHref(archivePath("creations"))}>Ver todas <ArrowRight size={14} aria-hidden="true" /></a>
-        <button className="button outline" type="button" aria-label="Creación anterior" aria-controls="creations-rail" disabled={edges.start} onClick={() => move(-1)}><ArrowLeft size={18} aria-hidden="true" /></button>
-        <button className="button outline" type="button" aria-label="Siguiente creación" aria-controls="creations-rail" disabled={edges.end} onClick={() => move(1)}><ArrowRight size={18} aria-hidden="true" /></button>
+        <button className="button outline" data-autoplay-control type="button" aria-label={playing ? "Pausar carrusel" : "Reproducir carrusel"} title={playing ? "Pausar" : "Reproducir"} onClick={() => setPlaying(current => !current)}>{playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}</button>
+        <button className="button outline" type="button" aria-label="Creación anterior" aria-controls="creations-rail" onClick={() => move(-1)}><ArrowLeft size={18} aria-hidden="true" /></button>
+        <button className="button outline" type="button" aria-label="Siguiente creación" aria-controls="creations-rail" onClick={() => move(1)}><ArrowRight size={18} aria-hidden="true" /></button>
       </div>
     </header>
-    <div id="creations-rail" className="creations-rail" ref={rail} role="group" aria-label="Banners de las creaciones de la hermandad" tabIndex={0} onKeyDown={event => {
+    <div id="creations-rail" className="creations-rail" ref={viewport} role="group" aria-label="Banners de las creaciones de la hermandad" tabIndex={0} onKeyDown={event => {
       if (event.target !== event.currentTarget) return;
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
         move(event.key === "ArrowLeft" ? -1 : 1);
       }
     }}>
-      <CreationsGrid members={members} compact />
+      <CreationsGrid members={members} compact activeIndex={active} />
+    </div>
+    <div className="creations-pagination" aria-label="Elegir creación">
+      {creations.map((creation, index) => <button key={creation.id} type="button" aria-label={"Mostrar " + creation.title} aria-current={active === index ? "true" : undefined} aria-controls="creations-rail" onClick={() => { setPlaying(false); carousel?.scrollTo(index, reducedMotion); }}><span /></button>)}
+      <span className="creations-position">{active + 1} / {creations.length}</span>
     </div>
   </section>;
 }
