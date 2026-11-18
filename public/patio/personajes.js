@@ -2,6 +2,10 @@
    for this visit. Loading a replacement never restarts the courtyard/audio. */
 function createCourtyardCharacters(stage) {
   const definitions = {
+    olynn: {
+      create: createOlynn, transform: 'translate(2170 1170)',
+      path: 'M200 96 L293 94 L325 96 L298 150 L344 155 L391 205 L355 249 L357 327 L350 365 L302 386 L286 429 L254 536 L179 545 L170 523 L181 481 L146 471 L130 494 L80 503 L75 481 L110 451 L99 430 L114 372 L125 312 L181 299 L181 272 L201 233 L184 214 L188 181 L230 167 L215 145 Z'
+    },
     naisen: {
       create: createNaisen, transform: 'translate(2220 1352) scale(.74)',
       path: 'M117 20 Q180 8 228 53 L255 85 L258 136 L278 159 L272 211 L258 237 L243 283 L242 334 L210 345 L168 335 L123 344 L83 334 L83 292 L92 263 L70 228 L43 206 L42 166 L57 145 L47 112 L55 88 L83 84 L92 55 Z'
