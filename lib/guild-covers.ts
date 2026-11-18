@@ -14,6 +14,13 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "sueno-onyxia": {
+    title: "El héroe de la siesta",
+    cast: ["Veshar Frostmind"],
+    action: "sueña con derrotar a Onyxia él solo. Azeroth está a salvo… hasta que alguien lo despierte.",
+    date: "2026-11-18",
+    publishedAt: "2026-11-18T10:51:07Z",
+  },
   colmillos: {
     title: "Colmillo a colmillo",
     cast: ["Varón Dandy"],
