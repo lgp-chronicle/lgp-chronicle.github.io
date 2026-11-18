@@ -6,6 +6,10 @@ function createCourtyardCharacters(stage) {
       create: createNaisen, transform: 'translate(2220 1352) scale(.74)',
       path: 'M117 20 Q180 8 228 53 L255 85 L258 136 L278 159 L272 211 L258 237 L243 283 L242 334 L210 345 L168 335 L123 344 L83 334 L83 292 L92 263 L70 228 L43 206 L42 166 L57 145 L47 112 L55 88 L83 84 L92 55 Z'
     },
+    roman: {
+      create: createRoman, transform: 'translate(2246 1300) scale(.65)',
+      path: 'M270 20 Q325 3 362 53 L378 100 L449 121 L461 183 L420 244 L398 300 L367 359 L334 410 L304 494 L276 506 L223 495 L224 468 L251 417 L232 391 L186 367 L169 418 L167 457 L130 481 L61 466 L56 448 L86 401 L87 353 L106 301 L123 262 L106 210 L133 160 L137 117 L213 88 Z'
+    },
     vincie: {
       create: createVincie, transform: 'translate(2258 1282) scale(.70)',
       path: 'M146 18 Q190 6 227 39 L236 91 L329 103 L342 170 L331 227 L337 276 L322 307 L340 370 L309 418 L276 455 L256 508 L237 531 L208 539 L180 534 L175 519 L202 480 L217 432 L226 393 L144 392 L119 478 L117 511 L77 530 L40 519 L44 493 L73 461 L77 406 L49 364 L51 319 L47 276 L61 223 L52 178 L84 132 L126 113 Z'
@@ -43,6 +47,7 @@ function createCourtyardCharacters(stage) {
       candidate.started = seconds;
       candidate.actor.paint(0);
       window.dispatchEvent(new Event('patio-resident-change'));
+      candidate.figure = root.querySelector('canvas#' + id);
       dispose(active); active = candidate; root.hidden = false;
       const place = active.actor.place;
       zone.classList.remove('is-active'); zone.removeAttribute('aria-describedby');
@@ -68,6 +73,9 @@ function createCourtyardCharacters(stage) {
   return {
     get place() { return active?.actor.place; },
     async load(loadSprite) { loader = loadSprite; await activate(initial, true); },
-    paint(time) { seconds = time; active?.actor.paint(Math.max(0, time - active.started)); }
+    paint(time) {
+      seconds = time; active?.actor.paint(Math.max(0, time - active.started));
+      if (active) window.patioSound?.residentTick(active.id, active.figure?.dataset);
+    }
   };
 }

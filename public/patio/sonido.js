@@ -155,7 +155,12 @@
       if(withDoor)loadDoor('open').catch(()=>{});
     }catch(error){ambientError=error;announce()}
   }
+  const residentFoley=createCourtyardFoley({
+    getContext:()=>context,getOutput:()=>master,
+    canPlay:()=>wanted()&&armed&&!departed&&context?.state==='running'&&document.getElementById('fortress-gate').hidden&&typeof playing!=='undefined'&&playing
+  });
   window.patioSound={
+    residentTick:residentFoley.tick,residentStop:residentFoley.stop,residentDiagnostics:residentFoley.diagnostics,
     prepareEntrance,
     beginEntrance(){armed=true;sync()},entranceState,
     unlockEntrance(){prepareEntrance();sync()},

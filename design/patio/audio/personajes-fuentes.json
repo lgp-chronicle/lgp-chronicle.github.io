@@ -1,0 +1,165 @@
+{
+  "checkedAt": "2026-11-18",
+  "clips": [
+    {
+      "name": "roman-ronquido-a",
+      "id": "739758",
+      "start": 0.7,
+      "end": 1.63,
+      "pitch": 0.96,
+      "rms": 0.15999999999999998,
+      "file": "roman-ronquido-a-v1.ogg",
+      "duration": 0.96875,
+      "peak": 0.6874876270837162,
+      "bytes": 11299,
+      "sha256": "030c69ea77a56539d5443ef791845d0e0eeba30d0da7dab6362df0ef7bb86710",
+      "source": {
+        "title": "Man snoring",
+        "author": "dmsoler",
+        "page": "https://freesound.org/people/dmsoler/sounds/739758/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "roman-ronquido-b",
+      "id": "739758",
+      "start": 4.22,
+      "end": 4.94,
+      "pitch": 0.96,
+      "rms": 0.16,
+      "file": "roman-ronquido-b-v1.ogg",
+      "duration": 0.75,
+      "peak": 0.6857332864420974,
+      "bytes": 9801,
+      "sha256": "fea3b84c22355556a221155556fad53a702d31af83b7250410352d9650297a25",
+      "source": {
+        "title": "Man snoring",
+        "author": "dmsoler",
+        "page": "https://freesound.org/people/dmsoler/sounds/739758/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "roman-susto",
+      "id": "677888",
+      "start": 0.055,
+      "end": 0.575,
+      "pitch": 0.93,
+      "rms": 0.13065557534910316,
+      "file": "roman-susto-v1.ogg",
+      "duration": 0.55915625,
+      "peak": 0.84,
+      "bytes": 8856,
+      "sha256": "e7221b40b812b7591b4c355223ec634ce20b93cc88b09966c89af02c020e01fb",
+      "source": {
+        "title": "Man Gasping",
+        "author": "ranman22",
+        "page": "https://freesound.org/people/ranman22/sounds/677888/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "pompa-pop",
+      "id": "669918",
+      "start": 0,
+      "end": 0.25,
+      "pitch": 1,
+      "rms": 0.15141171093736103,
+      "file": "pompa-pop-v1.ogg",
+      "duration": 0.25,
+      "peak": 0.84,
+      "bytes": 5924,
+      "sha256": "9cf514b6f56a19a7822b880badda19d71710044fd9224d6abdb1e26323698d16",
+      "source": {
+        "title": "The Best Bubble Pop Sound For Game and UI",
+        "author": "el_boss",
+        "page": "https://freesound.org/people/el_boss/sounds/669918/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "naisen-pagina-a",
+      "id": "256475",
+      "start": 1.7,
+      "end": 2.62,
+      "pitch": 1,
+      "rms": 0.05302398514548453,
+      "file": "naisen-pagina-a-v1.ogg",
+      "duration": 0.92,
+      "peak": 0.84,
+      "bytes": 13215,
+      "sha256": "43ddd54afdddae90e68e1fa9aef75e7894d0b69cfabb828253e0fc70d0bfe7a4",
+      "source": {
+        "title": "Book Page Turn",
+        "author": "Kodack",
+        "page": "https://freesound.org/people/Kodack/sounds/256475/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "naisen-pagina-b",
+      "id": "256475",
+      "start": 3.83,
+      "end": 4.58,
+      "pitch": 1,
+      "rms": 0.05588197391650726,
+      "file": "naisen-pagina-b-v1.ogg",
+      "duration": 0.75,
+      "peak": 0.84,
+      "bytes": 11003,
+      "sha256": "d3f1bf4027ca3ae7cb9f31b354c181582038d4954b0e8ec981755da50e2612f7",
+      "source": {
+        "title": "Book Page Turn",
+        "author": "Kodack",
+        "page": "https://freesound.org/people/Kodack/sounds/256475/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "vincie-pano-a",
+      "id": "59808",
+      "start": 0.68,
+      "end": 1.14,
+      "pitch": 1,
+      "rms": 0.14,
+      "file": "vincie-pano-a-v1.ogg",
+      "duration": 0.46,
+      "peak": 0.7518656359570437,
+      "bytes": 8042,
+      "sha256": "7c9fd046b76d007d1d8cceeec1a4c82dfef5b7e9c5cb7ed24f820845a633974a",
+      "source": {
+        "title": "cloth_contact.wav",
+        "author": "Runey",
+        "page": "https://freesound.org/people/Runey/sounds/59808/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "name": "vincie-pano-b",
+      "id": "59808",
+      "start": 1.17,
+      "end": 1.72,
+      "pitch": 1,
+      "rms": 0.14,
+      "file": "vincie-pano-b-v1.ogg",
+      "duration": 0.55,
+      "peak": 0.8179071087724312,
+      "bytes": 8891,
+      "sha256": "26a4f57361dcc0ca25eece4050357e02ac10a16173fcac55f17149141b48e618",
+      "source": {
+        "title": "cloth_contact.wav",
+        "author": "Runey",
+        "page": "https://freesound.org/people/Runey/sounds/59808/"
+      },
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+  ]
+}

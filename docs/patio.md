@@ -12,7 +12,9 @@ El patio es una página estática independiente, incluida por Vite desde `public
 - `navegacion.js`: hover, tooltips, teclado y encuadre de las zonas.
 - `naisen.js`: versión ilustrada de Naisen del 17/11/2026, con lectura, ojos, respiración y gestos separados por pausas de 8–12 segundos. Se prepara detrás del portón y comparte pausa/movimiento reducido con el patio; usa un reloj independiente del reinicio de las otras capas.
 - `vincie.js`: Vincie Quickhands del 17/11/2026, limpiando su daga con pausas breves para mirar a ambos lados. Incluye la mochila y la postura/sombras aprobadas: pie adelantado, sombras de suela y del asiento separadas por la geometría del banco. Cada fotograma sustituye el brazo completo, incluido el espacio transparente que deja al moverse, sin duplicarlo. Una máscara limita el cambio al brazo y al paño: pecho, emblema y cinturón conservan la misma pintura, con la respiración común.
-- `personajes.js`: selector visible entre Naisen y Vincie. Elige uno al azar en cada entrada, sin recordar la elección anterior. Carga únicamente sus cinco recursos, conserva el personaje actual mientras prepara el siguiente y libera las imágenes/canvas retirados. El patio y el audio continúan sin reiniciarse. Ante error mantiene el anterior y permite reintentar; respeta movimiento reducido.
+- `roman.js`: Rompecraneos Roman del 18/11/2026, dormido después de entrenar. Respiración continua, pompa que se hincha y estalla, sobresalto y vuelta al sueño. La armadura y las piernas conservan su pintura; solo cambian las expresiones. La mochila y las sombras se apoyan en los planos del banco y el suelo.
+- `personajes.js`: selector visible entre Naisen, Vincie y Roman. Elige uno al azar en cada entrada, sin recordar la elección anterior. Carga únicamente los recursos del elegido, conserva el personaje actual mientras prepara el siguiente y libera las imágenes/canvas retirados. El patio y el audio continúan sin reiniciarse. Ante error mantiene el anterior y permite reintentar; respeta movimiento reducido.
+- `sonidos-personajes.js`: grabaciones CC0 de ronquidos, pompa, reacción de susto, páginas y paño sobre metal. Ocho clips mono suman 77.031 bytes; se descargan una vez y comparten el contexto y volumen del patio. El reloj del sprite dispara cada gesto, sin sonidos atrasados tras una descarga. Una descarga fallida no bloquea el portón. Silenciar, cambiar personaje, ocultar la pestaña o salir cancela también los sonidos programados. Con movimiento reducido no hay efectos de acciones. Fuentes y recortes en `design/patio/audio`.
 - `transiciones.js` / `transiciones.css`: puertas pintadas, omisión con botón/Escape, salida y recuperación al volver con Atrás. Respeta la reducción de movimiento.
 - `img`, `audio`, `recursos.json`: recursos optimizados y catálogo de tamaños. Los nombres incluyen el hash del archivo; si se cambia una imagen, actualizar sus referencias.
 - `app/courtyard.css`, `components/shell.tsx`: selector integrado en la navegación clásica.
@@ -48,6 +50,7 @@ El escenario, sprites, luces y mezcla ambiental conservan el diseño aprobado en
 | Gato | Mascotas y monturas |
 | Naisen leyendo | Ficha de Naisen Grandwell |
 | Vincie limpiando su daga | Ficha de Vincie Quickhands |
+| Roman durmiendo | Ficha de Rompecraneos Roman |
 
 Naisen aparece en el banco con respaldo con su mochila y bastón. Su tooltip reproduce el aspecto de una ficha de jugador de WoW: nombre en color de brujo, `<La Ganga>`, nivel 34, gnomo, brujo, Demonología, Alianza, EU y JcJ. Incluye **Apariencia del 17/11/2026**: es una fecha fija de esta ilustración, no la fecha de visita ni un estado en vivo. Los datos proceden de la armería consultada ese día; no se inventa un rango de hermandad o estado JcJ activo. El enlace `../#/character/forever-eu-naisen-grandwell` abre la ficha con la transición del patio. Hover y foco muestran el tooltip; en táctil un toque abre directamente la ficha. Los cinco atlas optimizados suman 1.536.014 bytes y se decodifican por turnos durante la carga.
 
@@ -56,6 +59,10 @@ El paquete actualizado de Wallpaper Engine se genera aparte a partir de su escen
 El selector está abajo a la derecha en escritorio y sobre el sonido en móvil. El personaje visible tiene su propia silueta clicable, tooltip de jugador y ficha. Vincie figura como nivel 38, humano pícaro, Combate, con apariencia fechada el 17/11/2026. Cambiarlo oculta cualquier tooltip anterior. Sus cinco imágenes suman 517.282 bytes. Las fechas son del diseño aprobado y no representan una consulta en vivo de armería. La variante individual de Vincie para Wallpaper Engine conserva las mismas sombras, la misma animación y las correcciones del brazo y del torso; el selector es exclusivo de la web.
 
 Los enlaces usan `../#/…`, también al publicar bajo una subcarpeta. La barra mantiene los destinos principales del sitio, incluidas las creaciones de miembros. El selector antiguo de tarjetas del prototipo no forma parte de esta versión.
+
+Roman figura como nivel 35, enano guerrero, Furia, Alianza, EU y JcJ, con apariencia fija del **18/11/2026**. Sus cuatro imágenes suman 654.796 bytes. La pompa conserva un único dibujo y anclaje durante la inflación; al estallar, los fragmentos quedan en el punto de rotura mientras se mueve la cabeza. El primer sobresalto llega a los 13 segundos; las siguientes siestas duran 22–34 segundos. El ronquido acompaña la inhalación, la rotura dispara el «pop» y el susto llega 100 ms después. Vincie mantiene el roce más discreto que los demás efectos.
+
+El 18/11/2026 el usuario autorizó publicar estos personajes y sonidos y continuar los retoques directamente en la web. Esto sustituye la instrucción anterior de mantener estas pruebas solo en local. No generar ni actualizar paquetes de Wallpaper Engine hasta que vuelva a pedirlos.
 
 ## Comprobación local
 

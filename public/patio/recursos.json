@@ -326,5 +326,53 @@
   {
     "file": "img/430744418b171067.webp",
     "bytes": 39678
+  },
+  {
+    "file": "img/86e294220ca9f067.webp",
+    "bytes": 82934
+  },
+  {
+    "file": "img/2c046c9a62081e41.webp",
+    "bytes": 495814
+  },
+  {
+    "file": "img/5daca6ba44c7f565.webp",
+    "bytes": 25528
+  },
+  {
+    "file": "img/17817b777fd954eb.webp",
+    "bytes": 50520
+  },
+  {
+    "file": "audio/roman-ronquido-a-v1.ogg",
+    "bytes": 11299
+  },
+  {
+    "file": "audio/roman-ronquido-b-v1.ogg",
+    "bytes": 9801
+  },
+  {
+    "file": "audio/roman-susto-v1.ogg",
+    "bytes": 8856
+  },
+  {
+    "file": "audio/pompa-pop-v1.ogg",
+    "bytes": 5924
+  },
+  {
+    "file": "audio/naisen-pagina-a-v1.ogg",
+    "bytes": 13215
+  },
+  {
+    "file": "audio/naisen-pagina-b-v1.ogg",
+    "bytes": 11003
+  },
+  {
+    "file": "audio/vincie-pano-a-v1.ogg",
+    "bytes": 8042
+  },
+  {
+    "file": "audio/vincie-pano-b-v1.ogg",
+    "bytes": 8891
   }
 ]
