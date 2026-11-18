@@ -32,5 +32,13 @@ export const guildWallpaper = {
       alt: "Rompecraneos Roman duerme junto a la hoguera del patio con su mochila de guerrero.",
       workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841877255",
     },
+    {
+      id: "olynn",
+      character: "Olynn Grandwell",
+      description: "Preparando los cebos para la próxima jornada de pesca.",
+      image: assetUrl("/guild/wallpaper/olynn.jpg"),
+      alt: "Olynn prepara cebos de pesca en el patio de La Ganga, con su cesta y la caña junto al banco.",
+      workshopUrl: "https://steamcommunity.com/sharedfiles/filedetails/?id=3841985732",
+    },
   ],
 };

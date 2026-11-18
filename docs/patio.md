@@ -62,7 +62,7 @@ El selector está abajo a la derecha en escritorio y sobre el sonido en móvil. 
 
 Los enlaces usan `../#/…`, también al publicar bajo una subcarpeta. La barra mantiene los destinos principales del sitio, incluidas las creaciones de miembros. El selector antiguo de tarjetas del prototipo no forma parte de esta versión.
 
-Junto al selector de personajes, «¿Quieres este fondo animado en tu escritorio?» abre `../#/archivo/wallpaper` con la transición habitual. El acceso y el selector comparten un panel que se adapta a móvil y deja libre el control de sonido. La sección reúne los enlaces de Workshop de Naisen, Vincie y Roman, con Naisen Grandwell como autor.
+Junto al selector de personajes, «¿Quieres este fondo animado en tu escritorio?» abre `../#/archivo/wallpaper` con la transición habitual. El acceso y el selector comparten un panel que se adapta a móvil y deja libre el control de sonido. La sección reúne los enlaces de Workshop de Naisen, Vincie, Roman y Olynn, con Naisen Grandwell como autor.
 
 Roman figura como nivel 35, enano guerrero, Furia, Alianza, EU y JcJ, con apariencia fija del **18/11/2026**. Sus cuatro imágenes suman 654.796 bytes. La pompa conserva un único dibujo y anclaje durante la inflación; al estallar, los fragmentos quedan en el punto de rotura mientras se mueve la cabeza. El primer sobresalto llega a los 13 segundos; las siguientes siestas duran 22–34 segundos. El ronquido acompaña la inhalación, la rotura dispara el «pop» y el susto llega 100 ms después. Vincie mantiene el roce más discreto que los demás efectos.
 
