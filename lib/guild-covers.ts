@@ -11,8 +11,35 @@ const november13Release = "2026-11-13T10:30:42Z";
 const november16Release = "2026-11-16T08:50:00Z";
 const november16ComicRelease = "2026-11-16T09:10:41Z";
 const november17Release = "2026-11-17T08:45:17Z";
+const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  colmillos: {
+    title: "Colmillo a colmillo",
+    cast: ["Varón Dandy"],
+    action: "reúne colmillos Sangrapellejo en Tuercespina para la prueba de ",
+    quest: {
+      name: "Cicloniano",
+      href: "https://www.wowhead.com/forever/es/quest=1712/cicloniano",
+    },
+    actionSuffix: ". Cada colmillo acerca al guerrero a su recompensa.",
+    date: "2026-11-18",
+    publishedAt: november18Release,
+  },
+  emboscada: {
+    title: "Una emboscada mal elegida",
+    cast: ["Naisen Grandwell", "Alexion Grandwell"],
+    action: "plantan cara a un cazador trol y un pícaro cielonato, con una súcubo y un lobo cubriéndoles las espaldas.",
+    date: "2026-11-18",
+    publishedAt: november18Release,
+  },
+  dardos: {
+    title: "La diana estaba demasiado alta",
+    cast: ["Chemaxtor Balarota", "Lyrae Grandwell"],
+    action: "discuten el reglamento de los dardos. Chemaxtor exige un barril de ventaja; Lyrae pide medir primero.",
+    date: "2026-11-18",
+    publishedAt: november18Release,
+  },
   desolace: {
     title: "Bajo la luna de Desolace",
     cast: ["Olynn Grandwell", "Rast Puñotormenta"],
