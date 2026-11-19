@@ -25,6 +25,7 @@ import { finishTitle } from "./race-course";
 import { StrengthLine } from "./guild-strengths";
 import { isCurrentMember } from "./membership";
 import { armoryImageUrl } from "./character-art-sources";
+import { MemberAltBadge } from "./member-alt-badge";
 
 type CharacterDetailProps = {
   member: Member;
@@ -130,7 +131,8 @@ function CurrentCharacterDetail({
           <p>
             {[p.race, p.className, p.spec, p.faction]
               .filter(Boolean)
-              .join(" · ")}
+              .join(" · ")}{" "}
+            <MemberAltBadge memberId={m.id} />
           </p>
         </div>
         {official && (p.level === undefined || p.level >= 10) ? (

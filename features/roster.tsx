@@ -2,6 +2,7 @@
 import { MemberLink, fullName, memberHref } from "./member-portrait";
 import { CharacterArt } from "./character-art";
 import { ClassFrame, ClassRoom } from "./class-frame";
+import { MemberAltBadge } from "./member-alt-badge";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { originalCensusEnd, newMemberPeriod, newUntil } from "./membership";
@@ -271,6 +272,7 @@ export function Roster({
                     <span className="card-class">
                       {m.data.className ?? "Clase sin registrar"}
                       {newBadge(m)}
+                      <MemberAltBadge memberId={m.id} />
                     </span>
                     <h4>
                       {m.name}
@@ -345,7 +347,7 @@ export function Roster({
                 {columns.map(([key]) => (
                   <TableCell key={key}>
                     {key === "name" ? (
-                      <MemberLink member={m} subtitle={m.strength?.title} badge={newBadge(m)} />
+                      <MemberLink member={m} subtitle={m.strength?.title} badge={<>{newBadge(m)}<MemberAltBadge memberId={m.id} /></>} />
                     ) : key === "joinedAt" ? (
                       <JoinDate member={m} />
                     ) : key === "observedAt" ? (

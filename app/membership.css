@@ -70,6 +70,9 @@
   position: absolute;
   inset: 0;
 }
+.arrival-art .welcome-painting[data-art="bienvenida-nightray"] img {
+  object-position: 91% 46%;
+}
 .welcome-courtyard {
   isolation: isolate;
   background-size: cover;
@@ -244,6 +247,40 @@
   vertical-align: middle;
   font: 650 11px/1.25 var(--interface);
 }
+.alt-member-mark {
+  display: inline-block;
+  margin-inline-start: 5px;
+  padding: 2px 6px;
+  border: 1px solid #917747;
+  border-radius: 3px;
+  background: #302b22;
+  color: #e4c78e;
+  vertical-align: middle;
+  font: 600 11px/1.25 var(--interface);
+  letter-spacing: .02em;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: help;
+}
+.alt-member-mark:is(:hover, :focus-visible, [data-state="delayed-open"], [data-state="instant-open"]) {
+  color: #ffe1a4;
+  border-color: #e3b659;
+  outline: 2px solid #e3b65944;
+  outline-offset: 2px;
+}
+.alt-member-tooltip {
+  z-index: 70;
+  max-width: min(290px, calc(100vw - 24px));
+  padding: 9px 12px;
+  border: 1px solid #b48c42;
+  border-radius: 4px;
+  background: #211b14;
+  color: #e4d4b6;
+  box-shadow: 0 5px 18px #0008;
+  font: 13px/1.4 var(--interface);
+}
+.alt-member-tooltip strong { color: #ffdc8c; }
+.alt-member-arrow { fill: #b48c42; }
 .membership-archive h3 { text-transform: capitalize; margin: 16px 0 4px; color: #edcf94; }
 .membership-archive ul, .home-journal .latest-headlines ul { list-style: none; margin: 0; padding: 0; }
 .membership-archive li {

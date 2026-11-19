@@ -33,7 +33,7 @@ export function MembershipNews({
     .filter((p) => p.day >= since && p.members.every(isCurrentMember))
     .map((party) => ({
       party,
-      current: party.members.filter(
+      current: party.illustratedOnly ? party.members : party.members.filter(
         (m) =>
           m.membership?.joinedAt &&
           !m.membership.leftAt &&
@@ -57,6 +57,7 @@ export function MembershipNews({
         <WelcomeArt party={party} />
       </a>
       <div className="arrival-caption">
+        {party.illustratedOnly && <small>Bienvenida ilustrada</small>}
         <time dateTime={party.day}>
           {dateLabel.format(new Date(party.day))}
         </time>
@@ -77,7 +78,7 @@ export function MembershipNews({
     <div className="membership-news">
       <section aria-labelledby="guild-arrivals">
         <header>
-          <h2 id="guild-arrivals">Nuevos integrantes</h2>
+          <h2 id="guild-arrivals">Bienvenidas</h2>
           <small>Últimos 30 días</small>
         </header>
         {parties.length ? (

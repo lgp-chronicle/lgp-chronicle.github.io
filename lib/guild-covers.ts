@@ -14,6 +14,21 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "murlocs-nightray": {
+    title: "¡No traigas más!",
+    cast: ["Naisen Nightray", "Nerey Nightray"],
+    castJoiner: " se lanza contra los múrlocs de Elwynn mientras ",
+    action: "cura a la desesperada. Él juraría que solo había visto dos.",
+    date: "2026-11-19",
+    publishedAt: "2026-11-19T08:15:00Z",
+  },
+  "juninho-madrugador": {
+    title: "Antes que el gallo",
+    cast: ["Juninho Delbosque"],
+    action: "sale a levear cuando la fortaleza aún duerme. El café va haciendo su parte; el gallo sigue de baja.",
+    date: "2026-11-19",
+    publishedAt: "2026-11-19T08:15:00Z",
+  },
   "sueno-onyxia": {
     title: "El héroe de la siesta",
     cast: ["Veshar Frostmind"],

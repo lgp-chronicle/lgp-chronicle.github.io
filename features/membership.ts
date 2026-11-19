@@ -1,4 +1,5 @@
 import type { Member } from "./types.ts";
+import { welcomePaintings } from "../lib/welcome-paintings.ts";
 
 // First individually tracked arrival, Er Manu's original membership (UTC).
 export const membershipStart = "2026-11-12T02:30:18.111Z";
@@ -26,7 +27,9 @@ export function hasArmory(member: Member) {
   return (p.level ?? 0) >= 10 && verified;
 }
 
-export type WelcomeParty = { id: string; day: string; members: Member[] };
+export type WelcomeParty = {
+  id: string; day: string; members: Member[]; illustratedOnly?: boolean;
+};
 export const paintedWelcome = "bienvenida-er-manu";
 
 export function groupArrivals(members: Member[]): WelcomeParty[] {
@@ -82,7 +85,7 @@ export function welcomeParties(members: Member[]): WelcomeParty[] {
       groups.get(w.id)!.cast.push({ member: m, position: w.position });
     }
   }
-  return [...groups]
+  const recorded: WelcomeParty[] = [...groups]
     .filter(([, group]) => group.cast.length === group.size)
     .map(([id, group]) => ({
       id,
@@ -91,5 +94,17 @@ export function welcomeParties(members: Member[]): WelcomeParty[] {
         .sort((a, b) => a.position - b.position)
         .map((row) => row.member),
     }))
+    .sort((a, b) => b.day.localeCompare(a.day) || a.id.localeCompare(b.id));
+  const illustrated: WelcomeParty[] = Object.entries(welcomePaintings).flatMap(([id, painting]) => {
+    if (!painting?.memberIds?.length || groups.has(id)) return [];
+    const cast = painting.memberIds.map(id => members.find(m => m.id === id))
+      .filter((m): m is Member => Boolean(m && hasArmory(m) && isCurrentMember(m)));
+    if (cast.length !== painting.memberIds.length) return [];
+    return [{
+      id, day: painting.publishedAt.slice(0, 10), members: cast, illustratedOnly: true,
+    }];
+  });
+  // Painting dates are editorial dates: never turn them into membership events.
+  return [...recorded, ...illustrated]
     .sort((a, b) => b.day.localeCompare(a.day) || a.id.localeCompare(b.id));
 }

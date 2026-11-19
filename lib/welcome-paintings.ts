@@ -3,9 +3,18 @@ type WelcomePainting = {
   title: string;
   action: string;
   publishedAt: string;
+  // An illustrated welcome for a member whose arrival predates our records.
+  memberIds?: readonly string[];
 };
 
 export const welcomePaintings: Partial<Record<string, WelcomePainting>> = {
+  "bienvenida-nightray": {
+    art: "bienvenida-nightray",
+    title: "Dos Nightray bajo el mismo estandarte",
+    action: "cruzan las puertas de La Ganga con su equipaje. Él trae ganas de aventura; ella, por si acaso, las curas.",
+    publishedAt: "2026-11-19T08:15:00Z",
+    memberIds: ["forever-eu-naisen-nightray", "forever-eu-nerey-nightray"],
+  },
   "bienvenida-2026-11-17-forever-eu-chemaxtor-balarota": {
     art: "bienvenida-chemaxtor",
     title: "Aquí cabe otro cazador",

@@ -14,7 +14,7 @@ export function WelcomeArt({
   const painting = welcomePaintings[party.id];
   if (painting)
     return (
-      <picture className="welcome-painting" aria-hidden="true">
+      <picture className="welcome-painting" data-art={painting.art} aria-hidden="true">
         {large && (
           <source
             media="(max-width: 680px)"

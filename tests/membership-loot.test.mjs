@@ -24,6 +24,26 @@ const member = (id, data = {}) => ({
   membership: { joinedAt: day },
 });
 
+test("illustrated welcomes do not invent an arrival or a new-member period", () => {
+  const naisen = member("forever-eu-naisen-nightray");
+  naisen.membership = {};
+  naisen.addedAt = "2026-11-10T08:57:01.157Z";
+  const nerey = { ...member("forever-eu-nerey-nightray"), membership: {} };
+  const before = structuredClone(naisen);
+  const parties = welcomeParties([naisen, nerey]);
+  assert.equal(parties.length, 1);
+  assert.equal(parties[0].id, "bienvenida-nightray");
+  assert.deepEqual(parties[0].members.map(m => m.id), [naisen.id, nerey.id]);
+  assert.equal(parties[0].illustratedOnly, true);
+  assert.equal(newUntil(naisen), 0);
+  assert.deepEqual(naisen, before);
+  assert.ok(coverCatalogue([naisen, nerey])[parties[0].id]);
+  assert.deepEqual(welcomeParties([naisen]), []);
+  assert.deepEqual(welcomeParties([nerey, { ...naisen, inRoster: false }]), []);
+  assert.deepEqual(welcomeParties([nerey, { ...naisen, membership: { pendingAbsence: true } }]), []);
+  assert.deepEqual(welcomeParties([nerey, { ...naisen, data: { level: 9, armoryVerified: true } }]), []);
+});
+
 test("group sizes, whole parties, real profile and the exact level boundary", () => {
   assert.equal(hasArmory(member("a", { level: 9 })), false);
   assert.equal(
