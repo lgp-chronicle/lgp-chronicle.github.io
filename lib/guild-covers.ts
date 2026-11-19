@@ -14,6 +14,14 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "limpieza-arcana": {
+    title: "Limpieza arcana",
+    cast: ["Alexion Grandwell", "Veshar Frostmind"],
+    castJoiner: " recoge el regalo de su lobo con los pergaminos de ",
+    action: "y descubre que la furia arcana también se desata en el patio.",
+    date: "2026-11-19",
+    publishedAt: "2026-11-19T10:20:00Z",
+  },
   "murlocs-nightray": {
     title: "¡No traigas más!",
     cast: ["Naisen Nightray", "Nerey Nightray"],
