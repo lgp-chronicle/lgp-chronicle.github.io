@@ -8,6 +8,25 @@ type WelcomePainting = {
 };
 
 export const welcomePaintings: Partial<Record<string, WelcomePainting>> = {
+  "bienvenida-2026-11-20-forever-eu-ryuma-senju": {
+    art: "bienvenida-ryuma",
+    title: "Un hogar para Ryuma",
+    action: "cruza las puertas de La Ganga con su equipaje y un nuevo camino por delante.",
+    publishedAt: "2026-11-23T14:03:47Z",
+  },
+  "bienvenida-volkhim": {
+    art: "bienvenida-volkhim",
+    title: "Volkhim llega a la fortaleza",
+    action: "entra en el patio con su bolsa de viaje. La Ganga ya le guarda un lugar junto al fuego.",
+    publishedAt: "2026-11-23T14:03:47Z",
+    memberIds: ["forever-eu-volkhim-garrasombría"],
+  },
+  "bienvenida-2026-11-23-forever-eu-zush-ira": {
+    art: "bienvenida-zush",
+    title: "Los primeros pasos de Zush",
+    action: "llega con lo puesto y su equipaje, lista para comenzar sus aventuras con La Ganga.",
+    publishedAt: "2026-11-23T14:03:47Z",
+  },
   "bienvenida-nightray": {
     art: "bienvenida-nightray",
     title: "Dos Nightray bajo el mismo estandarte",
