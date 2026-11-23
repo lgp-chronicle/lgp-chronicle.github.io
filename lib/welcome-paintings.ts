@@ -8,6 +8,12 @@ type WelcomePainting = {
 };
 
 export const welcomePaintings: Partial<Record<string, WelcomePainting>> = {
+  "bienvenida-2026-11-22-forever-eu-miyu-sacerpowah": {
+    art: "bienvenida-miyu",
+    title: "Un lugar para Miyu",
+    action: "cruza el umbral de La Ganga con su equipaje y la bendición de Elune.",
+    publishedAt: "2026-11-23T14:25:00Z",
+  },
   "bienvenida-2026-11-20-forever-eu-ryuma-senju": {
     art: "bienvenida-ryuma",
     title: "Un hogar para Ryuma",

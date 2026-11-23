@@ -16,6 +16,8 @@ import { WelcomeArt } from "./welcome-art";
 import { welcomePaintings } from "../lib/welcome-paintings";
 import { CoverAction } from "@/components/cover-action";
 
+import { galleryCategories, galleryCategory } from "@/lib/gallery-categories";
+
 function original(id: string) {
   const file = welcomePaintings[id]?.art ?? (id === "mapa" ? "sala-de-la-ganga" : id);
   return new URL(`../app/art/${file}.webp`, import.meta.url).href;
@@ -137,6 +139,19 @@ export function CoverGallery({
         ? catalogue[id].party!.members.some((m) => m.id === member.id)
         : sceneParticipants(catalogue[id]).some((name) => coverMemberId(name) === member.id)),
   );
+  scenes.sort((a, b) => (catalogue[b].publishedAt ?? catalogue[b].date ?? "").localeCompare(catalogue[a].publishedAt ?? catalogue[a].date ?? ""));
+  const params = new URLSearchParams(location.hash.split("?")[1]);
+  const selected = params.get("categoria") ?? "resumen";
+  const category = galleryCategories.some(c => c.id === selected) || selected === "todas" ? selected : "resumen";
+  const groups = galleryCategories.map(c => ({ ...c, ids: scenes.filter(id => galleryCategory(id, catalogue[id]) === c.id) })).filter(c => c.ids.length);
+  const visibleGroups = member ? [{ id: "personaje", title: "", description: "", ids: scenes }] : category === "todas" ? [{ id: "todas", title: "Todas las ilustraciones", description: "De más reciente a más antigua.", ids: scenes }] : groups.filter(c => category === "resumen" || c.id === category);
+  function categoryHref(id: string) {
+    const [base, query] = location.hash.slice(1).split("?");
+    const next = new URLSearchParams(query);
+    next.delete("escena");
+    if (id === "resumen") next.delete("categoria"); else next.set("categoria", id);
+    return siteHref(base + (next.size ? "?" + next : ""));
+  }
   const opener = useRef<HTMLButtonElement | null>(null);
   const requested = new URLSearchParams(location.hash.split("?")[1]).get(
     "escena",
@@ -153,11 +168,13 @@ export function CoverGallery({
       new HashChangeEvent("hashchange", { oldURL, newURL: location.href }),
     );
   }
+  const browsing = !member && category !== "resumen" && category !== "todas" && active && galleryCategory(active, catalogue[active]) === category
+    ? scenes.filter(id => galleryCategory(id, catalogue[id]) === category) : scenes;
   function step(direction: number) {
     if (active)
       navigateScene(
-        scenes[
-          (scenes.indexOf(active) + direction + scenes.length) % scenes.length
+        browsing[
+          (browsing.indexOf(active) + direction + browsing.length) % browsing.length
         ],
       );
   }
@@ -184,8 +201,19 @@ export function CoverGallery({
       {scenes.length === 0 && (
         <p>Este personaje aún no aparece en las portadas.</p>
       )}
+      {!member && <nav className="gallery-categories" aria-label="Categorías de ilustraciones">
+        <a href={categoryHref("resumen")} aria-current={category === "resumen" ? "page" : undefined}>Explorar</a>
+        {groups.map(c => <a key={c.id} href={categoryHref(c.id)} aria-current={category === c.id ? "page" : undefined}>
+          <img src={assetUrl("/guild/iconos/" + c.icon + ".webp")} alt="" />{c.title}<span>{c.ids.length}</span>
+        </a>)}
+        <a href={categoryHref("todas")} aria-current={category === "todas" ? "page" : undefined}>Todas <span>{scenes.length}</span></a>
+      </nav>}
+      {visibleGroups.map(group => <section className="gallery-collection" key={group.id} aria-label={group.title || "Ilustraciones"}>
+        {!member && <header className="gallery-collection-heading"><div><h3>{group.title} <small>{group.ids.length}</small></h3><p>{group.description}</p></div>
+          {category === "resumen" && <a href={categoryHref(group.id)}>Ver todas <ArrowRight size={16} aria-hidden="true" /></a>}
+        </header>}
       <div className="gallery-grid">
-        {scenes.map((id, i) => {
+        {(category === "resumen" && !member ? group.ids.slice(0, 2) : group.ids).map((id, i) => {
           const item = catalogue[id];
           return (
             <article key={id} className="gallery-card">
@@ -234,6 +262,7 @@ export function CoverGallery({
           );
         })}
       </div>
+      </section>)}
       <Dialog.Root
         open={active !== null}
         onOpenChange={(open) => {
@@ -300,7 +329,7 @@ export function CoverGallery({
                 </Dialog.Description>
                 <div className="gallery-actions">
                   <ShareScene key={active} id={active} />
-                  {scenes.length > 1 && (
+                  {browsing.length > 1 && (
                     <div className="gallery-paging">
                       <button
                         type="button"
@@ -310,7 +339,7 @@ export function CoverGallery({
                         <ArrowLeft />
                       </button>
                       <span aria-live="polite">
-                        {scenes.indexOf(active) + 1} / {scenes.length}
+                        {browsing.indexOf(active) + 1} / {browsing.length}
                       </span>
                       <button
                         type="button"
