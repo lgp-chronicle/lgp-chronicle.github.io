@@ -14,6 +14,27 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "luciernagas-en-la-azotea": {
+    title: "Luces sobre la muralla",
+    cast: ["Naisen Grandwell","Olynn Grandwell"],
+    action: "abren un tarro en la azotea y dejan que las luciérnagas vuelvan al jardín.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:34:38.496Z",
+  },
+  "puerta-de-al-lado": {
+    title: "Por la puerta de al lado",
+    cast: ["Franz Martel","Vincie Quickhands"],
+    action: "prueban dos formas de entrar en la fortaleza: empujar el portón o abrir la puerta de al lado.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:34:38.496Z",
+  },
+  "campana-de-la-marea": {
+    title: "La campana de la marea",
+    cast: ["Juninho Delbosque","Ferrogard Escudoferreo"],
+    action: "encuentran la campana de un naufragio entre las rocas y se apresuran a sacarla antes de que suba la marea.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:34:38.496Z",
+  },
   "libro-a-flote": {
     title: "Un libro a flote",
     cast: ["Miyu Sacerpowah","Zush Ira"],
