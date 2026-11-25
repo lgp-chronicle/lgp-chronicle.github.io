@@ -12,6 +12,8 @@ export type GalleryCategory = typeof galleryCategories[number]['id'];
 // Editorial grouping; new welcomes are classified automatically. Other new scenes
 // default to fortress life until their theme is assigned here.
 const themes: Partial<Record<string, GalleryCategory>> = {
+  'puente-entre-brumas': 'aventuras', 'tetera-sin-permiso': 'ocurrencias',
+  'libro-a-flote': 'fortaleza',
   'murlocs-nightray': 'aventuras', colmillos: 'aventuras', emboscada: 'aventuras',
   desolace: 'aventuras', reyerta: 'aventuras', impostor: 'aventuras',
   rastro: 'aventuras', humedales: 'aventuras', cripta: 'aventuras',

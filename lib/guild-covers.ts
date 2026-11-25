@@ -14,6 +14,27 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "libro-a-flote": {
+    title: "Un libro a flote",
+    cast: ["Miyu Sacerpowah","Zush Ira"],
+    action: "rescatan un libro del agua antes de que la fuente del claustro se quede con la última página.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:19:40Z",
+  },
+  "puente-entre-brumas": {
+    title: "El puente entre brumas",
+    cast: ["Ryuma Senju","Volkhim Garrasombría"],
+    action: "siguen el cauce hasta un puente olvidado y se detienen a comprobar si aguanta un paso más.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:19:40Z",
+  },
+  "tetera-sin-permiso": {
+    title: "La tetera va por libre",
+    cast: ["Laister Grandwell","Maister Grandwell"],
+    action: "intentan servirse un té en la cocina de la fortaleza. La tetera toma otro rumbo.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T10:19:40Z",
+  },
   "limpieza-arcana": {
     title: "Limpieza arcana",
     cast: ["Alexion Grandwell", "Veshar Frostmind"],
