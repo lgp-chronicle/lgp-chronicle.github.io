@@ -14,6 +14,13 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "guardia-de-cama": {
+    title: "Guardia de cama",
+    cast: ["Vincie Quickhands"],
+    action: "guarda cama en la enfermería con un paño en la frente y las dos espadas al alcance.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T14:08:06.030Z",
+  },
   "luciernagas-en-la-azotea": {
     title: "Luces sobre la muralla",
     cast: ["Naisen Grandwell","Olynn Grandwell"],
