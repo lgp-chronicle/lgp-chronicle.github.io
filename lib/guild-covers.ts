@@ -14,6 +14,13 @@ const november17Release = "2026-11-17T08:45:17Z";
 const november18Release = "2026-11-18T08:47:18Z";
 
 export const guildCovers = {
+  "acero-en-zulfarrak": {
+    title: "Acero en Zul’Farrak",
+    cast: ["Vincie Quickhands"],
+    action: "se abre paso entre los troles de Zul’Farrak, con una espada en cada mano y la arena de Tanaris levantándose a su alrededor.",
+    date: "2026-11-25",
+    publishedAt: "2026-11-25T14:29:12.285Z",
+  },
   "guardia-de-cama": {
     title: "Guardia de cama",
     cast: ["Vincie Quickhands"],

@@ -12,6 +12,7 @@ export type GalleryCategory = typeof galleryCategories[number]['id'];
 // Editorial grouping; new welcomes are classified automatically. Other new scenes
 // default to fortress life until their theme is assigned here.
 const themes: Partial<Record<string, GalleryCategory>> = {
+  'acero-en-zulfarrak': 'aventuras',
   'guardia-de-cama': 'fortaleza',
   'luciernagas-en-la-azotea': 'fortaleza',
   'puerta-de-al-lado': 'ocurrencias',

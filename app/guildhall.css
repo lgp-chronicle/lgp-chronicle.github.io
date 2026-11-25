@@ -10,6 +10,12 @@
   background: #201b15 var(--hall-art) center var(--hall-y) / cover no-repeat;
   border-top: 2px solid #a67b29;
 }
+.guildhall[data-cover="acero-en-zulfarrak"] {
+  --hall-art: url("./art/acero-en-zulfarrak.webp");
+  --hall-compact: url("./art/acero-en-zulfarrak-movil.webp");
+  --hall-y: 0%;
+  --compact-art-ratio: 2.759;
+}
 .guildhall[data-cover="guardia-de-cama"] {
   --hall-art: url("./art/guardia-de-cama.webp");
   --hall-compact: url("./art/guardia-de-cama-movil.webp");
@@ -361,6 +367,17 @@
   filter: drop-shadow(0 3px 3px #140d07a8);
 }
 @media (min-width: 681px) {
+  .guildhall[data-cover="acero-en-zulfarrak"] {
+    min-height: calc(100vw / 3);
+  }
+  .guildhall[data-cover="acero-en-zulfarrak"] .guildhall-inner {
+    align-self: flex-start;
+    width: 28vw;
+    padding-top: clamp(10px, 1.5vw, 30px);
+  }
+  .guildhall[data-cover="acero-en-zulfarrak"] .guildhall-brand img {
+    width: clamp(120px, 15vw, 300px);
+  }
   .guildhall[data-cover="sueno-onyxia"] .guildhall-inner {
     width: clamp(220px, 24vw, 650px);
   }
@@ -475,7 +492,7 @@
 }
 .archive-links a:focus-visible { outline: 2px solid #ffdc84; outline-offset: -2px; }
 @media (max-width: 680px) {
-  .guildhall:is([data-cover="guardia-de-cama"], [data-cover="luciernagas-en-la-azotea"], [data-cover="puerta-de-al-lado"], [data-cover="campana-de-la-marea"], [data-cover="libro-a-flote"], [data-cover="puente-entre-brumas"], [data-cover="tetera-sin-permiso"], [data-cover="limpieza-arcana"], [data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"], [data-cover="gallina"], [data-cover="espuma"], [data-cover="cabra"], [data-cover="carpinteros"], [data-cover="pan"], [data-cover="contrato"], [data-cover="desolace"], [data-cover="colmillos"], [data-cover="emboscada"], [data-cover="dardos"], [data-cover="sueno-onyxia"], [data-cover="murlocs-nightray"], [data-cover="juninho-madrugador"]) {
+  .guildhall:is([data-cover="acero-en-zulfarrak"], [data-cover="guardia-de-cama"], [data-cover="luciernagas-en-la-azotea"], [data-cover="puerta-de-al-lado"], [data-cover="campana-de-la-marea"], [data-cover="libro-a-flote"], [data-cover="puente-entre-brumas"], [data-cover="tetera-sin-permiso"], [data-cover="limpieza-arcana"], [data-cover="reyerta"], [data-cover="claustro"], [data-cover="despensa"], [data-cover="gallina"], [data-cover="espuma"], [data-cover="cabra"], [data-cover="carpinteros"], [data-cover="pan"], [data-cover="contrato"], [data-cover="desolace"], [data-cover="colmillos"], [data-cover="emboscada"], [data-cover="dardos"], [data-cover="sueno-onyxia"], [data-cover="murlocs-nightray"], [data-cover="juninho-madrugador"]) {
     background-color: #241c16;
     background-position: center top;
     background-size: 100% auto;
@@ -492,6 +509,9 @@
     padding-top: 44.45vw;
     align-items: center;
     background: #282019 var(--hall-compact) center top / 100% auto no-repeat;
+  }
+  .guildhall[data-cover="acero-en-zulfarrak"] {
+    min-height: calc(100vw / var(--compact-art-ratio) + 96px);
   }
   .guildhall[data-cover="pique"] .guildhall-inner { padding: 4px 0 5px 9px; }
   .guildhall[data-cover="pique"] .guildhall-caption {
